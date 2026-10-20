@@ -1,0 +1,309 @@
+[
+  {
+    "path": "/internal/v1/commands",
+    "method": "POST",
+    "roles": [
+      "bank-adapter"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/commands/{externalRequestId}",
+    "method": "GET",
+    "roles": [
+      "bank-adapter",
+      "reconciler"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/bank-events",
+    "method": "POST",
+    "roles": [
+      "bank-adapter"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/uploads/{uploadId}/complete",
+    "method": "POST",
+    "roles": [
+      "file-gateway"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/transfers/{transferId}/authorize",
+    "method": "POST",
+    "roles": [
+      "file-gateway"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/packages/{packageId}",
+    "method": "GET",
+    "roles": [
+      "bank-adapter"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/document-jobs/claim",
+    "method": "POST",
+    "roles": [
+      "file-scanner",
+      "document-ocr"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/document-jobs/{jobId}/renew",
+    "method": "POST",
+    "roles": [
+      "file-scanner",
+      "document-ocr"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/document-jobs/{jobId}/scan-result",
+    "method": "POST",
+    "roles": [
+      "file-scanner"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/document-jobs/{jobId}/extraction-result",
+    "method": "POST",
+    "roles": [
+      "document-ocr"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/cases/{caseId}/snapshot",
+    "method": "GET",
+    "roles": [
+      "workspace",
+      "reconciler"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v2/feature-snapshots",
+    "method": "POST",
+    "roles": [
+      "bank-adapter"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v2/risk/evaluations",
+    "method": "POST",
+    "roles": [
+      "bank-adapter"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v2/rankings",
+    "method": "POST",
+    "roles": [
+      "catalog",
+      "workspace"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/kb/documents/{documentId}/publish",
+    "method": "POST",
+    "roles": [
+      "content-owner"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/kb/documents/{documentId}/revoke",
+    "method": "POST",
+    "roles": [
+      "content-owner",
+      "security"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/kb/revocations/{revocationId}",
+    "method": "GET",
+    "roles": [
+      "content-owner",
+      "security"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/ml/update-requests",
+    "method": "POST",
+    "roles": [
+      "ml-operator"
+    ],
+    "profile": [
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/ml/update-requests/{updateRequestId}",
+    "method": "GET",
+    "roles": [
+      "ml-operator"
+    ],
+    "profile": [
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/ml/update-requests/{updateRequestId}/claim",
+    "method": "POST",
+    "roles": [
+      "ml-operator"
+    ],
+    "profile": [
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/ml/update-requests/{updateRequestId}/lease/renew",
+    "method": "POST",
+    "roles": [
+      "ml-operator"
+    ],
+    "profile": [
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/ml/update-requests/{updateRequestId}/result",
+    "method": "POST",
+    "roles": [
+      "ml-operator"
+    ],
+    "profile": [
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/ml/releases/{releaseId}/approvals",
+    "method": "POST",
+    "roles": [
+      "ml-operator",
+      "ml-validator"
+    ],
+    "profile": [
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/ml/releases/{releaseId}/rollouts",
+    "method": "POST",
+    "roles": [
+      "ml-operator"
+    ],
+    "profile": [
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/ml/releases/{releaseId}/rollback",
+    "method": "POST",
+    "roles": [
+      "ml-operator"
+    ],
+    "profile": [
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v1/ml/operations/{operationId}",
+    "method": "GET",
+    "roles": [
+      "ml-operator"
+    ],
+    "profile": [
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v2/feature-snapshots/{featureSnapshotId}",
+    "method": "GET",
+    "roles": [
+      "ml-risk"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  },
+  {
+    "path": "/internal/v2/assistant/answers",
+    "method": "POST",
+    "roles": [
+      "bff"
+    ],
+    "profile": [
+      "local-mvp",
+      "bank-target"
+    ]
+  }
+]

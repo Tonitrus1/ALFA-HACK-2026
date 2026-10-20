@@ -1,0 +1,482 @@
+[
+  {
+    "id": "AR-01",
+    "severity": "P1",
+    "category": "противоречие",
+    "title": "Три разные версии клиентского контракта",
+    "evidence": {
+      "path": "output/credit-workspace-frontend-architecture/README.md",
+      "originalLine": 13,
+      "fragment": "не утверждённая"
+    },
+    "failureScenario": "Frontend вызывает отсутствующие в backend методы; команды и экраны нельзя интегрировать по выданным гайдам.",
+    "correction": "Принят единый 1.2.0-design: 49 публичных операций и 6 отдельных demo-операций; точные копии и серверные задачи.",
+    "verification": "contracts-identical; operations-covered; demo-isolation",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-02",
+    "severity": "P1",
+    "category": "противоречие",
+    "title": "Необоснованное ослабление SLO и восстановления",
+    "evidence": {
+      "path": "output/credit-workspace-backend-architecture/docs/06-security-operations.md",
+      "originalLine": 43,
+      "fragment": "99,9%"
+    },
+    "failureScenario": "Команда проектирует 99,9%, p95 500/1000 мс и RTO 60 минут вместо общих 99,95%, 300/500 мс и 30 минут; два узла вместо трёх доменов.",
+    "correction": "Вернуть общие цели, разграничить latency deadline и SLO, сохранить статус гипотез.",
+    "verification": "slo-consistency; backend V24/V26/V41",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-03",
+    "severity": "P1",
+    "category": "противоречие",
+    "title": "Для MVP не определён облегчённый backend-профиль",
+    "evidence": {
+      "path": "output/credit-workspace-backend-architecture/docs/01-architecture.md",
+      "originalLine": 25,
+      "fragment": "сессиями Redis"
+    },
+    "failureScenario": "Общая схема разрешает запуск без Kafka/Redis, backend требует их для сессий и передачи; локальный показ расходится с исходной архитектурой.",
+    "correction": "Определены local-mvp (PostgreSQL transport/session и volume) и bank-target; одна семантика outbox/inbox/202.",
+    "verification": "backend V39",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-04",
+    "severity": "P1",
+    "category": "пробел",
+    "title": "Пункты RFI не адресуют конкретные данные",
+    "evidence": {
+      "path": "output/credit-workspace-backend-architecture/api/openapi.json",
+      "originalLine": 6987,
+      "fragment": "InformationItem"
+    },
+    "failureScenario": "Получен FIELD или DOCUMENT, но UI не знает разрешённый fieldPath/requirementId; реализация вынуждена угадывать или редактировать всю анкету.",
+    "correction": "Дискриминированные FIELD/DOCUMENT/EXPLANATION с allowlist; незапрошенные изменения запрещены.",
+    "verification": "fixture-information-item; backend V31; frontend V35",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-05",
+    "severity": "P1",
+    "category": "противоречие",
+    "title": "Подтверждение OCR уточнения направлено в исходную анкету",
+    "evidence": {
+      "path": "output/credit-workspace-frontend-architecture/sources/screens.py",
+      "originalLine": 31,
+      "fragment": "Подтвердить извлечение"
+    },
+    "failureScenario": "После SUBMITTED UI переиспользует /applications/{id}/confirm-extraction; ответ либо запрещён, либо меняет неизменяемую анкету.",
+    "correction": "Отдельный /information-requests/{requestId}/draft/confirm-extraction с ETag ответа; исходный endpoint только DRAFT.",
+    "verification": "fixture-confirm-extraction; backend V31; frontend V33",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-06",
+    "severity": "P1",
+    "category": "пробел",
+    "title": "Отправка RFI не фиксирует версию сохранённого ответа",
+    "evidence": {
+      "path": "output/credit-workspace-frontend-architecture/api/proposed-additions.openapi.json",
+      "originalLine": 4127,
+      "fragment": "InformationResponse"
+    },
+    "failureScenario": "Вкладка А отправляет ответ, пока Б меняет InformationDraft: requestVersion не обнаруживает изменение клиентского черновика.",
+    "correction": "В /responses обязательны draftVersion и совпадение тела с сохранённым черновиком; flush очереди перед отправкой.",
+    "verification": "fixture-information-response; backend V32",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-07",
+    "severity": "P2",
+    "category": "пробел",
+    "title": "Не задана очистка необязательных полей",
+    "evidence": {
+      "path": "output/credit-workspace-frontend-architecture/docs/03-state-and-flows.md",
+      "originalLine": 21,
+      "fragment": "не исчезают из PATCH"
+    },
+    "failureScenario": "После удаления значения UI не может отличить «не менять» от «очистить»; null не разрешён, ноль меняет смысл данных.",
+    "correction": "clearFields с фиксированными необязательными путями; merge business по полям; конфликт присваивания/очистки даёт 422.",
+    "verification": "fixture-clear-fields; backend V38; frontend V34",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-08",
+    "severity": "P1",
+    "category": "пробел",
+    "title": "Обычный PATCH принимает идентификаторы подтверждённого OCR",
+    "evidence": {
+      "path": "output/credit-workspace-backend-architecture/api/openapi.json",
+      "originalLine": 6402,
+      "fragment": "confirmedExtractionIds"
+    },
+    "failureScenario": "Клиент может передать подтверждение в обход предусмотренного сценария проверки источника, версии и прав.",
+    "correction": "Убрать confirmedExtractionIds из DraftPatch; происхождение формируется сервером. ConfirmExtraction не принимает клиентские confidence/page.",
+    "verification": "fixture-forged-confirmation; backend V38",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-09",
+    "severity": "P1",
+    "category": "противоречие",
+    "title": "Версии документов и требований не закреплены в команде",
+    "evidence": {
+      "path": "output/credit-workspace-backend-architecture/sources/contracts.py",
+      "originalLine": 27,
+      "fragment": "C['Submit']['properties']['documentReferences']"
+    },
+    "failureScenario": "Документ меняется после чтения экрана: documentReferences необязательны, а версия чек-листа не передаётся в submit/response.",
+    "correction": "Точные ссылки и requirementsVersion обязательны; documentIds и ссылки должны совпадать; версия байтов отделена от метаданных.",
+    "verification": "fixture-submit; fixture-extraction-source; backend V08/V11/V32",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-10",
+    "severity": "P1",
+    "category": "пробел",
+    "title": "Загрузка RFI не проверяет версию запроса",
+    "evidence": {
+      "path": "output/credit-workspace-frontend-architecture/api/proposed-additions.openapi.json",
+      "originalLine": 3936,
+      "fragment": "requestId"
+    },
+    "failureScenario": "Вкладка загружает файл для заменённого запроса; ID без requestVersion не связывает intent с актуальными пунктами.",
+    "correction": "requestId/requestVersion парные, разрешён только OPEN-запрос с запрошенным requirementId.",
+    "verification": "fixture-upload-context; backend V31/V32",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-11",
+    "severity": "P1",
+    "category": "пробел",
+    "title": "Компания общей cookie-сессии конфликтует с вкладками",
+    "evidence": {
+      "path": "output/credit-workspace-frontend-architecture/docs/03-state-and-flows.md",
+      "originalLine": 9,
+      "fragment": "номер поколения контекста"
+    },
+    "failureScenario": "Вкладка Б меняет серверную компанию, вкладка А продолжает запросы с прежним локальным поколением. Межвкладочная серверная граница не определена.",
+    "correction": "Общий выбранный контекст, Session.contextVersion, X-Company-Context, проверка до commit и сигнал смены другим вкладкам.",
+    "verification": "context-headers; backend V30; frontend V31",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-12",
+    "severity": "P1",
+    "category": "противоречие",
+    "title": "Resync восстанавливает только статусы и ограничен 100 заявками",
+    "evidence": {
+      "path": "output/credit-workspace-frontend-architecture/docs/03-state-and-flows.md",
+      "originalLine": 53,
+      "fragment": "отдельное согласование"
+    },
+    "failureScenario": "После очистки SSE-истории обновления документов/операций/inbox могут остаться устаревшими; первые 100 статусов принимаются за полную компанию.",
+    "correction": "Курсор-барьер complete=false, затем перечитывание всех активных ресурсов; полные списки через штатную пагинацию.",
+    "verification": "fixture-stream-snapshot; backend V37; frontend V36",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-13",
+    "severity": "P1",
+    "category": "противоречие",
+    "title": "После перезагрузки ищутся только активные команды",
+    "evidence": {
+      "path": "output/credit-workspace-frontend-architecture/docs/05-interfaces.md",
+      "originalLine": 98,
+      "fragment": "active=true"
+    },
+    "failureScenario": "Команда завершилась до потери ответа и исчезла из active=true; пользователь не находит результат и создаёт новое намерение.",
+    "correction": "Пагинированный список по умолчанию включает активные и завершённые за срок dedup; active=true только для наблюдения.",
+    "verification": "operation-recovery; backend V35; frontend V32",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-14",
+    "severity": "P2",
+    "category": "пробел",
+    "title": "Внутренний банковский ключ раскрывается в клиентском DTO",
+    "evidence": {
+      "path": "output/credit-workspace-backend-architecture/api/openapi.json",
+      "originalLine": 7266,
+      "fragment": "externalRequestId"
+    },
+    "failureScenario": "Идентификатор внутренней интеграции становится частью browser API без необходимости для UI и смешивается с operationId.",
+    "correction": "Ключ остаётся integration; клиент получает operationId, resourceId, companyId, operationType и timestamps.",
+    "verification": "fixture-operation; internal-only-external-id",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-15",
+    "severity": "P1",
+    "category": "пробел",
+    "title": "Гонка отмены upload и финализации не специфицирована целиком",
+    "evidence": {
+      "path": "output/credit-workspace-frontend-architecture/docs/05-interfaces.md",
+      "originalLine": 56,
+      "fragment": "UPLOAD_ALREADY_COMPLETED"
+    },
+    "failureScenario": "Шлюз успел записать объект после отмены grant: без общей атомарной проверки завершение может оживить отменённый документ.",
+    "correction": "CAS одного upload-state, повторная проверка grant/context/срока и точного размера, изоляция и очистка проигравшего объекта.",
+    "verification": "backend V33; internal-upload-finalization",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-16",
+    "severity": "P1",
+    "category": "пробел",
+    "title": "Результат задания не привязан к владельцу аренды",
+    "evidence": {
+      "path": "output/credit-workspace-backend-architecture/api/internal-openapi.json",
+      "originalLine": 709,
+      "fragment": "ScanResult"
+    },
+    "failureScenario": "Другой worker той же роли может представить generation; CLEAN допускается без ссылки на чистый объект.",
+    "correction": "leaseToken+workerId+generation+identity+тип/срок/objectVersion; CLEAN требует cleanObjectRef и сверку объекта.",
+    "verification": "fixture-scan-lease; backend V34",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-17",
+    "severity": "P1",
+    "category": "противоречие",
+    "title": "Подписки на часть событий несовместимы с глобальной caseVersion",
+    "evidence": {
+      "path": "output/credit-workspace-backend-architecture/docs/09-reference.md",
+      "originalLine": 47,
+      "fragment": "DecisionRecorded"
+    },
+    "failureScenario": "Offers видит DecisionRecorded v7 и OfferAccepted v9, пропустив штатное CaseStateChanged v8, и ошибочно запускает gap reconcile.",
+    "correction": "Все проекции читают полный нормализованный bank-results-поток и продвигают курсор для неиспользуемых типов.",
+    "verification": "bank-topic-consumers; backend V36",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-18",
+    "severity": "P1",
+    "category": "пробел",
+    "title": "Нет нормализованного снимка для ссылочных событий и сверки",
+    "evidence": {
+      "path": "output/credit-workspace-backend-architecture/api/internal-openapi.json",
+      "originalLine": 104,
+      "fragment": "CommandResult"
+    },
+    "failureScenario": "Событие содержит request/decision/offer refs; внутренний контракт позволяет искать лишь результат команды, но не полные разрешённые данные дела.",
+    "correction": "GET /internal/v1/cases/{caseId}/snapshot, CaseSnapshot с банковской версией, RFI, решением и условиями; реальный upstream — внешний gate.",
+    "verification": "internal-case-snapshot; backend V13/V36",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-19",
+    "severity": "P2",
+    "category": "противоречие",
+    "title": "Строгая схема события конфликтует с обещанием добавочных полей",
+    "evidence": {
+      "path": "output/credit-workspace-backend-architecture/sources/workplan.py",
+      "originalLine": 95,
+      "fragment": "старый потребитель с новым необязательным полем"
+    },
+    "failureScenario": "additionalProperties=false отвергает новое поле schemaVersion=1; V29 обещает успешное чтение старым потребителем.",
+    "correction": "Новая wire-версия и тема для строгих событий; отдельно допускать добавочные HTTP-поля при проверке используемой части.",
+    "verification": "event-unknown-field; backend V29",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-20",
+    "severity": "P2",
+    "category": "пробел",
+    "title": "Версии допускают ноль и небезопасные целые JSON",
+    "evidence": {
+      "path": "output/credit-workspace-frontend-architecture/api/proposed-additions.openapi.json",
+      "originalLine": 9039,
+      "fragment": "expectedDocumentVersion"
+    },
+    "failureScenario": "Создание версии 0 противоречит event/version правилам; значение за пределами JS safe integer может терять точность во frontend.",
+    "correction": "Версии от 1 и не более 9007199254740991; денежные и прочие целые ограничены.",
+    "verification": "fixture-version-zero; fixture-unsafe-integer",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-21",
+    "severity": "P1",
+    "category": "противоречие",
+    "title": "Имитатор может одобрить без полного предложения",
+    "evidence": {
+      "path": "output/credit-workspace-frontend-architecture/sources/contracts.py",
+      "originalLine": 30,
+      "fragment": "'offerTerms':ref('DraftPatch')"
+    },
+    "failureScenario": "APPROVE не требует offerTerms, ALTERNATIVE принимает DraftPatch без disclosure/validUntil; из такого запроса нельзя однозначно получить обязательный Offer.",
+    "correction": "DemoOfferTerms с amount/termMonths/termsDisclosure/validUntil для APPROVE и ALTERNATIVE; отдельная DemoOperatorSession.",
+    "verification": "fixture-demo-offer; backend V40; frontend V38",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-22",
+    "severity": "P1",
+    "category": "пробел",
+    "title": "Нормализованный пакет MVP задан произвольным JSON",
+    "evidence": {
+      "path": "output/credit-workspace-backend-architecture/sources/contracts.py",
+      "originalLine": 163,
+      "fragment": "'data':{'type':'object'"
+    },
+    "failureScenario": "Разработчики адаптера и ядра самостоятельно выбирают разные поля Submission/Amendment/Acceptance/Withdrawal.",
+    "correction": "Четыре явные схемы синтетического продукта с дискриминатором packageType/data.kind; промышленный продукт версионируется отдельно.",
+    "verification": "fixture-credit-package",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-23",
+    "severity": "P2",
+    "category": "противоречие",
+    "title": "Идемпотентность 201 ошибочно обещает operationId",
+    "evidence": {
+      "path": "output/credit-workspace-backend-architecture/docs/04-interfaces.md",
+      "originalLine": 21,
+      "fragment": "Идентичный повтор получает ту же operationId"
+    },
+    "failureScenario": "Создание черновика/согласия возвращает ресурс 201, а общее правило требует операции; типы восстановления не включают такие команды.",
+    "correction": "Разделить повтор синхронного ресурса 201 и долговечной команды 202, сохранять исходный ресурс/receipt.",
+    "verification": "receipt-semantics; backend V07",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-24",
+    "severity": "P2",
+    "category": "неподтверждённое допущение",
+    "title": "Ссылка не подтверждает пару Modulith/Boot",
+    "evidence": {
+      "path": "output/credit-workspace-backend-architecture/docs/03-technology.md",
+      "originalLine": 13,
+      "fragment": "поколение 2.1 соответствует Boot 4.1"
+    },
+    "failureScenario": "Заголовок официальной страницы показывает 2.1.1, но таблица S03 не содержит 2.1/4.1; утверждение о документально проверенной паре не обосновано.",
+    "correction": "Оставить кандидатные версии и обязательный smoke-test/effective-pom T01.3; Java 21 для Boot подтверждена официальными требованиями.",
+    "verification": "technical-evidence.json; deployment gate EXT05",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-25",
+    "severity": "P2",
+    "category": "дефект артефакта",
+    "title": "Часть стрелок draw.io не связана с фигурами",
+    "evidence": {
+      "path": "output/credit-workspace-architecture-v2/architecture-v2/credit-workspace.drawio",
+      "originalLine": 19,
+      "fragment": "sourcePoint"
+    },
+    "failureScenario": "При перемещении блоков общие и backend-схемы оставляют 9 и 14 связей без одного или обоих якорей; некоторые — ветви от свободного сегмента.",
+    "correction": "Уточнены начала ветвей; lane/panel получили стабильные якоря, связи прикреплены к своим участникам.",
+    "verification": "drawio-bindings",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-26",
+    "severity": "P2",
+    "category": "дефект поставки",
+    "title": "Генератор зависит от приватной временной среды",
+    "evidence": {
+      "path": "output/credit-workspace-backend-architecture/sources/build.py",
+      "originalLine": 4,
+      "fragment": "/private/tmp/credit-architecture-validation"
+    },
+    "failureScenario": "README предлагает воспроизводимую сборку, но backend импортирует пакеты из абсолютного временного пути; обновление входов также требует явной пересборки манифеста frontend.",
+    "correction": "CREDIT_RENDER_DEPS, упакованные входы, последовательная корневая сборка с явной фиксацией входов и защитой от дрейфа.",
+    "verification": "generator-portability; ordered-rebuild",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-27",
+    "severity": "P1",
+    "category": "пробел",
+    "title": "Общая DR-инструкция не восстанавливает потерянные ключи",
+    "evidence": {
+      "path": "output/credit-workspace-architecture-v2/architecture-v2/docs/security-operations.md",
+      "originalLine": 101,
+      "fragment": "pending commands"
+    },
+    "failureScenario": "После RPO-отката локальный externalRequestId исчез, а поиск только по сохранившимся ключам не обнаруживает принятую банком команду. Backend описывает более сильное требование, общее руководство его не наследует.",
+    "correction": "Обязателен полный внешний журнал окна потери или отдельный надёжный журнал приёма; financial commands закрыты до сверки.",
+    "verification": "backend V41; production gate EXT03",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-28",
+    "severity": "P2",
+    "category": "противоречие",
+    "title": "Общие экраны обещают неподдержанные действия",
+    "evidence": {
+      "path": "output/credit-workspace-architecture-v2/architecture-v2/docs/screens.md",
+      "originalLine": 153,
+      "fragment": "Смоделировать подписание"
+    },
+    "failureScenario": "Клиенту обещана отдельная кнопка подписи и пагинация ленты, но контракт определяет только принятие условий и ограниченный Feed.",
+    "correction": "Моделируемое завершение запускает demo-оператор; feed ограничен набором, пагинация относится к заявкам и inbox.",
+    "verification": "screen-operation-coverage",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-29",
+    "severity": "P2",
+    "category": "пробел",
+    "title": "Ошибки файлов не имеют общей схемы",
+    "evidence": {
+      "path": "output/credit-workspace-frontend-architecture/docs/05-interfaces.md",
+      "originalLine": 24,
+      "fragment": "только описания некоторых ошибок"
+    },
+    "failureScenario": "Клиент генерации типов не знает форму ошибок шлюза и вынужден предполагать JSON, в то время как общий гайд обещает Error.",
+    "correction": "Единый Error/no-store на бинарных маршрутах; сохранить безопасную обработку не-JSON/оборванного тела на границе сети.",
+    "verification": "binary-errors",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  },
+  {
+    "id": "AR-30",
+    "severity": "P2",
+    "category": "дефект проверки",
+    "title": "Зелёные отчёты не проверяют межпакетные инварианты",
+    "evidence": {
+      "path": "output/credit-workspace-frontend-architecture/validation-report.json",
+      "originalLine": null,
+      "fragment": "Структурная проверка исходного файла; подробности в сценарии"
+    },
+    "failureScenario": "Проверки количества листов, геометрии и существования метода в proposal пропускают отсутствие этого метода в согласованном backend и ослабление SLO.",
+    "correction": "Повторяемый общий валидатор: совпадение контрактов, негативные примеры, графы задач, покрытие, правила источников, схемы событий и привязки диаграмм.",
+    "verification": "cross-package-validation",
+    "status": "corrected-in-design",
+    "runtimeVerification": "Не выполнялась: приложения нет"
+  }
+]

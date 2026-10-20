@@ -1,0 +1,58 @@
+{
+  "profile": "local-mvp",
+  "cpu": {
+    "hostSuggested": {
+      "logicalCpu": 8,
+      "ramGiB": 16,
+      "freeDiskGiB": 20
+    },
+    "minimumStatus": "measurement gate, not guaranteed minimum",
+    "llm": {
+      "repository": "Qwen/Qwen2.5-0.5B-Instruct-GGUF",
+      "quantization": "Q4_K_M",
+      "contextTokens": 2048,
+      "maxOutputTokens": 192,
+      "parallelRequests": 1
+    },
+    "embedding": "intfloat/multilingual-e5-small",
+    "ocr": "Tesseract5.x tessdata_fast rus+eng, DemoFinancial v1"
+  },
+  "deadlinesSeconds": {
+    "business": 2,
+    "risk": 3,
+    "ranking": 2,
+    "ragTotal": 60,
+    "ragGeneration": 45,
+    "ragClient": 65,
+    "ocrJob": 120
+  },
+  "limits": {
+    "maxUploadMiB": 10,
+    "maxPages": 5,
+    "maxUploadsPerCompany": 2,
+    "ragConcurrentPerSession": 1,
+    "globalRagQueue": 4,
+    "ragRatePerMinute": 5
+  },
+  "dedupRetentionDays": 7,
+  "release": {
+    "approval": "one peer reviewer separate from author, exact bundle/evaluation digest",
+    "rollout": "stop/restart local inference with prior bundle retained; no canary statistics claimed"
+  },
+  "gpu": {
+    "mandatory": false,
+    "model": "NVIDIA exact device/VRAM unknown",
+    "changeModelAutomatically": false
+  },
+  "trainingAtRuntime": false,
+  "downloadAtRuntime": false,
+  "allowedScoreKinds": [
+    "BANKRUPTCY_PROXY"
+  ],
+  "allowedRiskPurposes": [
+    "DEMO_RESEARCH"
+  ],
+  "maxRenderedPixelsPerPage": 40000000,
+  "technologyBindings": "contracts/examples/profiles/local-mvp.json",
+  "vllmOptional": "VllmGenerationAdapter requires separate approved artifact format/revision/precision manifest and measured GPU capability; CPU GGUF remains mandatory baseline."
+}

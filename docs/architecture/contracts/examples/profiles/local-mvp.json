@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "profile": "local-mvp",
+  "status": "SPECIFICATION_ONLY",
+  "automaticProviderFallback": false,
+  "bindings": {
+    "sessions": "JdbcSessionAdapter",
+    "cache": "BoundedLocalCacheAdapter",
+    "vectors": "NumpyVectorIndexAdapter",
+    "features": "SnapshotFeatureRepositoryAdapter",
+    "registry": "ManifestModelRegistryAdapter",
+    "jobs": "LocalBatchJobRunnerAdapter",
+    "quality": "LocalQualityReportAdapter",
+    "generation": "LlamaCppGenerationAdapter",
+    "events": "PostgresOutboxTransportAdapter",
+    "objects": "VersionedFilesystemObjectAdapter",
+    "metrics": "OpenMetricsExporter",
+    "dashboards": "LocalEvidenceReport",
+    "orchestration": "DockerComposeDeployment"
+  }
+}

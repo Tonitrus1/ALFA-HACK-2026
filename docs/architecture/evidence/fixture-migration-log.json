@@ -1,0 +1,14 @@
+[
+  {
+    "fixture": "upload-request-version-required",
+    "reason": "Original persisted object was mutated after earlier validation; H20; exact original remains in archive."
+  },
+  {
+    "fixture": "stream-snapshot-barrier",
+    "reason": "Original persisted object was mutated after earlier validation; H20; exact original remains in archive."
+  },
+  {
+    "fixture": "credit-package-typed",
+    "reason": "Original persisted object was mutated after earlier validation; H20; exact original remains in archive."
+  }
+]

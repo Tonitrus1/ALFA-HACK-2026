@@ -1,0 +1,7 @@
+# Replace ROLE placeholders with real handles before use. This is not an active CODEOWNERS file.
+/contracts/ @INTEGRATION @BACKEND
+/backend/ @BACKEND
+/frontend/ @FRONTEND
+/ml/ @ML
+/deploy/ @INTEGRATION
+/docs/ @QA_DEMO

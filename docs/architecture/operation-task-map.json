@@ -1,0 +1,740 @@
+[
+  {
+    "operationId": "get_api_v1_session",
+    "method": "GET",
+    "path": "/api/v1/session",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P03",
+      "P04"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "post_api_v1_session_company",
+    "method": "POST",
+    "path": "/api/v1/session/company",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P03",
+      "P04"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "post_api_v1_logout",
+    "method": "POST",
+    "path": "/api/v1/logout",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P03",
+      "P04"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_companies",
+    "method": "GET",
+    "path": "/api/v1/companies",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P03",
+      "P04"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_companies_companyId",
+    "method": "GET",
+    "path": "/api/v1/companies/{companyId}",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P03",
+      "P04"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_products",
+    "method": "GET",
+    "path": "/api/v1/products",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "post_api_v1_recommendations",
+    "method": "POST",
+    "path": "/api/v1/recommendations",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P12",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_applications",
+    "method": "GET",
+    "path": "/api/v1/applications",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "post_api_v1_applications",
+    "method": "POST",
+    "path": "/api/v1/applications",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_applications_applicationId",
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "patch_api_v1_applications_applicationId",
+    "method": "PATCH",
+    "path": "/api/v1/applications/{applicationId}",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "post_api_v1_applications_applicationId_submit",
+    "method": "POST",
+    "path": "/api/v1/applications/{applicationId}/submit",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_applications_applicationId_status",
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/status",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_applications_applicationId_consents",
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/consents",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "post_api_v1_applications_applicationId_consents",
+    "method": "POST",
+    "path": "/api/v1/applications/{applicationId}/consents",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_applications_applicationId_consent_requirements",
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/consent-requirements",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "post_api_v1_consents_consentId_revocation",
+    "method": "POST",
+    "path": "/api/v1/consents/{consentId}/revocation",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "post_api_v1_applications_applicationId_documents_upload_intents",
+    "method": "POST",
+    "path": "/api/v1/applications/{applicationId}/documents/upload-intents",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P10",
+      "P13",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_applications_applicationId_documents",
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/documents",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P10",
+      "P13",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_documents_documentId",
+    "method": "GET",
+    "path": "/api/v1/documents/{documentId}",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P10",
+      "P13",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_documents_documentId_extraction",
+    "method": "GET",
+    "path": "/api/v1/documents/{documentId}/extraction",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P10",
+      "P13",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "post_api_v1_applications_applicationId_confirm_extraction",
+    "method": "POST",
+    "path": "/api/v1/applications/{applicationId}/confirm-extraction",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P10",
+      "P13",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "post_api_v1_documents_documentId_download_intents",
+    "method": "POST",
+    "path": "/api/v1/documents/{documentId}/download-intents",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P10",
+      "P13",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_applications_applicationId_information_requests",
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/information-requests",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P08",
+      "P09",
+      "P15"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "post_api_v1_applications_applicationId_information_requests_requestId_responses",
+    "method": "POST",
+    "path": "/api/v1/applications/{applicationId}/information-requests/{requestId}/responses",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P08",
+      "P09",
+      "P15"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "post_api_v1_applications_applicationId_withdrawal",
+    "method": "POST",
+    "path": "/api/v1/applications/{applicationId}/withdrawal",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_applications_applicationId_decision",
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/decision",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_offers_offerId",
+    "method": "GET",
+    "path": "/api/v1/offers/{offerId}",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "post_api_v1_offers_offerId_acceptance",
+    "method": "POST",
+    "path": "/api/v1/offers/{offerId}/acceptance",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_operations_operationId",
+    "method": "GET",
+    "path": "/api/v1/operations/{operationId}",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_feed",
+    "method": "GET",
+    "path": "/api/v1/feed",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P12",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_content_contentId",
+    "method": "GET",
+    "path": "/api/v1/content/{contentId}",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P12",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "post_api_v1_feedback",
+    "method": "POST",
+    "path": "/api/v1/feedback",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P12",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_inbox",
+    "method": "GET",
+    "path": "/api/v1/inbox",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "post_api_v1_inbox_notificationId_read",
+    "method": "POST",
+    "path": "/api/v1/inbox/{notificationId}/read",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_api_v1_events",
+    "method": "GET",
+    "path": "/api/v1/events",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_stream_snapshot",
+    "method": "GET",
+    "path": "/api/v1/events/snapshot",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "put_file_uploads",
+    "method": "PUT",
+    "path": "/api/v1/files/uploads/{transferId}",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P10",
+      "P13",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "get_file_downloads",
+    "method": "GET",
+    "path": "/api/v1/files/downloads/{transferId}",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P10",
+      "P13",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "proposed_get_api_v1_applications_applicationId_information_requests_requestId_draft",
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/information-requests/{requestId}/draft",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P08",
+      "P09",
+      "P15"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "proposed_patch_api_v1_applications_applicationId_information_requests_requestId_draft",
+    "method": "PATCH",
+    "path": "/api/v1/applications/{applicationId}/information-requests/{requestId}/draft",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P08",
+      "P09",
+      "P15"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "proposed_get_api_v1_applications_applicationId_document_requirements",
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/document-requirements",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P10",
+      "P13",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "proposed_delete_api_v1_uploads_uploadId",
+    "method": "DELETE",
+    "path": "/api/v1/uploads/{uploadId}",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P10",
+      "P13",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "proposed_get_api_v1_companies_companyId_capabilities",
+    "method": "GET",
+    "path": "/api/v1/companies/{companyId}/capabilities",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P03",
+      "P04"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "proposed_get_api_v1_applications_applicationId_capabilities",
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/capabilities",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "proposed_get_api_v1_applications_applicationId_history",
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/history",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "proposed_get_api_v1_operations_lookup",
+    "method": "GET",
+    "path": "/api/v1/operations/lookup",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "proposed_get_api_v1_operations",
+    "method": "GET",
+    "path": "/api/v1/operations",
+    "owner": "BACKEND+FRONTEND",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "confirm_information_draft_extraction",
+    "method": "POST",
+    "path": "/api/v1/applications/{applicationId}/information-requests/{requestId}/draft/confirm-extraction",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P10",
+      "P13",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "getFinancial",
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/financial-statement",
+    "owner": "BACKEND+FRONTEND+ML",
+    "taskIds": [
+      "P08",
+      "P09",
+      "P11"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "saveFinancial",
+    "method": "PUT",
+    "path": "/api/v1/applications/{applicationId}/financial-statement",
+    "owner": "BACKEND+FRONTEND+ML",
+    "taskIds": [
+      "P08",
+      "P09",
+      "P11"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "confirmFinancial",
+    "method": "POST",
+    "path": "/api/v1/applications/{applicationId}/financial-statement/confirm",
+    "owner": "BACKEND+FRONTEND+ML",
+    "taskIds": [
+      "P08",
+      "P09",
+      "P11"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "getFinancialRfi",
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/information-requests/{requestId}/draft/financial-statement",
+    "owner": "BACKEND+FRONTEND+ML",
+    "taskIds": [
+      "P08",
+      "P09",
+      "P11"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "saveFinancialRfi",
+    "method": "PUT",
+    "path": "/api/v1/applications/{applicationId}/information-requests/{requestId}/draft/financial-statement",
+    "owner": "BACKEND+FRONTEND+ML",
+    "taskIds": [
+      "P08",
+      "P09",
+      "P11"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "confirmFinancialRfi",
+    "method": "POST",
+    "path": "/api/v1/applications/{applicationId}/information-requests/{requestId}/draft/financial-statement/confirm",
+    "owner": "BACKEND+FRONTEND+ML",
+    "taskIds": [
+      "P08",
+      "P09",
+      "P11"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "sendAssistantMessage",
+    "method": "POST",
+    "path": "/api/v1/assistant/messages",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P14",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "getAssistantConversation",
+    "method": "GET",
+    "path": "/api/v1/assistant/conversations/{conversationId}",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P14",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "recordAssistantFeedback",
+    "method": "POST",
+    "path": "/api/v1/assistant/feedback",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P14",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "recordRecommendationFeedback",
+    "method": "POST",
+    "path": "/api/v1/recommendation-feedback",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P12",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "getPublishedKnowledge",
+    "method": "GET",
+    "path": "/api/v1/knowledge/{documentId}/versions/{documentVersion}",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P14",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  }
+]

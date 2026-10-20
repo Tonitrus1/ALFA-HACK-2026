@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-20",
+  "method": "Official documentation reviewed via browser; no runtime tests",
+  "sources": [
+    {
+      "technology": "Qdrant",
+      "url": "https://qdrant.tech/documentation/search/filtering/",
+      "supports": "Payload/ID filtering"
+    },
+    {
+      "technology": "Feast",
+      "url": "https://docs.feast.dev/getting-started/concepts/feature-retrieval",
+      "supports": "Separate historical and online retrieval"
+    },
+    {
+      "technology": "Redis",
+      "url": "https://redis.io/docs/latest/develop/clients/lettuce/",
+      "supports": "Official Java client; exact version pairing remains a gate"
+    },
+    {
+      "technology": "MLflow",
+      "url": "https://mlflow.org/docs/latest/ml/model-registry/workflow/",
+      "supports": "Model version/alias workflow; application activation remains separate"
+    }
+  ]
+}

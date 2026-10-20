@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "profile": "local-integrations",
+  "status": "SPECIFICATION_ONLY",
+  "automaticProviderFallback": false,
+  "bindings": {
+    "sessions": "JdbcSessionAdapter",
+    "cache": "RedisCacheAdapter",
+    "vectors": "QdrantVectorIndexAdapter",
+    "features": "SnapshotFeatureRepositoryAdapter",
+    "registry": "MlflowModelRegistryAdapter",
+    "jobs": "LocalBatchJobRunnerAdapter",
+    "quality": "LocalQualityReportAdapter",
+    "generation": "LlamaCppGenerationAdapter",
+    "events": "PostgresOutboxTransportAdapter",
+    "objects": "VersionedFilesystemObjectAdapter",
+    "metrics": "OpenMetricsExporter",
+    "dashboards": "LocalEvidenceReport",
+    "orchestration": "DockerComposeDeployment"
+  }
+}

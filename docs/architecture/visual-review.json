@@ -1,0 +1,67 @@
+{
+  "status": "PASS",
+  "date": "2026-10-20",
+  "method": "All 53 current pages rendered with PDFium and visually inspected in contact sheets; latest general guide rechecked after removing an orphan reference page. Atlas unchanged from inspected revision. Character bounds checked in every PDF. This is document QA, not an application test.",
+  "pagesReviewed": 53,
+  "pdfs": [
+    {
+      "path": "architecture-atlas.pdf",
+      "sha256": "4f3c29a365eed6ea03c6bd1fb7772b3730ef88b7f818c41609815d5b518ac06b",
+      "pages": 7,
+      "visualStatus": "PASS"
+    },
+    {
+      "path": "architecture-audit.pdf",
+      "sha256": "8a582471240ac467cc03732bcaad0a60dc950e58880169a87e5e2747c8af0247",
+      "pages": 9,
+      "visualStatus": "PASS"
+    },
+    {
+      "path": "development-plan.pdf",
+      "sha256": "d3b7ebe76ffa0eb08c597269a11dd556bd8f963753528a56fa2c83122855b07e",
+      "pages": 7,
+      "visualStatus": "PASS"
+    },
+    {
+      "path": "git-and-jury-guide.pdf",
+      "sha256": "bd3a72bcd30a40c69b204134620f78dd8edaede368fe203b6ffc47a0cc81b38f",
+      "pages": 7,
+      "visualStatus": "PASS"
+    },
+    {
+      "path": "packages/backend/backend-guide.pdf",
+      "sha256": "3cc49a8572f057499698d8902712b02ad19c06e20a55316769d82a0c8c85f51d",
+      "pages": 4,
+      "visualStatus": "PASS"
+    },
+    {
+      "path": "packages/frontend/frontend-guide.pdf",
+      "sha256": "98c503ff31d24752f4e8cc43e8ff96217f7f439c7112014932bbd0cf3e90f32d",
+      "pages": 4,
+      "visualStatus": "PASS"
+    },
+    {
+      "path": "packages/general/general-guide.pdf",
+      "sha256": "7c11b20094e5fec1b05059e66ad7a1e6e68a4cd9ad49d965ea1944a0577c3e6c",
+      "pages": 4,
+      "visualStatus": "PASS"
+    },
+    {
+      "path": "packages/ml/ml-guide.pdf",
+      "sha256": "7ca7fe13c232c070ae5bbed3101e28043e5fa754589583d378d626a9d80ac0c9",
+      "pages": 5,
+      "visualStatus": "PASS"
+    },
+    {
+      "path": "technology-adapters.pdf",
+      "sha256": "c22b0bb93362d1ca210507a34d71ddfdaf4e8e4739c449bc837b3bf0fb546eb8",
+      "pages": 6,
+      "visualStatus": "PASS"
+    }
+  ],
+  "findings": [],
+  "layoutChecks": {
+    "charactersOutsidePage": 0
+  },
+  "runtimeVerified": false
+}

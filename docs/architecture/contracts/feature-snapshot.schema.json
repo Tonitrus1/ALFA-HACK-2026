@@ -1,0 +1,146 @@
+{
+  "type": "object",
+  "properties": {
+    "featureSnapshotId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "submissionSnapshotId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "financialStatementVersion": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "featureSchemaVersion": {
+      "const": 2
+    },
+    "featureCodeDigest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "featureAsOf": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "latestSourceAvailableAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "features": {
+      "type": "object",
+      "properties": {
+        "X1": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "X2": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "X3": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "X4": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "X7": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "X8": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "X9": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "X10": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "X1",
+        "X2",
+        "X3",
+        "X4",
+        "X7",
+        "X8",
+        "X9",
+        "X10"
+      ],
+      "additionalProperties": false
+    },
+    "missingFeatures": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "X1",
+          "X2",
+          "X3",
+          "X4",
+          "X7",
+          "X8",
+          "X9",
+          "X10"
+        ]
+      },
+      "minItems": 0,
+      "maxItems": 8,
+      "uniqueItems": true
+    },
+    "snapshotDigest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "financialSnapshotId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "financialSnapshotDigest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "featureSnapshotId",
+    "submissionSnapshotId",
+    "financialStatementVersion",
+    "featureSchemaVersion",
+    "featureCodeDigest",
+    "featureAsOf",
+    "latestSourceAvailableAt",
+    "features",
+    "missingFeatures",
+    "snapshotDigest",
+    "financialSnapshotId",
+    "financialSnapshotDigest"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

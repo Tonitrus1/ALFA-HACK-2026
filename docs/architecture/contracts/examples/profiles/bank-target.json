@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "profile": "bank-target",
+  "status": "SPECIFICATION_ONLY",
+  "automaticProviderFallback": false,
+  "bindings": {
+    "sessions": "RedisSessionAdapter",
+    "cache": "RedisCacheAdapter",
+    "vectors": "QdrantVectorIndexAdapter",
+    "features": "FeastFeatureRepositoryAdapter",
+    "registry": "MlflowModelRegistryAdapter",
+    "jobs": "AirflowBatchJobRunnerAdapter",
+    "quality": "EvidentlyQualityReportAdapter",
+    "generation": "VllmGenerationAdapter",
+    "events": "KafkaEventTransportAdapter",
+    "objects": "S3ObjectStoreAdapter",
+    "metrics": "PrometheusScrapeBinding",
+    "dashboards": "GrafanaDashboardBinding",
+    "orchestration": "KubernetesDeployment"
+  }
+}

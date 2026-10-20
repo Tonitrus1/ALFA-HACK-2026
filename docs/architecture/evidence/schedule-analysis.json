@@ -1,0 +1,26 @@
+{
+  "optionalIntegrationPersonHours": 8,
+  "personHours": 112,
+  "with25PercentReserve": 140.0,
+  "byRole": {
+    "BACKEND": 27,
+    "FRONTEND": 17,
+    "INTEGRATION": 23,
+    "ML": 30,
+    "QA_DEMO": 15
+  },
+  "dependencyCriticalPath": [
+    "P01",
+    "P03",
+    "P05",
+    "P08",
+    "P15",
+    "P17",
+    "P18",
+    "P20",
+    "P23"
+  ],
+  "dependencyLowerBoundHours": 35,
+  "note": "Unlimited-role DAG lower bound; does not account for serial tasks by one ML specialist, sleeping or shared role contention.",
+  "singleMlSpecialistModelWorkHours": 30
+}

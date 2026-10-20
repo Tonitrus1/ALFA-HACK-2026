@@ -1,0 +1,12 @@
+[
+  {
+    "path": "/internal/v1/risk/evaluations",
+    "replacement": "/internal/v2/risk/evaluations",
+    "reason": "Нет реализованных потребителей; одна активная версия в новом профиле."
+  },
+  {
+    "path": "/internal/v1/feed/ranking",
+    "replacement": "/internal/v2/rankings",
+    "reason": "Нет реализованных потребителей; одна активная версия в новом профиле."
+  }
+]

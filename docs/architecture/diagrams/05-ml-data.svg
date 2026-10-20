@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1380" height="900" viewBox="0 0 1380 900"><rect width="1380" height="900" fill="#ffffff"/><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 Z" fill="#6d8291"/></marker></defs>
+<text x="40" y="55" font-family="DejaVu Sans,sans-serif" font-size="31" font-weight="bold" fill="#182b3b">ML: данные, оценка и разрешённый ответ</text>
+<text x="40" y="92" font-family="DejaVu Sans,sans-serif" font-size="17" fill="#5a6b7b">Общий bundle связывает модель, preprocessing, схему признаков и исходные версии.</text>
+<polyline points="315,210.0 385,210.0" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="655,210.0 725,210.0" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="690.0" y="202.0" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">proxy</text>
+<polyline points="315,515.0 385,515.0" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="655,515.0 725,515.0" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="995,515.0 1060,515.0" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="995,210.0 1060,210.0" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="8 6"/>
+<text x="1027.5" y="202.0" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">контекст</text>
+<rect x="45" y="145" width="270" height="130" rx="12" fill="#eaf5ef" stroke="#6e9e86" stroke-width="1.8"/>
+<text x="59" y="174" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Финансовый снимок</text>
+<text x="59" y="205" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">8 значений DEMO v1</text>
+<text x="59" y="227" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Подтверждения и file refs</text>
+<rect x="385" y="145" width="270" height="130" rx="12" fill="#f0edfb" stroke="#8d79b1" stroke-width="1.8"/>
+<text x="399" y="174" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Признаки / risk</text>
+<text x="399" y="205" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">FeatureRepositoryPort</text>
+<text x="399" y="227" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Feast / local snapshots</text>
+<rect x="725" y="145" width="270" height="130" rx="12" fill="#eef1f3" stroke="#738898" stroke-width="1.8"/>
+<text x="739" y="174" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Банковская policy</text>
+<text x="739" y="205" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Скоринг как один фактор</text>
+<text x="739" y="227" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">RFI / manual / offer / отказ</text>
+<rect x="1060" y="145" width="260" height="130" rx="12" fill="#f0edfb" stroke="#8d79b1" stroke-width="1.8"/>
+<text x="1074" y="174" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">E5 ranking</text>
+<text x="1074" y="205" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Только пригодные IDs</text>
+<text x="1074" y="227" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">MODEL или RULES</text>
+<rect x="45" y="450" width="270" height="130" rx="12" fill="#fff4df" stroke="#b99b5d" stroke-width="1.8"/>
+<text x="59" y="479" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">KB authority</text>
+<text x="59" y="510" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">PUBLISHED / audience</text>
+<text x="59" y="532" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Version / revoke epoch</text>
+<rect x="385" y="450" width="270" height="130" rx="12" fill="#f0edfb" stroke="#8d79b1" stroke-width="1.8"/>
+<text x="399" y="479" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">E5 retrieval</text>
+<text x="399" y="510" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">VectorIndexPort</text>
+<text x="399" y="532" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Qdrant / NumPy allowlist</text>
+<rect x="725" y="450" width="270" height="130" rx="12" fill="#f0edfb" stroke="#8d79b1" stroke-width="1.8"/>
+<text x="739" y="479" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Qwen generation</text>
+<text x="739" y="510" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">TextGenerationPort</text>
+<text x="739" y="532" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">vLLM / llama.cpp + Qwen</text>
+<rect x="1060" y="450" width="260" height="130" rx="12" fill="#edf3fb" stroke="#527ba5" stroke-width="1.8"/>
+<text x="1074" y="479" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Backend publication</text>
+<text x="1074" y="510" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Проверка epoch/citations</text>
+<text x="1074" y="532" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">ANSWER / refusal / search</text>
+<text x="40" y="820" font-family="DejaVu Sans,sans-serif" font-size="15" fill="#5a6b7b">Scoring ≠ decision; eligibility ≠ ranking; retrieval ≠ право доступа; OCR ≠ подтверждение.</text>
+<text x="40" y="848" font-family="DejaVu Sans,sans-serif" font-size="15" fill="#5a6b7b">RAG: PUBLISHED до prompt и повторная проверка epoch перед выдачей. Rollback не возвращает отозванные знания.</text>
+<text x="40" y="887" font-family="DejaVu Sans,sans-serif" font-size="12" fill="#5a6b7b">HACKATHON-1.5 · 20.10.2026 · 05/07 · проектная схема, runtime не проверен</text></svg>

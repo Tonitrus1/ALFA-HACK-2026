@@ -1,0 +1,9 @@
+{
+  "current": "HACKATHON-1.5",
+  "previous": "HACKATHON-1.4",
+  "previousArchive": "../architecture-revisions/credit-workspace-HACKATHON-1.4.zip",
+  "previousArchiveSha256": "aa1b8931c9a521fb643c248b2fc68f497b707cb0db7966ab888db149a745fe17",
+  "wireApiUnchanged": "1.4.0-design",
+  "reason": "User requests preserving technology stack through explicit ports and selectable adapters; prior target-only wording superseded.",
+  "applicationImplemented": false
+}

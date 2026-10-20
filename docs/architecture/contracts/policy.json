@@ -1,0 +1,50 @@
+{
+  "version": "HACKATHON-1.5",
+  "runtimeImplemented": false,
+  "publicOperations": 60,
+  "sourceOfTruth": "contracts/public.openapi.json",
+  "copyPolicy": "Generated exact copies in packages/*/api; edits only to contracts/",
+  "financialRequiredProducts": [
+    "working-capital",
+    "credit-line",
+    "overdraft"
+  ],
+  "reportingStandard": "DEMO",
+  "statementMonths": 12,
+  "money": "RUB minor units, safe JSON integer",
+  "strictEvents": [
+    "credit-events-v1.schema.json",
+    "ml-events-v1.schema.json"
+  ],
+  "eventMigration": "No payload fields changed; financial references added to server-owned immutable CreditPackage, not events. New event shape requires new schema/topic version.",
+  "oldRiskEndpoints": [
+    {
+      "path": "/internal/v1/risk/evaluations",
+      "replacement": "/internal/v2/risk/evaluations",
+      "reason": "Нет реализованных потребителей; одна активная версия в новом профиле."
+    },
+    {
+      "path": "/internal/v1/feed/ranking",
+      "replacement": "/internal/v2/rankings",
+      "reason": "Нет реализованных потребителей; одна активная версия в новом профиле."
+    }
+  ],
+  "ragBudgetSeconds": 60,
+  "browserAssistantTimeoutSeconds": 65,
+  "profileRuntime": [
+    "web",
+    "backend",
+    "postgres",
+    "ml",
+    "llm",
+    "scanner"
+  ],
+  "wireApiVersion": "1.4.0-design",
+  "technologyCatalog": "contracts/technology-adapters.json",
+  "technologyPolicy": "All named technologies are architectural capabilities from MVP. Local substitutes are mandatory; real services selected by explicit bindings; no implementation claimed.",
+  "profiles": [
+    "local-mvp",
+    "local-integrations",
+    "bank-target"
+  ]
+}

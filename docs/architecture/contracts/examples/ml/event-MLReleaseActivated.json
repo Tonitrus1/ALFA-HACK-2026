@@ -1,0 +1,15 @@
+{
+  "eventId": "event-MLReleaseActivated",
+  "eventType": "MLReleaseActivated",
+  "schemaVersion": 1,
+  "aggregateId": "releaseId-demo",
+  "aggregateVersion": 1,
+  "occurredAt": "2026-10-20T10:00:00Z",
+  "correlationId": "corr-demo",
+  "payload": {
+    "releaseId": "releaseId-demo",
+    "bundleDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "routingVersion": 1,
+    "stage": "SHADOW"
+  }
+}

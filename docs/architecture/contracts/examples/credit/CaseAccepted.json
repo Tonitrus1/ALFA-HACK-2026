@@ -1,0 +1,17 @@
+{
+  "eventId": "00000000-0000-4000-8000-000000000002",
+  "eventType": "CaseAccepted",
+  "schemaVersion": 1,
+  "aggregateId": "synthetic-aggregateId",
+  "aggregateVersion": 1,
+  "applicationId": "synthetic-applicationId",
+  "occurredAt": "2026-10-20T06:00:00Z",
+  "correlationId": "synthetic-correlationId",
+  "causationId": "synthetic-causationId",
+  "payload": {
+    "caseId": "synthetic-caseId",
+    "caseVersion": 1,
+    "externalRequestId": "synthetic-externalRequestId",
+    "clientStage": "REVIEW"
+  }
+}

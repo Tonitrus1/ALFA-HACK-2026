@@ -1,0 +1,368 @@
+{
+  "version": "HACKATHON-1.5",
+  "schemaVersion": 1,
+  "status": "SPECIFICATION_ONLY",
+  "runtimeImplemented": false,
+  "wireApiVersion": "1.4.0-design",
+  "configSchema": "contracts/adapter-bindings.schema.json",
+  "rules": [
+    "Domain imports ports, not SDKs; Java and Python each have their own composition root.",
+    "Exactly one provider per capability, selected at startup. Unknown/missing binding fails startup.",
+    "No silent switch of sessions, financial authority, event source, KB authority or file safety on outage.",
+    "REAL_SERVICE means intended binding only until runtime evidence is attached; current adapter status is SPECIFIED.",
+    "Test doubles allowed for early independent development, excluded from completed ML acceptance and jury claims."
+  ],
+  "capabilities": [
+    {
+      "id": "sessions",
+      "technology": "Redis",
+      "port": "SessionStorePort",
+      "ownerRole": "BACKEND",
+      "dataOwner": "Access",
+      "localProvider": "JdbcSessionAdapter",
+      "realProvider": "RedisSessionAdapter",
+      "signature": "resolve(sessionHash, now) -> SessionOrMissing; revoke(sessionHash, expectedVersion) -> RevocationReceipt",
+      "dataContract": "Session: actorId, companyMemberships, authEpoch, expiresAt, version. Membership checked against authority, not cached browser role.",
+      "localBehavior": "Durable JDBC sessions with expiry/revocation; same session API.",
+      "invariants": "TTL, revoke and epoch survive restart as required; unknown session denies access. No fail-open on store outage.",
+      "limitations": "Not Redis clustering, key eviction or replication.",
+      "switchGate": "Choose Redis only before issuing sessions; drain/invalidate all old sessions on migration. Store outage blocks authenticated actions, no automatic JDBC fallback.",
+      "contractCases": [
+        "expiry",
+        "revoke",
+        "restart",
+        "stale authEpoch",
+        "wrong company",
+        "outage denies access"
+      ],
+      "implementationStatus": "SPECIFIED_NOT_IMPLEMENTED",
+      "taskIds": [
+        "P25"
+      ]
+    },
+    {
+      "id": "cache",
+      "technology": "Redis",
+      "port": "CachePort",
+      "ownerRole": "BACKEND",
+      "dataOwner": "Catalog/Workspace",
+      "localProvider": "BoundedLocalCacheAdapter",
+      "realProvider": "RedisCacheAdapter",
+      "signature": "get(key, sourceVersion, now) -> HitOrMiss; put(key, version, value, expiresAt) -> void",
+      "dataContract": "Namespaced key includes companyId where applicable, schema, sourceVersion and authEpoch; value has TTL.",
+      "localBehavior": "Bounded in-process TTL cache for non-authoritative derived data.",
+      "invariants": "Cache never owns decisions, sessions, idempotency, permissions or financial snapshots. Miss/failure reads same permitted source snapshot.",
+      "limitations": "Not cross-replica cache; cache hit ratio and eviction differ.",
+      "switchGate": "Flush disposable cache, select provider at startup; no business migration.",
+      "contractCases": [
+        "TTL",
+        "size bound",
+        "tenant keys",
+        "version mismatch miss",
+        "Redis outage uses source"
+      ],
+      "implementationStatus": "SPECIFIED_NOT_IMPLEMENTED",
+      "taskIds": [
+        "P25"
+      ]
+    },
+    {
+      "id": "vectors",
+      "technology": "Qdrant",
+      "port": "VectorIndexPort",
+      "ownerRole": "ML",
+      "dataOwner": "KB retrieval; KB authority stays BACKEND",
+      "localProvider": "NumpyVectorIndexAdapter",
+      "realProvider": "QdrantVectorIndexAdapter",
+      "signature": "search(queryEmbedding, indexDigest, allowedChunkRefs, topK, deadline) -> List[ChunkScore]; rebuild(bundleDigest) -> IndexReceipt",
+      "dataContract": "Normalized finite float32[384], cosine; chunkRef includes documentId/version/chunkId; topK 1..10; bounded allowlist from backend.",
+      "localBehavior": "Real exact cosine search on immutable NumPy index, with metadata filter applied before ranking.",
+      "invariants": "Only exact version refs from allowlist; separate corpus and tenant scopes; live epoch/citation check before publishing. Empty allowlist returns empty without search.",
+      "limitations": "No Qdrant protocol emulator, ANN scaling, distributed index or identical tie ordering.",
+      "switchGate": "Build real collection, index filter fields, verify count/digest/filter behavior and quality on fixed corpus, then bind. Rollback index cannot restore revoked knowledge.",
+      "contractCases": [
+        "wrong dimension",
+        "empty allowlist",
+        "cross-company",
+        "revoked version",
+        "rebuild",
+        "recall tolerance",
+        "deterministic local ties"
+      ],
+      "implementationStatus": "SPECIFIED_NOT_IMPLEMENTED",
+      "taskIds": [
+        "P11",
+        "P14",
+        "P26"
+      ]
+    },
+    {
+      "id": "features",
+      "technology": "Feast",
+      "port": "FeatureRepositoryPort + HistoricalFeatureReader",
+      "ownerRole": "ML",
+      "dataOwner": "ML feature schema; bank owns financial source",
+      "localProvider": "SnapshotFeatureRepositoryAdapter",
+      "realProvider": "FeastFeatureRepositoryAdapter",
+      "signature": "create(financialSnapshot, transformDigest) -> FeatureSnapshot; get(snapshotId, digest) -> FeatureSnapshot; historical(entitiesWithAsOf, schemaVersion) -> DatasetManifest",
+      "dataContract": "Existing feature-snapshot.schema.json and internal v2 feature snapshot API are canonical. Historical lookup also requires source availableAt <= asOf.",
+      "localBehavior": "Shared transforms plus immutable snapshots in ML PostgreSQL schema; historical query uses persisted provenance and asOf.",
+      "invariants": "Snapshot pinned to submission/source/code/schema/digest; historical training excludes future availability. No latest-company lookup for a submitted package.",
+      "limitations": "Does not implement Feast registry/materialization/online serving. UCI lacks real availability times; do not claim temporal validation for it.",
+      "switchGate": "Separate historical and online access. Feast online returns latest materialized data, never substitutes historical join or immutable application snapshot. Materialize and verify parity before selection.",
+      "contractCases": [
+        "batch/online transform parity",
+        "no future leakage",
+        "same submission dedup",
+        "digest mismatch",
+        "old submission never reads latest"
+      ],
+      "implementationStatus": "SPECIFIED_NOT_IMPLEMENTED",
+      "taskIds": [
+        "P11",
+        "P14",
+        "P26"
+      ]
+    },
+    {
+      "id": "registry",
+      "technology": "MLflow",
+      "port": "ModelRegistryPort",
+      "ownerRole": "ML",
+      "dataOwner": "ML release workflow",
+      "localProvider": "ManifestModelRegistryAdapter",
+      "realProvider": "MlflowModelRegistryAdapter",
+      "signature": "resolve(approvedReleaseDigest) -> ImmutableBundleManifest; recordEvaluation(runDigest, reportDigest) -> Receipt",
+      "dataContract": "Existing release/experiment/dataset manifest schemas; approval and bundle SHA-256 required.",
+      "localBehavior": "Content-addressed local manifests, evaluation reports and approvals; actual model bundle loaded read-only.",
+      "invariants": "Alias resolved to immutable model version/digest before release. Deployment controller alone activates release; registry cannot approve its own run.",
+      "limitations": "No tracking UI, concurrent remote experiments, full MLflow lifecycle or canary claim.",
+      "switchGate": "Import matching reports/artifacts; resolve and verify digest/approval before changing provider. No latest aliases at inference time.",
+      "contractCases": [
+        "wrong digest",
+        "missing approval",
+        "rollback full bundle",
+        "alias change cannot change running release"
+      ],
+      "implementationStatus": "SPECIFIED_NOT_IMPLEMENTED",
+      "taskIds": [
+        "P11",
+        "P14",
+        "P26"
+      ]
+    },
+    {
+      "id": "jobs",
+      "technology": "Airflow",
+      "port": "BatchJobRunnerPort",
+      "ownerRole": "ML",
+      "dataOwner": "ML offline jobs",
+      "localProvider": "LocalBatchJobRunnerAdapter",
+      "realProvider": "AirflowBatchJobRunnerAdapter",
+      "signature": "submit(jobType, inputDigest, requestKey) -> JobId; get(jobId) -> JobState",
+      "dataContract": "Allowlisted PREPARE_FEATURES/TRAIN_RISK/BUILD_INDEX/EVALUATE_BUNDLE; QUEUED/RUNNING/SUCCEEDED/FAILED; attempt/log/output digests.",
+      "localBehavior": "Finite explicit offline commands with persisted job journal, request-key uniqueness and lease; no daemon scheduling required.",
+      "invariants": "Never train or publish a model during a user HTTP request; retry cannot activate a candidate; credential scope limited.",
+      "limitations": "No Airflow DAG scheduler, distributed workers, backfill or calendar semantics.",
+      "switchGate": "Map each finite job to versioned DAG; verify retries/output identity and separate approval.",
+      "contractCases": [
+        "same request key",
+        "lost lease",
+        "failed job",
+        "explicit re-run",
+        "no training on user path"
+      ],
+      "implementationStatus": "SPECIFIED_NOT_IMPLEMENTED",
+      "taskIds": [
+        "P11",
+        "P14",
+        "P26"
+      ]
+    },
+    {
+      "id": "quality",
+      "technology": "Evidently",
+      "port": "QualityReportPort",
+      "ownerRole": "ML",
+      "dataOwner": "ML quality reports",
+      "localProvider": "LocalQualityReportAdapter",
+      "realProvider": "EvidentlyQualityReportAdapter",
+      "signature": "evaluate(datasetDigest, referenceDigest, modelDigest) -> QualityReport",
+      "dataContract": "DQ counts, sample size, missingness, labels maturity, measured metrics, reportDigest; status READY/INSUFFICIENT_DATA.",
+      "localBehavior": "Real computed DQ and baseline evaluation report; small synthetic set explicitly labelled.",
+      "invariants": "No made-up drift/quality metrics; insufficient sample reports INSUFFICIENT_DATA and no automatic retrain.",
+      "limitations": "No full Evidently tests/UI or statistically defensible production drift detection on synthetic demo.",
+      "switchGate": "Pin Evidently report version, dataset windows and thresholds; compare common measurements only.",
+      "contractCases": [
+        "missing values",
+        "no labels",
+        "insufficient sample",
+        "report lineage",
+        "nonfinite metric rejected"
+      ],
+      "implementationStatus": "SPECIFIED_NOT_IMPLEMENTED",
+      "taskIds": [
+        "P11",
+        "P14",
+        "P26"
+      ]
+    },
+    {
+      "id": "generation",
+      "technology": "vLLM",
+      "port": "TextGenerationPort",
+      "ownerRole": "ML",
+      "dataOwner": "RAG generation",
+      "localProvider": "LlamaCppGenerationAdapter",
+      "realProvider": "VllmGenerationAdapter",
+      "signature": "generate(approvedContext, promptDigest, bundleDigest, deadline, maxTokens) -> GeneratedTextOrTimeout",
+      "dataContract": "Nonstreaming text only; same approved sources and output parsing; 192 output-token budget, 45s generation deadline.",
+      "localBehavior": "Real Qwen GGUF inference in CPU llama-server; model output remains subject to backend citation/epoch checks.",
+      "invariants": "No tools, no write access, no user finance in prompt; timeout -> SEARCH_ONLY, never canned model answer.",
+      "limitations": "GGUF/llama.cpp and vLLM formats/kernels differ; bit parity and same binary weights not assumed.",
+      "switchGate": "Optional GPU only: freeze supported model revision/tokenizer/precision/artifact hashes separately, rerun golden/security tests; select new approved release. Unknown VRAM cannot block CPU profile.",
+      "contractCases": [
+        "timeout",
+        "malicious context",
+        "no tool calls",
+        "citations subset",
+        "model capability/golden tests"
+      ],
+      "implementationStatus": "SPECIFIED_NOT_IMPLEMENTED",
+      "taskIds": [
+        "P11",
+        "P14",
+        "P26"
+      ]
+    },
+    {
+      "id": "events",
+      "technology": "Kafka",
+      "port": "EventTransportPort",
+      "ownerRole": "BACKEND",
+      "dataOwner": "Domain producer + consumer",
+      "localProvider": "PostgresOutboxTransportAdapter",
+      "realProvider": "KafkaEventTransportAdapter",
+      "signature": "dispatch(committedOutboxBatch) -> DeliveryReceipt; consume(eventEnvelope) -> AckAfterInboxCommit",
+      "dataContract": "Existing strict credit/ML event schemas; eventId, aggregateId/version and traceId.",
+      "localBehavior": "Actual transactional PostgreSQL outbox dispatcher and inbox consumer.",
+      "invariants": "At least once delivery; inbox and business effect atomic; key by aggregate; reject stale caseVersion; retries never duplicate effect.",
+      "limitations": "Not Kafka protocol/partitions, multi-consumer replay scale or exactly-once delivery.",
+      "switchGate": "Outbox remains source; Kafka publisher relays committed messages; dual observe only without double business effects; verify offsets/dedup before cutover.",
+      "contractCases": [
+        "duplicate",
+        "lost ack",
+        "out of order",
+        "crash between publish/ack",
+        "replay",
+        "poison event"
+      ],
+      "implementationStatus": "SPECIFIED_NOT_IMPLEMENTED",
+      "taskIds": [
+        "P25"
+      ]
+    },
+    {
+      "id": "objects",
+      "technology": "S3",
+      "port": "ObjectStorePort",
+      "ownerRole": "BACKEND",
+      "dataOwner": "Documents",
+      "localProvider": "VersionedFilesystemObjectAdapter",
+      "realProvider": "S3ObjectStoreAdapter",
+      "signature": "putQuarantine(stream, limit) -> ObjectRef; openClean(exactRef, actorScope) -> Stream; promote(exactRef, scanReceipt) -> ObjectRef",
+      "dataContract": "Opaque objectId/version/sha256/size/mediaType/scanStatus; no browser path or bucket key.",
+      "localBehavior": "Immutable versioned files in persistent quarantine/clean volumes plus transactional metadata.",
+      "invariants": "AV and ownership gate all reads/OCR; bytes checksum and objectVersion match; reject traversal and oversize.",
+      "limitations": "No S3 API emulator, shared multi-node filesystem, managed durability or lifecycle guarantee.",
+      "switchGate": "Copy and hash-verify versions, reconcile metadata, freeze writes briefly for cutover; credentials remain server-side.",
+      "contractCases": [
+        "unsafe file",
+        "path traversal",
+        "stale ref",
+        "restart",
+        "digest mismatch",
+        "denied tenant"
+      ],
+      "implementationStatus": "SPECIFIED_NOT_IMPLEMENTED",
+      "taskIds": [
+        "P25"
+      ]
+    },
+    {
+      "id": "metrics",
+      "technology": "Prometheus",
+      "port": "Metrics instrumentation boundary",
+      "ownerRole": "INTEGRATION",
+      "dataOwner": "Operations",
+      "localProvider": "OpenMetricsExporter",
+      "realProvider": "PrometheusScrapeBinding",
+      "signature": "emit(counterOrHistogram, boundedLabels) -> void; scrape() -> OpenMetrics",
+      "dataContract": "Latency/error/queue age/fallback/source denials; bounded labels exclude company, user, documents and query text.",
+      "localBehavior": "Real metrics endpoint and structured logs; optional local scrape/snapshot.",
+      "invariants": "No PII/high-cardinality IDs; separate readiness from degradation; raw metrics endpoint internal only.",
+      "limitations": "Exporter is not Prometheus storage, alerting or retention.",
+      "switchGate": "Enable actual scraper/retention and verify changing metric from a live operation, not static charts.",
+      "contractCases": [
+        "actual counter delta",
+        "no PII labels",
+        "queue age",
+        "scraper outage does not block business"
+      ],
+      "implementationStatus": "SPECIFIED_NOT_IMPLEMENTED",
+      "taskIds": [
+        "P26"
+      ]
+    },
+    {
+      "id": "dashboards",
+      "technology": "Grafana",
+      "port": "Operations presentation boundary",
+      "ownerRole": "INTEGRATION",
+      "dataOwner": "Operations",
+      "localProvider": "LocalEvidenceReport",
+      "realProvider": "GrafanaDashboardBinding",
+      "signature": "render(readOnlyMeasuredEvidence) -> Report; dashboards consume metrics datasource",
+      "dataContract": "Provider manifest, actual test protocol and metrics; report timestamp and release digest.",
+      "localBehavior": "Read-only local evidence report; dashboard implementation optional.",
+      "invariants": "Only measured evidence; not reachable as customer workflow; no sensitive datasource credentials in browser.",
+      "limitations": "Report is not Grafana query engine/dashboard/alerting and is labelled substitute.",
+      "switchGate": "Import versioned dashboards, configure real datasource and prove live query/update.",
+      "contractCases": [
+        "stale report labelled",
+        "datasource isolation",
+        "live metric visible when Grafana enabled"
+      ],
+      "implementationStatus": "SPECIFIED_NOT_IMPLEMENTED",
+      "taskIds": [
+        "P26"
+      ]
+    },
+    {
+      "id": "orchestration",
+      "technology": "Kubernetes",
+      "port": "Deployment boundary (no business port)",
+      "ownerRole": "INTEGRATION",
+      "dataOwner": "Delivery",
+      "localProvider": "DockerComposeDeployment",
+      "realProvider": "KubernetesDeployment",
+      "signature": "deploy(versionedManifest) -> RolloutRecord; readiness determines traffic",
+      "dataContract": "Image digests, secrets refs, volumes, resource requests/limits, readiness and release digest.",
+      "localBehavior": "Six-service Compose specification for local MVP.",
+      "invariants": "Persist critical data and expose only web; reject missing required dependencies; do not claim HA.",
+      "limitations": "Compose is not Kubernetes emulator or multi-AZ failover. No fake OrchestratorPort in domain.",
+      "switchGate": "Create manifests, PV/secret/network policies and probe/rollout tests; bank-target admission separate.",
+      "contractCases": [
+        "clean launch",
+        "restart",
+        "readiness",
+        "network policy",
+        "resource limits"
+      ],
+      "implementationStatus": "SPECIFIED_NOT_IMPLEMENTED",
+      "taskIds": [
+        "P26"
+      ]
+    }
+  ]
+}

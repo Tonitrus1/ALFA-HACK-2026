@@ -1,0 +1,51 @@
+[
+  {
+    "id": "01-local-runtime",
+    "title": "MVP: обычный ПК, реальные ML-функции",
+    "svg": "diagrams/01-local-runtime.svg",
+    "nodes": 8,
+    "edges": 8
+  },
+  {
+    "id": "02-bank-target",
+    "title": "Целевой банковский контур",
+    "svg": "diagrams/02-bank-target.svg",
+    "nodes": 7,
+    "edges": 7
+  },
+  {
+    "id": "03-client-journey",
+    "title": "Путь клиента и состояния заявки",
+    "svg": "diagrams/03-client-journey.svg",
+    "nodes": 11,
+    "edges": 11
+  },
+  {
+    "id": "04-command-safety",
+    "title": "Одна команда: фиксация, доставка, результат",
+    "svg": "diagrams/04-command-safety.svg",
+    "nodes": 7,
+    "edges": 6
+  },
+  {
+    "id": "05-ml-data",
+    "title": "ML: данные, оценка и разрешённый ответ",
+    "svg": "diagrams/05-ml-data.svg",
+    "nodes": 8,
+    "edges": 6
+  },
+  {
+    "id": "06-data-model",
+    "title": "Модель данных: неизменяемые связи",
+    "svg": "diagrams/06-data-model.svg",
+    "nodes": 8,
+    "edges": 7
+  },
+  {
+    "id": "07-technology-adapters",
+    "title": "Полный стек: границы и локальные адаптеры",
+    "svg": "diagrams/07-technology-adapters.svg",
+    "nodes": 15,
+    "edges": 10
+  }
+]

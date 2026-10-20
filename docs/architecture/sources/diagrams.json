@@ -1,0 +1,1123 @@
+[
+  {
+    "id": "01-local-runtime",
+    "title": "MVP: обычный ПК, реальные ML-функции",
+    "subtitle": "6 контейнеров; полный стек через локальные адаптеры. Именованные границы - на схеме 07.",
+    "nodes": [
+      {
+        "id": "browser",
+        "x": 40,
+        "y": 140,
+        "w": 240,
+        "h": 130,
+        "title": "Предприниматель",
+        "text": "Клиентский web\nКомпания и полномочия",
+        "kind": "client"
+      },
+      {
+        "id": "web",
+        "x": 365,
+        "y": 140,
+        "w": 270,
+        "h": 130,
+        "title": "Web / reverse proxy",
+        "text": "React + один origin\nПорт localhost:8080",
+        "kind": "core"
+      },
+      {
+        "id": "backend",
+        "x": 710,
+        "y": 140,
+        "w": 270,
+        "h": 130,
+        "title": "Модульный backend",
+        "text": "Java: заявки, права, файлы\nСимулятор решения",
+        "kind": "core"
+      },
+      {
+        "id": "pg",
+        "x": 1050,
+        "y": 140,
+        "w": 260,
+        "h": 130,
+        "title": "PostgreSQL",
+        "text": "Данные, сессии, outbox\nСнимки, KB, inference",
+        "kind": "data"
+      },
+      {
+        "id": "ml",
+        "x": 710,
+        "y": 435,
+        "w": 270,
+        "h": 130,
+        "title": "ML-сервис / worker",
+        "text": "Риск, E5-рекомендации\nOCR и RAG-оркестрация",
+        "kind": "ml"
+      },
+      {
+        "id": "llm",
+        "x": 365,
+        "y": 435,
+        "w": 270,
+        "h": 130,
+        "title": "Локальная LLM",
+        "text": "Qwen 0.5B GGUF\nCPU; NVIDIA optional",
+        "kind": "ml"
+      },
+      {
+        "id": "files",
+        "x": 1050,
+        "y": 435,
+        "w": 260,
+        "h": 130,
+        "title": "Файловые volumes",
+        "text": "Quarantine / clean\nМодели read-only",
+        "kind": "data"
+      },
+      {
+        "id": "scanner",
+        "x": 1050,
+        "y": 655,
+        "w": 260,
+        "h": 105,
+        "title": "Проверка файлов",
+        "text": "AV + signature DB\nОшибка ≠ CLEAN",
+        "kind": "security"
+      }
+    ],
+    "edges": [
+      {
+        "source": "browser",
+        "target": "web",
+        "label": "HTTP",
+        "mode": "sync"
+      },
+      {
+        "source": "web",
+        "target": "backend",
+        "label": "API",
+        "mode": "sync"
+      },
+      {
+        "source": "backend",
+        "target": "pg",
+        "label": "commit",
+        "mode": "sync"
+      },
+      {
+        "source": "backend",
+        "target": "ml",
+        "label": "ML ports",
+        "mode": "sync"
+      },
+      {
+        "source": "ml",
+        "target": "llm",
+        "label": "RAG",
+        "mode": "sync"
+      },
+      {
+        "source": "backend",
+        "target": "files",
+        "label": "stream",
+        "mode": "sync"
+      },
+      {
+        "source": "files",
+        "target": "scanner",
+        "label": "scan",
+        "mode": "sync"
+      },
+      {
+        "source": "ml",
+        "target": "files",
+        "label": "CLEAN only",
+        "mode": "async"
+      }
+    ],
+    "notes": [
+      "Сплошная стрелка — вызов; пунктир — асинхронное задание. Только web-порт открыт пользователю.",
+      "Qdrant/Redis/Feast и остальные технологии сохранены через порты. Binding выбирает локальный или настоящий адаптер."
+    ]
+  },
+  {
+    "id": "02-bank-target",
+    "title": "Целевой банковский контур",
+    "subtitle": "Дальнейшее развитие после интеграционных, модельных и эксплуатационных испытаний.",
+    "nodes": [
+      {
+        "id": "edge",
+        "x": 50,
+        "y": 160,
+        "w": 265,
+        "h": 130,
+        "title": "Банковский периметр",
+        "text": "WAF / IAM / gateway",
+        "kind": "security"
+      },
+      {
+        "id": "api",
+        "x": 400,
+        "y": 160,
+        "w": 270,
+        "h": 130,
+        "title": "Кабинет",
+        "text": "Реплики модульного API\nОбщие сессии и события",
+        "kind": "core"
+      },
+      {
+        "id": "bank",
+        "x": 750,
+        "y": 160,
+        "w": 270,
+        "h": 130,
+        "title": "Банковские системы",
+        "text": "Рассмотрение / предложение\nПодпись и выдача",
+        "kind": "bank"
+      },
+      {
+        "id": "ml",
+        "x": 1100,
+        "y": 160,
+        "w": 260,
+        "h": 155,
+        "title": "ML serving",
+        "text": "Отдельные CPU/GPU pools\nВерсионированные модели",
+        "kind": "ml"
+      },
+      {
+        "id": "storage",
+        "x": 400,
+        "y": 450,
+        "w": 270,
+        "h": 130,
+        "title": "Данные и доставка",
+        "text": "PostgreSQL / Kafka\nRedis / S3",
+        "kind": "data"
+      },
+      {
+        "id": "platform",
+        "x": 750,
+        "y": 450,
+        "w": 270,
+        "h": 150,
+        "title": "ML-платформа",
+        "text": "Feast / Airflow / MLflow\nEvidently / Qdrant / vLLM",
+        "kind": "ml"
+      },
+      {
+        "id": "ops",
+        "x": 50,
+        "y": 450,
+        "w": 265,
+        "h": 130,
+        "title": "Эксплуатация",
+        "text": "Prometheus / Grafana\nSecrets / audit / DR",
+        "kind": "security"
+      }
+    ],
+    "edges": [
+      {
+        "source": "edge",
+        "target": "api",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "api",
+        "target": "bank",
+        "label": "команды",
+        "mode": "sync"
+      },
+      {
+        "source": "bank",
+        "target": "ml",
+        "label": "оценка",
+        "mode": "sync"
+      },
+      {
+        "source": "api",
+        "target": "storage",
+        "label": "outbox",
+        "mode": "sync"
+      },
+      {
+        "source": "platform",
+        "target": "ml",
+        "label": "bundle",
+        "mode": "async"
+      },
+      {
+        "source": "storage",
+        "target": "platform",
+        "label": "данные",
+        "mode": "async"
+      },
+      {
+        "source": "ops",
+        "target": "api",
+        "label": "наблюдение",
+        "mode": "async"
+      }
+    ],
+    "notes": [
+      "IAM, решение, ЭП и выдача принадлежат банковским системам. Модели возвращают оценку, не финансовое действие.",
+      "Полный стек связан с MVP через порты и критерии подключения (схема 07); допуск bank-target проверяется отдельно."
+    ]
+  },
+  {
+    "id": "03-client-journey",
+    "title": "Путь клиента и состояния заявки",
+    "subtitle": "Одинаковые действия имеют одинаковый смысл в UI, API, симуляторе и событиях.",
+    "nodes": [
+      {
+        "id": "draft",
+        "x": 45,
+        "y": 145,
+        "w": 260,
+        "h": 115,
+        "title": "Черновик",
+        "text": "Диагностика и подтверждения",
+        "kind": "client"
+      },
+      {
+        "id": "submitted",
+        "x": 380,
+        "y": 145,
+        "w": 260,
+        "h": 115,
+        "title": "Отправлена",
+        "text": "Снимок + операция + outbox",
+        "kind": "core"
+      },
+      {
+        "id": "review",
+        "x": 715,
+        "y": 145,
+        "w": 260,
+        "h": 115,
+        "title": "Рассмотрение",
+        "text": "Проверки и модель риска",
+        "kind": "bank"
+      },
+      {
+        "id": "rfi",
+        "x": 715,
+        "y": 390,
+        "w": 260,
+        "h": 115,
+        "title": "Нужно уточнение",
+        "text": "Адресованный RFI / ответ",
+        "kind": "client"
+      },
+      {
+        "id": "manual",
+        "x": 1050,
+        "y": 145,
+        "w": 260,
+        "h": 115,
+        "title": "Ручная проверка",
+        "text": "Сбой модели или исключение",
+        "kind": "bank"
+      },
+      {
+        "id": "offer",
+        "x": 380,
+        "y": 640,
+        "w": 260,
+        "h": 115,
+        "title": "Есть предложение",
+        "text": "Одобрено / иные условия",
+        "kind": "bank"
+      },
+      {
+        "id": "declined",
+        "x": 1050,
+        "y": 390,
+        "w": 260,
+        "h": 115,
+        "title": "Отказ",
+        "text": "Понятный итог",
+        "kind": "bank"
+      },
+      {
+        "id": "accept",
+        "x": 715,
+        "y": 640,
+        "w": 260,
+        "h": 115,
+        "title": "Условия приняты",
+        "text": "Проверка версии и срока",
+        "kind": "client"
+      },
+      {
+        "id": "done",
+        "x": 1050,
+        "y": 640,
+        "w": 260,
+        "h": 115,
+        "title": "Завершено",
+        "text": "Demo-оператор; без денег",
+        "kind": "bank"
+      },
+      {
+        "id": "cancelled",
+        "x": 45,
+        "y": 390,
+        "w": 260,
+        "h": 115,
+        "title": "Заявка отозвана",
+        "text": "До принятия; банковский CAS",
+        "kind": "bank"
+      },
+      {
+        "id": "expired",
+        "x": 380,
+        "y": 390,
+        "w": 260,
+        "h": 115,
+        "title": "Срок истёк",
+        "text": "После validUntil",
+        "kind": "bank"
+      }
+    ],
+    "edges": [
+      {
+        "source": "draft",
+        "target": "submitted",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "submitted",
+        "target": "review",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "review",
+        "target": "manual",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "review",
+        "target": "rfi",
+        "label": "данные",
+        "mode": "sync",
+        "points": [
+          [
+            815,
+            260
+          ],
+          [
+            815,
+            390
+          ]
+        ]
+      },
+      {
+        "source": "review",
+        "target": "offer",
+        "label": "решение",
+        "mode": "async",
+        "points": [
+          [
+            715,
+            202
+          ],
+          [
+            680,
+            202
+          ],
+          [
+            680,
+            590
+          ],
+          [
+            510,
+            590
+          ],
+          [
+            510,
+            640
+          ]
+        ]
+      },
+      {
+        "source": "manual",
+        "target": "declined",
+        "label": "решение",
+        "mode": "async"
+      },
+      {
+        "source": "offer",
+        "target": "accept",
+        "label": "accept",
+        "mode": "sync"
+      },
+      {
+        "source": "accept",
+        "target": "done",
+        "label": "событие",
+        "mode": "async"
+      },
+      {
+        "source": "rfi",
+        "target": "review",
+        "label": "ответ",
+        "mode": "async",
+        "points": [
+          [
+            875,
+            390
+          ],
+          [
+            875,
+            260
+          ]
+        ]
+      },
+      {
+        "source": "draft",
+        "target": "cancelled",
+        "label": "отзыв",
+        "mode": "sync"
+      },
+      {
+        "source": "offer",
+        "target": "expired",
+        "label": "срок",
+        "mode": "async"
+      }
+    ],
+    "notes": [
+      "Отмена доступна до принятия по capability. Точный полный граф — contracts/state-machine.json.",
+      "Принятие предложения не означает выдачу. COMPLETED — подтверждённое моделируемое оформление."
+    ]
+  },
+  {
+    "id": "04-command-safety",
+    "title": "Одна команда: фиксация, доставка, результат",
+    "subtitle": "Доставка с повторами; бизнес-эффект защищён транзакциями и уникальными ключами.",
+    "nodes": [
+      {
+        "id": "ui",
+        "x": 50,
+        "y": 145,
+        "w": 270,
+        "h": 130,
+        "title": "Клиент",
+        "text": "Flush saved draft\nОдин ключ повтора",
+        "kind": "client"
+      },
+      {
+        "id": "check",
+        "x": 400,
+        "y": 145,
+        "w": 270,
+        "h": 130,
+        "title": "Проверки backend",
+        "text": "Session/company/role\nВерсии и idempotency",
+        "kind": "core"
+      },
+      {
+        "id": "tx",
+        "x": 750,
+        "y": 145,
+        "w": 270,
+        "h": 130,
+        "title": "Одна транзакция",
+        "text": "Snapshot + operation\nIdempotency + outbox",
+        "kind": "data"
+      },
+      {
+        "id": "receipt",
+        "x": 1100,
+        "y": 145,
+        "w": 260,
+        "h": 155,
+        "title": "Ответ 202",
+        "text": "Сохранённый operationId\nБез обещания одобрения",
+        "kind": "client"
+      },
+      {
+        "id": "dispatch",
+        "x": 750,
+        "y": 440,
+        "w": 270,
+        "h": 130,
+        "title": "Dispatcher",
+        "text": "Committed outbox\nLease / bounded retries",
+        "kind": "core"
+      },
+      {
+        "id": "bank",
+        "x": 400,
+        "y": 440,
+        "w": 270,
+        "h": 130,
+        "title": "Симулятор / адаптер",
+        "text": "Inbox + effect атомарно\nCase / offer CAS",
+        "kind": "bank"
+      },
+      {
+        "id": "view",
+        "x": 50,
+        "y": 440,
+        "w": 270,
+        "h": 130,
+        "title": "Клиентская проекция",
+        "text": "Полный caseVersion\nSSE cursor / snapshot",
+        "kind": "data"
+      }
+    ],
+    "edges": [
+      {
+        "source": "ui",
+        "target": "check",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "check",
+        "target": "tx",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "tx",
+        "target": "receipt",
+        "label": "commit",
+        "mode": "sync"
+      },
+      {
+        "source": "tx",
+        "target": "dispatch",
+        "label": "после commit",
+        "mode": "async"
+      },
+      {
+        "source": "dispatch",
+        "target": "bank",
+        "label": "повторы",
+        "mode": "async"
+      },
+      {
+        "source": "bank",
+        "target": "view",
+        "label": "результат",
+        "mode": "async"
+      }
+    ],
+    "notes": [
+      "202 отправляется только после commit. HTTP timeout не означает, что команда не исполнена.",
+      "Повтор возвращает исходный результат. Смена тела с тем же ключом — конфликт."
+    ]
+  },
+  {
+    "id": "05-ml-data",
+    "title": "ML: данные, оценка и разрешённый ответ",
+    "subtitle": "Общий bundle связывает модель, preprocessing, схему признаков и исходные версии.",
+    "nodes": [
+      {
+        "id": "fin",
+        "x": 45,
+        "y": 145,
+        "w": 270,
+        "h": 130,
+        "title": "Финансовый снимок",
+        "text": "8 значений DEMO v1\nПодтверждения и file refs",
+        "kind": "data"
+      },
+      {
+        "id": "feat",
+        "x": 385,
+        "y": 145,
+        "w": 270,
+        "h": 130,
+        "title": "Признаки / risk",
+        "text": "FeatureRepositoryPort\nFeast / local snapshots",
+        "kind": "ml"
+      },
+      {
+        "id": "decision",
+        "x": 725,
+        "y": 145,
+        "w": 270,
+        "h": 130,
+        "title": "Банковская policy",
+        "text": "Скоринг как один фактор\nRFI / manual / offer / отказ",
+        "kind": "bank"
+      },
+      {
+        "id": "rank",
+        "x": 1060,
+        "y": 145,
+        "w": 260,
+        "h": 130,
+        "title": "E5 ranking",
+        "text": "Только пригодные IDs\nMODEL или RULES",
+        "kind": "ml"
+      },
+      {
+        "id": "kb",
+        "x": 45,
+        "y": 450,
+        "w": 270,
+        "h": 130,
+        "title": "KB authority",
+        "text": "PUBLISHED / audience\nVersion / revoke epoch",
+        "kind": "security"
+      },
+      {
+        "id": "retrieve",
+        "x": 385,
+        "y": 450,
+        "w": 270,
+        "h": 130,
+        "title": "E5 retrieval",
+        "text": "VectorIndexPort\nQdrant / NumPy allowlist",
+        "kind": "ml"
+      },
+      {
+        "id": "gen",
+        "x": 725,
+        "y": 450,
+        "w": 270,
+        "h": 130,
+        "title": "Qwen generation",
+        "text": "TextGenerationPort\nvLLM / llama.cpp + Qwen",
+        "kind": "ml"
+      },
+      {
+        "id": "answer",
+        "x": 1060,
+        "y": 450,
+        "w": 260,
+        "h": 130,
+        "title": "Backend publication",
+        "text": "Проверка epoch/citations\nANSWER / refusal / search",
+        "kind": "core"
+      }
+    ],
+    "edges": [
+      {
+        "source": "fin",
+        "target": "feat",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "feat",
+        "target": "decision",
+        "label": "proxy",
+        "mode": "sync"
+      },
+      {
+        "source": "kb",
+        "target": "retrieve",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "retrieve",
+        "target": "gen",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "gen",
+        "target": "answer",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "decision",
+        "target": "rank",
+        "label": "контекст",
+        "mode": "async"
+      }
+    ],
+    "notes": [
+      "Scoring ≠ decision; eligibility ≠ ranking; retrieval ≠ право доступа; OCR ≠ подтверждение.",
+      "RAG: PUBLISHED до prompt и повторная проверка epoch перед выдачей. Rollback не возвращает отозванные знания."
+    ]
+  },
+  {
+    "id": "06-data-model",
+    "title": "Модель данных: неизменяемые связи",
+    "subtitle": "Полная модель и ограничения: contracts/data-model.json. Это логические связи, не миграция БД.",
+    "nodes": [
+      {
+        "id": "app",
+        "x": 45,
+        "y": 145,
+        "w": 260,
+        "h": 125,
+        "title": "Заявка",
+        "text": "Компания / продукт / версия",
+        "kind": "data"
+      },
+      {
+        "id": "sub",
+        "x": 385,
+        "y": 145,
+        "w": 260,
+        "h": 125,
+        "title": "Снимок отправки",
+        "text": "Пакет / согласия / документы",
+        "kind": "data"
+      },
+      {
+        "id": "fin",
+        "x": 725,
+        "y": 145,
+        "w": 260,
+        "h": 125,
+        "title": "Финансовый снимок",
+        "text": "Значения / provenance / digest",
+        "kind": "data"
+      },
+      {
+        "id": "feat",
+        "x": 1060,
+        "y": 145,
+        "w": 260,
+        "h": 125,
+        "title": "Feature / inference",
+        "text": "Версия модели и признаков",
+        "kind": "data"
+      },
+      {
+        "id": "rfi",
+        "x": 45,
+        "y": 450,
+        "w": 260,
+        "h": 125,
+        "title": "Запрос уточнений",
+        "text": "Request и отдельный draft",
+        "kind": "data"
+      },
+      {
+        "id": "doc",
+        "x": 385,
+        "y": 450,
+        "w": 260,
+        "h": 125,
+        "title": "Документы",
+        "text": "ObjectVersion / CLEAN / lease",
+        "kind": "data"
+      },
+      {
+        "id": "case",
+        "x": 725,
+        "y": 450,
+        "w": 260,
+        "h": 125,
+        "title": "Дело / предложение",
+        "text": "Банковские версии / срок",
+        "kind": "data"
+      },
+      {
+        "id": "kb",
+        "x": 1060,
+        "y": 450,
+        "w": 260,
+        "h": 125,
+        "title": "KB / сообщения",
+        "text": "Источник / epoch / actor",
+        "kind": "data"
+      }
+    ],
+    "edges": [
+      {
+        "source": "app",
+        "target": "sub",
+        "label": "1:N",
+        "mode": "sync"
+      },
+      {
+        "source": "sub",
+        "target": "fin",
+        "label": "1:1",
+        "mode": "sync"
+      },
+      {
+        "source": "fin",
+        "target": "feat",
+        "label": "1:N",
+        "mode": "sync"
+      },
+      {
+        "source": "app",
+        "target": "rfi",
+        "label": "1:N",
+        "mode": "sync"
+      },
+      {
+        "source": "sub",
+        "target": "doc",
+        "label": "точные refs",
+        "mode": "sync"
+      },
+      {
+        "source": "fin",
+        "target": "case",
+        "label": "пакет",
+        "mode": "sync"
+      },
+      {
+        "source": "rfi",
+        "target": "doc",
+        "label": "ответ",
+        "mode": "async",
+        "points": [
+          [
+            305,
+            512
+          ],
+          [
+            345,
+            512
+          ],
+          [
+            345,
+            552
+          ],
+          [
+            385,
+            552
+          ]
+        ]
+      }
+    ],
+    "notes": [
+      "Версии редактируемых контейнеров не равны версиям снимков, байтов файлов и банковских событий.",
+      "Все tenant-sensitive связи проверяются по company/actor, не только по непрозрачному ID."
+    ]
+  },
+  {
+    "id": "07-technology-adapters",
+    "title": "Полный стек: границы и локальные адаптеры",
+    "subtitle": "Названия технологий сохраняются в архитектуре MVP. Реальные сервисы выбираются после интеграционной проверки.",
+    "nodes": [
+      {
+        "id": "r0c0",
+        "x": 40,
+        "y": 140,
+        "w": 380,
+        "h": 115,
+        "title": "Qdrant",
+        "text": "Векторный индекс",
+        "kind": "data"
+      },
+      {
+        "id": "r0c1",
+        "x": 500,
+        "y": 140,
+        "w": 380,
+        "h": 115,
+        "title": "VectorIndexPort",
+        "text": "Allowlist / corpus / versions",
+        "kind": "core"
+      },
+      {
+        "id": "r0c2",
+        "x": 960,
+        "y": 140,
+        "w": 380,
+        "h": 115,
+        "title": "NumPy cosine search",
+        "text": "Настоящий поиск на CPU",
+        "kind": "ml"
+      },
+      {
+        "id": "r1c0",
+        "x": 40,
+        "y": 270,
+        "w": 380,
+        "h": 115,
+        "title": "Redis",
+        "text": "Сессии и восстанавливаемый кеш",
+        "kind": "data"
+      },
+      {
+        "id": "r1c1",
+        "x": 500,
+        "y": 270,
+        "w": 380,
+        "h": 115,
+        "title": "SessionStorePort / CachePort",
+        "text": "TTL / authEpoch / revoke",
+        "kind": "core"
+      },
+      {
+        "id": "r1c2",
+        "x": 960,
+        "y": 270,
+        "w": 380,
+        "h": 115,
+        "title": "JDBC + локальный TTL-кеш",
+        "text": "Сессии сохраняются в PostgreSQL",
+        "kind": "ml"
+      },
+      {
+        "id": "r2c0",
+        "x": 40,
+        "y": 400,
+        "w": 380,
+        "h": 115,
+        "title": "Feast",
+        "text": "Хранение и получение признаков",
+        "kind": "data"
+      },
+      {
+        "id": "r2c1",
+        "x": 500,
+        "y": 400,
+        "w": 380,
+        "h": 115,
+        "title": "FeatureRepositoryPort",
+        "text": "HistoricalFeatureReader",
+        "kind": "core"
+      },
+      {
+        "id": "r2c2",
+        "x": 960,
+        "y": 400,
+        "w": 380,
+        "h": 115,
+        "title": "Immutable feature snapshots",
+        "text": "Общий transform + asOf / availableAt",
+        "kind": "ml"
+      },
+      {
+        "id": "r3c0",
+        "x": 40,
+        "y": 530,
+        "w": 380,
+        "h": 115,
+        "title": "MLflow / Airflow / Evidently / vLLM",
+        "text": "Registry / jobs / quality / generation",
+        "kind": "data"
+      },
+      {
+        "id": "r3c1",
+        "x": 500,
+        "y": 530,
+        "w": 380,
+        "h": 115,
+        "title": "ML-порты",
+        "text": "Manifest / BatchJob / Quality / Text",
+        "kind": "core"
+      },
+      {
+        "id": "r3c2",
+        "x": 960,
+        "y": 530,
+        "w": 380,
+        "h": 115,
+        "title": "Manifests / jobs / DQ reports",
+        "text": "CPU llama.cpp + Qwen",
+        "kind": "ml"
+      },
+      {
+        "id": "r4c0",
+        "x": 40,
+        "y": 660,
+        "w": 380,
+        "h": 135,
+        "title": "Kafka / S3 / Prometheus / Grafana / Kubernetes",
+        "text": "Доставка / файлы / эксплуатация",
+        "kind": "data"
+      },
+      {
+        "id": "r4c1",
+        "x": 500,
+        "y": 660,
+        "w": 380,
+        "h": 135,
+        "title": "Backend и эксплуатация",
+        "text": "Event / Object / metrics / deployment",
+        "kind": "core"
+      },
+      {
+        "id": "r4c2",
+        "x": 960,
+        "y": 660,
+        "w": 380,
+        "h": 135,
+        "title": "Outbox / files / OpenMetrics",
+        "text": "Read-only report / Docker Compose",
+        "kind": "ml"
+      }
+    ],
+    "edges": [
+      {
+        "source": "r0c0",
+        "target": "r0c1",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "r0c1",
+        "target": "r0c2",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "r1c0",
+        "target": "r1c1",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "r1c1",
+        "target": "r1c2",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "r2c0",
+        "target": "r2c1",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "r2c1",
+        "target": "r2c2",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "r3c0",
+        "target": "r3c1",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "r3c1",
+        "target": "r3c2",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "r4c0",
+        "target": "r4c1",
+        "label": "",
+        "mode": "sync"
+      },
+      {
+        "source": "r4c1",
+        "target": "r4c2",
+        "label": "",
+        "mode": "sync"
+      }
+    ],
+    "notes": [
+      "Все адаптеры здесь спроектированы, приложение не реализовано. Каркас SDK не означает работающую интеграцию.",
+      "Дополнительный профиль: Redis cache + Qdrant + MLflow. Остальные привязки локальные; bank-target переводит полный стек."
+    ]
+  }
+]

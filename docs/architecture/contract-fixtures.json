@@ -1,0 +1,4175 @@
+[
+  {
+    "id": "regression-frontend-example-DemoLogin0",
+    "contract": "contracts/public.openapi.json",
+    "schema": "DemoLogin",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "accountId": "representative-a"
+    }
+  },
+  {
+    "id": "regression-frontend-example-InformationDraft1",
+    "contract": "contracts/public.openapi.json",
+    "schema": "InformationDraft",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "requestVersion": 1,
+      "draftVersion": 1,
+      "amendment": {
+        "business": {
+          "activityDescription": "Искусственный пример"
+        }
+      },
+      "documentReferences": [],
+      "requirementsVersion": 1
+    }
+  },
+  {
+    "id": "regression-frontend-example-DocumentRequirements2",
+    "contract": "contracts/public.openapi.json",
+    "schema": "DocumentRequirements",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "requirementsVersion": 1,
+      "items": [
+        {
+          "requirementId": "req-accounting",
+          "title": "Отчётность",
+          "reason": "Проверка синтетического бизнеса",
+          "required": true,
+          "allowedContentTypes": [
+            "application/pdf"
+          ],
+          "maxBytes": 10485760,
+          "maxPagesForExtraction": 20
+        }
+      ]
+    }
+  },
+  {
+    "id": "regression-frontend-example-Capabilities3",
+    "contract": "contracts/public.openapi.json",
+    "schema": "Capabilities",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "resourceVersion": 1,
+      "actions": [
+        {
+          "action": "SUBMIT",
+          "allowed": false,
+          "safeReason": "Дождитесь проверки документа"
+        }
+      ]
+    }
+  },
+  {
+    "id": "regression-frontend-example-DemoAction4",
+    "contract": "contracts/demo.openapi.json",
+    "schema": "DemoAction",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "action": "ALTERNATIVE",
+      "expectedCaseVersion": 2,
+      "clientMessage": "Предлагаем другие условия",
+      "internalReason": "Синтетический сценарий",
+      "offerTerms": {
+        "amount": {
+          "amountMinor": 50000000,
+          "currency": "RUB"
+        },
+        "termMonths": 12,
+        "termsDisclosure": "Синтетические условия, без обещания выдачи",
+        "validUntil": "2026-10-21T05:00:00Z"
+      }
+    }
+  },
+  {
+    "id": "regression-frontend-example-HistoryPage5",
+    "contract": "contracts/public.openapi.json",
+    "schema": "HistoryPage",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "items": [
+        {
+          "eventId": "evt-1",
+          "occurredAt": "2026-10-20T05:00:00Z",
+          "status": "REVIEW",
+          "message": "Рассматриваем заявку"
+        }
+      ]
+    }
+  },
+  {
+    "id": "regression-frontend-example-ClientStreamMessage6",
+    "contract": "contracts/public.openapi.json",
+    "schema": "ClientStreamMessage",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "eventType": "view_changed",
+      "cursor": "cursor-2",
+      "resourceType": "DOCUMENT",
+      "resourceId": "doc-1",
+      "viewVersion": 2,
+      "companyId": "company-a",
+      "contextVersion": 1
+    }
+  },
+  {
+    "id": "regression-frontend-example-ClientStreamMessage7",
+    "contract": "contracts/public.openapi.json",
+    "schema": "ClientStreamMessage",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "eventType": "resync_required",
+      "cursor": "cursor-2",
+      "companyId": "company-a",
+      "contextVersion": 1
+    }
+  },
+  {
+    "id": "regression-frontend-example-OperationList8",
+    "contract": "contracts/public.openapi.json",
+    "schema": "OperationList",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "items": [
+        {
+          "operationId": "op-1",
+          "applicationId": "app-1",
+          "status": "RECONCILING",
+          "updatedAt": "2026-10-20T05:00:00Z",
+          "operationType": "SUBMIT",
+          "resourceId": "app-1",
+          "companyId": "company-a",
+          "createdAt": "2026-10-20T05:00:00Z"
+        }
+      ]
+    }
+  },
+  {
+    "id": "regression-frontend-example-UploadInput9",
+    "contract": "contracts/public.openapi.json",
+    "schema": "UploadInput",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "fileName": "sample.pdf",
+      "declaredMimeType": "application/pdf",
+      "sizeBytes": 1024,
+      "documentType": "ACCOUNTING",
+      "requirementId": "req-accounting",
+      "requirementsVersion": 1,
+      "replacesDocumentId": "doc-1",
+      "expectedDocumentVersion": 2
+    }
+  },
+  {
+    "id": "regression-information-item-field-valid",
+    "contract": "contracts/public.openapi.json",
+    "schema": "InformationItem",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "itemId": "item-1",
+      "kind": "DOCUMENT",
+      "label": "Доход",
+      "required": true,
+      "requirementId": "req-1"
+    }
+  },
+  {
+    "id": "regression-information-item-field-needs-target",
+    "contract": "contracts/public.openapi.json",
+    "schema": "InformationItem",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "itemId": "item-1",
+      "kind": "FIELD",
+      "label": "Доход",
+      "required": true
+    }
+  },
+  {
+    "id": "regression-information-item-forbidden-field",
+    "contract": "contracts/public.openapi.json",
+    "schema": "InformationItem",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "itemId": "item-1",
+      "kind": "FIELD",
+      "label": "Доход",
+      "required": true,
+      "fieldPath": "status"
+    }
+  },
+  {
+    "id": "regression-information-item-document-valid",
+    "contract": "contracts/public.openapi.json",
+    "schema": "InformationItem",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "itemId": "item-1",
+      "kind": "DOCUMENT",
+      "label": "Доход",
+      "required": true,
+      "requirementId": "req-1"
+    }
+  },
+  {
+    "id": "regression-information-item-document-needs-target",
+    "contract": "contracts/public.openapi.json",
+    "schema": "InformationItem",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "itemId": "item-1",
+      "kind": "DOCUMENT",
+      "label": "Доход",
+      "required": true
+    }
+  },
+  {
+    "id": "regression-clear-fields-valid",
+    "contract": "contracts/public.openapi.json",
+    "schema": "DraftPatch",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "clearFields": [
+        "business.annualRevenue"
+      ]
+    }
+  },
+  {
+    "id": "regression-clear-required-terms-forbidden",
+    "contract": "contracts/public.openapi.json",
+    "schema": "DraftPatch",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "clearFields": [
+        "amount"
+      ]
+    }
+  },
+  {
+    "id": "regression-forged-confirmation-forbidden",
+    "contract": "contracts/public.openapi.json",
+    "schema": "DraftPatch",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "confirmedExtractionIds": [
+        "fake"
+      ]
+    }
+  },
+  {
+    "id": "regression-empty-draft-patch-forbidden",
+    "contract": "contracts/public.openapi.json",
+    "schema": "DraftPatch",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {}
+  },
+  {
+    "id": "regression-confirm-extraction-valid",
+    "contract": "contracts/public.openapi.json",
+    "schema": "ConfirmExtraction",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "extractionId": "ext-1",
+      "documentVersion": 2,
+      "objectVersion": "obj-v1",
+      "confirmedFields": [
+        {
+          "name": "annualRevenue",
+          "value": "100000"
+        }
+      ]
+    }
+  },
+  {
+    "id": "regression-confidence-not-client-controlled",
+    "contract": "contracts/public.openapi.json",
+    "schema": "ConfirmExtraction",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "extractionId": "ext-1",
+      "documentVersion": 2,
+      "objectVersion": "obj-v1",
+      "confirmedFields": [
+        {
+          "name": "annualRevenue",
+          "value": "100000",
+          "confidence": 1
+        }
+      ]
+    }
+  },
+  {
+    "id": "regression-extraction-source-required",
+    "contract": "contracts/public.openapi.json",
+    "schema": "ConfirmExtraction",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "extractionId": "ext-1",
+      "documentVersion": 2,
+      "confirmedFields": [
+        {
+          "name": "annualRevenue",
+          "value": "100000"
+        }
+      ]
+    }
+  },
+  {
+    "id": "regression-submit-valid",
+    "contract": "contracts/public.openapi.json",
+    "schema": "Submit",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "expectedVersion": 2,
+      "consentRecordIds": [
+        "consent-1"
+      ],
+      "documentIds": [
+        "doc-1"
+      ],
+      "documentReferences": [
+        {
+          "documentId": "doc-1",
+          "documentVersion": 3,
+          "objectVersion": "obj-v1"
+        }
+      ],
+      "requirementsVersion": 1,
+      "financialStatementVersion": 1
+    }
+  },
+  {
+    "id": "regression-submit-needs-documentReferences",
+    "contract": "contracts/public.openapi.json",
+    "schema": "Submit",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "expectedVersion": 2,
+      "consentRecordIds": [
+        "consent-1"
+      ],
+      "documentIds": [
+        "doc-1"
+      ],
+      "requirementsVersion": 1,
+      "financialStatementVersion": 1
+    }
+  },
+  {
+    "id": "regression-submit-needs-requirementsVersion",
+    "contract": "contracts/public.openapi.json",
+    "schema": "Submit",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "expectedVersion": 2,
+      "consentRecordIds": [
+        "consent-1"
+      ],
+      "documentIds": [
+        "doc-1"
+      ],
+      "documentReferences": [
+        {
+          "documentId": "doc-1",
+          "documentVersion": 3,
+          "objectVersion": "obj-v1"
+        }
+      ],
+      "financialStatementVersion": 1
+    }
+  },
+  {
+    "id": "regression-information-response-valid",
+    "contract": "contracts/public.openapi.json",
+    "schema": "InformationResponse",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "requestVersion": 2,
+      "draftVersion": 3,
+      "requirementsVersion": 1,
+      "documentIds": [],
+      "documentReferences": [],
+      "explanation": "Искусственное пояснение",
+      "financialStatementVersion": 1
+    }
+  },
+  {
+    "id": "regression-information-response-needs-draft-version",
+    "contract": "contracts/public.openapi.json",
+    "schema": "InformationResponse",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "requestVersion": 2,
+      "requirementsVersion": 1,
+      "documentIds": [],
+      "documentReferences": [],
+      "explanation": "Искусственное пояснение",
+      "financialStatementVersion": 1
+    }
+  },
+  {
+    "id": "regression-upload-valid",
+    "contract": "contracts/public.openapi.json",
+    "schema": "UploadInput",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "fileName": "sample.pdf",
+      "declaredMimeType": "application/pdf",
+      "sizeBytes": 1024,
+      "documentType": "ACCOUNTING",
+      "requirementId": "req-accounting",
+      "requirementsVersion": 1,
+      "replacesDocumentId": "doc-1",
+      "expectedDocumentVersion": 2
+    }
+  },
+  {
+    "id": "regression-upload-needs-expectedDocumentVersion",
+    "contract": "contracts/public.openapi.json",
+    "schema": "UploadInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "fileName": "sample.pdf",
+      "declaredMimeType": "application/pdf",
+      "sizeBytes": 1024,
+      "documentType": "ACCOUNTING",
+      "requirementId": "req-accounting",
+      "requirementsVersion": 1,
+      "replacesDocumentId": "doc-1"
+    }
+  },
+  {
+    "id": "regression-upload-needs-requirementId",
+    "contract": "contracts/public.openapi.json",
+    "schema": "UploadInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "fileName": "sample.pdf",
+      "declaredMimeType": "application/pdf",
+      "sizeBytes": 1024,
+      "documentType": "ACCOUNTING",
+      "requirementsVersion": 1,
+      "replacesDocumentId": "doc-1",
+      "expectedDocumentVersion": 2
+    }
+  },
+  {
+    "id": "regression-upload-request-version-required",
+    "contract": "contracts/public.openapi.json",
+    "schema": "UploadInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "fileName": "sample.pdf",
+      "declaredMimeType": "application/pdf",
+      "sizeBytes": 1024,
+      "documentType": "ACCOUNTING",
+      "requirementId": "req-accounting",
+      "requirementsVersion": 1,
+      "replacesDocumentId": "doc-1",
+      "expectedDocumentVersion": 2,
+      "requestId": "rfi-1"
+    }
+  },
+  {
+    "id": "regression-upload-rfi-context-valid",
+    "contract": "contracts/public.openapi.json",
+    "schema": "UploadInput",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "fileName": "sample.pdf",
+      "declaredMimeType": "application/pdf",
+      "sizeBytes": 1024,
+      "documentType": "ACCOUNTING",
+      "requirementId": "req-accounting",
+      "requirementsVersion": 1,
+      "replacesDocumentId": "doc-1",
+      "expectedDocumentVersion": 2,
+      "requestId": "rfi-1",
+      "requestVersion": 2
+    }
+  },
+  {
+    "id": "regression-version-invalid-0",
+    "contract": "contracts/public.openapi.json",
+    "schema": "UploadInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "fileName": "sample.pdf",
+      "declaredMimeType": "application/pdf",
+      "sizeBytes": 1024,
+      "documentType": "ACCOUNTING",
+      "requirementId": "req-accounting",
+      "requirementsVersion": 1,
+      "replacesDocumentId": "doc-1",
+      "expectedDocumentVersion": 0
+    }
+  },
+  {
+    "id": "regression-version-invalid-9007199254740992",
+    "contract": "contracts/public.openapi.json",
+    "schema": "UploadInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "fileName": "sample.pdf",
+      "declaredMimeType": "application/pdf",
+      "sizeBytes": 1024,
+      "documentType": "ACCOUNTING",
+      "requirementId": "req-accounting",
+      "requirementsVersion": 1,
+      "replacesDocumentId": "doc-1",
+      "expectedDocumentVersion": 9007199254740992
+    }
+  },
+  {
+    "id": "regression-demo-offer-complete",
+    "contract": "contracts/demo.openapi.json",
+    "schema": "DemoAction",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "action": "APPROVE",
+      "expectedCaseVersion": 2,
+      "clientMessage": "Одобрено в демонстрации",
+      "internalReason": "Синтетика",
+      "offerTerms": {
+        "amount": {
+          "amountMinor": 100000,
+          "currency": "RUB"
+        },
+        "termMonths": 12,
+        "termsDisclosure": "Искусственные условия",
+        "validUntil": "2026-10-21T00:00:00Z"
+      }
+    }
+  },
+  {
+    "id": "regression-demo-offer-needs-termsDisclosure",
+    "contract": "contracts/demo.openapi.json",
+    "schema": "DemoAction",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "action": "APPROVE",
+      "expectedCaseVersion": 2,
+      "clientMessage": "Одобрено в демонстрации",
+      "internalReason": "Синтетика",
+      "offerTerms": {
+        "amount": {
+          "amountMinor": 100000,
+          "currency": "RUB"
+        },
+        "termMonths": 12,
+        "validUntil": "2026-10-21T00:00:00Z"
+      }
+    }
+  },
+  {
+    "id": "regression-demo-offer-needs-validUntil",
+    "contract": "contracts/demo.openapi.json",
+    "schema": "DemoAction",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "action": "APPROVE",
+      "expectedCaseVersion": 2,
+      "clientMessage": "Одобрено в демонстрации",
+      "internalReason": "Синтетика",
+      "offerTerms": {
+        "amount": {
+          "amountMinor": 100000,
+          "currency": "RUB"
+        },
+        "termMonths": 12,
+        "termsDisclosure": "Искусственные условия"
+      }
+    }
+  },
+  {
+    "id": "regression-demo-approve-needs-offer",
+    "contract": "contracts/demo.openapi.json",
+    "schema": "DemoAction",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "action": "APPROVE",
+      "expectedCaseVersion": 2,
+      "clientMessage": "Одобрено в демонстрации",
+      "internalReason": "Синтетика"
+    }
+  },
+  {
+    "id": "regression-scan-clean-valid",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "ScanResult",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "generation": 2,
+      "workerId": "worker-1",
+      "leaseToken": "lease-secret",
+      "objectVersion": "obj-1",
+      "verdict": "ERROR",
+      "engineVersion": "synthetic-av-1"
+    }
+  },
+  {
+    "id": "regression-scan-needs-leaseToken",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "ScanResult",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "generation": 2,
+      "workerId": "worker-1",
+      "objectVersion": "obj-1",
+      "verdict": "CLEAN",
+      "engineVersion": "synthetic-av-1",
+      "cleanObjectRef": "clean-object-1"
+    }
+  },
+  {
+    "id": "regression-scan-needs-workerId",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "ScanResult",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "generation": 2,
+      "leaseToken": "lease-secret",
+      "objectVersion": "obj-1",
+      "verdict": "CLEAN",
+      "engineVersion": "synthetic-av-1",
+      "cleanObjectRef": "clean-object-1"
+    }
+  },
+  {
+    "id": "regression-scan-needs-cleanObjectRef",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "ScanResult",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "generation": 2,
+      "workerId": "worker-1",
+      "leaseToken": "lease-secret",
+      "objectVersion": "obj-1",
+      "verdict": "CLEAN",
+      "engineVersion": "synthetic-av-1"
+    }
+  },
+  {
+    "id": "regression-scan-error-remains-quarantine",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "ScanResult",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "generation": 2,
+      "workerId": "worker-1",
+      "leaseToken": "lease-secret",
+      "objectVersion": "obj-1",
+      "verdict": "ERROR",
+      "engineVersion": "synthetic-av-1"
+    }
+  },
+  {
+    "id": "regression-stream-snapshot-barrier",
+    "contract": "contracts/public.openapi.json",
+    "schema": "StreamSnapshot",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "cursor": "cursor-1",
+      "generatedAt": "2026-10-20T00:00:00Z",
+      "applications": [],
+      "companyId": "company-a",
+      "contextVersion": 1,
+      "complete": false
+    }
+  },
+  {
+    "id": "regression-stream-snapshot-not-complete-company",
+    "contract": "contracts/public.openapi.json",
+    "schema": "StreamSnapshot",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "cursor": "cursor-1",
+      "generatedAt": "2026-10-20T00:00:00Z",
+      "applications": [],
+      "companyId": "company-a",
+      "contextVersion": 1,
+      "complete": true
+    }
+  },
+  {
+    "id": "regression-credit-package-typed",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "CreditPackage",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "packageId": "package-1",
+      "packageType": "ACCEPTANCE",
+      "applicationId": "app-1",
+      "companyId": "company-a",
+      "version": 1,
+      "createdAt": "2026-10-20T00:00:00Z",
+      "data": {
+        "kind": "ACCEPTANCE",
+        "offerId": "offer-1",
+        "offerVersion": 2,
+        "actorRef": "actor-1"
+      }
+    }
+  },
+  {
+    "id": "regression-credit-package-arbitrary-json-forbidden",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "CreditPackage",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "baseline fixture adapted for mandatory financialStatementVersion",
+    "value": {
+      "packageId": "package-1",
+      "packageType": "ACCEPTANCE",
+      "applicationId": "app-1",
+      "companyId": "company-a",
+      "version": 1,
+      "createdAt": "2026-10-20T00:00:00Z",
+      "data": {
+        "anything": "untyped"
+      }
+    }
+  },
+  {
+    "id": "regression-valid-financial-input",
+    "contract": "contracts/public.openapi.json",
+    "schema": "MLFinancialInput",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "reportingStandard": "DEMO",
+      "currency": "RUB",
+      "values": {
+        "totalAssetsMinor": 100000000,
+        "totalLiabilitiesMinor": 60000000,
+        "currentAssetsMinor": 50000000,
+        "currentLiabilitiesMinor": 25000000,
+        "equityMinor": 40000000,
+        "revenueMinor": 150000000,
+        "netProfitMinor": 12000000,
+        "ebitMinor": 18000000
+      },
+      "sourceDocumentReferences": []
+    }
+  },
+  {
+    "id": "regression-valid-financial-confirmation",
+    "contract": "contracts/public.openapi.json",
+    "schema": "MLFinancialConfirmation",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "expectedStatementVersion": 1,
+      "confirmedFieldNames": [
+        "totalAssetsMinor",
+        "totalLiabilitiesMinor",
+        "currentAssetsMinor",
+        "currentLiabilitiesMinor",
+        "equityMinor",
+        "revenueMinor",
+        "netProfitMinor",
+        "ebitMinor"
+      ],
+      "documentReferences": []
+    }
+  },
+  {
+    "id": "regression-valid-feature-snapshot",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLFeatureSnapshot",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "featureSnapshotId": "fs-demo-1",
+      "submissionSnapshotId": "submission-demo-1",
+      "financialStatementVersion": 1,
+      "featureSchemaVersion": 2,
+      "featureCodeDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "featureAsOf": "2026-10-20T10:00:00Z",
+      "latestSourceAvailableAt": "2026-10-19T10:00:00Z",
+      "features": {
+        "X1": 0.12,
+        "X2": 0.6,
+        "X3": 0.25,
+        "X4": 2.0,
+        "X7": 0.18,
+        "X8": 0.6666666666666666,
+        "X9": 1.5,
+        "X10": 0.4
+      },
+      "missingFeatures": [],
+      "snapshotDigest": "966eef515041dfebf365f33878b047d0a4cc1a2961d6688cab5d5fe39d498d8d",
+      "financialSnapshotId": "fin-demo-1",
+      "financialSnapshotDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  },
+  {
+    "id": "regression-valid-risk-request",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLRiskRequest",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "requestId": "risk-demo-1",
+      "featureSnapshotId": "fs-demo-1",
+      "featureSnapshotDigest": "966eef515041dfebf365f33878b047d0a4cc1a2961d6688cab5d5fe39d498d8d",
+      "featureSchemaVersion": 2,
+      "purpose": "DEMO_RESEARCH"
+    }
+  },
+  {
+    "id": "regression-valid-risk-result",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLRiskResult",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "inferenceId": "inference-demo-1",
+      "requestId": "risk-demo-1",
+      "score": 0.12,
+      "scoreKind": "BANKRUPTCY_PROXY",
+      "calibrationStatus": "DEMONSTRATION",
+      "releaseId": "risk-demo-release-1",
+      "bundleDigest": "f2e857c0e04a5b95a25ec687c6fcc4ed28fe68cfdc69975c86c8aedc29d1b1cd",
+      "modelVersion": "1",
+      "featureSnapshotId": "fs-demo-1",
+      "featureSnapshotDigest": "966eef515041dfebf365f33878b047d0a4cc1a2961d6688cab5d5fe39d498d8d",
+      "internalReasonCodes": [
+        "DEMO_PROXY_ONLY"
+      ]
+    }
+  },
+  {
+    "id": "regression-valid-ranking-request",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLRankingRequest",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "requestId": "ranking-demo-1",
+      "scope": "PRODUCT",
+      "candidateIds": [
+        "working-capital",
+        "credit-line",
+        "overdraft"
+      ],
+      "candidateSetDigest": "64dd623fdfffbf0fe7fad4b9a09b5ebde4c2caa4e8e3139a131801f5f36e4a88",
+      "catalogVersion": 1,
+      "eligibilityVersion": 1,
+      "stage": "DRAFT",
+      "contextCategory": "SME_GENERAL",
+      "fundingPurpose": "WORKING_CAPITAL",
+      "contextText": "Оборотные средства",
+      "candidateTexts": [
+        {
+          "itemId": "working-capital",
+          "text": "Утверждённое описание working-capital"
+        },
+        {
+          "itemId": "credit-line",
+          "text": "Утверждённое описание credit-line"
+        },
+        {
+          "itemId": "overdraft",
+          "text": "Утверждённое описание overdraft"
+        }
+      ]
+    }
+  },
+  {
+    "id": "regression-valid-ranking-result",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLRankingResult",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "requestId": "ranking-demo-1",
+      "scope": "PRODUCT",
+      "rankedIds": [
+        "credit-line",
+        "working-capital",
+        "overdraft"
+      ],
+      "candidateSetDigest": "64dd623fdfffbf0fe7fad4b9a09b5ebde4c2caa4e8e3139a131801f5f36e4a88",
+      "exposureId": "exposure-demo-1",
+      "releaseId": "rules-products-1",
+      "mode": "RULES",
+      "reasonCategory": "FIT_TO_PURPOSE"
+    }
+  },
+  {
+    "id": "regression-valid-assistant-answer",
+    "contract": "contracts/public.openapi.json",
+    "schema": "MLAssistantResponse",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "conversationId": "conversation-demo-1",
+      "messageId": "message-demo-1",
+      "status": "ANSWER",
+      "answer": "В демонстрационном кабинете сведения можно сохранить в черновике.",
+      "citations": [
+        {
+          "documentId": "faq-draft",
+          "documentVersion": 1,
+          "chunkId": "faq-draft-v1-1",
+          "title": "Сохранение черновика",
+          "locator": "Раздел 1",
+          "sourcePath": "/api/v1/knowledge/faq-draft/versions/1"
+        }
+      ],
+      "releaseId": "rag-demo-release-1",
+      "bundleDigest": "6f9a0beb0bd4edb42c1fee2edcf29abecd1ab0f463b01822cc59ba07ce41d576",
+      "kbEpoch": 1
+    }
+  },
+  {
+    "id": "regression-valid-release-manifest",
+    "contract": "contracts/release-manifest.schema.json",
+    "schema": "ReleaseManifest",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "releaseId": "risk-demo-release-1",
+      "family": "RISK",
+      "createdBy": "author-demo",
+      "createdAt": "2026-10-20T10:00:00Z",
+      "imageDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "datasetDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "evaluationDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "policyVersion": "dev-demo-1",
+      "assets": {
+        "model": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "preprocessor": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "featureRegistry": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      },
+      "featureSchemaVersion": 2,
+      "scoreKind": "BANKRUPTCY_PROXY"
+    }
+  },
+  {
+    "id": "regression-valid-dataset-manifest",
+    "contract": "contracts/dataset-manifest.schema.json",
+    "schema": "DatasetManifest",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "datasetId": "public-proxy-design-fixture",
+      "kind": "PUBLIC_PROXY",
+      "createdAt": "2026-10-20T10:00:00Z",
+      "objects": [
+        {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "sourceLicense": "CC BY 4.0",
+      "attribution": "Tomczak, S. (2016). Polish Companies Bankruptcy. UCI, doi:10.24432/C5F600.",
+      "targetVersion": "bankruptcy-1y-proxy-v1",
+      "availabilityRule": "Public benchmark: reliable decision and publication dates unavailable; no historical bank validation claimed.",
+      "splitMembership": {
+        "bucket": "ml-design-fixtures",
+        "key": "synthetic/artifact.bin",
+        "objectVersion": "fixture-1",
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "splitSeed": 42,
+      "rowCount": 5910,
+      "positiveCount": 410
+    }
+  },
+  {
+    "id": "regression-valid-experiment-manifest",
+    "contract": "contracts/experiment-manifest.schema.json",
+    "schema": "ExperimentManifest",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "runId": "design-not-trained",
+      "datasetDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "gitCommit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "imageDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "dependencyLock": {
+        "bucket": "ml-design-fixtures",
+        "key": "synthetic/artifact.bin",
+        "objectVersion": "fixture-1",
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "featureCodeDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "featureSchemaVersion": 2,
+      "targetVersion": "bankruptcy-1y-proxy-v1",
+      "seed": 42,
+      "hardwareFingerprint": "DESIGN_FIXTURE_NOT_EXECUTED",
+      "hyperparameters": {
+        "modelFamily": "logistic-regression",
+        "classWeight": "balanced"
+      },
+      "evaluationReport": {
+        "bucket": "ml-design-fixtures",
+        "key": "synthetic/artifact.bin",
+        "objectVersion": "fixture-1",
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "reproductionTolerance": 0.005
+    }
+  },
+  {
+    "id": "regression-valid-approval",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLApprovalInput",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "decision": "APPROVE",
+      "reviewRole": "VALIDATOR",
+      "bundleDigest": "f2e857c0e04a5b95a25ec687c6fcc4ed28fe68cfdc69975c86c8aedc29d1b1cd",
+      "evaluationDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "policyVersion": "dev-demo-1",
+      "expiresAt": "2026-10-27T10:00:00Z",
+      "comment": "Synthetic schema fixture; no release is actually approved."
+    }
+  },
+  {
+    "id": "regression-forged-confirmation",
+    "contract": "contracts/public.openapi.json",
+    "schema": "MLFinancialInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "reportingStandard": "DEMO",
+      "currency": "RUB",
+      "values": {
+        "totalAssetsMinor": 100000000,
+        "totalLiabilitiesMinor": 60000000,
+        "currentAssetsMinor": 50000000,
+        "currentLiabilitiesMinor": 25000000,
+        "equityMinor": 40000000,
+        "revenueMinor": 150000000,
+        "netProfitMinor": 12000000,
+        "ebitMinor": 18000000
+      },
+      "sourceDocumentReferences": [],
+      "confirmed": true
+    }
+  },
+  {
+    "id": "regression-confirmed-without-provenance",
+    "contract": "contracts/public.openapi.json",
+    "schema": "MLFinancialStatement",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "statementVersion": 1,
+      "containerVersion": 1,
+      "confirmed": true,
+      "statement": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "reportingStandard": "DEMO",
+        "currency": "RUB",
+        "values": {
+          "totalAssetsMinor": 100000000,
+          "totalLiabilitiesMinor": 60000000,
+          "currentAssetsMinor": 50000000,
+          "currentLiabilitiesMinor": 25000000,
+          "equityMinor": 40000000,
+          "revenueMinor": 150000000,
+          "netProfitMinor": 12000000,
+          "ebitMinor": 18000000
+        },
+        "sourceDocumentReferences": []
+      },
+      "provenance": []
+    }
+  },
+  {
+    "id": "regression-fractional-minor-units",
+    "contract": "contracts/public.openapi.json",
+    "schema": "MLFinancialInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "reportingStandard": "DEMO",
+      "currency": "RUB",
+      "values": {
+        "totalAssetsMinor": 100000000,
+        "totalLiabilitiesMinor": 60000000,
+        "currentAssetsMinor": 50000000,
+        "currentLiabilitiesMinor": 25000000,
+        "equityMinor": 40000000,
+        "revenueMinor": 1.25,
+        "netProfitMinor": 12000000,
+        "ebitMinor": 18000000
+      },
+      "sourceDocumentReferences": []
+    }
+  },
+  {
+    "id": "regression-negative-liabilities",
+    "contract": "contracts/public.openapi.json",
+    "schema": "MLFinancialInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "reportingStandard": "DEMO",
+      "currency": "RUB",
+      "values": {
+        "totalAssetsMinor": 100000000,
+        "totalLiabilitiesMinor": -1,
+        "currentAssetsMinor": 50000000,
+        "currentLiabilitiesMinor": 25000000,
+        "equityMinor": 40000000,
+        "revenueMinor": 150000000,
+        "netProfitMinor": 12000000,
+        "ebitMinor": 18000000
+      },
+      "sourceDocumentReferences": []
+    }
+  },
+  {
+    "id": "regression-proxy-as-validated-pd",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLRiskResult",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "inferenceId": "inference-demo-1",
+      "requestId": "risk-demo-1",
+      "score": 0.12,
+      "scoreKind": "BANKRUPTCY_PROXY",
+      "calibrationStatus": "VALIDATED",
+      "releaseId": "risk-demo-release-1",
+      "bundleDigest": "f2e857c0e04a5b95a25ec687c6fcc4ed28fe68cfdc69975c86c8aedc29d1b1cd",
+      "modelVersion": "1",
+      "featureSnapshotId": "fs-demo-1",
+      "featureSnapshotDigest": "966eef515041dfebf365f33878b047d0a4cc1a2961d6688cab5d5fe39d498d8d",
+      "internalReasonCodes": [
+        "DEMO_PROXY_ONLY"
+      ]
+    }
+  },
+  {
+    "id": "regression-score-out-of-range",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLRiskResult",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "inferenceId": "inference-demo-1",
+      "requestId": "risk-demo-1",
+      "score": 1.2,
+      "scoreKind": "BANKRUPTCY_PROXY",
+      "calibrationStatus": "DEMONSTRATION",
+      "releaseId": "risk-demo-release-1",
+      "bundleDigest": "f2e857c0e04a5b95a25ec687c6fcc4ed28fe68cfdc69975c86c8aedc29d1b1cd",
+      "modelVersion": "1",
+      "featureSnapshotId": "fs-demo-1",
+      "featureSnapshotDigest": "966eef515041dfebf365f33878b047d0a4cc1a2961d6688cab5d5fe39d498d8d",
+      "internalReasonCodes": [
+        "DEMO_PROXY_ONLY"
+      ]
+    }
+  },
+  {
+    "id": "regression-product-without-eligibility",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLRankingRequest",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "requestId": "ranking-demo-1",
+      "scope": "PRODUCT",
+      "candidateIds": [
+        "working-capital",
+        "credit-line",
+        "overdraft"
+      ],
+      "candidateSetDigest": "64dd623fdfffbf0fe7fad4b9a09b5ebde4c2caa4e8e3139a131801f5f36e4a88",
+      "catalogVersion": 1,
+      "stage": "DRAFT",
+      "contextCategory": "SME_GENERAL",
+      "fundingPurpose": "WORKING_CAPITAL",
+      "contextText": "Оборотные средства",
+      "candidateTexts": [
+        {
+          "itemId": "working-capital",
+          "text": "Утверждённое описание working-capital"
+        },
+        {
+          "itemId": "credit-line",
+          "text": "Утверждённое описание credit-line"
+        },
+        {
+          "itemId": "overdraft",
+          "text": "Утверждённое описание overdraft"
+        }
+      ]
+    }
+  },
+  {
+    "id": "regression-duplicate-ranked-id",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLRankingResult",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "requestId": "ranking-demo-1",
+      "scope": "PRODUCT",
+      "rankedIds": [
+        "overdraft",
+        "overdraft"
+      ],
+      "candidateSetDigest": "64dd623fdfffbf0fe7fad4b9a09b5ebde4c2caa4e8e3139a131801f5f36e4a88",
+      "exposureId": "exposure-demo-1",
+      "releaseId": "rules-products-1",
+      "mode": "RULES",
+      "reasonCategory": "FIT_TO_PURPOSE"
+    }
+  },
+  {
+    "id": "regression-answer-without-source",
+    "contract": "contracts/public.openapi.json",
+    "schema": "MLAssistantResponse",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "conversationId": "conversation-demo-1",
+      "messageId": "message-demo-1",
+      "status": "ANSWER",
+      "answer": "В демонстрационном кабинете сведения можно сохранить в черновике.",
+      "citations": [],
+      "releaseId": "rag-demo-release-1",
+      "bundleDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kbEpoch": 1
+    }
+  },
+  {
+    "id": "regression-search-only-generated-answer",
+    "contract": "contracts/public.openapi.json",
+    "schema": "MLAssistantResponse",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "conversationId": "conversation-demo-1",
+      "messageId": "message-demo-1",
+      "status": "SEARCH_ONLY",
+      "answer": "В демонстрационном кабинете сведения можно сохранить в черновике.",
+      "citations": [
+        {
+          "documentId": "faq-draft",
+          "documentVersion": 1,
+          "chunkId": "faq-draft-v1-1",
+          "title": "Сохранение черновика",
+          "locator": "Раздел 1",
+          "sourcePath": "/api/v1/knowledge/faq-draft/versions/1"
+        }
+      ],
+      "releaseId": "rag-demo-release-1",
+      "bundleDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kbEpoch": 1
+    }
+  },
+  {
+    "id": "regression-external-citation-url",
+    "contract": "contracts/public.openapi.json",
+    "schema": "MLAssistantResponse",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "conversationId": "conversation-demo-1",
+      "messageId": "message-demo-1",
+      "status": "ANSWER",
+      "answer": "В демонстрационном кабинете сведения можно сохранить в черновике.",
+      "citations": [
+        {
+          "documentId": "faq-draft",
+          "documentVersion": 1,
+          "chunkId": "faq-draft-v1-1",
+          "title": "Сохранение черновика",
+          "locator": "Раздел 1",
+          "sourcePath": "https://untrusted.example/"
+        }
+      ],
+      "releaseId": "rag-demo-release-1",
+      "bundleDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "kbEpoch": 1
+    }
+  },
+  {
+    "id": "regression-forged-approval-actor",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLApprovalInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "decision": "APPROVE",
+      "reviewRole": "VALIDATOR",
+      "bundleDigest": "f2e857c0e04a5b95a25ec687c6fcc4ed28fe68cfdc69975c86c8aedc29d1b1cd",
+      "evaluationDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "policyVersion": "dev-demo-1",
+      "expiresAt": "2026-10-27T10:00:00Z",
+      "comment": "Synthetic schema fixture; no release is actually approved.",
+      "actorId": "risk-owner"
+    }
+  },
+  {
+    "id": "regression-risk-without-feature-registry",
+    "contract": "contracts/release-manifest.schema.json",
+    "schema": "ReleaseManifest",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "releaseId": "risk-demo-release-1",
+      "family": "RISK",
+      "createdBy": "author-demo",
+      "createdAt": "2026-10-20T10:00:00Z",
+      "imageDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "datasetDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "evaluationDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "policyVersion": "dev-demo-1",
+      "assets": {
+        "model": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "preprocessor": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      },
+      "featureSchemaVersion": 2,
+      "scoreKind": "BANKRUPTCY_PROXY"
+    }
+  },
+  {
+    "id": "regression-valid-rag-manifest",
+    "contract": "contracts/release-manifest.schema.json",
+    "schema": "ReleaseManifest",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "releaseId": "rag-demo-release-1",
+      "family": "RAG_INDEX",
+      "createdBy": "author-demo",
+      "createdAt": "2026-10-20T10:00:00Z",
+      "imageDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "datasetDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "evaluationDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "policyVersion": "dev-demo-1",
+      "assets": {
+        "corpus": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "embedding": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "sparseConfig": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "reranker": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "tokenizer": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "prompt": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "retrievalConfig": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "generator": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      },
+      "collectionName": "kb_fixture_1",
+      "corpusCutoff": "2026-10-20T10:00:00Z",
+      "kbEpoch": 1
+    }
+  },
+  {
+    "id": "regression-rag-without-embedding",
+    "contract": "contracts/release-manifest.schema.json",
+    "schema": "ReleaseManifest",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "releaseId": "rag-demo-release-1",
+      "family": "RAG_INDEX",
+      "createdBy": "author-demo",
+      "createdAt": "2026-10-20T10:00:00Z",
+      "imageDigest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "datasetDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "evaluationDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "policyVersion": "dev-demo-1",
+      "assets": {
+        "corpus": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "sparseConfig": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "reranker": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "tokenizer": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "prompt": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "retrievalConfig": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "generator": {
+          "bucket": "ml-design-fixtures",
+          "key": "synthetic/artifact.bin",
+          "objectVersion": "fixture-1",
+          "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      },
+      "collectionName": "kb_fixture_1",
+      "corpusCutoff": "2026-10-20T10:00:00Z",
+      "kbEpoch": 1
+    }
+  },
+  {
+    "id": "regression-valid-event-MLUpdateRequested",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "eventId": "event-MLUpdateRequested",
+      "eventType": "MLUpdateRequested",
+      "schemaVersion": 1,
+      "aggregateId": "updateRequestId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "updateRequestId": "updateRequestId-demo",
+        "family": "RISK",
+        "triggerPolicyVersion": "triggerPolicyVersion-demo"
+      }
+    }
+  },
+  {
+    "id": "regression-invalid-event-extra-MLUpdateRequested",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "eventId": "event-MLUpdateRequested",
+      "eventType": "MLUpdateRequested",
+      "schemaVersion": 1,
+      "aggregateId": "updateRequestId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "updateRequestId": "updateRequestId-demo",
+        "family": "RISK",
+        "triggerPolicyVersion": "triggerPolicyVersion-demo",
+        "rawCustomerText": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "regression-valid-event-MLReleaseValidated",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "eventId": "event-MLReleaseValidated",
+      "eventType": "MLReleaseValidated",
+      "schemaVersion": 1,
+      "aggregateId": "releaseId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "releaseId": "releaseId-demo",
+        "bundleDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "evaluationDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "policyVersion": "policyVersion-demo"
+      }
+    }
+  },
+  {
+    "id": "regression-invalid-event-extra-MLReleaseValidated",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "eventId": "event-MLReleaseValidated",
+      "eventType": "MLReleaseValidated",
+      "schemaVersion": 1,
+      "aggregateId": "releaseId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "releaseId": "releaseId-demo",
+        "bundleDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "evaluationDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "policyVersion": "policyVersion-demo",
+        "rawCustomerText": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "regression-valid-event-MLReleaseApprovalRecorded",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "eventId": "event-MLReleaseApprovalRecorded",
+      "eventType": "MLReleaseApprovalRecorded",
+      "schemaVersion": 1,
+      "aggregateId": "releaseId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "releaseId": "releaseId-demo",
+        "approvalId": "approvalId-demo",
+        "decision": "APPROVE",
+        "bundleDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    }
+  },
+  {
+    "id": "regression-invalid-event-extra-MLReleaseApprovalRecorded",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "eventId": "event-MLReleaseApprovalRecorded",
+      "eventType": "MLReleaseApprovalRecorded",
+      "schemaVersion": 1,
+      "aggregateId": "releaseId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "releaseId": "releaseId-demo",
+        "approvalId": "approvalId-demo",
+        "decision": "APPROVE",
+        "bundleDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "rawCustomerText": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "regression-valid-event-MLReleaseActivated",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "eventId": "event-MLReleaseActivated",
+      "eventType": "MLReleaseActivated",
+      "schemaVersion": 1,
+      "aggregateId": "releaseId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "releaseId": "releaseId-demo",
+        "bundleDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "routingVersion": 1,
+        "stage": "SHADOW"
+      }
+    }
+  },
+  {
+    "id": "regression-invalid-event-extra-MLReleaseActivated",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "eventId": "event-MLReleaseActivated",
+      "eventType": "MLReleaseActivated",
+      "schemaVersion": 1,
+      "aggregateId": "releaseId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "releaseId": "releaseId-demo",
+        "bundleDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "routingVersion": 1,
+        "stage": "SHADOW",
+        "rawCustomerText": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "regression-valid-event-MLRollbackCompleted",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "eventId": "event-MLRollbackCompleted",
+      "eventType": "MLRollbackCompleted",
+      "schemaVersion": 1,
+      "aggregateId": "releaseId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "releaseId": "releaseId-demo",
+        "previousReleaseId": "previousReleaseId-demo",
+        "routingVersion": 1,
+        "reasonCode": "reasonCode-demo"
+      }
+    }
+  },
+  {
+    "id": "regression-invalid-event-extra-MLRollbackCompleted",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "eventId": "event-MLRollbackCompleted",
+      "eventType": "MLRollbackCompleted",
+      "schemaVersion": 1,
+      "aggregateId": "releaseId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "releaseId": "releaseId-demo",
+        "previousReleaseId": "previousReleaseId-demo",
+        "routingVersion": 1,
+        "reasonCode": "reasonCode-demo",
+        "rawCustomerText": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "regression-valid-event-KBDocumentPublished",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "eventId": "event-KBDocumentPublished",
+      "eventType": "KBDocumentPublished",
+      "schemaVersion": 1,
+      "aggregateId": "corpusId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "corpusId": "corpusId-demo",
+        "documentId": "documentId-demo",
+        "documentVersion": 1,
+        "objectDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    }
+  },
+  {
+    "id": "regression-invalid-event-extra-KBDocumentPublished",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "eventId": "event-KBDocumentPublished",
+      "eventType": "KBDocumentPublished",
+      "schemaVersion": 1,
+      "aggregateId": "corpusId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "corpusId": "corpusId-demo",
+        "documentId": "documentId-demo",
+        "documentVersion": 1,
+        "objectDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "rawCustomerText": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "regression-valid-event-KBDocumentRevoked",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "eventId": "event-KBDocumentRevoked",
+      "eventType": "KBDocumentRevoked",
+      "schemaVersion": 1,
+      "aggregateId": "corpusId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "corpusId": "corpusId-demo",
+        "documentId": "documentId-demo",
+        "documentVersion": 1,
+        "epoch": 1,
+        "revocationId": "revocationId-demo"
+      }
+    }
+  },
+  {
+    "id": "regression-invalid-event-extra-KBDocumentRevoked",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "eventId": "event-KBDocumentRevoked",
+      "eventType": "KBDocumentRevoked",
+      "schemaVersion": 1,
+      "aggregateId": "corpusId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "corpusId": "corpusId-demo",
+        "documentId": "documentId-demo",
+        "documentVersion": 1,
+        "epoch": 1,
+        "revocationId": "revocationId-demo",
+        "rawCustomerText": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "regression-valid-event-RecommendationExposureRecorded",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "eventId": "event-RecommendationExposureRecorded",
+      "eventType": "RecommendationExposureRecorded",
+      "schemaVersion": 1,
+      "aggregateId": "exposureId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "exposureId": "exposureId-demo",
+        "scope": "PRODUCT",
+        "candidateSetDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "releaseId": "releaseId-demo"
+      }
+    }
+  },
+  {
+    "id": "regression-invalid-event-extra-RecommendationExposureRecorded",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "eventId": "event-RecommendationExposureRecorded",
+      "eventType": "RecommendationExposureRecorded",
+      "schemaVersion": 1,
+      "aggregateId": "exposureId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "exposureId": "exposureId-demo",
+        "scope": "PRODUCT",
+        "candidateSetDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "releaseId": "releaseId-demo",
+        "rawCustomerText": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "regression-valid-event-RecommendationFeedbackRecorded",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "eventId": "event-RecommendationFeedbackRecorded",
+      "eventType": "RecommendationFeedbackRecorded",
+      "schemaVersion": 1,
+      "aggregateId": "exposureId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "exposureId": "exposureId-demo",
+        "clientEventId": "clientEventId-demo",
+        "itemId": "itemId-demo",
+        "action": "VIEW"
+      }
+    }
+  },
+  {
+    "id": "regression-invalid-event-extra-RecommendationFeedbackRecorded",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "previous ML schema fixture, adapted only for explicit1.4 inputs",
+    "value": {
+      "eventId": "event-RecommendationFeedbackRecorded",
+      "eventType": "RecommendationFeedbackRecorded",
+      "schemaVersion": 1,
+      "aggregateId": "exposureId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "exposureId": "exposureId-demo",
+        "clientEventId": "clientEventId-demo",
+        "itemId": "itemId-demo",
+        "action": "VIEW",
+        "rawCustomerText": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "demo-financial-valid",
+    "contract": "contracts/public.openapi.json",
+    "schema": "MLFinancialInput",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "reportingStandard": "DEMO",
+      "currency": "RUB",
+      "values": {
+        "totalAssetsMinor": 100000000,
+        "totalLiabilitiesMinor": 60000000,
+        "currentAssetsMinor": 50000000,
+        "currentLiabilitiesMinor": 25000000,
+        "equityMinor": 40000000,
+        "revenueMinor": 150000000,
+        "netProfitMinor": 12000000,
+        "ebitMinor": 18000000
+      },
+      "sourceDocumentReferences": []
+    }
+  },
+  {
+    "id": "finance-standard-RSBU",
+    "contract": "contracts/public.openapi.json",
+    "schema": "MLFinancialInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "reportingStandard": "RSBU",
+      "currency": "RUB",
+      "values": {
+        "totalAssetsMinor": 100000000,
+        "totalLiabilitiesMinor": 60000000,
+        "currentAssetsMinor": 50000000,
+        "currentLiabilitiesMinor": 25000000,
+        "equityMinor": 40000000,
+        "revenueMinor": 150000000,
+        "netProfitMinor": 12000000,
+        "ebitMinor": 18000000
+      },
+      "sourceDocumentReferences": []
+    }
+  },
+  {
+    "id": "finance-standard-IFRS",
+    "contract": "contracts/public.openapi.json",
+    "schema": "MLFinancialInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "reportingStandard": "IFRS",
+      "currency": "RUB",
+      "values": {
+        "totalAssetsMinor": 100000000,
+        "totalLiabilitiesMinor": 60000000,
+        "currentAssetsMinor": 50000000,
+        "currentLiabilitiesMinor": 25000000,
+        "equityMinor": 40000000,
+        "revenueMinor": 150000000,
+        "netProfitMinor": 12000000,
+        "ebitMinor": 18000000
+      },
+      "sourceDocumentReferences": []
+    }
+  },
+  {
+    "id": "fractional-minor-totalAssetsMinor",
+    "contract": "contracts/public.openapi.json",
+    "schema": "MLFinancialInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "reportingStandard": "DEMO",
+      "currency": "RUB",
+      "values": {
+        "totalAssetsMinor": 1.5,
+        "totalLiabilitiesMinor": 60000000,
+        "currentAssetsMinor": 50000000,
+        "currentLiabilitiesMinor": 25000000,
+        "equityMinor": 40000000,
+        "revenueMinor": 150000000,
+        "netProfitMinor": 12000000,
+        "ebitMinor": 18000000
+      },
+      "sourceDocumentReferences": []
+    }
+  },
+  {
+    "id": "fractional-minor-totalLiabilitiesMinor",
+    "contract": "contracts/public.openapi.json",
+    "schema": "MLFinancialInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "reportingStandard": "DEMO",
+      "currency": "RUB",
+      "values": {
+        "totalAssetsMinor": 100000000,
+        "totalLiabilitiesMinor": 1.5,
+        "currentAssetsMinor": 50000000,
+        "currentLiabilitiesMinor": 25000000,
+        "equityMinor": 40000000,
+        "revenueMinor": 150000000,
+        "netProfitMinor": 12000000,
+        "ebitMinor": 18000000
+      },
+      "sourceDocumentReferences": []
+    }
+  },
+  {
+    "id": "fractional-minor-equityMinor",
+    "contract": "contracts/public.openapi.json",
+    "schema": "MLFinancialInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "reportingStandard": "DEMO",
+      "currency": "RUB",
+      "values": {
+        "totalAssetsMinor": 100000000,
+        "totalLiabilitiesMinor": 60000000,
+        "currentAssetsMinor": 50000000,
+        "currentLiabilitiesMinor": 25000000,
+        "equityMinor": 1.5,
+        "revenueMinor": 150000000,
+        "netProfitMinor": 12000000,
+        "ebitMinor": 18000000
+      },
+      "sourceDocumentReferences": []
+    }
+  },
+  {
+    "id": "fractional-minor-netProfitMinor",
+    "contract": "contracts/public.openapi.json",
+    "schema": "MLFinancialInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "reportingStandard": "DEMO",
+      "currency": "RUB",
+      "values": {
+        "totalAssetsMinor": 100000000,
+        "totalLiabilitiesMinor": 60000000,
+        "currentAssetsMinor": 50000000,
+        "currentLiabilitiesMinor": 25000000,
+        "equityMinor": 40000000,
+        "revenueMinor": 150000000,
+        "netProfitMinor": 1.5,
+        "ebitMinor": 18000000
+      },
+      "sourceDocumentReferences": []
+    }
+  },
+  {
+    "id": "forged-financial-confirmed",
+    "contract": "contracts/public.openapi.json",
+    "schema": "MLFinancialInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "reportingStandard": "DEMO",
+      "currency": "RUB",
+      "values": {
+        "totalAssetsMinor": 100000000,
+        "totalLiabilitiesMinor": 60000000,
+        "currentAssetsMinor": 50000000,
+        "currentLiabilitiesMinor": 25000000,
+        "equityMinor": 40000000,
+        "revenueMinor": 150000000,
+        "netProfitMinor": 12000000,
+        "ebitMinor": 18000000
+      },
+      "sourceDocumentReferences": [],
+      "confirmed": true
+    }
+  },
+  {
+    "id": "feature-input-complete",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLFeatureSnapshotInput",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "applicationId": "app-a",
+      "submissionSnapshotId": "sub-a",
+      "financialStatementVersion": 1,
+      "asOf": "2026-10-20T00:00:00Z",
+      "purpose": "DEMO_RESEARCH",
+      "financialSnapshotId": "fin-a",
+      "financialSnapshotDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "financialStatement": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "reportingStandard": "DEMO",
+        "currency": "RUB",
+        "values": {
+          "totalAssetsMinor": 100000000,
+          "totalLiabilitiesMinor": 60000000,
+          "currentAssetsMinor": 50000000,
+          "currentLiabilitiesMinor": 25000000,
+          "equityMinor": 40000000,
+          "revenueMinor": 150000000,
+          "netProfitMinor": 12000000,
+          "ebitMinor": 18000000
+        },
+        "sourceDocumentReferences": []
+      }
+    }
+  },
+  {
+    "id": "feature-input-needs-financialSnapshotId",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLFeatureSnapshotInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "applicationId": "app-a",
+      "submissionSnapshotId": "sub-a",
+      "financialStatementVersion": 1,
+      "asOf": "2026-10-20T00:00:00Z",
+      "purpose": "DEMO_RESEARCH",
+      "financialSnapshotDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "financialStatement": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "reportingStandard": "DEMO",
+        "currency": "RUB",
+        "values": {
+          "totalAssetsMinor": 100000000,
+          "totalLiabilitiesMinor": 60000000,
+          "currentAssetsMinor": 50000000,
+          "currentLiabilitiesMinor": 25000000,
+          "equityMinor": 40000000,
+          "revenueMinor": 150000000,
+          "netProfitMinor": 12000000,
+          "ebitMinor": 18000000
+        },
+        "sourceDocumentReferences": []
+      }
+    }
+  },
+  {
+    "id": "feature-input-needs-financialSnapshotDigest",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLFeatureSnapshotInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "applicationId": "app-a",
+      "submissionSnapshotId": "sub-a",
+      "financialStatementVersion": 1,
+      "asOf": "2026-10-20T00:00:00Z",
+      "purpose": "DEMO_RESEARCH",
+      "financialSnapshotId": "fin-a",
+      "financialStatement": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "reportingStandard": "DEMO",
+        "currency": "RUB",
+        "values": {
+          "totalAssetsMinor": 100000000,
+          "totalLiabilitiesMinor": 60000000,
+          "currentAssetsMinor": 50000000,
+          "currentLiabilitiesMinor": 25000000,
+          "equityMinor": 40000000,
+          "revenueMinor": 150000000,
+          "netProfitMinor": 12000000,
+          "ebitMinor": 18000000
+        },
+        "sourceDocumentReferences": []
+      }
+    }
+  },
+  {
+    "id": "feature-input-needs-financialStatement",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLFeatureSnapshotInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "applicationId": "app-a",
+      "submissionSnapshotId": "sub-a",
+      "financialStatementVersion": 1,
+      "asOf": "2026-10-20T00:00:00Z",
+      "purpose": "DEMO_RESEARCH",
+      "financialSnapshotId": "fin-a",
+      "financialSnapshotDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  },
+  {
+    "id": "typed-package-SubmissionPackage",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "SubmissionPackage",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "kind": "SUBMISSION",
+      "productId": "working-capital",
+      "productVersion": 1,
+      "terms": {
+        "purpose": "Оборотные средства",
+        "amount": {
+          "amountMinor": 10000000,
+          "currency": "RUB"
+        },
+        "termMonths": 12
+      },
+      "business": {},
+      "documentReferences": [],
+      "consentRecordIds": [
+        "consent-a"
+      ],
+      "requirementsVersion": 1,
+      "financialStatementVersion": 1,
+      "financialSnapshotId": "fin-a",
+      "financialStatement": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "reportingStandard": "DEMO",
+        "currency": "RUB",
+        "values": {
+          "totalAssetsMinor": 100000000,
+          "totalLiabilitiesMinor": 60000000,
+          "currentAssetsMinor": 50000000,
+          "currentLiabilitiesMinor": 25000000,
+          "equityMinor": 40000000,
+          "revenueMinor": 150000000,
+          "netProfitMinor": 12000000,
+          "ebitMinor": 18000000
+        },
+        "sourceDocumentReferences": []
+      }
+    }
+  },
+  {
+    "id": "typed-package-needs-SubmissionPackage-financialStatementVersion",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "SubmissionPackage",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "kind": "SUBMISSION",
+      "productId": "working-capital",
+      "productVersion": 1,
+      "terms": {
+        "purpose": "Оборотные средства",
+        "amount": {
+          "amountMinor": 10000000,
+          "currency": "RUB"
+        },
+        "termMonths": 12
+      },
+      "business": {},
+      "documentReferences": [],
+      "consentRecordIds": [
+        "consent-a"
+      ],
+      "requirementsVersion": 1,
+      "financialSnapshotId": "fin-a",
+      "financialStatement": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "reportingStandard": "DEMO",
+        "currency": "RUB",
+        "values": {
+          "totalAssetsMinor": 100000000,
+          "totalLiabilitiesMinor": 60000000,
+          "currentAssetsMinor": 50000000,
+          "currentLiabilitiesMinor": 25000000,
+          "equityMinor": 40000000,
+          "revenueMinor": 150000000,
+          "netProfitMinor": 12000000,
+          "ebitMinor": 18000000
+        },
+        "sourceDocumentReferences": []
+      }
+    }
+  },
+  {
+    "id": "typed-package-needs-SubmissionPackage-financialSnapshotId",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "SubmissionPackage",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "kind": "SUBMISSION",
+      "productId": "working-capital",
+      "productVersion": 1,
+      "terms": {
+        "purpose": "Оборотные средства",
+        "amount": {
+          "amountMinor": 10000000,
+          "currency": "RUB"
+        },
+        "termMonths": 12
+      },
+      "business": {},
+      "documentReferences": [],
+      "consentRecordIds": [
+        "consent-a"
+      ],
+      "requirementsVersion": 1,
+      "financialStatementVersion": 1,
+      "financialStatement": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "reportingStandard": "DEMO",
+        "currency": "RUB",
+        "values": {
+          "totalAssetsMinor": 100000000,
+          "totalLiabilitiesMinor": 60000000,
+          "currentAssetsMinor": 50000000,
+          "currentLiabilitiesMinor": 25000000,
+          "equityMinor": 40000000,
+          "revenueMinor": 150000000,
+          "netProfitMinor": 12000000,
+          "ebitMinor": 18000000
+        },
+        "sourceDocumentReferences": []
+      }
+    }
+  },
+  {
+    "id": "typed-package-needs-SubmissionPackage-financialStatement",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "SubmissionPackage",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "kind": "SUBMISSION",
+      "productId": "working-capital",
+      "productVersion": 1,
+      "terms": {
+        "purpose": "Оборотные средства",
+        "amount": {
+          "amountMinor": 10000000,
+          "currency": "RUB"
+        },
+        "termMonths": 12
+      },
+      "business": {},
+      "documentReferences": [],
+      "consentRecordIds": [
+        "consent-a"
+      ],
+      "requirementsVersion": 1,
+      "financialStatementVersion": 1,
+      "financialSnapshotId": "fin-a"
+    }
+  },
+  {
+    "id": "typed-package-AmendmentPackage",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "AmendmentPackage",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "kind": "AMENDMENT",
+      "requestId": "rfi-a",
+      "requestVersion": 1,
+      "draftVersion": 1,
+      "requirementsVersion": 1,
+      "documentReferences": [],
+      "financialStatementVersion": 1,
+      "financialSnapshotId": "fin-a",
+      "financialStatement": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "reportingStandard": "DEMO",
+        "currency": "RUB",
+        "values": {
+          "totalAssetsMinor": 100000000,
+          "totalLiabilitiesMinor": 60000000,
+          "currentAssetsMinor": 50000000,
+          "currentLiabilitiesMinor": 25000000,
+          "equityMinor": 40000000,
+          "revenueMinor": 150000000,
+          "netProfitMinor": 12000000,
+          "ebitMinor": 18000000
+        },
+        "sourceDocumentReferences": []
+      }
+    }
+  },
+  {
+    "id": "typed-package-needs-AmendmentPackage-financialStatementVersion",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "AmendmentPackage",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "kind": "AMENDMENT",
+      "requestId": "rfi-a",
+      "requestVersion": 1,
+      "draftVersion": 1,
+      "requirementsVersion": 1,
+      "documentReferences": [],
+      "financialSnapshotId": "fin-a",
+      "financialStatement": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "reportingStandard": "DEMO",
+        "currency": "RUB",
+        "values": {
+          "totalAssetsMinor": 100000000,
+          "totalLiabilitiesMinor": 60000000,
+          "currentAssetsMinor": 50000000,
+          "currentLiabilitiesMinor": 25000000,
+          "equityMinor": 40000000,
+          "revenueMinor": 150000000,
+          "netProfitMinor": 12000000,
+          "ebitMinor": 18000000
+        },
+        "sourceDocumentReferences": []
+      }
+    }
+  },
+  {
+    "id": "typed-package-needs-AmendmentPackage-financialSnapshotId",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "AmendmentPackage",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "kind": "AMENDMENT",
+      "requestId": "rfi-a",
+      "requestVersion": 1,
+      "draftVersion": 1,
+      "requirementsVersion": 1,
+      "documentReferences": [],
+      "financialStatementVersion": 1,
+      "financialStatement": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "reportingStandard": "DEMO",
+        "currency": "RUB",
+        "values": {
+          "totalAssetsMinor": 100000000,
+          "totalLiabilitiesMinor": 60000000,
+          "currentAssetsMinor": 50000000,
+          "currentLiabilitiesMinor": 25000000,
+          "equityMinor": 40000000,
+          "revenueMinor": 150000000,
+          "netProfitMinor": 12000000,
+          "ebitMinor": 18000000
+        },
+        "sourceDocumentReferences": []
+      }
+    }
+  },
+  {
+    "id": "typed-package-needs-AmendmentPackage-financialStatement",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "AmendmentPackage",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "kind": "AMENDMENT",
+      "requestId": "rfi-a",
+      "requestVersion": 1,
+      "draftVersion": 1,
+      "requirementsVersion": 1,
+      "documentReferences": [],
+      "financialStatementVersion": 1,
+      "financialSnapshotId": "fin-a"
+    }
+  },
+  {
+    "id": "rag-context-valid",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLRagInput",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "requestId": "r-a",
+      "companyId": "company-a",
+      "subjectRef": "actor-a",
+      "message": "Как ответить на уточнение?",
+      "kbEpoch": 1,
+      "allowedSources": [
+        {
+          "documentId": "kb-a",
+          "documentVersion": 1
+        }
+      ]
+    }
+  },
+  {
+    "id": "rag-context-needs-companyId",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLRagInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "requestId": "r-a",
+      "subjectRef": "actor-a",
+      "message": "Как ответить на уточнение?",
+      "kbEpoch": 1,
+      "allowedSources": [
+        {
+          "documentId": "kb-a",
+          "documentVersion": 1
+        }
+      ]
+    }
+  },
+  {
+    "id": "rag-context-needs-subjectRef",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLRagInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "requestId": "r-a",
+      "companyId": "company-a",
+      "message": "Как ответить на уточнение?",
+      "kbEpoch": 1,
+      "allowedSources": [
+        {
+          "documentId": "kb-a",
+          "documentVersion": 1
+        }
+      ]
+    }
+  },
+  {
+    "id": "rag-context-needs-allowedSources",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLRagInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "requestId": "r-a",
+      "companyId": "company-a",
+      "subjectRef": "actor-a",
+      "message": "Как ответить на уточнение?",
+      "kbEpoch": 1
+    }
+  },
+  {
+    "id": "rag-context-needs-kbEpoch",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLRagInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "requestId": "r-a",
+      "companyId": "company-a",
+      "subjectRef": "actor-a",
+      "message": "Как ответить на уточнение?",
+      "allowedSources": [
+        {
+          "documentId": "kb-a",
+          "documentVersion": 1
+        }
+      ]
+    }
+  },
+  {
+    "id": "rag-no-tool-permissions",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLRagInput",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "requestId": "r-a",
+      "companyId": "company-a",
+      "subjectRef": "actor-a",
+      "message": "Как ответить на уточнение?",
+      "kbEpoch": 1,
+      "allowedSources": [
+        {
+          "documentId": "kb-a",
+          "documentVersion": 1
+        }
+      ],
+      "toolPermissions": [
+        "accept-offer"
+      ]
+    }
+  },
+  {
+    "id": "ranking-request-text-valid",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLRankingRequest",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "requestId": "rank-a",
+      "scope": "PRODUCT",
+      "candidateIds": [
+        "working-capital",
+        "credit-line"
+      ],
+      "candidateSetDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "catalogVersion": 1,
+      "eligibilityVersion": 1,
+      "stage": "NEED",
+      "contextCategory": "SME",
+      "fundingPurpose": "Оборотные средства",
+      "contextText": "Закупка товара",
+      "candidateTexts": [
+        {
+          "itemId": "working-capital",
+          "text": "Разовая закупка товара"
+        },
+        {
+          "itemId": "credit-line",
+          "text": "Повторное финансирование"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ranking-request-needs-contextText",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLRankingRequest",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "requestId": "rank-a",
+      "scope": "PRODUCT",
+      "candidateIds": [
+        "working-capital",
+        "credit-line"
+      ],
+      "candidateSetDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "catalogVersion": 1,
+      "eligibilityVersion": 1,
+      "stage": "NEED",
+      "contextCategory": "SME",
+      "fundingPurpose": "Оборотные средства",
+      "candidateTexts": [
+        {
+          "itemId": "working-capital",
+          "text": "Разовая закупка товара"
+        },
+        {
+          "itemId": "credit-line",
+          "text": "Повторное финансирование"
+        }
+      ]
+    }
+  },
+  {
+    "id": "ranking-request-needs-candidateTexts",
+    "contract": "contracts/internal.openapi.json",
+    "schema": "MLRankingRequest",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "requestId": "rank-a",
+      "scope": "PRODUCT",
+      "candidateIds": [
+        "working-capital",
+        "credit-line"
+      ],
+      "candidateSetDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "catalogVersion": 1,
+      "eligibilityVersion": 1,
+      "stage": "NEED",
+      "contextCategory": "SME",
+      "fundingPurpose": "Оборотные средства",
+      "contextText": "Закупка товара"
+    }
+  },
+  {
+    "id": "metadata-absent-Feed",
+    "contract": "contracts/public.openapi.json",
+    "schema": "Feed",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "cards": [],
+      "rankingMode": "RULES"
+    }
+  },
+  {
+    "id": "metadata-present-Feed",
+    "contract": "contracts/public.openapi.json",
+    "schema": "Feed",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "cards": [],
+      "rankingMode": "RULES",
+      "rankingMetadata": {
+        "exposureId": "ex-a",
+        "releaseId": "rules-v1",
+        "mode": "RULES",
+        "candidateSetDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "catalogVersion": 1
+      }
+    }
+  },
+  {
+    "id": "metadata-absent-RecommendationList",
+    "contract": "contracts/public.openapi.json",
+    "schema": "RecommendationList",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "items": []
+    }
+  },
+  {
+    "id": "metadata-present-RecommendationList",
+    "contract": "contracts/public.openapi.json",
+    "schema": "RecommendationList",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "items": [],
+      "rankingMetadata": {
+        "exposureId": "ex-a",
+        "releaseId": "rules-v1",
+        "mode": "RULES",
+        "candidateSetDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "catalogVersion": 1
+      }
+    }
+  },
+  {
+    "id": "event-credit-ApplicationWithdrawn",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000014",
+      "eventType": "ApplicationWithdrawn",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "caseId": "synthetic-caseId",
+        "caseVersion": 1,
+        "externalRequestId": "synthetic-externalRequestId"
+      }
+    }
+  },
+  {
+    "id": "event-strict-credit-ApplicationWithdrawn",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000014",
+      "eventType": "ApplicationWithdrawn",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "caseId": "synthetic-caseId",
+        "caseVersion": 1,
+        "externalRequestId": "synthetic-externalRequestId",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-credit-CaseAccepted",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000002",
+      "eventType": "CaseAccepted",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "caseId": "synthetic-caseId",
+        "caseVersion": 1,
+        "externalRequestId": "synthetic-externalRequestId",
+        "clientStage": "REVIEW"
+      }
+    }
+  },
+  {
+    "id": "event-strict-credit-CaseAccepted",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000002",
+      "eventType": "CaseAccepted",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "caseId": "synthetic-caseId",
+        "caseVersion": 1,
+        "externalRequestId": "synthetic-externalRequestId",
+        "clientStage": "REVIEW",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-credit-CaseStateChanged",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000003",
+      "eventType": "CaseStateChanged",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "caseId": "synthetic-caseId",
+        "caseVersion": 1,
+        "clientStage": "REVIEW"
+      }
+    }
+  },
+  {
+    "id": "event-strict-credit-CaseStateChanged",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000003",
+      "eventType": "CaseStateChanged",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "caseId": "synthetic-caseId",
+        "caseVersion": 1,
+        "clientStage": "REVIEW",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-credit-ConsentRevoked",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000016",
+      "eventType": "ConsentRevoked",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "consentId": "synthetic-consentId",
+        "consentVersion": 1,
+        "effectiveAt": "2026-10-20T06:00:00Z",
+        "purpose": "synthetic-purpose"
+      }
+    }
+  },
+  {
+    "id": "event-strict-credit-ConsentRevoked",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000016",
+      "eventType": "ConsentRevoked",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "consentId": "synthetic-consentId",
+        "consentVersion": 1,
+        "effectiveAt": "2026-10-20T06:00:00Z",
+        "purpose": "synthetic-purpose",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-credit-DecisionRecorded",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000009",
+      "eventType": "DecisionRecorded",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "caseId": "synthetic-caseId",
+        "caseVersion": 1,
+        "decisionId": "synthetic-decisionId",
+        "outcome": "APPROVED",
+        "offerIds": [
+          "synthetic-reference"
+        ]
+      }
+    }
+  },
+  {
+    "id": "event-strict-credit-DecisionRecorded",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000009",
+      "eventType": "DecisionRecorded",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "caseId": "synthetic-caseId",
+        "caseVersion": 1,
+        "decisionId": "synthetic-decisionId",
+        "outcome": "APPROVED",
+        "offerIds": [
+          "synthetic-reference"
+        ],
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-credit-DocumentExtractionReady",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000008",
+      "eventType": "DocumentExtractionReady",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "documentId": "synthetic-documentId",
+        "objectVersion": "synthetic-objectVersion",
+        "extractionId": "synthetic-extractionId",
+        "engineVersion": "synthetic-engineVersion"
+      }
+    }
+  },
+  {
+    "id": "event-strict-credit-DocumentExtractionReady",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000008",
+      "eventType": "DocumentExtractionReady",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "documentId": "synthetic-documentId",
+        "objectVersion": "synthetic-objectVersion",
+        "extractionId": "synthetic-extractionId",
+        "engineVersion": "synthetic-engineVersion",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-credit-DocumentProcessingRequested",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000006",
+      "eventType": "DocumentProcessingRequested",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "jobId": "synthetic-jobId",
+        "documentId": "synthetic-documentId",
+        "objectVersion": "synthetic-objectVersion",
+        "jobType": "SCAN"
+      }
+    }
+  },
+  {
+    "id": "event-strict-credit-DocumentProcessingRequested",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000006",
+      "eventType": "DocumentProcessingRequested",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "jobId": "synthetic-jobId",
+        "documentId": "synthetic-documentId",
+        "objectVersion": "synthetic-objectVersion",
+        "jobType": "SCAN",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-credit-DocumentScanCompleted",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000007",
+      "eventType": "DocumentScanCompleted",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "documentId": "synthetic-documentId",
+        "objectVersion": "synthetic-objectVersion",
+        "verdict": "CLEAN",
+        "engineVersion": "synthetic-engineVersion"
+      }
+    }
+  },
+  {
+    "id": "event-strict-credit-DocumentScanCompleted",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000007",
+      "eventType": "DocumentScanCompleted",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "documentId": "synthetic-documentId",
+        "objectVersion": "synthetic-objectVersion",
+        "verdict": "CLEAN",
+        "engineVersion": "synthetic-engineVersion",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-credit-FulfillmentCompleted",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000015",
+      "eventType": "FulfillmentCompleted",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "caseId": "synthetic-caseId",
+        "caseVersion": 1,
+        "operationId": "synthetic-operationId",
+        "resultReference": "synthetic-resultReference"
+      }
+    }
+  },
+  {
+    "id": "event-strict-credit-FulfillmentCompleted",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000015",
+      "eventType": "FulfillmentCompleted",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "caseId": "synthetic-caseId",
+        "caseVersion": 1,
+        "operationId": "synthetic-operationId",
+        "resultReference": "synthetic-resultReference",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-credit-InformationRequested",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000004",
+      "eventType": "InformationRequested",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "caseId": "synthetic-caseId",
+        "caseVersion": 1,
+        "requestId": "synthetic-requestId",
+        "requestVersion": 1,
+        "requestedItemIds": [
+          "synthetic-reference"
+        ]
+      }
+    }
+  },
+  {
+    "id": "event-strict-credit-InformationRequested",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000004",
+      "eventType": "InformationRequested",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "caseId": "synthetic-caseId",
+        "caseVersion": 1,
+        "requestId": "synthetic-requestId",
+        "requestVersion": 1,
+        "requestedItemIds": [
+          "synthetic-reference"
+        ],
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-credit-InformationResponseSubmitted",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000005",
+      "eventType": "InformationResponseSubmitted",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "requestId": "synthetic-requestId",
+        "requestVersion": 1,
+        "amendmentId": "synthetic-amendmentId",
+        "amendmentVersion": 1,
+        "operationId": "synthetic-operationId",
+        "externalRequestId": "synthetic-externalRequestId"
+      }
+    }
+  },
+  {
+    "id": "event-strict-credit-InformationResponseSubmitted",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000005",
+      "eventType": "InformationResponseSubmitted",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "requestId": "synthetic-requestId",
+        "requestVersion": 1,
+        "amendmentId": "synthetic-amendmentId",
+        "amendmentVersion": 1,
+        "operationId": "synthetic-operationId",
+        "externalRequestId": "synthetic-externalRequestId",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-credit-OfferAcceptanceRequested",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000010",
+      "eventType": "OfferAcceptanceRequested",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "offerId": "synthetic-offerId",
+        "offerVersion": 1,
+        "operationId": "synthetic-operationId",
+        "externalRequestId": "synthetic-externalRequestId"
+      }
+    }
+  },
+  {
+    "id": "event-strict-credit-OfferAcceptanceRequested",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000010",
+      "eventType": "OfferAcceptanceRequested",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "offerId": "synthetic-offerId",
+        "offerVersion": 1,
+        "operationId": "synthetic-operationId",
+        "externalRequestId": "synthetic-externalRequestId",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-credit-OfferAccepted",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000011",
+      "eventType": "OfferAccepted",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "caseId": "synthetic-caseId",
+        "caseVersion": 1,
+        "offerId": "synthetic-offerId",
+        "offerVersion": 1,
+        "externalRequestId": "synthetic-externalRequestId"
+      }
+    }
+  },
+  {
+    "id": "event-strict-credit-OfferAccepted",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000011",
+      "eventType": "OfferAccepted",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "caseId": "synthetic-caseId",
+        "caseVersion": 1,
+        "offerId": "synthetic-offerId",
+        "offerVersion": 1,
+        "externalRequestId": "synthetic-externalRequestId",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-credit-OfferExpired",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000012",
+      "eventType": "OfferExpired",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "caseId": "synthetic-caseId",
+        "caseVersion": 1,
+        "offerId": "synthetic-offerId",
+        "offerVersion": 1
+      }
+    }
+  },
+  {
+    "id": "event-strict-credit-OfferExpired",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000012",
+      "eventType": "OfferExpired",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "caseId": "synthetic-caseId",
+        "caseVersion": 1,
+        "offerId": "synthetic-offerId",
+        "offerVersion": 1,
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-credit-SubmissionRequested",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000001",
+      "eventType": "SubmissionRequested",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "submissionId": "synthetic-submissionId",
+        "snapshotVersion": 1,
+        "snapshotRef": "synthetic-snapshotRef",
+        "operationId": "synthetic-operationId",
+        "externalRequestId": "synthetic-externalRequestId"
+      }
+    }
+  },
+  {
+    "id": "event-strict-credit-SubmissionRequested",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000001",
+      "eventType": "SubmissionRequested",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "submissionId": "synthetic-submissionId",
+        "snapshotVersion": 1,
+        "snapshotRef": "synthetic-snapshotRef",
+        "operationId": "synthetic-operationId",
+        "externalRequestId": "synthetic-externalRequestId",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-credit-WithdrawalRequested",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000013",
+      "eventType": "WithdrawalRequested",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "operationId": "synthetic-operationId",
+        "externalRequestId": "synthetic-externalRequestId"
+      }
+    }
+  },
+  {
+    "id": "event-strict-credit-WithdrawalRequested",
+    "contract": "contracts/credit-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "00000000-0000-4000-8000-000000000013",
+      "eventType": "WithdrawalRequested",
+      "schemaVersion": 1,
+      "aggregateId": "synthetic-aggregateId",
+      "aggregateVersion": 1,
+      "applicationId": "synthetic-applicationId",
+      "occurredAt": "2026-10-20T06:00:00Z",
+      "correlationId": "synthetic-correlationId",
+      "causationId": "synthetic-causationId",
+      "payload": {
+        "operationId": "synthetic-operationId",
+        "externalRequestId": "synthetic-externalRequestId",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-ml-event-KBDocumentPublished",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "event-KBDocumentPublished",
+      "eventType": "KBDocumentPublished",
+      "schemaVersion": 1,
+      "aggregateId": "corpusId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "corpusId": "corpusId-demo",
+        "documentId": "documentId-demo",
+        "documentVersion": 1,
+        "objectDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    }
+  },
+  {
+    "id": "event-strict-ml-event-KBDocumentPublished",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "event-KBDocumentPublished",
+      "eventType": "KBDocumentPublished",
+      "schemaVersion": 1,
+      "aggregateId": "corpusId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "corpusId": "corpusId-demo",
+        "documentId": "documentId-demo",
+        "documentVersion": 1,
+        "objectDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-ml-event-KBDocumentRevoked",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "event-KBDocumentRevoked",
+      "eventType": "KBDocumentRevoked",
+      "schemaVersion": 1,
+      "aggregateId": "corpusId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "corpusId": "corpusId-demo",
+        "documentId": "documentId-demo",
+        "documentVersion": 1,
+        "epoch": 1,
+        "revocationId": "revocationId-demo"
+      }
+    }
+  },
+  {
+    "id": "event-strict-ml-event-KBDocumentRevoked",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "event-KBDocumentRevoked",
+      "eventType": "KBDocumentRevoked",
+      "schemaVersion": 1,
+      "aggregateId": "corpusId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "corpusId": "corpusId-demo",
+        "documentId": "documentId-demo",
+        "documentVersion": 1,
+        "epoch": 1,
+        "revocationId": "revocationId-demo",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-ml-event-MLReleaseActivated",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "event-MLReleaseActivated",
+      "eventType": "MLReleaseActivated",
+      "schemaVersion": 1,
+      "aggregateId": "releaseId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "releaseId": "releaseId-demo",
+        "bundleDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "routingVersion": 1,
+        "stage": "SHADOW"
+      }
+    }
+  },
+  {
+    "id": "event-strict-ml-event-MLReleaseActivated",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "event-MLReleaseActivated",
+      "eventType": "MLReleaseActivated",
+      "schemaVersion": 1,
+      "aggregateId": "releaseId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "releaseId": "releaseId-demo",
+        "bundleDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "routingVersion": 1,
+        "stage": "SHADOW",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-ml-event-MLReleaseApprovalRecorded",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "event-MLReleaseApprovalRecorded",
+      "eventType": "MLReleaseApprovalRecorded",
+      "schemaVersion": 1,
+      "aggregateId": "releaseId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "releaseId": "releaseId-demo",
+        "approvalId": "approvalId-demo",
+        "decision": "APPROVE",
+        "bundleDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    }
+  },
+  {
+    "id": "event-strict-ml-event-MLReleaseApprovalRecorded",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "event-MLReleaseApprovalRecorded",
+      "eventType": "MLReleaseApprovalRecorded",
+      "schemaVersion": 1,
+      "aggregateId": "releaseId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "releaseId": "releaseId-demo",
+        "approvalId": "approvalId-demo",
+        "decision": "APPROVE",
+        "bundleDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-ml-event-MLReleaseValidated",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "event-MLReleaseValidated",
+      "eventType": "MLReleaseValidated",
+      "schemaVersion": 1,
+      "aggregateId": "releaseId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "releaseId": "releaseId-demo",
+        "bundleDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "evaluationDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "policyVersion": "policyVersion-demo"
+      }
+    }
+  },
+  {
+    "id": "event-strict-ml-event-MLReleaseValidated",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "event-MLReleaseValidated",
+      "eventType": "MLReleaseValidated",
+      "schemaVersion": 1,
+      "aggregateId": "releaseId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "releaseId": "releaseId-demo",
+        "bundleDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "evaluationDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "policyVersion": "policyVersion-demo",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-ml-event-MLRollbackCompleted",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "event-MLRollbackCompleted",
+      "eventType": "MLRollbackCompleted",
+      "schemaVersion": 1,
+      "aggregateId": "releaseId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "releaseId": "releaseId-demo",
+        "previousReleaseId": "previousReleaseId-demo",
+        "routingVersion": 1,
+        "reasonCode": "reasonCode-demo"
+      }
+    }
+  },
+  {
+    "id": "event-strict-ml-event-MLRollbackCompleted",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "event-MLRollbackCompleted",
+      "eventType": "MLRollbackCompleted",
+      "schemaVersion": 1,
+      "aggregateId": "releaseId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "releaseId": "releaseId-demo",
+        "previousReleaseId": "previousReleaseId-demo",
+        "routingVersion": 1,
+        "reasonCode": "reasonCode-demo",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-ml-event-MLUpdateRequested",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "event-MLUpdateRequested",
+      "eventType": "MLUpdateRequested",
+      "schemaVersion": 1,
+      "aggregateId": "updateRequestId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "updateRequestId": "updateRequestId-demo",
+        "family": "RISK",
+        "triggerPolicyVersion": "triggerPolicyVersion-demo"
+      }
+    }
+  },
+  {
+    "id": "event-strict-ml-event-MLUpdateRequested",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "event-MLUpdateRequested",
+      "eventType": "MLUpdateRequested",
+      "schemaVersion": 1,
+      "aggregateId": "updateRequestId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "updateRequestId": "updateRequestId-demo",
+        "family": "RISK",
+        "triggerPolicyVersion": "triggerPolicyVersion-demo",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-ml-event-RecommendationExposureRecorded",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "event-RecommendationExposureRecorded",
+      "eventType": "RecommendationExposureRecorded",
+      "schemaVersion": 1,
+      "aggregateId": "exposureId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "exposureId": "exposureId-demo",
+        "scope": "PRODUCT",
+        "candidateSetDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "releaseId": "releaseId-demo"
+      }
+    }
+  },
+  {
+    "id": "event-strict-ml-event-RecommendationExposureRecorded",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "event-RecommendationExposureRecorded",
+      "eventType": "RecommendationExposureRecorded",
+      "schemaVersion": 1,
+      "aggregateId": "exposureId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "exposureId": "exposureId-demo",
+        "scope": "PRODUCT",
+        "candidateSetDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "releaseId": "releaseId-demo",
+        "unexpected": "forbidden"
+      }
+    }
+  },
+  {
+    "id": "event-ml-event-RecommendationFeedbackRecorded",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "eventId": "event-RecommendationFeedbackRecorded",
+      "eventType": "RecommendationFeedbackRecorded",
+      "schemaVersion": 1,
+      "aggregateId": "exposureId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "exposureId": "exposureId-demo",
+        "clientEventId": "clientEventId-demo",
+        "itemId": "itemId-demo",
+        "action": "VIEW"
+      }
+    }
+  },
+  {
+    "id": "event-strict-ml-event-RecommendationFeedbackRecorded",
+    "contract": "contracts/ml-events-v1.schema.json",
+    "schema": "EVENT",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "eventId": "event-RecommendationFeedbackRecorded",
+      "eventType": "RecommendationFeedbackRecorded",
+      "schemaVersion": 1,
+      "aggregateId": "exposureId-demo",
+      "aggregateVersion": 1,
+      "occurredAt": "2026-10-20T10:00:00Z",
+      "correlationId": "corr-demo",
+      "payload": {
+        "exposureId": "exposureId-demo",
+        "clientEventId": "clientEventId-demo",
+        "itemId": "itemId-demo",
+        "action": "VIEW",
+        "unexpected": "forbidden"
+      }
+    }
+  }
+]

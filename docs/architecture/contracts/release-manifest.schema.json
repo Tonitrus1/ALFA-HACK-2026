@@ -1,0 +1,2125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$ref": "#/$defs/ReleaseManifest",
+  "$defs": {
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "fallbackAction": {
+          "type": "string",
+          "enum": [
+            "MANUAL_REVIEW",
+            "RULES",
+            "MANUAL_INPUT",
+            "SEARCH_ONLY",
+            "RETRY_LATER",
+            "NONE"
+          ]
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "correlationId"
+      ],
+      "additionalProperties": false
+    },
+    "Receipt": {
+      "type": "object",
+      "properties": {
+        "operationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ACCEPTED",
+            "RUNNING",
+            "SUCCEEDED",
+            "FAILED"
+          ]
+        },
+        "resourceId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "operationId",
+        "status",
+        "resourceId"
+      ],
+      "additionalProperties": false
+    },
+    "ObjectRef": {
+      "type": "object",
+      "properties": {
+        "bucket": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "key": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "objectVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "bucket",
+        "key",
+        "objectVersion",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "DocumentReference": {
+      "type": "object",
+      "properties": {
+        "documentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "documentVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "objectVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "documentId",
+        "documentVersion",
+        "objectVersion"
+      ],
+      "additionalProperties": false
+    },
+    "FinancialValues": {
+      "type": "object",
+      "properties": {
+        "totalAssetsMinor": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "totalLiabilitiesMinor": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "currentAssetsMinor": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "currentLiabilitiesMinor": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "equityMinor": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "revenueMinor": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "netProfitMinor": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "ebitMinor": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "FinancialInput": {
+      "type": "object",
+      "properties": {
+        "periodStart": {
+          "type": "string",
+          "format": "date"
+        },
+        "periodEnd": {
+          "type": "string",
+          "format": "date"
+        },
+        "reportingStandard": {
+          "type": "string",
+          "enum": [
+            "DEMO",
+            "RSBU",
+            "IFRS"
+          ]
+        },
+        "currency": {
+          "const": "RUB"
+        },
+        "values": {
+          "$ref": "#/$defs/FinancialValues"
+        },
+        "sourceDocumentReferences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DocumentReference"
+          },
+          "minItems": 0,
+          "maxItems": 10
+        }
+      },
+      "required": [
+        "periodStart",
+        "periodEnd",
+        "reportingStandard",
+        "currency",
+        "values",
+        "sourceDocumentReferences"
+      ],
+      "additionalProperties": false
+    },
+    "FinancialConfirmation": {
+      "type": "object",
+      "properties": {
+        "expectedStatementVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "confirmedFieldNames": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "totalAssetsMinor",
+              "totalLiabilitiesMinor",
+              "currentAssetsMinor",
+              "currentLiabilitiesMinor",
+              "equityMinor",
+              "revenueMinor",
+              "netProfitMinor",
+              "ebitMinor"
+            ]
+          },
+          "minItems": 8,
+          "maxItems": 8,
+          "uniqueItems": true
+        },
+        "documentReferences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DocumentReference"
+          },
+          "minItems": 0,
+          "maxItems": 10
+        }
+      },
+      "required": [
+        "expectedStatementVersion",
+        "confirmedFieldNames",
+        "documentReferences"
+      ],
+      "additionalProperties": false
+    },
+    "FieldProvenance": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "type": "string",
+          "enum": [
+            "totalAssetsMinor",
+            "totalLiabilitiesMinor",
+            "currentAssetsMinor",
+            "currentLiabilitiesMinor",
+            "equityMinor",
+            "revenueMinor",
+            "netProfitMinor",
+            "ebitMinor"
+          ]
+        },
+        "sourceType": {
+          "type": "string",
+          "enum": [
+            "MANUAL",
+            "OCR"
+          ]
+        },
+        "confirmedBy": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "confirmedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extractionId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "objectVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "field",
+        "sourceType",
+        "confirmedBy",
+        "confirmedAt"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "sourceType": {
+                "const": "OCR"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "extractionId",
+              "objectVersion"
+            ]
+          }
+        }
+      ]
+    },
+    "FinancialStatement": {
+      "type": "object",
+      "properties": {
+        "statementVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "containerVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "confirmed": {
+          "type": "boolean"
+        },
+        "statement": {
+          "$ref": "#/$defs/FinancialInput"
+        },
+        "provenance": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/FieldProvenance"
+          },
+          "minItems": 0,
+          "maxItems": 8
+        }
+      },
+      "required": [
+        "statementVersion",
+        "containerVersion",
+        "confirmed",
+        "statement",
+        "provenance"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "confirmed": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "statement": {
+                "properties": {
+                  "values": {
+                    "required": [
+                      "totalAssetsMinor",
+                      "totalLiabilitiesMinor",
+                      "currentAssetsMinor",
+                      "currentLiabilitiesMinor",
+                      "equityMinor",
+                      "revenueMinor",
+                      "netProfitMinor",
+                      "ebitMinor"
+                    ]
+                  }
+                }
+              },
+              "provenance": {
+                "minItems": 8
+              }
+            }
+          }
+        }
+      ]
+    },
+    "FeatureSnapshotInput": {
+      "type": "object",
+      "properties": {
+        "applicationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "submissionSnapshotId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "financialStatementVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "asOf": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "purpose": {
+          "type": "string",
+          "enum": [
+            "DEMO_RESEARCH",
+            "CREDIT_RISK"
+          ]
+        }
+      },
+      "required": [
+        "applicationId",
+        "submissionSnapshotId",
+        "financialStatementVersion",
+        "asOf",
+        "purpose"
+      ],
+      "additionalProperties": false
+    },
+    "FeatureSnapshot": {
+      "type": "object",
+      "properties": {
+        "featureSnapshotId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "submissionSnapshotId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "financialStatementVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "featureSchemaVersion": {
+          "const": 2
+        },
+        "featureCodeDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "featureAsOf": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "latestSourceAvailableAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "features": {
+          "type": "object",
+          "properties": {
+            "X1": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "X2": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "X3": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "X4": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "X7": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "X8": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "X9": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "X10": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "X1",
+            "X2",
+            "X3",
+            "X4",
+            "X7",
+            "X8",
+            "X9",
+            "X10"
+          ],
+          "additionalProperties": false
+        },
+        "missingFeatures": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "X1",
+              "X2",
+              "X3",
+              "X4",
+              "X7",
+              "X8",
+              "X9",
+              "X10"
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 8,
+          "uniqueItems": true
+        },
+        "snapshotDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "featureSnapshotId",
+        "submissionSnapshotId",
+        "financialStatementVersion",
+        "featureSchemaVersion",
+        "featureCodeDigest",
+        "featureAsOf",
+        "latestSourceAvailableAt",
+        "features",
+        "missingFeatures",
+        "snapshotDigest"
+      ],
+      "additionalProperties": false
+    },
+    "RiskRequest": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "featureSnapshotId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "featureSnapshotDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "featureSchemaVersion": {
+          "const": 2
+        },
+        "purpose": {
+          "type": "string",
+          "enum": [
+            "DEMO_RESEARCH",
+            "CREDIT_RISK"
+          ]
+        }
+      },
+      "required": [
+        "requestId",
+        "featureSnapshotId",
+        "featureSnapshotDigest",
+        "featureSchemaVersion",
+        "purpose"
+      ],
+      "additionalProperties": false
+    },
+    "RiskResult": {
+      "type": "object",
+      "properties": {
+        "inferenceId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "scoreKind": {
+          "type": "string",
+          "enum": [
+            "BANKRUPTCY_PROXY",
+            "PD"
+          ]
+        },
+        "calibrationStatus": {
+          "type": "string",
+          "enum": [
+            "DEMONSTRATION",
+            "VALIDATED"
+          ]
+        },
+        "releaseId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "bundleDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "modelVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "featureSnapshotId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "featureSnapshotDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "internalReasonCodes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "minItems": 0,
+          "maxItems": 20
+        }
+      },
+      "required": [
+        "inferenceId",
+        "requestId",
+        "score",
+        "scoreKind",
+        "calibrationStatus",
+        "releaseId",
+        "bundleDigest",
+        "modelVersion",
+        "featureSnapshotId",
+        "featureSnapshotDigest",
+        "internalReasonCodes"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "scoreKind": {
+                "const": "BANKRUPTCY_PROXY"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "calibrationStatus": {
+                "const": "DEMONSTRATION"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "scoreKind": {
+                "const": "PD"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "calibrationStatus": {
+                "const": "VALIDATED"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "RankingRequest": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "PRODUCT",
+            "FEED"
+          ]
+        },
+        "candidateIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "minItems": 1,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "candidateSetDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "catalogVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "eligibilityVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "stage": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "contextCategory": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "fundingPurpose": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "requestId",
+        "scope",
+        "candidateIds",
+        "candidateSetDigest",
+        "catalogVersion",
+        "stage",
+        "contextCategory"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "scope": {
+                "const": "PRODUCT"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "eligibilityVersion",
+              "fundingPurpose"
+            ]
+          }
+        }
+      ]
+    },
+    "RankingResult": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "PRODUCT",
+            "FEED"
+          ]
+        },
+        "rankedIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "minItems": 1,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "candidateSetDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "exposureId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "releaseId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "mode": {
+          "type": "string",
+          "enum": [
+            "MODEL",
+            "RULES"
+          ]
+        },
+        "reasonCategory": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "requestId",
+        "scope",
+        "rankedIds",
+        "candidateSetDigest",
+        "exposureId",
+        "releaseId",
+        "mode",
+        "reasonCategory"
+      ],
+      "additionalProperties": false
+    },
+    "RecommendationFeedback": {
+      "type": "object",
+      "properties": {
+        "clientEventId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "exposureId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "itemId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "VIEW",
+            "CLICK"
+          ]
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "clientEventId",
+        "exposureId",
+        "itemId",
+        "action",
+        "occurredAt"
+      ],
+      "additionalProperties": false
+    },
+    "AssistantInput": {
+      "type": "object",
+      "properties": {
+        "conversationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "message"
+      ],
+      "additionalProperties": false
+    },
+    "Citation": {
+      "type": "object",
+      "properties": {
+        "documentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "documentVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "chunkId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "sourcePath": {
+          "type": "string",
+          "pattern": "^/api/v1/knowledge/[A-Za-z0-9_-]+/versions/[1-9][0-9]*$"
+        }
+      },
+      "required": [
+        "documentId",
+        "documentVersion",
+        "chunkId",
+        "title",
+        "locator",
+        "sourcePath"
+      ],
+      "additionalProperties": false
+    },
+    "AssistantResponse": {
+      "type": "object",
+      "properties": {
+        "conversationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "messageId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ANSWER",
+            "INSUFFICIENT_EVIDENCE",
+            "SEARCH_ONLY"
+          ]
+        },
+        "answer": {
+          "type": "string",
+          "maxLength": 4000
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Citation"
+          },
+          "minItems": 0,
+          "maxItems": 5
+        },
+        "releaseId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "bundleDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "kbEpoch": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "conversationId",
+        "messageId",
+        "status",
+        "answer",
+        "citations",
+        "releaseId",
+        "bundleDigest",
+        "kbEpoch"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "ANSWER"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "citations": {
+                "minItems": 1
+              },
+              "answer": {
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "SEARCH_ONLY"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "answer": {
+                "const": ""
+              },
+              "citations": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "HiddenMessage": {
+      "type": "object",
+      "properties": {
+        "messageId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "status": {
+          "const": "HIDDEN_SOURCE_REVOKED"
+        }
+      },
+      "required": [
+        "messageId",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "Conversation": {
+      "type": "object",
+      "properties": {
+        "conversationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "messages": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/AssistantResponse"
+              },
+              {
+                "$ref": "#/$defs/HiddenMessage"
+              }
+            ]
+          },
+          "minItems": 0,
+          "maxItems": 100
+        }
+      },
+      "required": [
+        "conversationId",
+        "messages"
+      ],
+      "additionalProperties": false
+    },
+    "AssistantFeedback": {
+      "type": "object",
+      "properties": {
+        "clientEventId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "messageId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "rating": {
+          "type": "string",
+          "enum": [
+            "HELPFUL",
+            "NOT_HELPFUL"
+          ]
+        }
+      },
+      "required": [
+        "clientEventId",
+        "messageId",
+        "rating"
+      ],
+      "additionalProperties": false
+    },
+    "KnowledgeDocument": {
+      "type": "object",
+      "properties": {
+        "documentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "documentVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100000
+        },
+        "effectiveUntil": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "documentId",
+        "documentVersion",
+        "title",
+        "text",
+        "effectiveUntil"
+      ],
+      "additionalProperties": false
+    },
+    "KBPublish": {
+      "type": "object",
+      "properties": {
+        "corpusId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "documentVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "objectRef": {
+          "$ref": "#/$defs/ObjectRef"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "audience": {
+          "const": "CLIENT"
+        },
+        "effectiveFrom": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "effectiveUntil": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "contentApprovalId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "corpusId",
+        "documentVersion",
+        "objectRef",
+        "title",
+        "audience",
+        "effectiveFrom",
+        "effectiveUntil",
+        "contentApprovalId"
+      ],
+      "additionalProperties": false
+    },
+    "KBRevoke": {
+      "type": "object",
+      "properties": {
+        "corpusId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "documentVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "reason": {
+          "type": "string",
+          "enum": [
+            "WITHDRAWN",
+            "EXPIRED",
+            "ACCESS_REMOVED",
+            "INCORRECT"
+          ]
+        },
+        "expectedEpoch": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "corpusId",
+        "documentVersion",
+        "reason",
+        "expectedEpoch"
+      ],
+      "additionalProperties": false
+    },
+    "Revocation": {
+      "type": "object",
+      "properties": {
+        "revocationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "corpusId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "epoch": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "enforcementState": {
+          "type": "string",
+          "enum": [
+            "PENDING",
+            "ENFORCED",
+            "FAILED_CLOSED"
+          ]
+        },
+        "purgeState": {
+          "type": "string",
+          "enum": [
+            "PENDING",
+            "RUNNING",
+            "COMPLETE",
+            "FAILED"
+          ]
+        },
+        "affectedDocumentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "acceptedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "revocationId",
+        "corpusId",
+        "epoch",
+        "enforcementState",
+        "purgeState",
+        "affectedDocumentId",
+        "acceptedAt"
+      ],
+      "additionalProperties": false
+    },
+    "UpdateInput": {
+      "type": "object",
+      "properties": {
+        "family": {
+          "type": "string",
+          "enum": [
+            "RISK",
+            "PRODUCT",
+            "FEED",
+            "OCR",
+            "RAG_INDEX",
+            "RAG_COMPONENT"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "enum": [
+            "SCHEDULE",
+            "NEW_MATURE_LABELS",
+            "DRIFT",
+            "QUALITY_DROP",
+            "KB_CHANGED",
+            "KB_REVOKED",
+            "NEW_VERIFIED_LABELS"
+          ]
+        },
+        "deduplicationKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "sourceWindowRef": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "triggerPolicyVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "reportDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "family",
+        "reason",
+        "deduplicationKey",
+        "sourceWindowRef",
+        "triggerPolicyVersion"
+      ],
+      "additionalProperties": false
+    },
+    "UpdateRequest": {
+      "type": "object",
+      "properties": {
+        "updateRequestId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "family": {
+          "type": "string",
+          "enum": [
+            "RISK",
+            "PRODUCT",
+            "FEED",
+            "OCR",
+            "RAG_INDEX",
+            "RAG_COMPONENT"
+          ]
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "REQUESTED",
+            "DIAGNOSING",
+            "BLOCKED_DATA",
+            "PREPARING",
+            "RUNNING",
+            "VALIDATING",
+            "AWAITING_APPROVAL",
+            "REJECTED",
+            "RELEASED",
+            "FAILED"
+          ]
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reasonCode": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "reportRef": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        }
+      },
+      "required": [
+        "updateRequestId",
+        "family",
+        "state",
+        "generation",
+        "createdAt",
+        "reasonCode"
+      ],
+      "additionalProperties": false
+    },
+    "ClaimInput": {
+      "type": "object",
+      "properties": {
+        "workerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "expectedGeneration": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "workerId",
+        "expectedGeneration"
+      ],
+      "additionalProperties": false
+    },
+    "Lease": {
+      "type": "object",
+      "properties": {
+        "workerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "leaseToken": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "workerId",
+        "leaseToken",
+        "generation",
+        "expiresAt"
+      ],
+      "additionalProperties": false
+    },
+    "LeaseProof": {
+      "type": "object",
+      "properties": {
+        "workerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "leaseToken": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "workerId",
+        "leaseToken",
+        "generation"
+      ],
+      "additionalProperties": false
+    },
+    "WorkResult": {
+      "type": "object",
+      "properties": {
+        "workerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "leaseToken": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "SUCCEEDED",
+            "FAILED"
+          ]
+        },
+        "manifestRef": {
+          "$ref": "#/$defs/ObjectRef"
+        },
+        "reportDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "errorCode": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "workerId",
+        "leaseToken",
+        "generation",
+        "status"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "SUCCEEDED"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "manifestRef",
+              "reportDigest"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "FAILED"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "errorCode"
+            ]
+          }
+        }
+      ]
+    },
+    "ApprovalInput": {
+      "type": "object",
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": [
+            "APPROVE",
+            "REJECT"
+          ]
+        },
+        "reviewRole": {
+          "type": "string",
+          "enum": [
+            "VALIDATOR",
+            "OWNER"
+          ]
+        },
+        "bundleDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "evaluationDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "policyVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "comment": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        }
+      },
+      "required": [
+        "decision",
+        "reviewRole",
+        "bundleDigest",
+        "evaluationDigest",
+        "policyVersion",
+        "expiresAt",
+        "comment"
+      ],
+      "additionalProperties": false
+    },
+    "ApprovalRecord": {
+      "type": "object",
+      "properties": {
+        "approvalId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "actorId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "recordedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "releaseId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "APPROVE",
+            "REJECT"
+          ]
+        },
+        "reviewRole": {
+          "type": "string",
+          "enum": [
+            "VALIDATOR",
+            "OWNER"
+          ]
+        },
+        "bundleDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "evaluationDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "policyVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "approvalId",
+        "actorId",
+        "recordedAt",
+        "releaseId",
+        "decision",
+        "reviewRole",
+        "bundleDigest",
+        "evaluationDigest",
+        "policyVersion",
+        "expiresAt"
+      ],
+      "additionalProperties": false
+    },
+    "RolloutInput": {
+      "type": "object",
+      "properties": {
+        "expectedRoutingVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "START_SHADOW",
+            "CANARY_5",
+            "CANARY_25",
+            "PROMOTE_100"
+          ]
+        },
+        "bundleDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "approvalSetDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      },
+      "required": [
+        "expectedRoutingVersion",
+        "action",
+        "bundleDigest",
+        "approvalSetDigest"
+      ],
+      "additionalProperties": false
+    },
+    "RollbackInput": {
+      "type": "object",
+      "properties": {
+        "expectedRoutingVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "targetReleaseId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        }
+      },
+      "required": [
+        "expectedRoutingVersion",
+        "targetReleaseId",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "DatasetManifest": {
+      "type": "object",
+      "properties": {
+        "datasetId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "PUBLIC_PROXY",
+            "BANK_CREDIT",
+            "PRODUCT",
+            "FEED",
+            "OCR",
+            "RAG_EVAL"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "objects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ObjectRef"
+          },
+          "minItems": 1,
+          "maxItems": 10000
+        },
+        "sourceLicense": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "attribution": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "targetVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "availabilityRule": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "splitMembership": {
+          "$ref": "#/$defs/ObjectRef"
+        },
+        "splitSeed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "rowCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "positiveCount": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "datasetId",
+        "kind",
+        "createdAt",
+        "objects",
+        "sourceLicense",
+        "attribution",
+        "targetVersion",
+        "availabilityRule",
+        "splitMembership",
+        "splitSeed",
+        "rowCount",
+        "positiveCount"
+      ],
+      "additionalProperties": false
+    },
+    "ExperimentManifest": {
+      "type": "object",
+      "properties": {
+        "runId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "datasetDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "gitCommit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "imageDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "dependencyLock": {
+          "$ref": "#/$defs/ObjectRef"
+        },
+        "featureCodeDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "featureSchemaVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "targetVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "hardwareFingerprint": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "hyperparameters": {
+          "type": "object",
+          "maxProperties": 100,
+          "additionalProperties": {
+            "type": [
+              "number",
+              "string",
+              "boolean",
+              "null"
+            ]
+          }
+        },
+        "evaluationReport": {
+          "$ref": "#/$defs/ObjectRef"
+        },
+        "reproductionTolerance": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "runId",
+        "datasetDigest",
+        "gitCommit",
+        "imageDigest",
+        "dependencyLock",
+        "featureCodeDigest",
+        "featureSchemaVersion",
+        "targetVersion",
+        "seed",
+        "hardwareFingerprint",
+        "hyperparameters",
+        "evaluationReport",
+        "reproductionTolerance"
+      ],
+      "additionalProperties": false
+    },
+    "ReleaseManifest": {
+      "type": "object",
+      "properties": {
+        "releaseId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "family": {
+          "type": "string",
+          "enum": [
+            "RISK",
+            "PRODUCT",
+            "FEED",
+            "OCR",
+            "RAG_INDEX",
+            "RAG_COMPONENT"
+          ]
+        },
+        "createdBy": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "imageDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "datasetDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "evaluationDigest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "policyVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "assets": {
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 20,
+          "propertyNames": {
+            "enum": [
+              "model",
+              "preprocessor",
+              "calibrator",
+              "featureRegistry",
+              "corpus",
+              "embedding",
+              "sparseConfig",
+              "reranker",
+              "tokenizer",
+              "prompt",
+              "retrievalConfig",
+              "generator",
+              "ocrParser"
+            ]
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/ObjectRef"
+          }
+        },
+        "featureSchemaVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "scoreKind": {
+          "type": "string",
+          "enum": [
+            "BANKRUPTCY_PROXY",
+            "PD"
+          ]
+        },
+        "collectionName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "corpusCutoff": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "kbEpoch": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "releaseId",
+        "family",
+        "createdBy",
+        "createdAt",
+        "imageDigest",
+        "datasetDigest",
+        "evaluationDigest",
+        "policyVersion",
+        "assets"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "family": {
+                "const": "RISK"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "featureSchemaVersion",
+              "scoreKind"
+            ],
+            "properties": {
+              "assets": {
+                "required": [
+                  "model",
+                  "preprocessor",
+                  "featureRegistry"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "family": {
+                "enum": [
+                  "RAG_INDEX",
+                  "RAG_COMPONENT"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "collectionName",
+              "corpusCutoff",
+              "kbEpoch"
+            ],
+            "properties": {
+              "assets": {
+                "required": [
+                  "corpus",
+                  "embedding",
+                  "sparseConfig",
+                  "reranker",
+                  "tokenizer",
+                  "prompt",
+                  "retrievalConfig",
+                  "generator"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

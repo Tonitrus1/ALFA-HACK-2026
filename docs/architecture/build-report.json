@@ -1,0 +1,52 @@
+{
+  "status": "BUILT_STATIC_ARTIFACTS",
+  "pdfs": [
+    {
+      "path": "architecture-atlas.pdf",
+      "pages": 7,
+      "sha256": "4f3c29a365eed6ea03c6bd1fb7772b3730ef88b7f818c41609815d5b518ac06b"
+    },
+    {
+      "path": "architecture-audit.pdf",
+      "pages": 9,
+      "sha256": "8a582471240ac467cc03732bcaad0a60dc950e58880169a87e5e2747c8af0247"
+    },
+    {
+      "path": "development-plan.pdf",
+      "pages": 7,
+      "sha256": "d3b7ebe76ffa0eb08c597269a11dd556bd8f963753528a56fa2c83122855b07e"
+    },
+    {
+      "path": "git-and-jury-guide.pdf",
+      "pages": 7,
+      "sha256": "bd3a72bcd30a40c69b204134620f78dd8edaede368fe203b6ffc47a0cc81b38f"
+    },
+    {
+      "path": "packages/backend/backend-guide.pdf",
+      "pages": 4,
+      "sha256": "3cc49a8572f057499698d8902712b02ad19c06e20a55316769d82a0c8c85f51d"
+    },
+    {
+      "path": "packages/frontend/frontend-guide.pdf",
+      "pages": 4,
+      "sha256": "98c503ff31d24752f4e8cc43e8ff96217f7f439c7112014932bbd0cf3e90f32d"
+    },
+    {
+      "path": "packages/general/general-guide.pdf",
+      "pages": 4,
+      "sha256": "7c11b20094e5fec1b05059e66ad7a1e6e68a4cd9ad49d965ea1944a0577c3e6c"
+    },
+    {
+      "path": "packages/ml/ml-guide.pdf",
+      "pages": 5,
+      "sha256": "7ca7fe13c232c070ae5bbed3101e28043e5fa754589583d378d626a9d80ac0c9"
+    },
+    {
+      "path": "technology-adapters.pdf",
+      "pages": 6,
+      "sha256": "c22b0bb93362d1ca210507a34d71ddfdaf4e8e4739c449bc837b3bf0fb546eb8"
+    }
+  ],
+  "requiresVisualReview": true,
+  "applicationImplemented": false
+}
