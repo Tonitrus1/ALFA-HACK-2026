@@ -1,0 +1,52 @@
+{
+  "modelVersion": "synthetic-logistic-v1",
+  "featureSchemaVersion": 2,
+  "featureCodeDigest": "1a6fa666e304698553f127973b92dea52e2d19420965e103bba2363fe2f6c6f3",
+  "features": [
+    "X1",
+    "X2",
+    "X3",
+    "X4",
+    "X7",
+    "X8",
+    "X9",
+    "X10"
+  ],
+  "rawWhitelist": [
+    "total_assets",
+    "current_assets",
+    "total_liabilities",
+    "current_liabilities",
+    "equity",
+    "revenue",
+    "net_profit",
+    "ebit"
+  ],
+  "scoreKind": "BANKRUPTCY_PROXY",
+  "validationStatus": "DEMONSTRATION",
+  "purpose": "DEMO_RESEARCH",
+  "financialsSynthetic": true,
+  "labelsSynthetic": true,
+  "datasetHashes": {
+    "train": "50004cdc80011d31e5b8bc413fdfa6c0be4cf501886a75b277fa65d3db9b1e7b",
+    "validation": "11762a167804d292551862f8ecd573e1365402fef2f6b972b9ad0fcb6e5822b9",
+    "test": "98beca7d325f64ef3b5f85d4bc49efc3e9d05bc490a082567b5581be67542080"
+  },
+  "datasetHash": "fe7723cfd18f8a90cc8c2b84c1b6cb471a4314773e920d8a1b6ce3520c726eea",
+  "splitMembershipDigest": "0e833a1e6455159a206eb2a43eb88b1399a068588c2b7aed6bc16815f4b933f1",
+  "python": "3.12.13",
+  "libraries": {
+    "numpy": "2.2.6",
+    "scikit-learn": "1.6.1",
+    "scipy": "1.15.3",
+    "joblib": "1.6.0",
+    "pyarrow": "20.0.0"
+  },
+  "artifacts": {
+    "policy.json": "cc9613af26bfa61d41e61d3cd9f41f14f36bebb75e38c6a22b6569765208c44c",
+    "model.joblib": "609a188ec50e6213920cf923404aa41b0b29dd976f13582d7ac673577a379da2",
+    "selection-lock.json": "78d22d2007010eb83b28424e5419c9a48e93f607a7257700fae7fefbb01afee7",
+    "evaluation.json": "b586d47ff26a09cbf82679996d23a41f6455d15c753e204608a81d6dba0c1778"
+  },
+  "bundleDigest": "064f08751b49e498b710bef7d62e0cd0621634565457e73adb37329ec1c80cd5"
+}

@@ -1,0 +1,13 @@
+{
+  "version": "synthetic-demo-policy-2",
+  "T_manual": 0.03908894142283073,
+  "selection": "validation only; upper ~20% of hard-rule eligible observations; working-capital minimum cap; all business ages fixed eligible",
+  "eligibleRows": 1205,
+  "manualRows": 241,
+  "manualEvents": 25,
+  "eligibleEvents": 38,
+  "actualCoverage": 0.2,
+  "tiedAtThreshold": 1,
+  "comparison": ">=",
+  "synthetic": true
+}

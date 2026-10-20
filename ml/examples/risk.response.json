@@ -1,0 +1,16 @@
+{
+  "requestId": "ba491fdf-54d3-4107-946c-4234cd3973e2",
+  "inferenceId": "b6afec72-01a7-46c0-b805-f948089ea11c",
+  "featureSnapshotId": "8ac01f7e-ead1-42c5-b5cd-95a0a5667f45",
+  "featureSnapshotDigest": "4d3ee90841b0dcdf56af97fd29049ac17330ce4001d1644010174bd1bbb031b6",
+  "modelVersion": "synthetic-logistic-v1",
+  "bundleDigest": "064f08751b49e498b710bef7d62e0cd0621634565457e73adb37329ec1c80cd5",
+  "score": 1.6830390463286376e-06,
+  "scoreKind": "BANKRUPTCY_PROXY",
+  "calibrationStatus": "DEMONSTRATION",
+  "releaseId": "synthetic-logistic-v1",
+  "purpose": "DEMO_RESEARCH",
+  "internalReasonCodes": [
+    "SYNTHETIC_SIMULATION"
+  ]
+}

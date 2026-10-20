@@ -70,3 +70,8 @@ dumps/
 *.joblib
 *.gguf
 *.ggml
+
+# Prepared local MVP runtimes, DB, bundles and generated seed
+.local/
+ml/artifacts/
+ml/generated/
