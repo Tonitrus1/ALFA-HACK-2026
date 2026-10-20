@@ -54,5 +54,13 @@
   ],
   "maxRenderedPixelsPerPage": 40000000,
   "technologyBindings": "contracts/examples/profiles/local-mvp.json",
-  "vllmOptional": "VllmGenerationAdapter requires separate approved artifact format/revision/precision manifest and measured GPU capability; CPU GGUF remains mandatory baseline."
+  "vllmOptional": "VllmGenerationAdapter requires separate approved artifact format/revision/precision manifest and measured GPU capability; CPU GGUF remains mandatory baseline.",
+  "scoringMvp": {
+    "contract": "local-risk-profile.json",
+    "policy": "local-demo-policy.json",
+    "trainingSource": "training_simulation.parquet (fully synthetic)",
+    "split": "provided train/validation/test 7016/1494/1490; verify hashes at preparation",
+    "otherMLCapabilities": "out of scoring MVP scope; contracts retained",
+    "implementationScope": "Standalone ML + PostgreSQL + executable reference policy + scenario CLI; backend and UI integration belong to other developers"
+  }
 }

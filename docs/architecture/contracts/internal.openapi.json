@@ -3,7 +3,8 @@
   "info": {
     "title": "Внутренние интерфейсы кредитного кабинета",
     "version": "1.4.0-design",
-    "description": "Нормативный внутренний контракт. CreditPackage обогащён серверными финансовыми ссылками. ML v2 namespaced. Сервисные роли обязательны; клиент не имеет доступа."
+    "description": "Нормативный внутренний контракт. CreditPackage обогащён серверными финансовыми ссылками. ML v2 namespaced. Сервисные роли обязательны; клиент не имеет доступа.",
+    "x-local-risk-profile": "local-risk-profile.json; ML implementation only, other operations remain specification"
   },
   "servers": [
     {
@@ -10538,6 +10539,10 @@
           },
           "financialStatement": {
             "$ref": "#/components/schemas/MLFinancialInput"
+          },
+          "latestSourceAvailableAt": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "required": [
@@ -11021,6 +11026,10 @@
               "DEMO_RESEARCH",
               "CREDIT_RISK"
             ]
+          },
+          "bundleDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
           }
         },
         "required": [
@@ -11096,6 +11105,13 @@
             },
             "minItems": 0,
             "maxItems": 20
+          },
+          "purpose": {
+            "type": "string",
+            "enum": [
+              "DEMO_RESEARCH",
+              "CREDIT_RISK"
+            ]
           }
         },
         "required": [
@@ -11669,7 +11685,8 @@
             "type": "string",
             "enum": [
               "MANUAL",
-              "OCR"
+              "OCR",
+              "DEMO_SOURCE"
             ]
           },
           "confirmedBy": {
@@ -11690,6 +11707,18 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 128
+          },
+          "sourceRecordId": {
+            "type": "string"
+          },
+          "sourceVersion": {
+            "type": "integer"
+          },
+          "sourceDigest": {
+            "type": "string"
+          },
+          "enteredBy": {
+            "type": "string"
           }
         },
         "required": [
@@ -11712,6 +11741,22 @@
               "required": [
                 "extractionId",
                 "objectVersion"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "sourceType": {
+                  "const": "DEMO_SOURCE"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "sourceRecordId",
+                "sourceVersion",
+                "sourceDigest"
               ]
             }
           }
@@ -11879,7 +11924,7 @@
         "properties": {
           "totalAssetsMinor": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 1,
             "maximum": 9007199254740991
           },
           "totalLiabilitiesMinor": {

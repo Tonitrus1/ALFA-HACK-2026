@@ -4,7 +4,7 @@
   "applicationImplemented": false,
   "runtimeTestsExecuted": false,
   "counts": {
-    "checks": 411,
+    "checks": 413,
     "failed": 0,
     "schemaFixtures": 175,
     "negativeSchemaFixtures": 97,
@@ -216,6 +216,16 @@
     },
     {
       "check": "json:contracts/internal.openapi.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/local-demo-policy.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/local-risk-profile.json",
       "passed": true,
       "detail": ""
     },

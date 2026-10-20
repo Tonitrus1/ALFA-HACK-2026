@@ -18265,7 +18265,8 @@
             "type": "string",
             "enum": [
               "MANUAL",
-              "OCR"
+              "OCR",
+              "DEMO_SOURCE"
             ]
           },
           "confirmedBy": {
@@ -18286,6 +18287,18 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 128
+          },
+          "sourceRecordId": {
+            "type": "string"
+          },
+          "sourceVersion": {
+            "type": "integer"
+          },
+          "sourceDigest": {
+            "type": "string"
+          },
+          "enteredBy": {
+            "type": "string"
           }
         },
         "required": [
@@ -18308,6 +18321,22 @@
               "required": [
                 "extractionId",
                 "objectVersion"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "sourceType": {
+                  "const": "DEMO_SOURCE"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "sourceRecordId",
+                "sourceVersion",
+                "sourceDigest"
               ]
             }
           }
@@ -18475,7 +18504,7 @@
         "properties": {
           "totalAssetsMinor": {
             "type": "integer",
-            "minimum": 0,
+            "minimum": 1,
             "maximum": 9007199254740991
           },
           "totalLiabilitiesMinor": {

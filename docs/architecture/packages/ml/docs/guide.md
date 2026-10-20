@@ -12,15 +12,15 @@ Qwen выбран как малый открытый CPU baseline, а не ка�
 
 ## 2. Риск: смысл, данные, обучение
 
-Открытый исследовательский baseline - UCI Polish Companies Bankruptcy, только 5year.arff. Официальный источник описывает 5910 наблюдений и 410 банкротств в горизонте одного года; лицензия CC BY 4.0. Это не данные Альфа-Банка и не банковская PD. Пользователи/компании/документы в демонстрации остаются полностью синтетическими; реальные строки UCI не превращаются в карточки клиентов.
+Актуальный первый скоринговый срез от 21.10.2026 использует полностью вымышленные компании, финансовые суммы и target_12m из training_simulation.parquet. Настоящие реквизиты гибридной таблицы не используются. Прежние UCI 5year.arff и grouped split 60/20/20 для этого релиза заменены готовым company-disjoint split поставки: train 7016/352 событий, validation 1494/80, test 1490/80. Проверяются опубликованные SHA-256; разбиение не пересоздаётся.
 
-MVP алгоритм: SimpleImputer(median + missing indicators) → StandardScaler → LogisticRegression(max_iter=2000, random_state=42). Подготовка и обучение fit только на train. Отдельный калибратор для демонстрационного proxy не делает результат PD. CatBoost - следующий сравнительный вариант, не ещё одна обязательная задача на 48 часов.
+Реализован SimpleImputer(median, add_indicator=True) → StandardScaler → регуляризованная LogisticRegression. Общий batch/online builder рассчитывает X1=netProfit/assets, X2=liabilities/assets, X3=(currentAssets-currentLiabilities)/assets, X4=currentAssets/currentLiabilities, X7=EBIT/assets, X8=equity/liabilities, X9=revenue/assets, X10=equity/assets. Деньги поступают как целые копейки, Decimal-конвертация из Parquet исключает промежуточный float. Баланс проверяется с допуском 1 копейка. При assets≤0 оценка невозможна; нулевые знаменатели дают missing. В текущем train нет missing ratios: imputer не обучил indicator-колонок и обрабатывает новые пропуски медианами.
 
-Из подтверждённых значений рассчитываются X1=netProfit/assets, X2=liabilities/assets, X3=(currentAssets-currentLiabilities)/assets, X4=currentAssets/currentLiabilities, X7=EBIT/assets, X8=equity/liabilities, X9=revenue/assets, X10=equity/assets. Equity означает book value в согласованной demo-форме. При assets≤0 нет score; нулевой знаменатель X4/X8 даёт missing+indicator. Единый transform-код в batch и online; пропуски не заменяются нулями до imputer.
+Preprocessing fit только train; ограниченный подбор C с CV на train и выбором версии по validation AP. Модель и policy фиксируются до открытия test. Сценарии выбираются только из train. Target, IDs, split, даты, технические флаги и simulation_truth не являются признаками. CatBoost не входит в этот baseline.
 
-До split сгруппировать точные дубликаты по нормализованному полному вектору; конфликтующие метки вывести на разбор. Использовать сохранённый grouped stratified split 60/20/20, seed42. В наборе нет надёжного companyId/времени каждого решения: не заявлять company-disjoint или temporal validation, не объединять горизонты как календарные годы. Остаточный риск скрытых повторений компаний документируется.
+T_manual выбран на validation как верхние 20% score пригодных наблюдений. Зафиксировано 0.03908894142283073; пригодных 1205, manual 241; 25 искусственных событий в manual. Это демонстрационный бюджет проверки. На test ROC-AUC 0.90522, AP 0.41241; полные prevalence/Brier/log loss/confusion/distribution и hashes лежат в reports. Все метрики относятся только к искусственной симуляции.
 
-Публикуются dataset checksum/split membership, ROC-AUC, PR-AUC вместе с prevalence, Brier, confusion matrix и интервалами неопределённости. Тест не используется для выбора гиперпараметров. Не придумывать показатели качества до обучения. Баланс классов не изменять в test.
+Рабочий standalone ML не включает UI, bank simulator, оферты, OCR/RAG/ranking. Для коллег предоставлены настоящий API, маленькие S01–S06, исполняемый эталон backend policy и инструкции в docs/ml-integration.md корня приложения. Следующие главы о других ML-функциях сохраняют проектный статус.
 
 ## 3. Неизменяемые признаки и inference
 

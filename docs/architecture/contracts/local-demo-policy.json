@@ -1,0 +1,27 @@
+{
+  "version": "synthetic-demo-policy-2",
+  "synthetic": true,
+  "purpose": "DEMO_RESEARCH",
+  "scoreKind": "BANKRUPTCY_PROXY",
+  "interpretation": "Artificial simulation only; not banking PD",
+  "manualQuantile": 0.8,
+  "manualThresholdSource": "prepared bundle policy.json, selected on validation only",
+  "revenueDiscrepancyFraction": "0.20",
+  "balanceToleranceMinor": 1,
+  "periodYear": 2025,
+  "maxAmountMinor": 9007199254740991,
+  "priority": [
+    "INVALID_DATA",
+    "REFERENCE_REVENUE_DISCREPANCY",
+    "PRODUCT_ELIGIBILITY",
+    "NEGATIVE_EQUITY_OR_LEVERAGE_GE_0.9",
+    "UNSUPPORTED_OR_ZERO_REVENUE",
+    "ML_FAILURE",
+    "SCORE_GE_T_MANUAL",
+    "AMOUNT_ABOVE_CAP",
+    "APPROVED"
+  ],
+  "cap": "min(product.maxAmountMinor, revenueMinor // 4)",
+  "rfi": "Only revenue can be amended; explanation leads to operator; reference version pinned at first submit",
+  "runtimeTraining": false
+}

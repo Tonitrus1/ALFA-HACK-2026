@@ -1,7 +1,7 @@
 {
   "status": "PASS",
-  "date": "2026-10-20",
-  "method": "All 53 current pages rendered with PDFium and visually inspected in contact sheets; latest general guide rechecked after removing an orphan reference page. Atlas unchanged from inspected revision. Character bounds checked in every PDF. This is document QA, not an application test.",
+  "date": "2026-10-21",
+  "method": "All 53 current PDF pages rendered with PDFium and visually inspected in 16 contact sheets; backend pagination corrected and re-rendered. Character bounds checked on all pages. Static document QA only; ML runtime evidence is in repository reports.",
   "pagesReviewed": 53,
   "pdfs": [
     {
@@ -30,7 +30,7 @@
     },
     {
       "path": "packages/backend/backend-guide.pdf",
-      "sha256": "3cc49a8572f057499698d8902712b02ad19c06e20a55316769d82a0c8c85f51d",
+      "sha256": "3dd42abfd57ea005d128419e51c7daf38c1a9851d83942325ba5ef99bcb53688",
       "pages": 4,
       "visualStatus": "PASS"
     },
@@ -42,13 +42,13 @@
     },
     {
       "path": "packages/general/general-guide.pdf",
-      "sha256": "7c11b20094e5fec1b05059e66ad7a1e6e68a4cd9ad49d965ea1944a0577c3e6c",
+      "sha256": "afbb08e9244cdb2f121031569af7ee2e7e0555b22bcef612e8060c0f8a597ca7",
       "pages": 4,
       "visualStatus": "PASS"
     },
     {
       "path": "packages/ml/ml-guide.pdf",
-      "sha256": "7ca7fe13c232c070ae5bbed3101e28043e5fa754589583d378d626a9d80ac0c9",
+      "sha256": "1bfea37b0aa2a13dc8b1a49d5e6d5f4e50f4da6ae632535728ef5cd700d028f7",
       "pages": 5,
       "visualStatus": "PASS"
     },
@@ -62,6 +62,5 @@
   "findings": [],
   "layoutChecks": {
     "charactersOutsidePage": 0
-  },
-  "runtimeVerified": false
+  }
 }
