@@ -1,0 +1,625 @@
+{
+  "warning": "All monetary values are generated; not factual company accounts",
+  "monetary_fields": {
+    "total_assets": {
+      "type": "decimal128(28,2)",
+      "unit": "RUB",
+      "source": "SYNTHETIC_FINANCE_V1"
+    },
+    "non_current_assets": {
+      "type": "decimal128(28,2)",
+      "unit": "RUB",
+      "source": "SYNTHETIC_FINANCE_V1"
+    },
+    "current_assets": {
+      "type": "decimal128(28,2)",
+      "unit": "RUB",
+      "source": "SYNTHETIC_FINANCE_V1"
+    },
+    "equity": {
+      "type": "decimal128(28,2)",
+      "unit": "RUB",
+      "source": "SYNTHETIC_FINANCE_V1"
+    },
+    "long_term_liabilities": {
+      "type": "decimal128(28,2)",
+      "unit": "RUB",
+      "source": "SYNTHETIC_FINANCE_V1"
+    },
+    "current_liabilities": {
+      "type": "decimal128(28,2)",
+      "unit": "RUB",
+      "source": "SYNTHETIC_FINANCE_V1"
+    },
+    "total_liabilities": {
+      "type": "decimal128(28,2)",
+      "unit": "RUB",
+      "source": "SYNTHETIC_FINANCE_V1"
+    },
+    "cash": {
+      "type": "decimal128(28,2)",
+      "unit": "RUB",
+      "source": "SYNTHETIC_FINANCE_V1"
+    },
+    "receivables": {
+      "type": "decimal128(28,2)",
+      "unit": "RUB",
+      "source": "SYNTHETIC_FINANCE_V1"
+    },
+    "inventories": {
+      "type": "decimal128(28,2)",
+      "unit": "RUB",
+      "source": "SYNTHETIC_FINANCE_V1"
+    },
+    "other_current_assets": {
+      "type": "decimal128(28,2)",
+      "unit": "RUB",
+      "source": "SYNTHETIC_FINANCE_V1"
+    },
+    "revenue": {
+      "type": "decimal128(28,2)",
+      "unit": "RUB",
+      "source": "SYNTHETIC_FINANCE_V1"
+    },
+    "ebit": {
+      "type": "decimal128(28,2)",
+      "unit": "RUB",
+      "source": "SYNTHETIC_FINANCE_V1"
+    },
+    "interest_expense": {
+      "type": "decimal128(28,2)",
+      "unit": "RUB",
+      "source": "SYNTHETIC_FINANCE_V1"
+    },
+    "other_income": {
+      "type": "decimal128(28,2)",
+      "unit": "RUB",
+      "source": "SYNTHETIC_FINANCE_V1"
+    },
+    "tax_expense": {
+      "type": "decimal128(28,2)",
+      "unit": "RUB",
+      "source": "SYNTHETIC_FINANCE_V1"
+    },
+    "net_profit": {
+      "type": "decimal128(28,2)",
+      "unit": "RUB",
+      "source": "SYNTHETIC_FINANCE_V1"
+    },
+    "operating_cash_flow": {
+      "type": "decimal128(28,2)",
+      "unit": "RUB",
+      "source": "SYNTHETIC_FINANCE_V1"
+    }
+  },
+  "target_12m": {
+    "hybrid": "always null; no verified real outcomes",
+    "simulation": "artificial Bernoulli outcome from documented DGP"
+  },
+  "forbidden_features": [
+    "target_12m",
+    "label_status",
+    "label_source",
+    "event_date",
+    "observation_end_date",
+    "true_probability_synthetic",
+    "split",
+    "company_id",
+    "inn",
+    "ogrn",
+    "name"
+  ],
+  "default_feature_whitelist": [
+    "total_assets",
+    "current_assets",
+    "total_liabilities",
+    "current_liabilities",
+    "equity",
+    "revenue",
+    "net_profit"
+  ],
+  "tables": {
+    "hybrid_real_msps_synthetic_financials": [
+      {
+        "field": "dataset_warning",
+        "type": "string",
+        "description": "Предупреждение об искусственном происхождении",
+        "unit": null
+      },
+      {
+        "field": "company_id",
+        "type": "string",
+        "description": "RU:INN для реестра; SIM для вымышленных компаний",
+        "unit": null
+      },
+      {
+        "field": "inn",
+        "type": "string",
+        "description": "Реальный ИНН ЮЛ текстом",
+        "unit": null
+      },
+      {
+        "field": "ogrn",
+        "type": "string",
+        "description": "Реальный ОГРН текстом",
+        "unit": null
+      },
+      {
+        "field": "name",
+        "type": "string",
+        "description": "Реальное наименование из реестра МСП",
+        "unit": null
+      },
+      {
+        "field": "region",
+        "type": "string",
+        "description": "Региональный код ФНС из реестра",
+        "unit": null
+      },
+      {
+        "field": "okved",
+        "type": "string",
+        "description": "Основной ОКВЭД2 из реестра",
+        "unit": null
+      },
+      {
+        "field": "msp_category",
+        "type": "string",
+        "description": "Исходный код категории МСП: 1/2/3",
+        "unit": null
+      },
+      {
+        "field": "msp_snapshot_date",
+        "type": "string",
+        "description": "Дата состояния реестра МСП",
+        "unit": null
+      },
+      {
+        "field": "registry_is_synthetic",
+        "type": "bool",
+        "description": "false для настоящих реквизитов; true для вымышленных SIM-ID",
+        "unit": null
+      },
+      {
+        "field": "registry_source_document_sha256",
+        "type": "string",
+        "description": "SHA-256 исходного XML-документа ЮЛ",
+        "unit": null
+      },
+      {
+        "field": "as_of_date",
+        "type": "date32[day]",
+        "description": "Условная дата оценки в эксперименте",
+        "unit": null
+      },
+      {
+        "field": "reporting_period_end",
+        "type": "date32[day]",
+        "description": "Период искусственной годовой отчётности",
+        "unit": null
+      },
+      {
+        "field": "simulated_available_at",
+        "type": "date32[day]",
+        "description": "ВЫМЫШЛЕННАЯ дата доступности, не публикация ФНС",
+        "unit": null
+      },
+      {
+        "field": "currency",
+        "type": "string",
+        "description": "Валюта искусственных сумм: RUB",
+        "unit": null
+      },
+      {
+        "field": "financial_unit",
+        "type": "string",
+        "description": "Единица сумм: рубли",
+        "unit": null
+      },
+      {
+        "field": "financial_source",
+        "type": "string",
+        "description": "Всегда SYNTHETIC_FINANCE_V1",
+        "unit": null
+      },
+      {
+        "field": "financial_is_synthetic",
+        "type": "bool",
+        "description": "Всегда true",
+        "unit": null
+      },
+      {
+        "field": "is_synthetic",
+        "type": "bool",
+        "description": "true: строка содержит искусственные данные",
+        "unit": null
+      },
+      {
+        "field": "horizon_end",
+        "type": "date32[day]",
+        "description": "Конец календарных 12 месяцев после as_of_date",
+        "unit": null
+      },
+      {
+        "field": "total_assets",
+        "type": "decimal128(28, 2)",
+        "description": "Активы",
+        "unit": "RUB"
+      },
+      {
+        "field": "non_current_assets",
+        "type": "decimal128(28, 2)",
+        "description": "Внеоборотные активы",
+        "unit": "RUB"
+      },
+      {
+        "field": "current_assets",
+        "type": "decimal128(28, 2)",
+        "description": "Оборотные активы",
+        "unit": "RUB"
+      },
+      {
+        "field": "equity",
+        "type": "decimal128(28, 2)",
+        "description": "Капитал, может быть отрицательным",
+        "unit": "RUB"
+      },
+      {
+        "field": "long_term_liabilities",
+        "type": "decimal128(28, 2)",
+        "description": "Долгосрочные обязательства",
+        "unit": "RUB"
+      },
+      {
+        "field": "current_liabilities",
+        "type": "decimal128(28, 2)",
+        "description": "Краткосрочные обязательства",
+        "unit": "RUB"
+      },
+      {
+        "field": "total_liabilities",
+        "type": "decimal128(28, 2)",
+        "description": "Все обязательства, без капитала",
+        "unit": "RUB"
+      },
+      {
+        "field": "cash",
+        "type": "decimal128(28, 2)",
+        "description": "Денежные средства",
+        "unit": "RUB"
+      },
+      {
+        "field": "receivables",
+        "type": "decimal128(28, 2)",
+        "description": "Дебиторская задолженность",
+        "unit": "RUB"
+      },
+      {
+        "field": "inventories",
+        "type": "decimal128(28, 2)",
+        "description": "Запасы",
+        "unit": "RUB"
+      },
+      {
+        "field": "other_current_assets",
+        "type": "decimal128(28, 2)",
+        "description": "Прочие оборотные активы",
+        "unit": "RUB"
+      },
+      {
+        "field": "revenue",
+        "type": "decimal128(28, 2)",
+        "description": "Выручка",
+        "unit": "RUB"
+      },
+      {
+        "field": "ebit",
+        "type": "decimal128(28, 2)",
+        "description": "Сгенерированная операционная прибыль до процентов и налога",
+        "unit": "RUB"
+      },
+      {
+        "field": "interest_expense",
+        "type": "decimal128(28, 2)",
+        "description": "Процентные расходы",
+        "unit": "RUB"
+      },
+      {
+        "field": "other_income",
+        "type": "decimal128(28, 2)",
+        "description": "Прочий результат, до налога",
+        "unit": "RUB"
+      },
+      {
+        "field": "tax_expense",
+        "type": "decimal128(28, 2)",
+        "description": "Искусственная налоговая нагрузка",
+        "unit": "RUB"
+      },
+      {
+        "field": "net_profit",
+        "type": "decimal128(28, 2)",
+        "description": "Чистая прибыль/убыток",
+        "unit": "RUB"
+      },
+      {
+        "field": "operating_cash_flow",
+        "type": "decimal128(28, 2)",
+        "description": "Искусственный денежный поток от операций",
+        "unit": "RUB"
+      },
+      {
+        "field": "target_12m",
+        "type": "int8",
+        "description": "null в гибриде; искусственный класс 0/1 в симуляции",
+        "unit": null
+      },
+      {
+        "field": "label_status",
+        "type": "string",
+        "description": "Причина неизвестной реальной метки либо указание синтетического исхода",
+        "unit": null
+      },
+      {
+        "field": "label_source",
+        "type": "string",
+        "description": "Источник/отсутствие метки",
+        "unit": null
+      },
+      {
+        "field": "label_is_synthetic",
+        "type": "bool",
+        "description": "true только для вымышленных исходов SIM-компаний",
+        "unit": null
+      },
+      {
+        "field": "event_date",
+        "type": "date32[day]",
+        "description": "Искусственная дата события только в SIM-наборе; иначе null",
+        "unit": null
+      },
+      {
+        "field": "observation_end_date",
+        "type": "date32[day]",
+        "description": "Искусственный конец наблюдения в SIM; у реальных компаний null без подтверждённого покрытия",
+        "unit": null
+      },
+      {
+        "field": "data_use",
+        "type": "string",
+        "description": "Ограничение интерпретации: инженерный эксперимент",
+        "unit": null
+      }
+    ],
+    "training_simulation": [
+      {
+        "field": "dataset_warning",
+        "type": "string",
+        "description": "Предупреждение об искусственном происхождении",
+        "unit": null
+      },
+      {
+        "field": "company_id",
+        "type": "string",
+        "description": "RU:INN для реестра; SIM для вымышленных компаний",
+        "unit": null
+      },
+      {
+        "field": "as_of_date",
+        "type": "date32[day]",
+        "description": "Условная дата оценки в эксперименте",
+        "unit": null
+      },
+      {
+        "field": "reporting_period_end",
+        "type": "date32[day]",
+        "description": "Период искусственной годовой отчётности",
+        "unit": null
+      },
+      {
+        "field": "simulated_available_at",
+        "type": "date32[day]",
+        "description": "ВЫМЫШЛЕННАЯ дата доступности, не публикация ФНС",
+        "unit": null
+      },
+      {
+        "field": "currency",
+        "type": "string",
+        "description": "Валюта искусственных сумм: RUB",
+        "unit": null
+      },
+      {
+        "field": "financial_unit",
+        "type": "string",
+        "description": "Единица сумм: рубли",
+        "unit": null
+      },
+      {
+        "field": "financial_source",
+        "type": "string",
+        "description": "Всегда SYNTHETIC_FINANCE_V1",
+        "unit": null
+      },
+      {
+        "field": "financial_is_synthetic",
+        "type": "bool",
+        "description": "Всегда true",
+        "unit": null
+      },
+      {
+        "field": "is_synthetic",
+        "type": "bool",
+        "description": "true: строка содержит искусственные данные",
+        "unit": null
+      },
+      {
+        "field": "horizon_end",
+        "type": "date32[day]",
+        "description": "Конец календарных 12 месяцев после as_of_date",
+        "unit": null
+      },
+      {
+        "field": "total_assets",
+        "type": "decimal128(28, 2)",
+        "description": "Активы",
+        "unit": "RUB"
+      },
+      {
+        "field": "non_current_assets",
+        "type": "decimal128(28, 2)",
+        "description": "Внеоборотные активы",
+        "unit": "RUB"
+      },
+      {
+        "field": "current_assets",
+        "type": "decimal128(28, 2)",
+        "description": "Оборотные активы",
+        "unit": "RUB"
+      },
+      {
+        "field": "equity",
+        "type": "decimal128(28, 2)",
+        "description": "Капитал, может быть отрицательным",
+        "unit": "RUB"
+      },
+      {
+        "field": "long_term_liabilities",
+        "type": "decimal128(28, 2)",
+        "description": "Долгосрочные обязательства",
+        "unit": "RUB"
+      },
+      {
+        "field": "current_liabilities",
+        "type": "decimal128(28, 2)",
+        "description": "Краткосрочные обязательства",
+        "unit": "RUB"
+      },
+      {
+        "field": "total_liabilities",
+        "type": "decimal128(28, 2)",
+        "description": "Все обязательства, без капитала",
+        "unit": "RUB"
+      },
+      {
+        "field": "cash",
+        "type": "decimal128(28, 2)",
+        "description": "Денежные средства",
+        "unit": "RUB"
+      },
+      {
+        "field": "receivables",
+        "type": "decimal128(28, 2)",
+        "description": "Дебиторская задолженность",
+        "unit": "RUB"
+      },
+      {
+        "field": "inventories",
+        "type": "decimal128(28, 2)",
+        "description": "Запасы",
+        "unit": "RUB"
+      },
+      {
+        "field": "other_current_assets",
+        "type": "decimal128(28, 2)",
+        "description": "Прочие оборотные активы",
+        "unit": "RUB"
+      },
+      {
+        "field": "revenue",
+        "type": "decimal128(28, 2)",
+        "description": "Выручка",
+        "unit": "RUB"
+      },
+      {
+        "field": "ebit",
+        "type": "decimal128(28, 2)",
+        "description": "Сгенерированная операционная прибыль до процентов и налога",
+        "unit": "RUB"
+      },
+      {
+        "field": "interest_expense",
+        "type": "decimal128(28, 2)",
+        "description": "Процентные расходы",
+        "unit": "RUB"
+      },
+      {
+        "field": "other_income",
+        "type": "decimal128(28, 2)",
+        "description": "Прочий результат, до налога",
+        "unit": "RUB"
+      },
+      {
+        "field": "tax_expense",
+        "type": "decimal128(28, 2)",
+        "description": "Искусственная налоговая нагрузка",
+        "unit": "RUB"
+      },
+      {
+        "field": "net_profit",
+        "type": "decimal128(28, 2)",
+        "description": "Чистая прибыль/убыток",
+        "unit": "RUB"
+      },
+      {
+        "field": "operating_cash_flow",
+        "type": "decimal128(28, 2)",
+        "description": "Искусственный денежный поток от операций",
+        "unit": "RUB"
+      },
+      {
+        "field": "registry_is_synthetic",
+        "type": "bool",
+        "description": "false для настоящих реквизитов; true для вымышленных SIM-ID",
+        "unit": null
+      },
+      {
+        "field": "label_is_synthetic",
+        "type": "bool",
+        "description": "true только для вымышленных исходов SIM-компаний",
+        "unit": null
+      },
+      {
+        "field": "target_12m",
+        "type": "int8",
+        "description": "null в гибриде; искусственный класс 0/1 в симуляции",
+        "unit": null
+      },
+      {
+        "field": "label_status",
+        "type": "string",
+        "description": "Причина неизвестной реальной метки либо указание синтетического исхода",
+        "unit": null
+      },
+      {
+        "field": "label_source",
+        "type": "string",
+        "description": "Источник/отсутствие метки",
+        "unit": null
+      },
+      {
+        "field": "split",
+        "type": "string",
+        "description": "Заранее назначенная train/validation/test часть",
+        "unit": null
+      },
+      {
+        "field": "event_date",
+        "type": "date32[day]",
+        "description": "Искусственная дата события только в SIM-наборе; иначе null",
+        "unit": null
+      },
+      {
+        "field": "observation_end_date",
+        "type": "date32[day]",
+        "description": "Искусственный конец наблюдения в SIM; у реальных компаний null без подтверждённого покрытия",
+        "unit": null
+      },
+      {
+        "field": "data_use",
+        "type": "string",
+        "description": "Ограничение интерпретации: инженерный эксперимент",
+        "unit": null
+      }
+    ]
+  }
+}

@@ -73,5 +73,21 @@ dumps/
 
 # Prepared local MVP runtimes, DB, bundles and generated seed
 .local/
-ml/artifacts/
-ml/generated/
+ml/artifacts/*
+ml/generated/*
+
+# Approved dataset and trained baseline; all other local data stays ignored
+!/datasets/
+/datasets/*
+!/datasets/ru-sme-dataset-10000/
+!/datasets/ru-sme-dataset-10000/**
+!/ml/artifacts/baseline/
+/ml/artifacts/baseline/*
+!/ml/artifacts/baseline/model.joblib
+!/ml/artifacts/baseline/manifest.json
+!/ml/artifacts/baseline/policy.json
+!/ml/artifacts/baseline/selection-lock.json
+!/ml/artifacts/baseline/evaluation.json
+!/ml/artifacts/baseline/model-card.md
+!/ml/artifacts/baseline/SHA256SUMS
+!/ml/generated/companies.json

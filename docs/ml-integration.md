@@ -34,11 +34,12 @@ PYTHONPATH=ml .venv/bin/python scripts/verify_ml_runtime.py
 
 ```sh
 ./scripts/setup-ml.sh
-./scripts/demo train --dataset /Users/user/Documents/Alfa_hack/datasets/ru-sme-dataset-10000
 ./scripts/demo up --offline
 ```
 
-Путь на другом компьютере задаётся `--dataset` либо `DATASET_PATH`; сеть нужна для первой установки Python-пакетов и подготовки PostgreSQL, обучение читает только локальные файлы. Native launcher проверен на macOS arm64; Linux/Windows и контейнеры не проверялись. Для другого deployment разработчик может запустить `uvicorn scoring.server:app` с переменными ниже и собственной PostgreSQL 17.
+Эта ML-ветка включает готовую модель в `ml/artifacts/baseline/`, подготовленные синтетические компании в `ml/generated/companies.json` и полный датасет в `datasets/ru-sme-dataset-10000/`. Переобучение перед запуском не требуется. Сеть нужна для первой установки Python-пакетов и подготовки PostgreSQL; запуск использует локальную модель.
+
+Для отдельного переобучения выполните `./scripts/demo train`: по умолчанию используется датасет внутри репозитория. Другой путь задаётся `--dataset` либо `DATASET_PATH`; обучение читает только локальные файлы. Native launcher проверен на macOS arm64; Linux/Windows и контейнеры не проверялись. Для другого deployment разработчик может запустить `uvicorn scoring.server:app` с переменными ниже и собственной PostgreSQL 17.
 
 Раздельные команды: `./scripts/demo migrate` создаёт **credit_scoring_demo** и применяет SQL из `ml/migrations`; `./scripts/demo train` обучает offline; `./scripts/demo scenarios` читает маленькие fixtures. Отдельный seed БД не нужен: финансовые примеры хранятся в `ml/fixtures/scenarios.json`, сервер не читает их при inference.
 
@@ -180,7 +181,9 @@ CLI проверяет путь до решения policy. REVIEW/ACCEPTED/COMP
 
 На test: ROC-AUC **0.90522**, Average Precision **0.41241**, prevalence **0.05369**, Brier **0.03951**, log loss **0.14104**. Полный отчёт содержит confusion matrix на T_manual и распределения score; matrix считается на всём split, а review coverage — на пригодном validation-подмножестве. Все числа относятся к искусственной симуляции.
 
-Bundle: `ml/artifacts/baseline/` — preprocessing+model, manifest с версиями библиотек/dataset+split+evaluation hashes, feature code digest, selection lock, policy, model card. Startup проверяет hashes и версии; ничего не скачивает и не обучает. Веса и датасет исключены из Git. Небольшие отчёты в `reports/` и synthetic fixtures можно передавать команде. Это исследовательская сборка; независимый peer review для командного релиза ещё нужен.
+Bundle: `ml/artifacts/baseline/` — preprocessing+model, manifest с версиями библиотек/dataset+split+evaluation hashes, feature code digest, selection lock, policy, model card и `SHA256SUMS`. Startup проверяет hashes и версии; ничего не скачивает и не обучает. По поручению владельца этот bundle и полный датасет включены в ML-ветку Git вместе с отчётами и synthetic fixtures. Остальные локальные наборы, модели, секреты и база остаются исключены. Это исследовательская сборка; независимый peer review для командного релиза ещё нужен.
+
+Датасет сохранён без изменения исходных файлов, включая `MANIFEST.sha256`, происхождение и описания. В нём есть реальные реквизиты ООО из открытого реестра, гибридный набор с искусственными финансами и полностью синтетическая обучающая выборка. Реальные реквизиты и гибридные записи не используются моделью. Подробности: `datasets/ru-sme-dataset-10000/DATASET_README_RU.md`. Каталог-дубликат с суффиксом ` 2` не включён.
 
 Выполнены 13 unit/API проверок: Decimal, баланс/знак/нулевой долг, batch-online parity, whitelist/manifest, приоритет policy и равенство порогу, cap/minimum, реальные concurrent retries, conflicts/digests/purpose/schema/auth и API schemas. Фактический протокол runtime — `reports/ml-runtime.json`; результаты S01–S06 и 30 последовательных замеров feature+inference — `reports/ml-scenarios.json`. Это latency standalone ML, не время банковского пути и не нагрузочное испытание нескольких клиентов.
 

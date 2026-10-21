@@ -1,0 +1,143 @@
+{
+  "warning": "Metrics of fully synthetic financials and synthetic labels; no claim about Russian companies or bank PD.",
+  "selectionLock": {
+    "modelHash": "609a188ec50e6213920cf923404aa41b0b29dd976f13582d7ac673577a379da2",
+    "policyHash": "cc9613af26bfa61d41e61d3cd9f41f14f36bebb75e38c6a22b6569765208c44c",
+    "C": 0.1,
+    "featureCodeDigest": "1a6fa666e304698553f127973b92dea52e2d19420965e103bba2363fe2f6c6f3"
+  },
+  "candidates": [
+    {
+      "C": 0.01,
+      "cvAveragePrecision": [
+        0.31285354395064663,
+        0.3282506294842723,
+        0.3830546192294748,
+        0.35675517447753
+      ],
+      "validationAveragePrecision": 0.2687429055854354
+    },
+    {
+      "C": 0.1,
+      "cvAveragePrecision": [
+        0.3249133513898024,
+        0.322838301665714,
+        0.38121377940725537,
+        0.3529782143588324
+      ],
+      "validationAveragePrecision": 0.2887372570037226
+    },
+    {
+      "C": 1.0,
+      "cvAveragePrecision": [
+        0.3248298954134433,
+        0.32119649737062933,
+        0.38503517273208027,
+        0.3604343756423994
+      ],
+      "validationAveragePrecision": 0.286192802394017
+    },
+    {
+      "C": 10.0,
+      "cvAveragePrecision": [
+        0.3221051019491661,
+        0.3154359363218259,
+        0.3849915449356634,
+        0.35854882730330434
+      ],
+      "validationAveragePrecision": 0.2816330183283565
+    }
+  ],
+  "splits": {
+    "train": {
+      "rows": 7016,
+      "events": 352,
+      "prevalence": 0.05017103762827822,
+      "rocAuc": 0.8548540154698243,
+      "averagePrecision": 0.3484514655088585,
+      "brier": 0.0392867330273401,
+      "logLoss": 0.1494176262816613,
+      "confusionMatrixAtManualThreshold": [
+        [
+          4709,
+          1955
+        ],
+        [
+          64,
+          288
+        ]
+      ],
+      "scoreQuantiles": {
+        "min": 1.6830390463286376e-06,
+        "p10": 0.0022358681463131927,
+        "p50": 0.018263921232908743,
+        "p80": 0.0705727289936364,
+        "p90": 0.1359277721988888,
+        "p99": 0.4314747652079072,
+        "max": 0.9164531268282897
+      }
+    },
+    "validation": {
+      "rows": 1494,
+      "events": 80,
+      "prevalence": 0.0535475234270415,
+      "rocAuc": 0.8529437765205092,
+      "averagePrecision": 0.2887372570037226,
+      "brier": 0.04453171477489804,
+      "logLoss": 0.162963796644975,
+      "confusionMatrixAtManualThreshold": [
+        [
+          1002,
+          412
+        ],
+        [
+          14,
+          66
+        ]
+      ],
+      "scoreQuantiles": {
+        "min": 1.5990671380241803e-06,
+        "p10": 0.002243492812004076,
+        "p50": 0.01686115036175234,
+        "p80": 0.06953954412217621,
+        "p90": 0.1555065254901484,
+        "p99": 0.4428112961126275,
+        "max": 0.7670722836149818
+      }
+    },
+    "test": {
+      "rows": 1490,
+      "events": 80,
+      "prevalence": 0.053691275167785234,
+      "rocAuc": 0.9052216312056738,
+      "averagePrecision": 0.4124093935430776,
+      "brier": 0.039506458257323004,
+      "logLoss": 0.141042870186105,
+      "confusionMatrixAtManualThreshold": [
+        [
+          997,
+          413
+        ],
+        [
+          6,
+          74
+        ]
+      ],
+      "scoreQuantiles": {
+        "min": 4.6987993595530683e-05,
+        "p10": 0.002166860126680676,
+        "p50": 0.017572373225869374,
+        "p80": 0.0740537916798959,
+        "p90": 0.14189851667782952,
+        "p99": 0.5119538254451076,
+        "max": 0.8707898057153323
+      }
+    }
+  },
+  "datasetHashes": {
+    "train": "50004cdc80011d31e5b8bc413fdfa6c0be4cf501886a75b277fa65d3db9b1e7b",
+    "validation": "11762a167804d292551862f8ecd573e1365402fef2f6b972b9ad0fcb6e5822b9",
+    "test": "98beca7d325f64ef3b5f85d4bc49efc3e9d05bc490a082567b5581be67542080"
+  },
+  "uncertainty": "Single fixed synthetic sample; no population accuracy claim; intervals not estimated."
+}

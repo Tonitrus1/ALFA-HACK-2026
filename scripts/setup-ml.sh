@@ -19,4 +19,4 @@ PY
  (cd .local/tools/postgresql-17.5 && ./configure --prefix="$PWD/../pg" --without-icu --without-readline --without-zlib && make -j4 && make install) > .local/postgres-build.log 2>&1
 fi
 ./scripts/demo migrate
-printf '%s\n' 'Prepared. Next: ./scripts/demo train --dataset /absolute/path/to/ru-sme-dataset-10000' 'Then: ./scripts/demo up --offline'
+printf '%s\n' 'Prepared. Next: ./scripts/demo up --offline' 'Optional retraining: ./scripts/demo train --dataset datasets/ru-sme-dataset-10000'

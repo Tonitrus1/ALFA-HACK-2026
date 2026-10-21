@@ -85,7 +85,7 @@ def reset(confirmation):
         db.execute('truncate ml.features,ml.inferences')
     print('Cleared only ml.features and ml.inferences in dedicated synthetic database; bundle/fixtures retained')
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('command',choices=['migrate','up','down','train','scenarios','test','reset']);p.add_argument('--offline',action='store_true');p.add_argument('--confirm');p.add_argument('--dataset',default=os.environ.get('DATASET_PATH',str(ROOT.parent/'datasets/ru-sme-dataset-10000')));a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('command',choices=['migrate','up','down','train','scenarios','test','reset']);p.add_argument('--offline',action='store_true');p.add_argument('--confirm');p.add_argument('--dataset',default=os.environ.get('DATASET_PATH',str(ROOT/'datasets/ru-sme-dataset-10000')));a=p.parse_args()
     if a.command=='migrate':migrate()
     elif a.command=='up':up(a.offline)
     elif a.command=='down':down()
