@@ -1,0 +1,194 @@
+{
+  "requestId": "equipment-application",
+  "scope": "FEED",
+  "rankedIds": [
+    "equipment-04",
+    "application-03",
+    "application-02",
+    "equipment-01",
+    "working-04",
+    "season-03",
+    "equipment-06",
+    "equipment-03",
+    "application-04",
+    "application-01",
+    "cost-03",
+    "working-03",
+    "application-05",
+    "season-04",
+    "cost-04",
+    "season-05",
+    "application-06",
+    "cash-04",
+    "equipment-05",
+    "cash-03",
+    "equipment-02",
+    "cost-06",
+    "season-01",
+    "working-01",
+    "working-05",
+    "cost-01",
+    "cost-05",
+    "cash-02",
+    "season-06",
+    "cash-01",
+    "cash-06",
+    "working-06",
+    "cash-05",
+    "cost-02",
+    "working-02",
+    "season-02"
+  ],
+  "candidateSetDigest": "2512498dc640d52e8748034990b07c31cceb6c03132734661b5f94df00bf2afc",
+  "exposureId": "ex-equipment-application",
+  "releaseId": "feed-e5-v1-d068f7fcb894",
+  "mode": "MODEL",
+  "reasonCategory": "PROFILE_RELEVANCE",
+  "catalogDigest": "20a2e621ecfaa6172ac6d222967ed86cbc097b7bd372699dea9b674aa98bce2f",
+  "explanations": {
+    "equipment-04": {
+      "reasonCategory": "HELP_MATCH",
+      "message": "Вы выбрали помощь в подготовке к заявке."
+    },
+    "application-03": {
+      "reasonCategory": "HELP_MATCH",
+      "message": "Вы выбрали помощь в подготовке к заявке."
+    },
+    "application-02": {
+      "reasonCategory": "HELP_MATCH",
+      "message": "Вы выбрали помощь в подготовке к заявке."
+    },
+    "equipment-01": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "working-04": {
+      "reasonCategory": "DEPTH_MATCH",
+      "message": "Соответствует выбранной глубине объяснения."
+    },
+    "season-03": {
+      "reasonCategory": "DEPTH_MATCH",
+      "message": "Соответствует выбранной глубине объяснения."
+    },
+    "equipment-06": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "equipment-03": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "application-04": {
+      "reasonCategory": "HELP_MATCH",
+      "message": "Вы выбрали помощь в подготовке к заявке."
+    },
+    "application-01": {
+      "reasonCategory": "HELP_MATCH",
+      "message": "Вы выбрали помощь в подготовке к заявке."
+    },
+    "cost-03": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "working-03": {
+      "reasonCategory": "DEPTH_MATCH",
+      "message": "Соответствует выбранной глубине объяснения."
+    },
+    "application-05": {
+      "reasonCategory": "HELP_MATCH",
+      "message": "Вы выбрали помощь в подготовке к заявке."
+    },
+    "season-04": {
+      "reasonCategory": "DEPTH_MATCH",
+      "message": "Соответствует выбранной глубине объяснения."
+    },
+    "cost-04": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "season-05": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
+    },
+    "application-06": {
+      "reasonCategory": "HELP_MATCH",
+      "message": "Вы выбрали помощь в подготовке к заявке."
+    },
+    "cash-04": {
+      "reasonCategory": "DEPTH_MATCH",
+      "message": "Соответствует выбранной глубине объяснения."
+    },
+    "equipment-05": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "cash-03": {
+      "reasonCategory": "DEPTH_MATCH",
+      "message": "Соответствует выбранной глубине объяснения."
+    },
+    "equipment-02": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "cost-06": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "season-01": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
+    },
+    "working-01": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
+    },
+    "working-05": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
+    },
+    "cost-01": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "cost-05": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "cash-02": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
+    },
+    "season-06": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
+    },
+    "cash-01": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
+    },
+    "cash-06": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
+    },
+    "working-06": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
+    },
+    "cash-05": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
+    },
+    "cost-02": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "working-02": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
+    },
+    "season-02": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
+    }
+  }
+}

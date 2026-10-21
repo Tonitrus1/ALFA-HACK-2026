@@ -736,5 +736,41 @@
       "P16"
     ],
     "implemented": false
+  },
+  {
+    "operationId": "getFeedPreferences",
+    "method": "GET",
+    "path": "/api/v1/feed/preferences",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P12",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "putFeedPreferences",
+    "method": "PUT",
+    "path": "/api/v1/feed/preferences",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P12",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
+  },
+  {
+    "operationId": "getSavedFeed",
+    "method": "GET",
+    "path": "/api/v1/feed/saved",
+    "owner": "BACKEND+ML+FRONTEND",
+    "taskIds": [
+      "P12",
+      "P15",
+      "P16"
+    ],
+    "implemented": false
   }
 ]

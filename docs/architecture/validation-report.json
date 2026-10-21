@@ -4,12 +4,12 @@
   "applicationImplemented": false,
   "runtimeTestsExecuted": false,
   "counts": {
-    "checks": 411,
+    "checks": 424,
     "failed": 0,
-    "schemaFixtures": 175,
-    "negativeSchemaFixtures": 97,
+    "schemaFixtures": 185,
+    "negativeSchemaFixtures": 104,
     "semanticDesignOracles": 21,
-    "publicOperations": 60,
+    "publicOperations": 63,
     "internalOperations": 28,
     "demoOperations": 6
   },
@@ -546,6 +546,21 @@
     },
     {
       "check": "ranking-metadata-required",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "feed-service-identity",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "saved-feed-read-route",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "feed-user-reaction-required",
       "passed": true,
       "detail": ""
     },
@@ -1105,6 +1120,56 @@
       "detail": ""
     },
     {
+      "check": "fixture:saved-feed-valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:saved-feed-empty",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:saved-feed-continuation",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:saved-feed-missing-cursor",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:saved-feed-extra-cursor",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:saved-feed-needs-exposureId",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:saved-feed-needs-savedVersion",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:saved-feed-needs-catalogDigest",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:saved-feed-only-helpful",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:feed-card-needs-reaction",
+      "passed": true,
+      "detail": ""
+    },
+    {
       "check": "fixture:demo-financial-valid",
       "passed": true,
       "detail": ""
@@ -1532,7 +1597,7 @@
     {
       "check": "serialized-fixtures-revalidated",
       "passed": true,
-      "detail": "Reopened and validated 175 saved fixtures"
+      "detail": "Reopened and validated 185 saved fixtures"
     },
     {
       "check": "fixture-migration-log",

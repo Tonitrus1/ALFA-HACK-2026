@@ -2050,6 +2050,272 @@
     }
   },
   {
+    "id": "saved-feed-valid",
+    "contract": "contracts/public.openapi.json",
+    "schema": "SavedFeed",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "cards": [
+        {
+          "contentId": "cash-01",
+          "version": 1,
+          "title": "Кассовый разрыв",
+          "text": "Пример полного текста карточки.",
+          "topic": "CASH_GAP",
+          "depth": "BASICS",
+          "illustration": "/assets/feed/v1/illustrations/cash_gap.svg",
+          "reasonCategory": "SAVED_HELPFUL",
+          "reason": "Вы отметили этот материал как полезный.",
+          "userReaction": "HELPFUL"
+        }
+      ],
+      "exposureId": "saved-ex-a",
+      "catalogVersion": 1,
+      "catalogDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "savedVersion": 1,
+      "hasMore": false
+    }
+  },
+  {
+    "id": "saved-feed-empty",
+    "contract": "contracts/public.openapi.json",
+    "schema": "SavedFeed",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "cards": [],
+      "exposureId": "saved-ex-a",
+      "catalogVersion": 1,
+      "catalogDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "savedVersion": 0,
+      "hasMore": false
+    }
+  },
+  {
+    "id": "saved-feed-continuation",
+    "contract": "contracts/public.openapi.json",
+    "schema": "SavedFeed",
+    "expectedValid": true,
+    "actualValid": true,
+    "origin": "current",
+    "value": {
+      "cards": [
+        {
+          "contentId": "cash-01",
+          "version": 1,
+          "title": "Кассовый разрыв",
+          "text": "Пример полного текста карточки.",
+          "topic": "CASH_GAP",
+          "depth": "BASICS",
+          "illustration": "/assets/feed/v1/illustrations/cash_gap.svg",
+          "reasonCategory": "SAVED_HELPFUL",
+          "reason": "Вы отметили этот материал как полезный.",
+          "userReaction": "HELPFUL"
+        }
+      ],
+      "exposureId": "saved-ex-a",
+      "catalogVersion": 1,
+      "catalogDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "savedVersion": 1,
+      "hasMore": true,
+      "nextCursor": "opaque-saved-cursor"
+    }
+  },
+  {
+    "id": "saved-feed-missing-cursor",
+    "contract": "contracts/public.openapi.json",
+    "schema": "SavedFeed",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "cards": [
+        {
+          "contentId": "cash-01",
+          "version": 1,
+          "title": "Кассовый разрыв",
+          "text": "Пример полного текста карточки.",
+          "topic": "CASH_GAP",
+          "depth": "BASICS",
+          "illustration": "/assets/feed/v1/illustrations/cash_gap.svg",
+          "reasonCategory": "SAVED_HELPFUL",
+          "reason": "Вы отметили этот материал как полезный.",
+          "userReaction": "HELPFUL"
+        }
+      ],
+      "exposureId": "saved-ex-a",
+      "catalogVersion": 1,
+      "catalogDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "savedVersion": 1,
+      "hasMore": true
+    }
+  },
+  {
+    "id": "saved-feed-extra-cursor",
+    "contract": "contracts/public.openapi.json",
+    "schema": "SavedFeed",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "cards": [
+        {
+          "contentId": "cash-01",
+          "version": 1,
+          "title": "Кассовый разрыв",
+          "text": "Пример полного текста карточки.",
+          "topic": "CASH_GAP",
+          "depth": "BASICS",
+          "illustration": "/assets/feed/v1/illustrations/cash_gap.svg",
+          "reasonCategory": "SAVED_HELPFUL",
+          "reason": "Вы отметили этот материал как полезный.",
+          "userReaction": "HELPFUL"
+        }
+      ],
+      "exposureId": "saved-ex-a",
+      "catalogVersion": 1,
+      "catalogDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "savedVersion": 1,
+      "hasMore": false,
+      "nextCursor": "unnecessary"
+    }
+  },
+  {
+    "id": "saved-feed-needs-exposureId",
+    "contract": "contracts/public.openapi.json",
+    "schema": "SavedFeed",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "cards": [
+        {
+          "contentId": "cash-01",
+          "version": 1,
+          "title": "Кассовый разрыв",
+          "text": "Пример полного текста карточки.",
+          "topic": "CASH_GAP",
+          "depth": "BASICS",
+          "illustration": "/assets/feed/v1/illustrations/cash_gap.svg",
+          "reasonCategory": "SAVED_HELPFUL",
+          "reason": "Вы отметили этот материал как полезный.",
+          "userReaction": "HELPFUL"
+        }
+      ],
+      "catalogVersion": 1,
+      "catalogDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "savedVersion": 1,
+      "hasMore": false
+    }
+  },
+  {
+    "id": "saved-feed-needs-savedVersion",
+    "contract": "contracts/public.openapi.json",
+    "schema": "SavedFeed",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "cards": [
+        {
+          "contentId": "cash-01",
+          "version": 1,
+          "title": "Кассовый разрыв",
+          "text": "Пример полного текста карточки.",
+          "topic": "CASH_GAP",
+          "depth": "BASICS",
+          "illustration": "/assets/feed/v1/illustrations/cash_gap.svg",
+          "reasonCategory": "SAVED_HELPFUL",
+          "reason": "Вы отметили этот материал как полезный.",
+          "userReaction": "HELPFUL"
+        }
+      ],
+      "exposureId": "saved-ex-a",
+      "catalogVersion": 1,
+      "catalogDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "hasMore": false
+    }
+  },
+  {
+    "id": "saved-feed-needs-catalogDigest",
+    "contract": "contracts/public.openapi.json",
+    "schema": "SavedFeed",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "cards": [
+        {
+          "contentId": "cash-01",
+          "version": 1,
+          "title": "Кассовый разрыв",
+          "text": "Пример полного текста карточки.",
+          "topic": "CASH_GAP",
+          "depth": "BASICS",
+          "illustration": "/assets/feed/v1/illustrations/cash_gap.svg",
+          "reasonCategory": "SAVED_HELPFUL",
+          "reason": "Вы отметили этот материал как полезный.",
+          "userReaction": "HELPFUL"
+        }
+      ],
+      "exposureId": "saved-ex-a",
+      "catalogVersion": 1,
+      "savedVersion": 1,
+      "hasMore": false
+    }
+  },
+  {
+    "id": "saved-feed-only-helpful",
+    "contract": "contracts/public.openapi.json",
+    "schema": "SavedFeed",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "cards": [
+        {
+          "contentId": "cash-01",
+          "version": 1,
+          "title": "Кассовый разрыв",
+          "text": "Пример полного текста карточки.",
+          "topic": "CASH_GAP",
+          "depth": "BASICS",
+          "illustration": "/assets/feed/v1/illustrations/cash_gap.svg",
+          "reasonCategory": "SAVED_HELPFUL",
+          "reason": "Вы отметили этот материал как полезный.",
+          "userReaction": "NOT_INTERESTED"
+        }
+      ],
+      "exposureId": "saved-ex-a",
+      "catalogVersion": 1,
+      "catalogDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "savedVersion": 1,
+      "hasMore": false
+    }
+  },
+  {
+    "id": "feed-card-needs-reaction",
+    "contract": "contracts/public.openapi.json",
+    "schema": "FeedCard",
+    "expectedValid": false,
+    "actualValid": false,
+    "origin": "current",
+    "value": {
+      "contentId": "cash-01",
+      "version": 1,
+      "title": "Кассовый разрыв",
+      "text": "Пример полного текста карточки.",
+      "topic": "CASH_GAP",
+      "depth": "BASICS",
+      "illustration": "/assets/feed/v1/illustrations/cash_gap.svg",
+      "reasonCategory": "SAVED_HELPFUL",
+      "reason": "Вы отметили этот материал как полезный."
+    }
+  },
+  {
     "id": "demo-financial-valid",
     "contract": "contracts/public.openapi.json",
     "schema": "MLFinancialInput",
@@ -2870,7 +3136,8 @@
     "origin": "current",
     "value": {
       "cards": [],
-      "rankingMode": "RULES"
+      "rankingMode": "RULES",
+      "hasMore": false
     }
   },
   {
@@ -2883,6 +3150,7 @@
     "value": {
       "cards": [],
       "rankingMode": "RULES",
+      "hasMore": false,
       "rankingMetadata": {
         "exposureId": "ex-a",
         "releaseId": "rules-v1",

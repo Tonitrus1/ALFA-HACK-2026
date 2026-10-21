@@ -342,10 +342,18 @@
         "subjectRef",
         "scope",
         "candidateIds",
-        "bundleDigest"
+        "bundleDigest",
+        "issuedIds (FEED)",
+        "issuedVersions (FEED)",
+        "selectionId (FEED)",
+        "catalogVersion (FEED)",
+        "catalogDigest (FEED)",
+        "source (FEED: SELECTION or SAVED)"
       ],
       "constraints": [
-        "permitted item IDs only; immutable assigned order"
+        "permitted item IDs only; immutable assigned order",
+        "FEED feedback accepts only actually issuedIds; ranked-but-not-issued candidates confer no feedback permission",
+        "SAVED exposure permits feedback only for its issuedIds and does not mutate VIEW or issuedIds of a normal feed selection"
       ]
     },
     {
@@ -356,10 +364,83 @@
         "exposureId",
         "itemId",
         "action",
-        "occurredAt"
+        "occurredAt",
+        "companyId",
+        "subjectRef",
+        "payloadDigest",
+        "acceptedSequence (FEED)"
       ],
       "constraints": [
-        "dedup by actor/company/clientEventId; validate event time/TTL"
+        "dedup by actor/company/clientEventId; validate event time/TTL",
+        "exact event replay has no effect; different payload under same clientEventId conflicts",
+        "FEED latest accepted HELPFUL/NOT_INTERESTED per card replaces previous reaction; client occurredAt does not override server order"
+      ]
+    },
+    {
+      "name": "FeedPreferences",
+      "owner": "workspace",
+      "fields": [
+        "companyId",
+        "subjectRef",
+        "preferencesVersion",
+        "task?",
+        "help?",
+        "depth?"
+      ],
+      "constraints": [
+        "unique(subjectRef,companyId); optional/null survey answers; replace atomically invalidates active selection"
+      ]
+    },
+    {
+      "name": "FeedSelection",
+      "owner": "workspace",
+      "fields": [
+        "selectionId",
+        "companyId",
+        "subjectRef",
+        "preferencesVersion",
+        "catalogVersion",
+        "issuedIds",
+        "cursorPages"
+      ],
+      "constraints": [
+        "opaque owner-bound cursor; atomic page reservation; stable replay minus current hidden without refill",
+        "new page reranks remaining candidates only; no VIEW on sending; foreign or stale cursor rejected"
+      ]
+    },
+    {
+      "name": "FeedCardState",
+      "owner": "workspace",
+      "fields": [
+        "companyId",
+        "subjectRef",
+        "contentId",
+        "latestReaction?",
+        "lastReactionSequence?",
+        "confirmedViewed",
+        "helpfulAcceptedSequence?"
+      ],
+      "constraints": [
+        "unique(subjectRef,companyId,contentId); persisted across visits",
+        "NOT_INTERESTED hides, HELPFUL saves and unhides; repeated action does not increment theme counts",
+        "confirmed VIEW requires client visibility >=50% continuously >=1000 ms; not proof of reading",
+        "userReaction is the latest HELPFUL/NOT_INTERESTED or null; only an effective transition to HELPFUL changes helpfulAcceptedSequence"
+      ]
+    },
+    {
+      "name": "FeedSavedState",
+      "owner": "workspace",
+      "fields": [
+        "companyId",
+        "subjectRef",
+        "savedVersion",
+        "cursorPages"
+      ],
+      "constraints": [
+        "unique(subjectRef,companyId); savedVersion starts at 0 and increments transactionally on effective saved membership/order changes",
+        "saved cards include published HELPFUL regardless of VIEW or normal selection issuedIds; order by helpfulAcceptedSequence descending, contentId ascending",
+        "opaque saved cursor binds owner, catalogVersion/catalogDigest, savedVersion and immutable page/exposure; current replay is stable",
+        "saved or catalog version changes reject old cursor with 409 FEED_SAVED_EXPIRED; repeated reaction, VIEW and CLICK do not change savedVersion"
       ]
     }
   ],
@@ -427,6 +508,11 @@
     "CommandOperation(actorRef,companyId,createdAt)",
     "StreamEvent(companyId,cursor)",
     "KnowledgeVersion(status,effectiveUntil)",
-    "AssistantMessage(companyId,subjectRef,conversationId,createdAt)"
+    "AssistantMessage(companyId,subjectRef,conversationId,createdAt)",
+    "FeedPreferences(subjectRef,companyId) UNIQUE",
+    "FeedCardState(subjectRef,companyId,contentId) UNIQUE",
+    "RecommendationFeedback(subjectRef,companyId,clientEventId) UNIQUE",
+    "FeedSelection(subjectRef,companyId,selectionId)",
+    "FeedSavedState(subjectRef,companyId) UNIQUE; atomic savedVersion/page/exposure"
   ]
 }

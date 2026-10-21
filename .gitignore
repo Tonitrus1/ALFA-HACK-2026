@@ -70,3 +70,7 @@ dumps/
 *.joblib
 *.gguf
 *.ggml
+
+# Recommendation service environment and downloaded E5 runtime bundle
+.venv-feed/
+.local/

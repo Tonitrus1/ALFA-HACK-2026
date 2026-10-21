@@ -2,7 +2,7 @@
   "info": {
     "name": "Credit Workspace HACKATHON-1.5 - contract request templates",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "60 API templates. This is not an executed E2E collection. Set runtime IDs/session/CSRF and provide body from the canonical schema. No application is included."
+    "description": "API templates generated from the canonical public contract. This is not an executed E2E collection. Set runtime IDs/session/CSRF and provide body from the canonical schema. No application is included."
   },
   "variable": [
     {
@@ -674,7 +674,7 @@
             "value": "{{companyContext}}"
           }
         ],
-        "description": "Next action и персонализированная лента\nCanonical operationId: get_api_v1_feed\nRequest schema: {}"
+        "description": "Порция рекомендательных карточек о финансировании бизнеса\nCanonical operationId: get_api_v1_feed\nRequest schema: {}"
       }
     },
     {
@@ -1309,6 +1309,64 @@
           }
         ],
         "description": "Прочитать доступную опубликованную версию источника\nCanonical operationId: getPublishedKnowledge\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/feed/preferences",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/feed/preferences",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Прочитать необязательные ответы опроса\nCanonical operationId: getFeedPreferences\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "PUT /api/v1/feed/preferences",
+      "request": {
+        "method": "PUT",
+        "url": "{{baseUrl}}/api/v1/feed/preferences",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          }
+        ],
+        "description": "Заменить ответы опроса и начать новую подборку\nCanonical operationId: putFeedPreferences\nRequest schema: {'$ref': '#/components/schemas/FeedPreferences'}"
+      }
+    },
+    {
+      "name": "GET /api/v1/feed/saved",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/feed/saved",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Прочитать сохранённые полезные карточки\nCanonical operationId: getSavedFeed\nRequest schema: {}"
       }
     }
   ]

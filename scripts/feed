@@ -1,0 +1,22 @@
+#!/bin/sh
+set -eu
+cd "$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)"
+feed_command=${1:-help}
+[ "$#" -eq 0 ] || shift
+case "$feed_command" in
+  setup)
+    "${PYTHON_BIN:-python3.12}" -m venv .venv-feed
+    .venv-feed/bin/python -m pip install -r ml/feed/requirements.lock.txt
+    ;;
+  prepare) exec .venv-feed/bin/python -m ml.feed.prepare "$@" ;;
+  serve)
+    : "${ML_INTERNAL_TOKEN:?Set ML_INTERNAL_TOKEN (16+ characters)}"
+    export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 TOKENIZERS_PARALLELISM=false
+    exec .venv-feed/bin/python -m uvicorn ml.feed.server:create_app --factory --host 127.0.0.1 --port 8002 --no-access-log --limit-concurrency 32 "$@"
+    ;;
+  test) exec .venv-feed/bin/python -m pytest ml/feed/tests -q "$@" ;;
+  evaluate|rank) exec .venv-feed/bin/python -m ml.feed.cli "$feed_command" "$@" ;;
+  *)
+    printf '%s\n' './scripts/feed setup' './scripts/feed prepare --download' './scripts/feed serve' './scripts/feed test --with-model' './scripts/feed evaluate' './scripts/feed rank ml/feed/examples/purchase-cost.request.json'
+    ;;
+esac

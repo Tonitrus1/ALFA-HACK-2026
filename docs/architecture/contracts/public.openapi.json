@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Кредитный кабинет: единый публичный контракт",
-    "version": "1.4.0-design",
-    "description": "Нормативная спецификация HACKATHON-1.4. Не реализованное API. 60 публичных операций; demo отдельно. Все пакеты ссылаются на этот источник. См. contracts/policy.json и docs/contract-decisions.md."
+    "version": "1.4.1-design",
+    "description": "Нормативная спецификация HACKATHON-1.4. Не реализованное API. 63 публичных операции; demo отдельно. Все пакеты ссылаются на этот источник. См. contracts/policy.json и docs/contract-decisions.md."
   },
   "servers": [
     {
@@ -7471,7 +7471,7 @@
     "/api/v1/feed": {
       "get": {
         "operationId": "get_api_v1_feed",
-        "summary": "Next action и персонализированная лента",
+        "summary": "Порция рекомендательных карточек о финансировании бизнеса",
         "tags": [
           "feed"
         ],
@@ -7687,9 +7687,19 @@
               "minimum": 1,
               "maximum": 9007199254740991
             }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            }
           }
         ],
-        "description": " Проверить права на компанию и объект. Не раскрывать существование чужого ресурса. X-Company-Context сравнивается с contextVersion серверной сессии; несовпадение даёт 409 COMPANY_CONTEXT_CHANGED до эффекта. companyId из пути/тела/query/ресурса должен совпадать с выбранной компанией.",
+        "description": " Проверить права на компанию и объект. Не раскрывать существование чужого ресурса. X-Company-Context сравнивается с contextVersion серверной сессии; несовпадение даёт 409 COMPANY_CONTEXT_CHANGED до эффекта. companyId из пути/тела/query/ресурса должен совпадать с выбранной компанией. Cursor непрозрачен, связан с user/company/selection/preferencesVersion/catalogVersion. Повтор возвращает сохранённую порцию и exposure без нового ранжирования, но исключает карточки с текущей реакцией NOT_INTERESTED без замены; порядок остальных, nextCursor и exposure сохраняются. После изменения опроса — 409 FEED_SELECTION_EXPIRED; клиент запрашивает первую порцию. Новое ранжирование применяется только к следующей порции. Исключать hidden, подтверждённые VIEW и все issued в текущей подборке. При отсутствии выбранной заявки applicationStage не передавать. Никаких предположений о заявке. Нет кандидатов: cards=[],hasMore=false; UI сообщает «Новых карточек пока нет». При повторе cursor userReaction обновляется из текущего состояния пользователя/компании; тексты, порядок оставшихся карточек, exposure и nextCursor сохраняются. Это второе явно разрешённое отличие снимка наряду с исключением скрытых карточек.",
         "x-owner-module": "workspace",
         "x-deadline-ms": 2000,
         "x-profile": [
@@ -15280,6 +15290,722 @@
           "bank-target"
         ]
       }
+    },
+    "/api/v1/feed/preferences": {
+      "get": {
+        "operationId": "getFeedPreferences",
+        "summary": "Прочитать необязательные ответы опроса",
+        "tags": [
+          "feed"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedPreferences"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "400": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "401": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "403": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "404": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "409": {
+            "description": "Version, state or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "422": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit; соблюдать Retry-After",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "503": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "500": {
+            "description": "Безопасная внутренняя ошибка; correlationId без деталей реализации",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Company-Context",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          }
+        ],
+        "description": "Профиль хранится по (authenticated user, selected company). Поля task/help/depth допускают null и пропуск. PUT заменяет три ответа целиком; пропущенные поля очищаются. Обновление preferencesVersion и инвалидирование старой подборки выполняются атомарно. Доступ, companyId, X-Company-Context и CSRF проверяются backend.",
+        "x-owner-module": "workspace",
+        "x-deadline-ms": 2000,
+        "x-profile": [
+          "local-mvp",
+          "bank-target"
+        ]
+      },
+      "put": {
+        "operationId": "putFeedPreferences",
+        "summary": "Заменить ответы опроса и начать новую подборку",
+        "tags": [
+          "feed"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedPreferences"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "400": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "401": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "403": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "404": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "409": {
+            "description": "Version, state or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "422": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit; соблюдать Retry-After",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "503": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "500": {
+            "description": "Безопасная внутренняя ошибка; correlationId без деталей реализации",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Company-Context",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "Профиль хранится по (authenticated user, selected company). Поля task/help/depth допускают null и пропуск. PUT заменяет три ответа целиком; пропущенные поля очищаются. Обновление preferencesVersion и инвалидирование старой подборки выполняются атомарно. Доступ, companyId, X-Company-Context и CSRF проверяются backend.",
+        "x-owner-module": "workspace",
+        "x-deadline-ms": 2000,
+        "x-profile": [
+          "local-mvp",
+          "bank-target"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedPreferences"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/feed/saved": {
+      "get": {
+        "operationId": "getSavedFeed",
+        "summary": "Прочитать сохранённые полезные карточки",
+        "tags": [
+          "feed"
+        ],
+        "responses": {
+          "200": {
+            "description": "Порция сохранённых карточек; без вызова ML",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SavedFeed"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "400": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "401": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "403": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "404": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "409": {
+            "description": "COMPANY_CONTEXT_CHANGED или FEED_SAVED_EXPIRED; перечитать контекст/первую порцию",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "422": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit; соблюдать Retry-After",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "503": {
+            "description": "Safe error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "500": {
+            "description": "Безопасная внутренняя ошибка; correlationId без деталей реализации",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Company-Context",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096
+            }
+          }
+        ],
+        "description": "Проверить права на выбранную компанию, companyId и X-Company-Context по серверной сессии. Несовпадение contextVersion: 409 COMPANY_CONTEXT_CHANGED до чтения данных. Сохранённое полезное по authenticated user + selected company; только опубликованные карточки с последней реакцией HELPFUL. Это чтение сохранений без ML-ранжирования. До шести карточек: последнее действительное переключение в HELPFUL первым, при равенстве contentId по возрастанию. VIEW и issued обычной ленты не фильтруют сохранения. Backend атомарно сохраняет exposure для фактически выданных карточек; feedback использует этот exposureId. Выдача сохранений не меняет VIEW или issued обычной подборки. savedVersion начинается с 0 и увеличивается при изменении состава/порядка сохранений; повтор HELPFUL с новым eventId, VIEW и CLICK версию не меняют. Cursor связан с user/company/catalogVersion/catalogDigest/savedVersion и снимком порции. Повтор cursor возвращает ту же порцию/exposure/nextCursor, пока версии актуальны. Изменение сохранений или каталога делает старый cursor недействительным: 409 FEED_SAVED_EXPIRED; клиент начинает чтение заново. Чужой cursor не раскрывает данные. Пустой список: cards=[], hasMore=false, nextCursor отсутствует; exposureId сохраняется в форме ответа.",
+        "x-owner-module": "workspace",
+        "x-deadline-ms": 2000,
+        "x-profile": [
+          "local-mvp",
+          "bank-target"
+        ]
+      }
     }
   },
   "components": {
@@ -16860,15 +17586,53 @@
           },
           "targetPath": {
             "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "illustration": {
+            "type": "string"
+          },
+          "topic": {
+            "$ref": "#/components/schemas/FeedTopic"
+          },
+          "depth": {
+            "$ref": "#/components/schemas/FeedDepth"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "userReaction": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "HELPFUL",
+              "NOT_INTERESTED",
+              null
+            ],
+            "description": "Последняя принятая backend реакция карточки в текущем user/company; null при её отсутствии. VIEW/CLICK не подменяют реакцию."
+          },
+          "text": {
+            "type": "string"
           }
         },
         "required": [
           "contentId",
+          "version",
           "title",
-          "summary",
-          "targetPath"
+          "text",
+          "topic",
+          "depth",
+          "illustration",
+          "reasonCategory",
+          "reason",
+          "userReaction"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "Законченная карточка без обязательного перехода. summary/targetPath оставлены необязательными для совместимости. Полный текст и SVG берутся из единого версионированного каталога."
       },
       "Feed": {
         "type": "object",
@@ -16881,7 +17645,7 @@
             "items": {
               "$ref": "#/components/schemas/FeedCard"
             },
-            "maxItems": 100
+            "maxItems": 6
           },
           "rankingMode": {
             "type": "string",
@@ -16892,14 +17656,47 @@
           },
           "rankingMetadata": {
             "$ref": "#/components/schemas/MLRankingMetadata"
+          },
+          "nextCursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          },
+          "hasMore": {
+            "type": "boolean"
           }
         },
         "required": [
           "cards",
           "rankingMode",
-          "rankingMetadata"
+          "rankingMetadata",
+          "hasMore"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "hasMore": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "nextCursor"
+              ]
+            },
+            "else": {
+              "not": {
+                "required": [
+                  "nextCursor"
+                ]
+              }
+            }
+          }
+        ],
+        "description": "Порция до шести карточек. hasMore=false: nextCursor отсутствует, cards может быть пуст. Обязательные действия по заявке остаются в nextAction, отдельно от карточек."
       },
       "InboxItem": {
         "type": "object",
@@ -18625,7 +19422,9 @@
             "type": "string",
             "enum": [
               "VIEW",
-              "CLICK"
+              "CLICK",
+              "HELPFUL",
+              "NOT_INTERESTED"
             ]
           },
           "occurredAt": {
@@ -18640,7 +19439,8 @@
           "action",
           "occurredAt"
         ],
-        "additionalProperties": false
+        "additionalProperties": false,
+        "description": "Backend принимает только для itemId из exposure, действительно выданного этому пользователю/компании. clientEventId дедуплицируется в этом контексте; повтор с другим содержимым — 409. VIEW: >=50% карточки видно >=1000 мс; отправка не является VIEW. NOT_INTERESTED скрывает карточку сразу; агрегаты обновляются транзакционно. HELPFUL сохраняет в полезном. События не являются кредитными признаками. Для каждой карточки учитывается последняя принятая backend реакция; смена заменяет прежнюю, повтор того же действия с новым eventId не усиливает счётчик. NOT_INTERESTED -> HELPFUL снимает скрытие и сохраняет полезное; обратная смена удаляет из полезного и скрывает. Порядок определяется серверным принятием в транзакции, occurredAt не перезаписывает более новое состояние."
       },
       "MLRankingMetadata": {
         "type": "object",
@@ -18675,6 +19475,10 @@
             "type": "integer",
             "minimum": 1,
             "maximum": 9007199254740991
+          },
+          "catalogDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
           }
         },
         "required": [
@@ -18686,6 +19490,285 @@
         ],
         "additionalProperties": false,
         "description": "exposureId относится к авторизованной компании/пользователю и одному набору кандидатов. Для PRODUCT eligibilityVersion обязателен; backend проверяет это семантически."
+      },
+      "SavedFeedCard": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/FeedCard"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "userReaction": {
+                "const": "HELPFUL"
+              }
+            },
+            "required": [
+              "userReaction"
+            ]
+          }
+        ],
+        "description": "Карточка с текущей реакцией HELPFUL; VIEW и issued обычной ленты не исключают сохранённое."
+      },
+      "FeedPreferences": {
+        "additionalProperties": false,
+        "properties": {
+          "task": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FeedTask"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "help": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FeedHelp"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "depth": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FeedDepth"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "title": "Preferences",
+        "type": "object"
+      },
+      "FeedTask": {
+        "enum": [
+          "PURCHASE",
+          "CASH_GAP",
+          "EQUIPMENT",
+          "EXPANSION",
+          "EXPLORING"
+        ],
+        "title": "Task",
+        "type": "string"
+      },
+      "FeedReactionCounts": {
+        "additionalProperties": false,
+        "properties": {
+          "helpful": {
+            "default": 0,
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "title": "Helpful",
+            "type": "integer"
+          },
+          "notInterested": {
+            "default": 0,
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "title": "Notinterested",
+            "type": "integer"
+          }
+        },
+        "title": "ReactionCounts",
+        "type": "object"
+      },
+      "FeedHelp": {
+        "enum": [
+          "AMOUNT",
+          "OPTIONS",
+          "COST",
+          "APPLICATION"
+        ],
+        "title": "Help",
+        "type": "string"
+      },
+      "SavedFeed": {
+        "type": "object",
+        "properties": {
+          "cards": {
+            "type": "array",
+            "maxItems": 6,
+            "items": {
+              "$ref": "#/components/schemas/SavedFeedCard"
+            }
+          },
+          "exposureId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "catalogVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "catalogDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "savedVersion": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "hasMore": {
+            "type": "boolean"
+          },
+          "nextCursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4096
+          }
+        },
+        "required": [
+          "cards",
+          "exposureId",
+          "catalogVersion",
+          "catalogDigest",
+          "savedVersion",
+          "hasMore"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "hasMore": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "nextCursor"
+              ]
+            },
+            "else": {
+              "not": {
+                "required": [
+                  "nextCursor"
+                ]
+              }
+            }
+          }
+        ],
+        "description": "Сохранённое полезное по authenticated user + selected company; только опубликованные карточки с последней реакцией HELPFUL. Это чтение сохранений без ML-ранжирования. До шести карточек: последнее действительное переключение в HELPFUL первым, при равенстве contentId по возрастанию. VIEW и issued обычной ленты не фильтруют сохранения. Backend атомарно сохраняет exposure для фактически выданных карточек; feedback использует этот exposureId. Выдача сохранений не меняет VIEW или issued обычной подборки. savedVersion начинается с 0 и увеличивается при изменении состава/порядка сохранений; повтор HELPFUL с новым eventId, VIEW и CLICK версию не меняют. Cursor связан с user/company/catalogVersion/catalogDigest/savedVersion и снимком порции. Повтор cursor возвращает ту же порцию/exposure/nextCursor, пока версии актуальны. Изменение сохранений или каталога делает старый cursor недействительным: 409 FEED_SAVED_EXPIRED; клиент начинает чтение заново. Чужой cursor не раскрывает данные. Пустой список: cards=[], hasMore=false, nextCursor отсутствует; exposureId сохраняется в форме ответа."
+      },
+      "FeedDepth": {
+        "enum": [
+          "BASICS",
+          "EXPLAINED",
+          "PRACTICAL"
+        ],
+        "title": "Depth",
+        "type": "string"
+      },
+      "FeedBusiness": {
+        "enum": [
+          "RETAIL",
+          "SERVICES",
+          "MANUFACTURING",
+          "WHOLESALE",
+          "HOSPITALITY",
+          "OTHER"
+        ],
+        "title": "Business",
+        "type": "string"
+      },
+      "FeedTopic": {
+        "enum": [
+          "CASH_GAP",
+          "WORKING_CAPITAL",
+          "SEASONALITY",
+          "EQUIPMENT",
+          "APPLICATION",
+          "FINANCING_COST"
+        ],
+        "title": "Topic",
+        "type": "string"
+      },
+      "FeedProfile": {
+        "additionalProperties": false,
+        "properties": {
+          "task": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FeedTask"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "help": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FeedHelp"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "depth": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FeedDepth"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "businessCategory": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FeedBusiness"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "applicationStage": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FeedStage"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "title": "Profile",
+        "type": "object"
+      },
+      "FeedStage": {
+        "enum": [
+          "DRAFT",
+          "SUBMITTED",
+          "NEEDS_INFORMATION",
+          "REVIEW",
+          "DECISION"
+        ],
+        "title": "Stage",
+        "type": "string"
       }
     }
   },
