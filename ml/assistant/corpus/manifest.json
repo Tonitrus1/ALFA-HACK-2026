@@ -1,0 +1,245 @@
+{
+  "version": 1,
+  "requirements_pdf_included": false,
+  "documents": [
+    {
+      "path": "synthetic-01.md",
+      "metadata": {
+        "title": "Демо Оборотный",
+        "source_type": "SYNTHETIC",
+        "is_synthetic": true,
+        "product_id": "demo-working-capital",
+        "attribution": "Команда проекта ALFA-HACK-2026, авторский синтетический корпус",
+        "allowed_use": "Демонстрация и тестирование этого проекта"
+      }
+    },
+    {
+      "path": "synthetic-02.md",
+      "metadata": {
+        "title": "Демо Оборудование",
+        "source_type": "SYNTHETIC",
+        "is_synthetic": true,
+        "product_id": "demo-equipment",
+        "attribution": "Команда проекта ALFA-HACK-2026, авторский синтетический корпус",
+        "allowed_use": "Демонстрация и тестирование этого проекта"
+      }
+    },
+    {
+      "path": "synthetic-03.md",
+      "metadata": {
+        "title": "Демо Овердрафт",
+        "source_type": "SYNTHETIC",
+        "is_synthetic": true,
+        "product_id": "demo-overdraft",
+        "attribution": "Команда проекта ALFA-HACK-2026, авторский синтетический корпус",
+        "allowed_use": "Демонстрация и тестирование этого проекта"
+      }
+    },
+    {
+      "path": "synthetic-04.md",
+      "metadata": {
+        "title": "Этапы заявки",
+        "source_type": "SYNTHETIC",
+        "is_synthetic": true,
+        "product_id": null,
+        "attribution": "Команда проекта ALFA-HACK-2026, авторский синтетический корпус",
+        "allowed_use": "Демонстрация и тестирование этого проекта"
+      }
+    },
+    {
+      "path": "synthetic-05.md",
+      "metadata": {
+        "title": "Статус DOCUMENTS_REQUIRED",
+        "source_type": "SYNTHETIC",
+        "is_synthetic": true,
+        "product_id": null,
+        "attribution": "Команда проекта ALFA-HACK-2026, авторский синтетический корпус",
+        "allowed_use": "Демонстрация и тестирование этого проекта"
+      }
+    },
+    {
+      "path": "synthetic-06.md",
+      "metadata": {
+        "title": "Статус UNDER_REVIEW",
+        "source_type": "SYNTHETIC",
+        "is_synthetic": true,
+        "product_id": null,
+        "attribution": "Команда проекта ALFA-HACK-2026, авторский синтетический корпус",
+        "allowed_use": "Демонстрация и тестирование этого проекта"
+      }
+    },
+    {
+      "path": "synthetic-07.md",
+      "metadata": {
+        "title": "Статусы APPROVED и DECLINED",
+        "source_type": "SYNTHETIC",
+        "is_synthetic": true,
+        "product_id": null,
+        "attribution": "Команда проекта ALFA-HACK-2026, авторский синтетический корпус",
+        "allowed_use": "Демонстрация и тестирование этого проекта"
+      }
+    },
+    {
+      "path": "synthetic-08.md",
+      "metadata": {
+        "title": "Документы компании",
+        "source_type": "SYNTHETIC",
+        "is_synthetic": true,
+        "product_id": null,
+        "attribution": "Команда проекта ALFA-HACK-2026, авторский синтетический корпус",
+        "allowed_use": "Демонстрация и тестирование этого проекта"
+      }
+    },
+    {
+      "path": "synthetic-09.md",
+      "metadata": {
+        "title": "Выбор финансирования",
+        "source_type": "SYNTHETIC",
+        "is_synthetic": true,
+        "product_id": null,
+        "attribution": "Команда проекта ALFA-HACK-2026, авторский синтетический корпус",
+        "allowed_use": "Демонстрация и тестирование этого проекта"
+      }
+    },
+    {
+      "path": "synthetic-10.md",
+      "metadata": {
+        "title": "Расчёт аннуитета",
+        "source_type": "SYNTHETIC",
+        "is_synthetic": true,
+        "product_id": null,
+        "attribution": "Команда проекта ALFA-HACK-2026, авторский синтетический корпус",
+        "allowed_use": "Демонстрация и тестирование этого проекта"
+      }
+    },
+    {
+      "path": "synthetic-11.md",
+      "metadata": {
+        "title": "Безопасность и доступ",
+        "source_type": "SYNTHETIC",
+        "is_synthetic": true,
+        "product_id": null,
+        "attribution": "Команда проекта ALFA-HACK-2026, авторский синтетический корпус",
+        "allowed_use": "Демонстрация и тестирование этого проекта"
+      }
+    },
+    {
+      "path": "synthetic-12.md",
+      "metadata": {
+        "title": "Веб-источники и сохранение",
+        "source_type": "SYNTHETIC",
+        "is_synthetic": true,
+        "product_id": null,
+        "attribution": "Команда проекта ALFA-HACK-2026, авторский синтетический корпус",
+        "allowed_use": "Демонстрация и тестирование этого проекта"
+      }
+    },
+    {
+      "path": "public-note-01.md",
+      "metadata": {
+        "title": "Документы для бизнес-кредита",
+        "source_type": "PUBLIC_NOTE",
+        "source_url": "https://alfabank.ru/help/articles/sme/profits/kakie-dokumenty-nuzhny-dlya-kreditovaniya-biznesa/",
+        "retrieved_at": "2026-10-21T00:00:00+00:00",
+        "is_synthetic": false,
+        "attribution": "Альфа-Банк; ссылка на первоисточник; заметка команды проекта",
+        "allowed_use": "Только авторская краткая заметка и ссылка. Полный текст не скопирован; разрешение на его распространение не установлено."
+      }
+    },
+    {
+      "path": "public-note-02.md",
+      "metadata": {
+        "title": "Финансирование МСП",
+        "source_type": "PUBLIC_NOTE",
+        "source_url": "https://www.cbr.ru/develop/msp/",
+        "retrieved_at": "2026-10-21T00:00:00+00:00",
+        "is_synthetic": false,
+        "attribution": "Банк России; ссылка на первоисточник; заметка команды проекта",
+        "allowed_use": "Только авторская краткая заметка и ссылка. Полный текст не скопирован; разрешение на его распространение не установлено."
+      }
+    },
+    {
+      "path": "public-note-03.md",
+      "metadata": {
+        "title": "Аналитика кредитования МСП",
+        "source_type": "PUBLIC_NOTE",
+        "source_url": "https://www.cbr.ru/analytics/develop/inf_material_msp/",
+        "retrieved_at": "2026-10-21T00:00:00+00:00",
+        "is_synthetic": false,
+        "attribution": "Банк России; ссылка на первоисточник; заметка команды проекта",
+        "allowed_use": "Только авторская краткая заметка и ссылка. Полный текст не скопирован; разрешение на его распространение не установлено."
+      }
+    },
+    {
+      "path": "public-note-04.md",
+      "metadata": {
+        "title": "Реестр получателей поддержки МСП",
+        "source_type": "PUBLIC_NOTE",
+        "source_url": "https://www.nalog.gov.ru/opendata/7707329152-rsmppp/",
+        "retrieved_at": "2026-10-21T00:00:00+00:00",
+        "is_synthetic": false,
+        "attribution": "ФНС России; ссылка на первоисточник; заметка команды проекта",
+        "allowed_use": "Только авторская краткая заметка и ссылка. Полный текст не скопирован; разрешение на его распространение не установлено."
+      }
+    },
+    {
+      "path": "public-note-05.md",
+      "metadata": {
+        "title": "Бизнес-кредит: официальный раздел",
+        "source_type": "PUBLIC_NOTE",
+        "source_url": "https://alfabank.ru/sme/partner/ab_partner_businesscredit/",
+        "retrieved_at": "2026-10-21T00:00:00+00:00",
+        "is_synthetic": false,
+        "attribution": "Альфа-Банк; ссылка на первоисточник; заметка команды проекта",
+        "allowed_use": "Только авторская краткая заметка и ссылка. Полный текст не скопирован; разрешение на его распространение не установлено."
+      }
+    }
+  ],
+  "public_sources": [
+    {
+      "url": "https://alfabank.ru/help/articles/sme/profits/kakie-dokumenty-nuzhny-dlya-kreditovaniya-biznesa/",
+      "title": "Документы для бизнес-кредита",
+      "checked_on": "2026-10-21",
+      "scope": "Справочные публичные сведения для малого бизнеса",
+      "storage": "authored_short_note_only",
+      "full_copy_permission": "not_established",
+      "owner": "Альфа-Банк"
+    },
+    {
+      "url": "https://www.cbr.ru/develop/msp/",
+      "title": "Финансирование МСП",
+      "checked_on": "2026-10-21",
+      "scope": "Справочные публичные сведения для малого бизнеса",
+      "storage": "authored_short_note_only",
+      "full_copy_permission": "not_established",
+      "owner": "Банк России"
+    },
+    {
+      "url": "https://www.cbr.ru/analytics/develop/inf_material_msp/",
+      "title": "Аналитика кредитования МСП",
+      "checked_on": "2026-10-21",
+      "scope": "Справочные публичные сведения для малого бизнеса",
+      "storage": "authored_short_note_only",
+      "full_copy_permission": "not_established",
+      "owner": "Банк России"
+    },
+    {
+      "url": "https://www.nalog.gov.ru/opendata/7707329152-rsmppp/",
+      "title": "Реестр получателей поддержки МСП",
+      "checked_on": "2026-10-21",
+      "scope": "Справочные публичные сведения для малого бизнеса",
+      "storage": "authored_short_note_only",
+      "full_copy_permission": "not_established",
+      "owner": "ФНС России"
+    },
+    {
+      "url": "https://alfabank.ru/sme/partner/ab_partner_businesscredit/",
+      "title": "Бизнес-кредит: официальный раздел",
+      "checked_on": "2026-10-21",
+      "scope": "Справочные публичные сведения для малого бизнеса",
+      "storage": "authored_short_note_only",
+      "full_copy_permission": "not_established",
+      "owner": "Альфа-Банк"
+    }
+  ]
+}

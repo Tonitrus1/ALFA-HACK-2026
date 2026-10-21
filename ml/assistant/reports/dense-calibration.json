@@ -1,0 +1,134 @@
+{
+  "experimental": true,
+  "threshold": 0.822329951176193,
+  "embedding_revision": "fd1525a9fd15316a2d503bf26ab031a61d056e98",
+  "observations": [
+    {
+      "question": "Для чего нужен Демо Оборотный?",
+      "expected": "Демо Оборотный",
+      "score": 0.8916751266210776,
+      "title": "Выбор финансирования",
+      "relevant": false
+    },
+    {
+      "question": "Какая синтетическая ставка у Демо Оборотного?",
+      "expected": "Демо Оборотный",
+      "score": 0.8882770542021061,
+      "title": "Демо Оборотный",
+      "relevant": true
+    },
+    {
+      "question": "Какие суммы у Демо Оборудования?",
+      "expected": "Демо Оборудование",
+      "score": 0.8884861800507498,
+      "title": "Демо Оборудование",
+      "relevant": true
+    },
+    {
+      "question": "Какие документы нужны для Демо Оборудования?",
+      "expected": "Демо Оборудование",
+      "score": 0.8894777088566188,
+      "title": "Демо Оборудование",
+      "relevant": true
+    },
+    {
+      "question": "Демо Овердрафт помогает при кассовом разрыве?",
+      "expected": "Демо Овердрафт",
+      "score": 0.9052097690690895,
+      "title": "Демо Овердрафт",
+      "relevant": true
+    },
+    {
+      "question": "Какая длительность у Демо Овердрафта?",
+      "expected": "Демо Овердрафт",
+      "score": 0.8718958873369846,
+      "title": "Демо Овердрафт",
+      "relevant": true
+    },
+    {
+      "question": "Какие этапы проходит заявка?",
+      "expected": "Этапы заявки",
+      "score": 0.8700248360041372,
+      "title": "Этапы заявки",
+      "relevant": true
+    },
+    {
+      "question": "Что означает DOCUMENTS_REQUIRED?",
+      "expected": "Статус DOCUMENTS_REQUIRED",
+      "score": 0.8738237736851354,
+      "title": "Статус DOCUMENTS_REQUIRED",
+      "relevant": true
+    },
+    {
+      "question": "Что делать при UNDER_REVIEW?",
+      "expected": "Статус UNDER_REVIEW",
+      "score": 0.8545171015824773,
+      "title": "Статус UNDER_REVIEW",
+      "relevant": true
+    },
+    {
+      "question": "APPROVED - это настоящее одобрение банка?",
+      "expected": "Статусы APPROVED",
+      "score": 0.8953499236609771,
+      "title": "Статусы APPROVED и DECLINED",
+      "relevant": true
+    },
+    {
+      "question": "Что означает DECLINED?",
+      "expected": "Статусы APPROVED",
+      "score": 0.8644095412597099,
+      "title": "Статусы APPROVED и DECLINED",
+      "relevant": true
+    },
+    {
+      "question": "Какие документы компании можно использовать в демо?",
+      "expected": "Документы компании",
+      "score": 0.8797835170407915,
+      "title": "Документы компании",
+      "relevant": true
+    },
+    {
+      "question": "Как выбрать финансирование для оборудования и оборотных средств?",
+      "expected": "Выбор финансирования",
+      "score": 0.8738169592623161,
+      "title": "Выбор финансирования",
+      "relevant": true
+    },
+    {
+      "question": "Как рассчитывается аннуитет при нулевой ставке?",
+      "expected": "Расчёт аннуитета",
+      "score": 0.8834687627487751,
+      "title": "Расчёт аннуитета",
+      "relevant": true
+    },
+    {
+      "question": "Кто может расширить доступ к заявке другой компании?",
+      "expected": "Безопасность и доступ",
+      "score": 0.822329951176193,
+      "title": "Безопасность и доступ",
+      "relevant": true
+    },
+    {
+      "question": "Как сохранить прочитанный веб-источник?",
+      "expected": "Веб-источники",
+      "score": 0.8551130265089198,
+      "title": "Веб-источники и сохранение",
+      "relevant": true
+    },
+    {
+      "question": "Какой курс евро будет завтра?",
+      "expected": null,
+      "score": 0.7758286128070181,
+      "title": "Документы для бизнес-кредита",
+      "relevant": false
+    },
+    {
+      "question": "Какой пароль от банковской системы?",
+      "expected": null,
+      "score": 0.7908397973476696,
+      "title": "Документы для бизнес-кредита",
+      "relevant": false
+    }
+  ],
+  "note": "Development set; no held-out quality claim"
+}
