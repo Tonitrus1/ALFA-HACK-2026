@@ -18,7 +18,7 @@ def test_zero_debt_missing(statement):
     model=joblib.load(ROOT/'ml/artifacts/baseline/model.joblib');assert np.isfinite(model.predict_proba(matrix([statement]))).all()
 def test_invalid_and_negative(statement):
     for k in ['equityMinor','netProfitMinor','ebitMinor']:statement['values'][k]=-12300
-    with pytest.raises(ValueError):build(statement) # balance, not sign restriction
+    with pytest.raises(ValueError):build(statement)
     statement['values']['totalLiabilitiesMinor']=statement['values']['totalAssetsMinor']+12300
     assert build(statement)['X1']<0
     statement['values']['totalAssetsMinor']=0

@@ -1,7 +1,50 @@
-# Synthetic logistic baseline
-
-Fully invented SIM companies, financials and labels. BANKRUPTCY_PROXY / DEMONSTRATION / DEMO_RESEARCH. Not bank PD; not validated for real companies.
-
-Eight contract ratios only. Median imputation + indicators, scaling, regularized logistic regression. Preprocessing fits only train. Four-fold CV on train; version selected by validation AP; test opened after selection-lock. Provided split retained, no resampling. No calibration applied.
-
-Policy selects a demonstration review budget on eligible validation rows, not a risk norm. No business auto-decline derives from model score. Test is excluded from seed selection. Model serialization must only be loaded from locally trusted prepared artifacts.
+```json
+{
+  "modelType": "CatBoostClassifier",
+  "modelVersion": "catboost-optuna-v1",
+  "params": {
+    "iterations": 302,
+    "depth": 3,
+    "learning_rate": 0.017169946473376285,
+    "l2_leaf_reg": 7.543876335558273,
+    "random_strength": 0.4890915518202954,
+    "bagging_temperature": 0.23694932167282895,
+    "rsm": 0.6930882696132237,
+    "border_count": 64,
+    "auto_class_weights": "None"
+  },
+  "features": [
+    "X1",
+    "X2",
+    "X3",
+    "X4",
+    "X7",
+    "X8",
+    "X9",
+    "X10"
+  ],
+  "missingValueMode": "Min",
+  "optimization": {
+    "library": "optuna",
+    "trials": 30,
+    "folds": 3,
+    "objective": "train_stratified_cv_average_precision",
+    "selectedTrial": 28,
+    "params": {
+      "iterations": 302,
+      "depth": 3,
+      "learning_rate": 0.017169946473376285,
+      "l2_leaf_reg": 7.543876335558273,
+      "random_strength": 0.4890915518202954,
+      "bagging_temperature": 0.23694932167282895,
+      "rsm": 0.6930882696132237,
+      "border_count": 64,
+      "auto_class_weights": "None"
+    }
+  },
+  "calibration": null,
+  "dataOrigin": "SYNTHETIC_FINANCE_V1",
+  "scoreKind": "BANKRUPTCY_PROXY",
+  "purpose": "DEMO_RESEARCH"
+}
+```

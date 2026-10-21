@@ -1,4 +1,3 @@
-"""Internal-only Risk API. Writes only the ML schema, never application decisions."""
 import hashlib
 import importlib.metadata
 import json
@@ -63,7 +62,7 @@ def get_manifest():
     if (m['scoreKind'],m['validationStatus'],m['purpose'])!=('BANKRUPTCY_PROXY','DEMONSTRATION','DEMO_RESEARCH'): raise RuntimeError('Unsupported risk interpretation')
     for name,h in m['artifacts'].items():
         if hashlib.sha256((BUNDLE/name).read_bytes()).hexdigest()!=h: raise RuntimeError('Artifact checksum mismatch: '+name)
-    for lib in ['numpy','scikit-learn','scipy','joblib']:
+    for lib in ['numpy','scikit-learn','scipy','joblib','catboost']:
         if importlib.metadata.version(lib)!=m['libraries'][lib]: raise RuntimeError('Library version mismatch: '+lib)
     m['bundleDigest']=claimed; return m
 @asynccontextmanager
@@ -73,7 +72,7 @@ async def lifespan(app):
     with db() as c: c.execute('select count(*) from ml.inferences').fetchone()
     model.predict_proba(np.zeros((1,len(FEATURES))))
     yield
-app=FastAPI(title='Synthetic Risk API v2',lifespan=lifespan,dependencies=[Depends(auth)])
+app=FastAPI(title='Risk API v2',lifespan=lifespan,dependencies=[Depends(auth)])
 
 @app.exception_handler(psycopg.Error)
 def persistence_unavailable(request,exc):
@@ -140,5 +139,5 @@ def evaluate(body:RiskRequest):
                 'featureSnapshotDigest':s['snapshotDigest'],'modelVersion':manifest['modelVersion'],'bundleDigest':manifest['bundleDigest'],
                 'score':score,'scoreKind':'BANKRUPTCY_PROXY','calibrationStatus':'DEMONSTRATION','releaseId':manifest['modelVersion'],'purpose':'DEMO_RESEARCH','internalReasonCodes':['SYNTHETIC_SIMULATION']}
         c.execute('insert into ml.inferences(id,request_id,input_hash,payload) values(%s,%s,%s,%s)',(result['inferenceId'],body['requestId'],h,Jsonb(result)))
-    # Response after successful transaction commit. Persistence failure is HTTP failure.
+
     return result

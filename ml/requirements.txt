@@ -6,3 +6,5 @@ joblib==1.6.0
 fastapi==0.115.12
 uvicorn==0.34.3
 psycopg[binary]==3.2.9
+catboost==1.2.8
+optuna==4.3.0

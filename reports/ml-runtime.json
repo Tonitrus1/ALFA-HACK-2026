@@ -13,7 +13,7 @@
     {
       "name": "persistence_failure_is_error_and_reference_policy_manual",
       "passed": true,
-      "seconds": 2.0092040420277044
+      "seconds": 2.008351708005648
     },
     {
       "name": "external_tcp_denied_by_os_profile",
@@ -24,5 +24,5 @@
   ],
   "networkMode": "all ML and PostgreSQL processes launched under scripts/offline.sb (loopback and Unix sockets only)",
   "profileDigest": "c2b5527ce5f14e100fec5ca1ccee427e3227888517bec6c13908e34e653ac6fa",
-  "bundleDigest": "064f08751b49e498b710bef7d62e0cd0621634565457e73adb37329ec1c80cd5"
+  "bundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e"
 }

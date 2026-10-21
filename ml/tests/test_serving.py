@@ -1,4 +1,3 @@
-"""Real HTTP + PostgreSQL tests. Require prepared running standalone ML service."""
 import copy,json,os,time,uuid
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path

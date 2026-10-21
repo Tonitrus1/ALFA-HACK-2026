@@ -91,3 +91,6 @@ ml/generated/*
 !/ml/artifacts/baseline/model-card.md
 !/ml/artifacts/baseline/SHA256SUMS
 !/ml/generated/companies.json
+
+!/ml/artifacts/baseline/optuna-study.json
+!/ml/artifacts/baseline/feature-schema.json

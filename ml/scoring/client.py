@@ -1,4 +1,3 @@
-"""Small backend integration example; no application status writes and no fallback score."""
 import copy
 from datetime import datetime,timezone
 import uuid
@@ -13,7 +12,7 @@ class RiskClient:
         response=self.http.get(url,timeout=3) if body is None else self.http.post(url,json=body,timeout=3)
         response.raise_for_status();return response.json()
     def snapshot_request(self,statement,source_available_at='2026-04-01T00:00:00Z'):
-        # These IDs stand for already committed backend immutable snapshots.
+
         return {'applicationId':'DEMO:'+str(uuid.uuid4()),'submissionSnapshotId':str(uuid.uuid4()),'financialSnapshotId':str(uuid.uuid4()),
                 'financialSnapshotDigest':digest(statement),'financialStatementVersion':1,'asOf':datetime.now(timezone.utc).isoformat(),
                 'latestSourceAvailableAt':source_available_at,'purpose':'DEMO_RESEARCH','financialStatement':copy.deepcopy(statement)}

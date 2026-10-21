@@ -1,4 +1,3 @@
-"""Standalone ML lifecycle. Prepared runtime never trains or downloads artifacts."""
 import argparse,hashlib,json,os,secrets,signal,subprocess,time,urllib.request
 from pathlib import Path
 import psycopg
@@ -85,11 +84,11 @@ def reset(confirmation):
         db.execute('truncate ml.features,ml.inferences')
     print('Cleared only ml.features and ml.inferences in dedicated synthetic database; bundle/fixtures retained')
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('command',choices=['migrate','up','down','train','scenarios','test','reset']);p.add_argument('--offline',action='store_true');p.add_argument('--confirm');p.add_argument('--dataset',default=os.environ.get('DATASET_PATH',str(ROOT/'datasets/ru-sme-dataset-10000')));a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('command',choices=['migrate','up','down','train','scenarios','test','reset']);p.add_argument('--offline',action='store_true');p.add_argument('--confirm');p.add_argument('--trials',type=int,default=30);p.add_argument('--folds',type=int,default=3);p.add_argument('--threads',type=int,default=4);p.add_argument('--shortlist',type=int,default=5);p.add_argument('--storage');p.add_argument('--dataset',default=os.environ.get('DATASET_PATH',str(ROOT/'datasets/ru-sme-dataset-10000')));a=p.parse_args()
     if a.command=='migrate':migrate()
     elif a.command=='up':up(a.offline)
     elif a.command=='down':down()
     elif a.command=='reset':reset(a.confirm)
-    elif a.command=='train':run([ROOT/'.venv/bin/python','-m','scoring.train','--dataset',a.dataset],env=env())
+    elif a.command=='train':run([ROOT/'.venv/bin/python','-m','scoring.train','--dataset',a.dataset,'--trials',a.trials,'--folds',a.folds,'--threads',a.threads,'--shortlist',a.shortlist]+(['--storage',a.storage] if a.storage else []),env=env())
     elif a.command=='scenarios':run([ROOT/'.venv/bin/python','-m','scoring.scenarios'],env=env())
     elif a.command=='test':run([ROOT/'.venv/bin/python','-m','pytest','ml/tests','-q','--junitxml=reports/ml-tests.xml'],env=env())

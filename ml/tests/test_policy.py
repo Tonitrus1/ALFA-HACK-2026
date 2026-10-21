@@ -1,4 +1,3 @@
-"""Controlled scores here are explicit unit test inputs, not integrated inference evidence."""
 import copy,json
 from pathlib import Path
 from scoring.demo_policy import precheck,after_risk

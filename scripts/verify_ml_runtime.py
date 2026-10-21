@@ -1,4 +1,3 @@
-"""Acceptance of ML durability, persistence failure and OS-level network isolation."""
 import json,os,hashlib,subprocess,time
 from pathlib import Path
 import requests
@@ -12,7 +11,7 @@ down();up(True)
 assert client.evaluate(b)==prediction;assert client.call('/internal/v2/feature-snapshots/'+snapshot['featureSnapshotId'])==snapshot
 assert artifacts=={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (ROOT/'ml/artifacts/baseline').iterdir() if p.is_file()}
 checks=[{'name':'restart_preserves_immutable_snapshot_and_exact_inference','passed':True},{'name':'runtime_does_not_train_or_change_bundle','passed':True}]
-# Hold real inference table authority, then make a real request. No successful response may precede persistence.
+
 second=client.create_snapshot(client.snapshot_request(s));blocked_request=client.risk_request(second);db=admin();db.execute('begin');db.execute('lock ml.inferences in access exclusive mode');started=time.perf_counter()
 try:
     try:client.evaluate(blocked_request);raise AssertionError('Success before persistence')

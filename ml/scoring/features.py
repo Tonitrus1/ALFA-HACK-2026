@@ -1,4 +1,3 @@
-"""Shared batch/online DemoFinancial v1 transformation; money enters as integer kopecks."""
 import hashlib
 import json
 from datetime import date
@@ -21,7 +20,7 @@ def code_digest():
     return hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
 
 def rub_to_minor(value):
-    # Decimal -> integer, never pass money through binary floating point.
+
     number = Decimal(str(value)) * 100
     if not number.is_finite() or number != number.to_integral_value():
         raise ValueError('Money must have exactly kopeck precision')

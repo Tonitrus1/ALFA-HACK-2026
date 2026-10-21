@@ -1,5 +1,5 @@
 {
-  "version": "synthetic-demo-policy-2",
+  "version": "synthetic-demo-policy-3",
   "synthetic": true,
   "purpose": "DEMO_RESEARCH",
   "scoreKind": "BANKRUPTCY_PROXY",

@@ -4,7 +4,7 @@
 
 ## 1. Что умеет модель
 
-Модель считает непрерывный `score` от 0 до 1 по восьми отношениям финансовой отчётности. Алгоритм: `SimpleImputer(strategy=median, add_indicator=True) → StandardScaler → LogisticRegression`. Код преобразования общий для обучения и serving: `ml/scoring/features.py`.
+Модель считает непрерывный `score` от 0 до 1 по восьми отношениям финансовой отчётности. Алгоритм: `CatBoostClassifier` с подбором гиперпараметров через Optuna. Код преобразования общий для обучения и serving: `ml/scoring/features.py`.
 
 Назначение результата строго `BANKRUPTCY_PROXY / DEMONSTRATION / DEMO_RESEARCH`. Компании, финансы и целевая переменная полностью вымышлены. Это не банковская PD, не оценка настоящих российских компаний и не обещание кредита.
 
@@ -146,13 +146,13 @@ X1=profit/assets; X2=liabilities/assets; X3=(currentAssets−currentLiabilities)
 
 Исходные рубли из Parquet конвертируются Decimal → int, без промежуточного float. Диапазон денег: ±9007199254740991 копейка; отрицательные капитал/прибыль/EBIT допустимы. Assets>0; текущие части не больше итогов; баланс assets=liabilities+equity с явным допуском **1 копейка**. Валюта RUB, стандарт DEMO. Пустое значение не ноль; обязательная форма до submit должна быть полностью заполнена и подтверждена backend.
 
-При нулевых обязательствах X4/X8 дают `null`, затем median imputation. В текущем train отсутствовали missing ratios, поэтому scikit-learn `add_indicator=True` не обучил отдельных indicator-колонок; новые пропуски обрабатываются медианами. Это ограничение исследовательского bundle, отдельно проверенное для нулевого долга; качество на таких реальных компаниях не оценивалось.
+При нулевых обязательствах X4/X8 дают `null`. CatBoost получает NaN и обрабатывает их через `nan_mode=Min`; отдельные imputer и scaler не используются. Batch/online используют один feature-builder.
 
 Digest: SHA-256 UTF-8 JSON, ключи объектов рекурсивно сортируются, без пробелов, `ensure_ascii=False`, без NaN/Infinity. Financial digest считается от точного `financialStatement`. Snapshot digest — от всех полей FeatureSnapshot кроме самого `snapshotDigest`; ID/версии/время входят в hash. Backend может хранить snapshotDigest, возвращённый ML, и передавать его без повторной сериализации вещественных коэффициентов.
 
 ## 6. Policy и сценарии
 
-Порог T_manual=**0.03908894142283073**, версия policy **synthetic-demo-policy-2**. Это верхние 20% score среди пригодных validation-примеров для оборотного продукта: 1205 пригодных, 241 на ручную проверку; 38 искусственных событий среди пригодных, 25 среди направленных на проверку; на границе один score. Норматив банка из этого не следует.
+Порог T_manual=**0.03504223273828764**, версия policy **synthetic-demo-policy-3**. Это верхние 20% score среди пригодных validation-примеров для оборотного продукта: 1205 пригодных, 241 на ручную проверку; 38 искусственных событий среди пригодных, 26 среди направленных на проверку; на границе один score. Норматив банка из этого не следует.
 
 Приоритет: ошибка данных → существенное расхождение выручки с reference → жёсткая продуктовая пригодность → отрицательный капитал/долг ≥90% активов → нулевая выручка/неподдерживаемый случай → сбой ML → score≥T_manual → превышение cap → одобрение. Точный эталон в `demo_policy.py` и `local-demo-policy.json`.
 
@@ -177,15 +177,17 @@ CLI проверяет путь до решения policy. REVIEW/ACCEPTED/COMP
 
 Данные: только `training_simulation.parquet` / `simulation_splits/*.parquet`. Сохранён split train=7016/352 событий, validation=1494/80, test=1490/80. Прежний UCI/60/20/20 заменён этим поставленным синтетическим разделением. Hybrids/реальные ИНН и файл `simulation_truth_DO_NOT_USE_AS_FEATURES` не открываются для обучения/подбора/демо-примеров.
 
-Подбор C∈{0.01,0.1,1,10}: CV на train, версия по validation Average Precision; preprocessing fit только train. Файлы model/policy фиксируются в `selection-lock.json` до чтения test. Test не используется для выбора сценариев. Калибровка не применялась.
+Optuna TPESampler(seed=42), 30 trials, трёхкратная StratifiedKFold на train; objective — средняя Average Precision. MedianPruner прекращает неперспективные trials. Подбираются iterations, depth, learning_rate, l2_leaf_reg, random_strength, bagging_temperature, rsm, border_count и auto_class_weights. Внутри CV действует early stopping по Logloss; финальное количество деревьев — медиана fold tree counts. Пять лучших завершённых trials переобучаются на всём train; версия выбирается по validation AP. Файлы model/policy и study фиксируются в `selection-lock.json` до чтения test. Полная история в `reports/optuna-study.json`. Калибровка не применялась.
 
-На test: ROC-AUC **0.90522**, Average Precision **0.41241**, prevalence **0.05369**, Brier **0.03951**, log loss **0.14104**. Полный отчёт содержит confusion matrix на T_manual и распределения score; matrix считается на всём split, а review coverage — на пригодном validation-подмножестве. Все числа относятся к искусственной симуляции.
+Переобучение: `./scripts/demo train --trials 30 --folds 3 --threads 4`. Число кандидатов для validation задаётся `--shortlist 5`. Опциональный `--storage sqlite:///.local/optuna.sqlite3` сохраняет study в локальную БД; один запуск создаёт новое study, при повторном использовании того же имени нужен другой путь.
 
-Bundle: `ml/artifacts/baseline/` — preprocessing+model, manifest с версиями библиотек/dataset+split+evaluation hashes, feature code digest, selection lock, policy, model card и `SHA256SUMS`. Startup проверяет hashes и версии; ничего не скачивает и не обучает. По поручению владельца этот bundle и полный датасет включены в ML-ветку Git вместе с отчётами и synthetic fixtures. Остальные локальные наборы, модели, секреты и база остаются исключены. Это исследовательская сборка; независимый peer review для командного релиза ещё нужен.
+На test: ROC-AUC **0.90449**, Average Precision **0.40560**, prevalence **0.05369**, Brier **0.03999**, log loss **0.14347**. Полный отчёт содержит confusion matrix на T_manual и распределения score; matrix считается на всём split, а review coverage — на пригодном validation-подмножестве. Все числа относятся к искусственной симуляции.
+
+Bundle: `ml/artifacts/baseline/` — CatBoost model, manifest с версиями библиотек/dataset+split+evaluation hashes, feature code digest, selection lock, policy, model card и `SHA256SUMS`. Startup проверяет hashes и версии; ничего не скачивает и не обучает. По поручению владельца этот bundle и полный датасет включены в ML-ветку Git вместе с отчётами и synthetic fixtures. Остальные локальные наборы, модели, секреты и база остаются исключены. Это исследовательская сборка; независимый peer review для командного релиза ещё нужен.
 
 Датасет сохранён без изменения исходных файлов, включая `MANIFEST.sha256`, происхождение и описания. В нём есть реальные реквизиты ООО из открытого реестра, гибридный набор с искусственными финансами и полностью синтетическая обучающая выборка. Реальные реквизиты и гибридные записи не используются моделью. Подробности: `datasets/ru-sme-dataset-10000/DATASET_README_RU.md`. Каталог-дубликат с суффиксом ` 2` не включён.
 
-Выполнены 13 unit/API проверок: Decimal, баланс/знак/нулевой долг, batch-online parity, whitelist/manifest, приоритет policy и равенство порогу, cap/minimum, реальные concurrent retries, conflicts/digests/purpose/schema/auth и API schemas. Фактический протокол runtime — `reports/ml-runtime.json`; результаты S01–S06 и 30 последовательных замеров feature+inference — `reports/ml-scenarios.json`. Это latency standalone ML, не время банковского пути и не нагрузочное испытание нескольких клиентов.
+Выполнены 14 unit/API проверок: Decimal, баланс/знак/нулевой долг, batch-online parity, whitelist/manifest, CatBoost/Optuna selection, приоритет policy и равенство порогу, cap/minimum, реальные concurrent retries, conflicts/digests/purpose/schema/auth и API schemas. Фактический протокол runtime — `reports/ml-runtime.json`; результаты S01–S06 и 30 последовательных замеров feature+inference — `reports/ml-scenarios.json`. Это latency standalone ML, не время банковского пути и не нагрузочное испытание нескольких клиентов.
 
 При `up --offline` и PostgreSQL, и ML запускаются под системным macOS sandbox с разрешением loopback/Unix sockets и запретом внешней сети. Проверены настоящее внешнее TCP-блокирование, перезапуск с сохранением snapshot/inference, неизменность bundle и отказ результата при недоступной долговечной записи.
 

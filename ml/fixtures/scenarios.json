@@ -1,8 +1,12 @@
 {
   "synthetic": true,
-  "bundleDigest": "064f08751b49e498b710bef7d62e0cd0621634565457e73adb37329ec1c80cd5",
-  "policyVersion": "synthetic-demo-policy-2",
-  "selectionSource": "train only; test excluded",
+  "bundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+  "policyVersion": "synthetic-demo-policy-3",
+  "selectionSource": "train",
+  "sourceTrainIds": {
+    "low": "SIM:00002305",
+    "high": "SIM:00003345"
+  },
   "companies": [
     {
       "companyId": "DEMO:S01",
@@ -18,14 +22,14 @@
         "currency": "RUB",
         "reportingStandard": "DEMO",
         "values": {
-          "totalAssetsMinor": 493685787,
-          "currentAssetsMinor": 377760241,
-          "totalLiabilitiesMinor": 117572344,
-          "currentLiabilitiesMinor": 77382997,
-          "equityMinor": 376113443,
-          "revenueMinor": 2839223996,
-          "netProfitMinor": 823460530,
-          "ebitMinor": 1039985315
+          "totalAssetsMinor": 1746438733,
+          "currentAssetsMinor": 1633233164,
+          "totalLiabilitiesMinor": 372799090,
+          "currentLiabilitiesMinor": 158120246,
+          "equityMinor": 1373639643,
+          "revenueMinor": 4044174564,
+          "netProfitMinor": 837815739,
+          "ebitMinor": 1062220169
         },
         "sourceDocumentReferences": []
       },
@@ -36,14 +40,14 @@
         "reportingStandard": "DEMO",
         "sourceDocumentReferences": [],
         "values": {
-          "currentAssetsMinor": 377760241,
-          "currentLiabilitiesMinor": 77382997,
-          "ebitMinor": 1039985315,
-          "equityMinor": 376113443,
-          "netProfitMinor": 823460530,
-          "revenueMinor": 2839223996,
-          "totalAssetsMinor": 493685787,
-          "totalLiabilitiesMinor": 117572344
+          "currentAssetsMinor": 1633233164,
+          "currentLiabilitiesMinor": 158120246,
+          "ebitMinor": 1062220169,
+          "equityMinor": 1373639643,
+          "netProfitMinor": 837815739,
+          "revenueMinor": 4044174564,
+          "totalAssetsMinor": 1746438733,
+          "totalLiabilitiesMinor": 372799090
         }
       },
       "amountMinor": 20000000,
@@ -51,7 +55,7 @@
     },
     {
       "companyId": "DEMO:S02",
-      "name": "Демо S02 · Отказ по demo-правилу",
+      "name": "Демо S02 · Отказ по правилу",
       "businessAgeMonths": 36,
       "synthetic": true,
       "sourceRecordId": "SIM:SOURCE:S02",
@@ -64,14 +68,14 @@
         "reportingStandard": "DEMO",
         "sourceDocumentReferences": [],
         "values": {
-          "currentAssetsMinor": 377760241,
-          "currentLiabilitiesMinor": 77382997,
-          "ebitMinor": 1039985315,
-          "equityMinor": 24684290,
-          "netProfitMinor": 823460530,
-          "revenueMinor": 2839223996,
-          "totalAssetsMinor": 493685787,
-          "totalLiabilitiesMinor": 469001497
+          "currentAssetsMinor": 1633233164,
+          "currentLiabilitiesMinor": 158120246,
+          "ebitMinor": 1062220169,
+          "equityMinor": 87321937,
+          "netProfitMinor": 837815739,
+          "revenueMinor": 4044174564,
+          "totalAssetsMinor": 1746438733,
+          "totalLiabilitiesMinor": 1659116796
         }
       },
       "initial": {
@@ -81,14 +85,14 @@
         "reportingStandard": "DEMO",
         "sourceDocumentReferences": [],
         "values": {
-          "currentAssetsMinor": 377760241,
-          "currentLiabilitiesMinor": 77382997,
-          "ebitMinor": 1039985315,
-          "equityMinor": 24684290,
-          "netProfitMinor": 823460530,
-          "revenueMinor": 2839223996,
-          "totalAssetsMinor": 493685787,
-          "totalLiabilitiesMinor": 469001497
+          "currentAssetsMinor": 1633233164,
+          "currentLiabilitiesMinor": 158120246,
+          "ebitMinor": 1062220169,
+          "equityMinor": 87321937,
+          "netProfitMinor": 837815739,
+          "revenueMinor": 4044174564,
+          "totalAssetsMinor": 1746438733,
+          "totalLiabilitiesMinor": 1659116796
         }
       },
       "amountMinor": 20000000,
@@ -108,14 +112,14 @@
         "currency": "RUB",
         "reportingStandard": "DEMO",
         "values": {
-          "totalAssetsMinor": 493685787,
-          "currentAssetsMinor": 377760241,
-          "totalLiabilitiesMinor": 117572344,
-          "currentLiabilitiesMinor": 77382997,
-          "equityMinor": 376113443,
-          "revenueMinor": 2839223996,
-          "netProfitMinor": 823460530,
-          "ebitMinor": 1039985315
+          "totalAssetsMinor": 1746438733,
+          "currentAssetsMinor": 1633233164,
+          "totalLiabilitiesMinor": 372799090,
+          "currentLiabilitiesMinor": 158120246,
+          "equityMinor": 1373639643,
+          "revenueMinor": 4044174564,
+          "netProfitMinor": 837815739,
+          "ebitMinor": 1062220169
         },
         "sourceDocumentReferences": []
       },
@@ -126,14 +130,14 @@
         "reportingStandard": "DEMO",
         "sourceDocumentReferences": [],
         "values": {
-          "currentAssetsMinor": 377760241,
-          "currentLiabilitiesMinor": 77382997,
-          "ebitMinor": 1039985315,
-          "equityMinor": 376113443,
-          "netProfitMinor": 823460530,
-          "revenueMinor": 5678447992,
-          "totalAssetsMinor": 493685787,
-          "totalLiabilitiesMinor": 117572344
+          "currentAssetsMinor": 1633233164,
+          "currentLiabilitiesMinor": 158120246,
+          "ebitMinor": 1062220169,
+          "equityMinor": 1373639643,
+          "netProfitMinor": 837815739,
+          "revenueMinor": 8088349128,
+          "totalAssetsMinor": 1746438733,
+          "totalLiabilitiesMinor": 372799090
         }
       },
       "amountMinor": 20000000,
@@ -153,14 +157,14 @@
         "currency": "RUB",
         "reportingStandard": "DEMO",
         "values": {
-          "totalAssetsMinor": 493685787,
-          "currentAssetsMinor": 377760241,
-          "totalLiabilitiesMinor": 117572344,
-          "currentLiabilitiesMinor": 77382997,
-          "equityMinor": 376113443,
-          "revenueMinor": 2839223996,
-          "netProfitMinor": 823460530,
-          "ebitMinor": 1039985315
+          "totalAssetsMinor": 1746438733,
+          "currentAssetsMinor": 1633233164,
+          "totalLiabilitiesMinor": 372799090,
+          "currentLiabilitiesMinor": 158120246,
+          "equityMinor": 1373639643,
+          "revenueMinor": 4044174564,
+          "netProfitMinor": 837815739,
+          "ebitMinor": 1062220169
         },
         "sourceDocumentReferences": []
       },
@@ -171,14 +175,14 @@
         "reportingStandard": "DEMO",
         "sourceDocumentReferences": [],
         "values": {
-          "currentAssetsMinor": 377760241,
-          "currentLiabilitiesMinor": 77382997,
-          "ebitMinor": 1039985315,
-          "equityMinor": 376113443,
-          "netProfitMinor": 823460530,
-          "revenueMinor": 2839223996,
-          "totalAssetsMinor": 493685787,
-          "totalLiabilitiesMinor": 117572344
+          "currentAssetsMinor": 1633233164,
+          "currentLiabilitiesMinor": 158120246,
+          "ebitMinor": 1062220169,
+          "equityMinor": 1373639643,
+          "netProfitMinor": 837815739,
+          "revenueMinor": 4044174564,
+          "totalAssetsMinor": 1746438733,
+          "totalLiabilitiesMinor": 372799090
         }
       },
       "amountMinor": 500000001,
@@ -198,14 +202,14 @@
         "currency": "RUB",
         "reportingStandard": "DEMO",
         "values": {
-          "totalAssetsMinor": 9278759929,
-          "currentAssetsMinor": 6981512882,
-          "totalLiabilitiesMinor": 4587322142,
-          "currentLiabilitiesMinor": 3350220356,
-          "equityMinor": 4691437787,
-          "revenueMinor": 35852725628,
-          "netProfitMinor": -13269375052,
-          "ebitMinor": -12533276954
+          "totalAssetsMinor": 1240042041,
+          "currentAssetsMinor": 391801248,
+          "totalLiabilitiesMinor": 1020922039,
+          "currentLiabilitiesMinor": 932884898,
+          "equityMinor": 219120002,
+          "revenueMinor": 2462949780,
+          "netProfitMinor": -480968834,
+          "ebitMinor": -355603992
         },
         "sourceDocumentReferences": []
       },
@@ -216,14 +220,14 @@
         "reportingStandard": "DEMO",
         "sourceDocumentReferences": [],
         "values": {
-          "currentAssetsMinor": 6981512882,
-          "currentLiabilitiesMinor": 3350220356,
-          "ebitMinor": -12533276954,
-          "equityMinor": 4691437787,
-          "netProfitMinor": -13269375052,
-          "revenueMinor": 35852725628,
-          "totalAssetsMinor": 9278759929,
-          "totalLiabilitiesMinor": 4587322142
+          "currentAssetsMinor": 391801248,
+          "currentLiabilitiesMinor": 932884898,
+          "ebitMinor": -355603992,
+          "equityMinor": 219120002,
+          "netProfitMinor": -480968834,
+          "revenueMinor": 2462949780,
+          "totalAssetsMinor": 1240042041,
+          "totalLiabilitiesMinor": 1020922039
         }
       },
       "amountMinor": 20000000,
@@ -231,7 +235,7 @@
     },
     {
       "companyId": "DEMO:S06",
-      "name": "Демо S06 · Сбой ML (включает оператор)",
+      "name": "Демо S06 · Сбой ML",
       "businessAgeMonths": 36,
       "synthetic": true,
       "sourceRecordId": "SIM:SOURCE:S06",
@@ -243,14 +247,14 @@
         "currency": "RUB",
         "reportingStandard": "DEMO",
         "values": {
-          "totalAssetsMinor": 493685787,
-          "currentAssetsMinor": 377760241,
-          "totalLiabilitiesMinor": 117572344,
-          "currentLiabilitiesMinor": 77382997,
-          "equityMinor": 376113443,
-          "revenueMinor": 2839223996,
-          "netProfitMinor": 823460530,
-          "ebitMinor": 1039985315
+          "totalAssetsMinor": 1746438733,
+          "currentAssetsMinor": 1633233164,
+          "totalLiabilitiesMinor": 372799090,
+          "currentLiabilitiesMinor": 158120246,
+          "equityMinor": 1373639643,
+          "revenueMinor": 4044174564,
+          "netProfitMinor": 837815739,
+          "ebitMinor": 1062220169
         },
         "sourceDocumentReferences": []
       },
@@ -261,14 +265,14 @@
         "reportingStandard": "DEMO",
         "sourceDocumentReferences": [],
         "values": {
-          "currentAssetsMinor": 377760241,
-          "currentLiabilitiesMinor": 77382997,
-          "ebitMinor": 1039985315,
-          "equityMinor": 376113443,
-          "netProfitMinor": 823460530,
-          "revenueMinor": 2839223996,
-          "totalAssetsMinor": 493685787,
-          "totalLiabilitiesMinor": 117572344
+          "currentAssetsMinor": 1633233164,
+          "currentLiabilitiesMinor": 158120246,
+          "ebitMinor": 1062220169,
+          "equityMinor": 1373639643,
+          "netProfitMinor": 837815739,
+          "revenueMinor": 4044174564,
+          "totalAssetsMinor": 1746438733,
+          "totalLiabilitiesMinor": 372799090
         }
       },
       "amountMinor": 20000000,

@@ -24,7 +24,7 @@
     {
       "path": "packages/backend/backend-guide.pdf",
       "pages": 4,
-      "sha256": "3dd42abfd57ea005d128419e51c7daf38c1a9851d83942325ba5ef99bcb53688"
+      "sha256": "656f8a870abb2256ab7add7cfae674386ac7f17e62bb60dbf0ae965a6b83f1e6"
     },
     {
       "path": "packages/frontend/frontend-guide.pdf",
@@ -39,7 +39,7 @@
     {
       "path": "packages/ml/ml-guide.pdf",
       "pages": 5,
-      "sha256": "1bfea37b0aa2a13dc8b1a49d5e6d5f4e50f4da6ae632535728ef5cd700d028f7"
+      "sha256": "1e88a51db55e9303b978835ad7db2aaa97d418690339a4b684ad6666318647bd"
     },
     {
       "path": "technology-adapters.pdf",

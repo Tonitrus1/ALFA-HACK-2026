@@ -1,4 +1,3 @@
-"""Real ML HTTP calls plus reference policy; test expectations are read only here."""
 import copy,json,os,time,platform
 from pathlib import Path
 import requests
@@ -18,7 +17,7 @@ def main():
             start=time.perf_counter();snapshot_request=client.snapshot_request(s,company['availableAt']);snapshot=client.create_snapshot(snapshot_request);risk_request=client.risk_request(snapshot)
             failure=None;inference=None
             try:
-                # Explicit fault-injection only in this local demo client, scoped to S06.
+
                 inference=client.evaluate(risk_request,'http://127.0.0.1:1' if name=='S06' else None)
             except requests.RequestException as e:failure=type(e).__name__
             decision=after_risk(s,amount,None if inference is None else inference['score'],policy['T_manual'],ml_error=failure is not None)
@@ -29,7 +28,7 @@ def main():
             assert statement['values']['revenueMinor']!=correction['values']['revenueMinor']
         outcomes=[a['policy']['outcome'] for a in attempts];assert outcomes==expected[name],(name,outcomes)
         results.append({'scenario':name,'companyId':company['companyId'],'expected':expected[name],'actual':outcomes,'attempts':attempts});print(name,' → '.join(outcomes),flush=True)
-    # Warm end-to-end feature creation + persisted inference, serial load, real backend-facing API.
+
     for _ in range(30):
         start=time.perf_counter();s=client.create_snapshot(client.snapshot_request(fixture['companies'][0]['reference']));client.evaluate(client.risk_request(s));latency.append(time.perf_counter()-start)
     p95=sorted(latency)[int(.95*len(latency))-1];assert p95<3

@@ -1,7 +1,9 @@
 {
-  "modelVersion": "synthetic-logistic-v1",
+  "modelVersion": "catboost-optuna-v1",
+  "modelType": "CatBoostClassifier",
   "featureSchemaVersion": 2,
-  "featureCodeDigest": "1a6fa666e304698553f127973b92dea52e2d19420965e103bba2363fe2f6c6f3",
+  "featureCodeDigest": "2d59d6b8fd40976b0ca11dbf195f77546e6b5112b85cdc2af8c969326e1723eb",
+  "featureSchemaDigest": "9c3857c9c410345334e593b8479bcdc745e38aac450385ecda6d931fe323e470",
   "features": [
     "X1",
     "X2",
@@ -40,13 +42,18 @@
     "scikit-learn": "1.6.1",
     "scipy": "1.15.3",
     "joblib": "1.6.0",
-    "pyarrow": "20.0.0"
+    "pyarrow": "20.0.0",
+    "catboost": "1.2.8",
+    "optuna": "4.3.0"
   },
   "artifacts": {
-    "policy.json": "cc9613af26bfa61d41e61d3cd9f41f14f36bebb75e38c6a22b6569765208c44c",
-    "model.joblib": "609a188ec50e6213920cf923404aa41b0b29dd976f13582d7ac673577a379da2",
-    "selection-lock.json": "78d22d2007010eb83b28424e5419c9a48e93f607a7257700fae7fefbb01afee7",
-    "evaluation.json": "b586d47ff26a09cbf82679996d23a41f6455d15c753e204608a81d6dba0c1778"
+    "model.joblib": "2cd91c344d5d62c7c7f0065ef21fb34aec065551f5ec8041cd1a61d5fb1e7fba",
+    "policy.json": "0b249e1412aa9da5992f343bf90728ceb967e27238113aa46f846b49225003d0",
+    "selection-lock.json": "95abd3f30bd3543b47dc6670b6bb558957dec9bd49e13d93c76c7f88f09f804f",
+    "evaluation.json": "a65a110c9a2ca3f53186a1498e308d2ec7ed185fe047b176e040e667aedbbb92",
+    "optuna-study.json": "a361e6e79a6ca78533dc83110c0d3d87b5262a0fda65f5ef2053a1f093fdf1e3",
+    "feature-schema.json": "9c3857c9c410345334e593b8479bcdc745e38aac450385ecda6d931fe323e470",
+    "model-card.md": "5aea51135472b10217792e5638d4ff3018c2a86782c069d52c559b8789b425fe"
   },
-  "bundleDigest": "064f08751b49e498b710bef7d62e0cd0621634565457e73adb37329ec1c80cd5"
+  "bundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e"
 }

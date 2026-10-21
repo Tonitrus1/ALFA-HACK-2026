@@ -1,5 +1,4 @@
 #!/bin/sh
-# Initial preparation requires network; later startup uses only installed local artifacts.
 set -eu
 cd "$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)"
 [ "$(uname -s)" = Darwin ] && [ "$(uname -m)" = arm64 ] || { echo 'Native setup is verified for macOS arm64. For another host supply Python 3.12/PostgreSQL 17 and adapt the launcher.'; exit 1; }

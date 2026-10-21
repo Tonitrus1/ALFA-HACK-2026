@@ -1,11 +1,10 @@
-"""Executable integration reference. Backend owns policy; the risk model never assigns an outcome."""
 from .features import validate
 PRODUCTS={
  'working':{'minAmountMinor':10000000,'maxAmountMinor':500000000,'minTermMonths':3,'maxTermMonths':24,'minAgeMonths':6},
  'line':{'minAmountMinor':30000000,'maxAmountMinor':1000000000,'minTermMonths':6,'maxTermMonths':36,'minAgeMonths':12},
  'overdraft':{'minAmountMinor':5000000,'maxAmountMinor':200000000,'minTermMonths':1,'maxTermMonths':12,'minAgeMonths':12},
 }
-VERSION='synthetic-demo-policy-2'
+VERSION='synthetic-demo-policy-3'
 def result(outcome,rule,amount=None):return {'outcome':outcome,'rule':rule,'policyVersion':VERSION,'offerAmountMinor':amount}
 def precheck(statement,reference,amount,term,age=36,product='working',correction=False,explanation=''):
     try:v=validate(statement);ref=validate(reference)
