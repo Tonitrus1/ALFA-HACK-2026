@@ -33,6 +33,19 @@ public class SubmissionSnapshotRepository {
                 .update();
     }
 
+    public record SnapshotRef(String snapshotId, long version) {
+    }
+
+    public Optional<SnapshotRef> latest(String applicationId) {
+        return jdbc.sql("""
+                        SELECT snapshot_id, version FROM applications.submission_snapshot
+                        WHERE application_id = :application ORDER BY version DESC LIMIT 1
+                        """)
+                .param("application", applicationId)
+                .query((rs, row) -> new SnapshotRef(rs.getString("snapshot_id"), rs.getLong("version")))
+                .optional();
+    }
+
     public Optional<Instant> submittedAt(String applicationId) {
         return jdbc.sql("""
                         SELECT min(created_at) AS submitted_at FROM applications.submission_snapshot

@@ -117,6 +117,20 @@ public class FinancialStatementService {
         ApplicationView locked = lockEditable(applicationId, ifMatchVersion);
         FinancialStatementView statement = statements.find(applicationId, locked.version())
                 .orElseThrow(() -> incomplete(FinancialField.wireNames()));
+        requireConfirmable(statement, command);
+
+        Instant now = Times.now(clock);
+        if (!statement.confirmed()) {
+            statements.confirm(applicationId, statement.statementVersion(), session.actorId(), now);
+            bumpApplication(locked, now);
+        }
+        requestKeys.insert(
+                session.actorId(), locked.companyId(), CONFIRM_SCOPE, idempotencyKey, digest, applicationId, now);
+        return get(session, applicationId);
+    }
+
+    /** Проверки подтверждения: версия, все 8 полей, равенства, точные ссылки на источники. */
+    static void requireConfirmable(FinancialStatementView statement, FinancialCommands.Confirm command) {
         if (statement.statementVersion() != command.expectedStatementVersion()) {
             throw new ApplicationException(ErrorKind.CONFLICT, "FINANCIAL_STATEMENT_VERSION_CONFLICT",
                     "Финансовая анкета изменилась; проверьте значения");
@@ -139,15 +153,6 @@ public class FinancialStatementService {
                 || command.documentReferences().size() != statement.sourceDocumentReferences().size()) {
             throw documentReferencesMismatch();
         }
-
-        Instant now = Times.now(clock);
-        if (!statement.confirmed()) {
-            statements.confirm(applicationId, statement.statementVersion(), session.actorId(), now);
-            bumpApplication(locked, now);
-        }
-        requestKeys.insert(
-                session.actorId(), locked.companyId(), CONFIRM_SCOPE, idempotencyKey, digest, applicationId, now);
-        return get(session, applicationId);
     }
 
     /**
@@ -156,7 +161,15 @@ public class FinancialStatementService {
      */
     @Transactional(propagation = Propagation.MANDATORY)
     public Optional<String> snapshotForSubmit(ApplicationView application, long statementVersion) {
-        Optional<FinancialStatementView> statement = statements.find(application.applicationId(), application.version())
+        return snapshotForContainer(application.applicationId(), application.applicationId(), application.companyId(),
+                statementVersion);
+    }
+
+    /** Неизменяемый снимок подтверждённой формы контейнера (исходной анкеты или ответа на RFI). */
+    @Transactional(propagation = Propagation.MANDATORY)
+    public Optional<String> snapshotForContainer(
+            String containerId, String applicationId, String companyId, long statementVersion) {
+        Optional<FinancialStatementView> statement = statements.findContainer(containerId, 1)
                 .filter(found -> found.confirmed() && found.statementVersion() == statementVersion);
         if (statement.isEmpty()) {
             return Optional.empty();
@@ -165,9 +178,9 @@ public class FinancialStatementService {
         String statementJson = json.writeValueAsString(snapshotStatement(confirmed));
         String provenanceJson = json.writeValueAsString(confirmed.provenance());
         statements.insertSnapshotIfAbsent(
-                Ids.newId(), application.applicationId(), application.companyId(), statementVersion,
+                Ids.newId(), applicationId, companyId, statementVersion,
                 Digests.sha256(statementJson), statementJson, provenanceJson, Times.now(clock));
-        return statements.snapshotId(application.applicationId(), statementVersion);
+        return statements.snapshotId(applicationId, statementVersion);
     }
 
     private ApplicationView load(AuthenticatedSession session, String applicationId) {
@@ -214,7 +227,7 @@ public class FinancialStatementService {
         }
     }
 
-    private static void requireFullCalendarYear(LocalDate start, LocalDate end) {
+    static void requireFullCalendarYear(LocalDate start, LocalDate end) {
         boolean fullYear = start != null && end != null
                 && start.getYear() == end.getYear()
                 && MonthDay.from(start).equals(MonthDay.of(1, 1))
@@ -241,12 +254,12 @@ public class FinancialStatementService {
         return snapshot;
     }
 
-    private static ApplicationException incomplete(List<String> missing) {
+    static ApplicationException incomplete(List<String> missing) {
         return new ApplicationException(ErrorKind.UNPROCESSABLE, "FINANCIAL_VALUES_INCOMPLETE",
                 "Не заполнены показатели: " + String.join(", ", missing));
     }
 
-    private static ApplicationException documentReferencesMismatch() {
+    static ApplicationException documentReferencesMismatch() {
         return new ApplicationException(
                 ErrorKind.UNPROCESSABLE, "DOCUMENT_REFERENCES_MISMATCH", "Ссылки на документы не совпадают");
     }

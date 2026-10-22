@@ -44,8 +44,22 @@ public final class Financials {
     /** Сохраняет полную форму и подтверждает её; возвращает новую версию заявки (ETag). */
     public static long fillAndConfirm(MockMvc mvc, DemoClient client, String applicationId, long applicationVersion)
             throws Exception {
+        return fillAndConfirm(mvc, client, applicationId, applicationVersion, COMPLETE_VALUES);
+    }
+
+    public static String values(long totalAssets, long totalLiabilities, long currentAssets, long currentLiabilities,
+                                long equity, long revenue, long netProfit, long ebit) {
+        return """
+                {"totalAssetsMinor":%d,"totalLiabilitiesMinor":%d,"currentAssetsMinor":%d,"currentLiabilitiesMinor":%d,
+                 "equityMinor":%d,"revenueMinor":%d,"netProfitMinor":%d,"ebitMinor":%d}
+                """.formatted(totalAssets, totalLiabilities, currentAssets, currentLiabilities, equity, revenue,
+                netProfit, ebit);
+    }
+
+    public static long fillAndConfirm(MockMvc mvc, DemoClient client, String applicationId, long applicationVersion,
+                                      String valuesJson) throws Exception {
         String path = "/api/v1/applications/" + applicationId + "/financial-statement";
-        String saved = mvc.perform(client.json(put(path), input(COMPLETE_VALUES))
+        String saved = mvc.perform(client.json(put(path), input(valuesJson))
                         .header("If-Match", "\"v" + applicationVersion + "\"")
                         .header("Idempotency-Key", UUID.randomUUID().toString()))
                 .andExpect(status().isOk())

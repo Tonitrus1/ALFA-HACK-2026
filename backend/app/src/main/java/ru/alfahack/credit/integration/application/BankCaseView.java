@@ -11,5 +11,6 @@ public record BankCaseView(
         long caseVersion,
         String status,
         Instant createdAt,
-        Instant updatedAt) {
+        Instant updatedAt,
+        String financialSnapshotId) {
 }

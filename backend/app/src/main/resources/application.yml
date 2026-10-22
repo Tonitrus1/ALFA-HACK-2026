@@ -53,6 +53,13 @@ credit:
     service-tokens:
       file-scanner: ${FILE_SCANNER_TOKEN:}
       document-ocr: ${DOCUMENT_OCR_TOKEN:}
+  ml:
+    # contract-double — детерминированный двойник до готовности моделей; http — ML-сервис (internal v2).
+    mode: ${ML_MODE:contract-double}
+    base-url: ${ML_BASE_URL:}
+    service-token: ${ML_SERVICE_TOKEN:}
+  review:
+    poll-interval: PT2S
   objects:
     # Постоянный том файлов (quarantine/clean). В контейнере задаётся OBJECTS_ROOT на volume.
     root: ${OBJECTS_ROOT:${user.home}/.local/share/credit-backend/objects}

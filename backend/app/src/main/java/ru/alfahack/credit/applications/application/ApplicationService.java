@@ -132,6 +132,11 @@ public class ApplicationService {
                 .orElseThrow(ApplicationException::notFound);
     }
 
+    /** Заявка по id без проверки сессии — для внутренних обработчиков. */
+    public Optional<ApplicationView> find(String applicationId) {
+        return applications.find(applicationId);
+    }
+
     /** Время первой отправки (создания неизменяемого пакета), если заявка отправлена. */
     public Optional<Instant> submittedAt(String applicationId) {
         return snapshots.submittedAt(applicationId);

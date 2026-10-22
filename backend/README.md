@@ -59,6 +59,15 @@ Java 21, Spring Boot 4.1.1, PostgreSQL 17.11, Maven (через `./mvnw`), Flywa
 - Внутренний API `/internal/v1/document-jobs/{claim,renew,scan-result,extraction-result}` для OCR-worker ML: заголовок `X-Service-Token` (`FILE_SCANNER_TOKEN`, `DOCUMENT_OCR_TOKEN`, ≥ 32 символов). Результат принимается только от текущего поколения непросроченной аренды для той же `objectVersion` (иначе 409 `LEASE_STALE`).
 - Не сделано в P10: `confirm-extraction` (перенос OCR-значений в анкету с OCR-provenance), загрузки по RFI (P15), внешний file-gateway (`/internal/v1/uploads/*/complete`, `/transfers/*/authorize`) — шлюз встроен в backend; сборка осиротевших карантинных байтов.
 
+## ML-адаптеры, решения и RFI (P15)
+
+- `ml`: `RiskGateway` (feature snapshot → risk evaluation по точному финансовому снимку; ответ сверяется по snapshot/digest/score/calibration, запись в `ml.inference_record` до использования), `RankingGateway` (только полная перестановка кандидатов, иначе RULES в порядке backend), `AssistantGateway` (цитаты только из allowlist и текущего `kbEpoch`, иначе INSUFFICIENT_EVIDENCE).
+- Транспорт ML: `credit.ml.mode` = `contract-double` (по умолчанию, детерминированный двойник по схемам internal v2 — **не модель**, помечается `CONTRACT_DOUBLE`) или `http` (`ML_BASE_URL`, `ML_SERVICE_TOKEN`, бюджеты 2/3/60 с). Неизвестный режим останавливает запуск.
+- Симулятор: после `CaseAccepted` дело встаёт в `integration.review_task`; `ReviewWorker` вызывает риск вне транзакции и одним commit (CAS по `caseVersion`) записывает решение `demo-policy-v1`, предложение (+24 ч) и события. Сбой риска → MANUAL, без автоматического отказа.
+- `GET /api/v1/applications/{id}/decision` (MANUAL ещё не решение — 404 `DECISION_NOT_READY`), `GET /api/v1/offers/{id}`.
+- Финансовый RFI: противоречие выручки в анкете и отчётности (> 50%) → NEEDS_INFO с FIELD `financialStatement.values.revenueMinor`. Черновик ответа — копия подтверждённой формы; менять можно только запрошенные значения (иначе 422 `FIELD_NOT_REQUESTED`); ответ (202, RESPOND) создаёт новый неизменяемый снимок; банк возвращает дело в REVIEW и рассматривает по новому снимку. Исходная анкета не меняется.
+- Не сделано: принятие предложения, отзыв заявки, операторские действия demo, публичные эндпоинты ленты/рекомендаций/ассистента (P12/P14/P16 используют готовые шлюзы).
+
 ## Запуск
 
 Нужен JDK 21; Maven скачает `./mvnw`.

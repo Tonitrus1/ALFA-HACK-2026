@@ -35,14 +35,19 @@ public class FinancialStatementRepository {
     }
 
     public Optional<FinancialStatementView> find(String applicationId, long containerVersion) {
+        return findContainer(applicationId, containerVersion);
+    }
+
+    /** Форма контейнера: исходной анкеты (containerId = applicationId) или черновика RFI (= requestId). */
+    public Optional<FinancialStatementView> findContainer(String containerId, long containerVersion) {
         return jdbc.sql("""
                         SELECT application_id, statement_version, period_start, period_end, reporting_standard, currency,
                                total_assets_minor, total_liabilities_minor, current_assets_minor,
                                current_liabilities_minor, equity_minor, revenue_minor, net_profit_minor, ebit_minor,
                                source_document_references::text AS refs, confirmed, updated_at
-                        FROM applications.financial_statement WHERE application_id = :id
+                        FROM applications.financial_statement WHERE container_id = :id
                         """)
-                .param("id", applicationId)
+                .param("id", containerId)
                 .query((rs, row) -> map(rs, containerVersion))
                 .optional()
                 .map(statement -> new FinancialStatementView(
@@ -50,23 +55,31 @@ public class FinancialStatementRepository {
                         statement.periodStart(), statement.periodEnd(), statement.reportingStandard(),
                         statement.currency(), statement.values(), statement.sourceDocumentReferences(),
                         statement.confirmed(),
-                        statement.confirmed() ? provenance(applicationId, statement.statementVersion()) : List.of(),
+                        statement.confirmed()
+                                ? provenance(statement.applicationId(), statement.statementVersion())
+                                : List.of(),
                         statement.updatedAt()));
     }
 
     /** Новая версия содержимого: подтверждение всегда сбрасывается. */
     public void upsert(String applicationId, long statementVersion, FinancialStatementView.Content content,
                        String referencesJson, Instant now) {
+        upsertContainer(applicationId, applicationId, statementVersion, content, referencesJson, false, now);
+    }
+
+    public void upsertContainer(String containerId, String applicationId, long statementVersion,
+                                FinancialStatementView.Content content, String referencesJson, boolean confirmed,
+                                Instant now) {
         FinancialValues values = content.values();
         jdbc.sql("""
                         INSERT INTO applications.financial_statement (
-                            application_id, statement_version, period_start, period_end, reporting_standard, currency,
+                            container_id, application_id, statement_version, period_start, period_end, reporting_standard, currency,
                             total_assets_minor, total_liabilities_minor, current_assets_minor, current_liabilities_minor,
                             equity_minor, revenue_minor, net_profit_minor, ebit_minor, source_document_references,
                             confirmed, updated_at)
-                        VALUES (:id, :version, :start, :end, :standard, :currency, :ta, :tl, :ca, :cl, :eq, :rev, :np,
-                                :ebit, CAST(:refs AS jsonb), false, :now)
-                        ON CONFLICT (application_id) DO UPDATE SET
+                        VALUES (:container, :id, :version, :start, :end, :standard, :currency, :ta, :tl, :ca, :cl, :eq,
+                                :rev, :np, :ebit, CAST(:refs AS jsonb), :confirmed, :now)
+                        ON CONFLICT (container_id) DO UPDATE SET
                             statement_version = EXCLUDED.statement_version, period_start = EXCLUDED.period_start,
                             period_end = EXCLUDED.period_end, reporting_standard = EXCLUDED.reporting_standard,
                             currency = EXCLUDED.currency, total_assets_minor = EXCLUDED.total_assets_minor,
@@ -78,8 +91,10 @@ public class FinancialStatementRepository {
                             source_document_references = EXCLUDED.source_document_references,
                             confirmed = false, updated_at = EXCLUDED.updated_at
                         """)
+                .param("container", containerId)
                 .param("id", applicationId)
                 .param("version", statementVersion)
+                .param("confirmed", confirmed)
                 .param("start", Date.valueOf(content.periodStart()))
                 .param("end", Date.valueOf(content.periodEnd()))
                 .param("standard", content.reportingStandard())
@@ -99,6 +114,11 @@ public class FinancialStatementRepository {
 
     /** Подтверждение версии: по одной MANUAL-provenance на каждое из 8 полей. */
     public void confirm(String applicationId, long statementVersion, String actorId, Instant now) {
+        confirmContainer(applicationId, applicationId, statementVersion, actorId, now);
+    }
+
+    public void confirmContainer(String containerId, String applicationId, long statementVersion, String actorId,
+                                 Instant now) {
         for (FinancialField field : FinancialField.values()) {
             jdbc.sql("""
                             INSERT INTO applications.financial_provenance
@@ -115,10 +135,10 @@ public class FinancialStatementRepository {
         }
         jdbc.sql("""
                         UPDATE applications.financial_statement SET confirmed = true, updated_at = :now
-                        WHERE application_id = :id AND statement_version = :version
+                        WHERE container_id = :container AND statement_version = :version
                         """)
                 .param("now", Timestamp.from(now))
-                .param("id", applicationId)
+                .param("container", containerId)
                 .param("version", statementVersion)
                 .update();
     }
@@ -142,6 +162,30 @@ public class FinancialStatementRepository {
                 .param("provenance", provenanceJson)
                 .param("now", Timestamp.from(now))
                 .update();
+    }
+
+    /** Наибольшая версия формы по всем контейнерам заявки — для сквозной нумерации. */
+    public long maxStatementVersion(String applicationId) {
+        return jdbc.sql("SELECT coalesce(max(statement_version), 0) FROM applications.financial_statement "
+                        + "WHERE application_id = :id")
+                .param("id", applicationId).query(Long.class).single();
+    }
+
+    public record SnapshotRow(String financialSnapshotId, String applicationId, String companyId,
+                              long statementVersion, String digest, String statementJson) {
+    }
+
+    public Optional<SnapshotRow> snapshot(String financialSnapshotId) {
+        return jdbc.sql("""
+                        SELECT financial_snapshot_id, application_id, company_id, statement_version, statement_digest,
+                               statement::text AS statement
+                        FROM applications.financial_snapshot WHERE financial_snapshot_id = :id
+                        """)
+                .param("id", financialSnapshotId)
+                .query((rs, row) -> new SnapshotRow(rs.getString("financial_snapshot_id"),
+                        rs.getString("application_id"), rs.getString("company_id"), rs.getLong("statement_version"),
+                        rs.getString("statement_digest"), rs.getString("statement")))
+                .optional();
     }
 
     public Optional<String> snapshotId(String applicationId, long statementVersion) {
