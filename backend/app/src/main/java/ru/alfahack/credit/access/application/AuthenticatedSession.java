@@ -7,8 +7,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import ru.alfahack.credit.access.domain.CompanyAction;
-import ru.alfahack.credit.access.domain.CompanyRole;
 
 /**
  * Проверенная серверная сессия текущего запроса. Роли — из авторитетного источника на момент запроса.

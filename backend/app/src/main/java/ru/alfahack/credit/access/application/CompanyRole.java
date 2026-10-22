@@ -1,4 +1,4 @@
-package ru.alfahack.credit.access.domain;
+package ru.alfahack.credit.access.application;
 
 import java.util.Arrays;
 import java.util.EnumSet;

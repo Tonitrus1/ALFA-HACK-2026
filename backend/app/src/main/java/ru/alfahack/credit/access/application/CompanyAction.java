@@ -1,4 +1,4 @@
-package ru.alfahack.credit.access.domain;
+package ru.alfahack.credit.access.application;
 
 /** Действия над ресурсами компании (схема Capability публичного контракта). */
 public enum CompanyAction {

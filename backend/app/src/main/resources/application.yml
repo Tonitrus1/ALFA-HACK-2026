@@ -6,6 +6,9 @@ spring:
     username: ${DB_USER:credit}
     # Пароль только из окружения (backend/.env или переменная DB_PASSWORD); в репозитории его нет.
     password: ${DB_PASSWORD}
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
   jpa:
     open-in-view: false
     hibernate:
@@ -29,6 +32,10 @@ credit:
     cookie-secure: true
   demo:
     enabled: false
+  scheduling:
+    enabled: true
+  outbox:
+    poll-interval: PT1S
 
 management:
   endpoints:

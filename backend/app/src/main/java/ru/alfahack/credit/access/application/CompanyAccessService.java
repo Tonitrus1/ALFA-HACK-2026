@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import ru.alfahack.credit.access.domain.CompanyAction;
 import ru.alfahack.credit.access.infrastructure.AccessRepository;
 import ru.alfahack.credit.platform.web.ApplicationException;
 import ru.alfahack.credit.platform.web.ErrorKind;
@@ -54,6 +53,21 @@ public class CompanyAccessService {
                 .filter(session::isMemberOf)
                 .orElseThrow(() -> new ApplicationException(
                         ErrorKind.CONFLICT, "COMPANY_NOT_SELECTED", "Компания не выбрана"));
+    }
+
+    /**
+     * Повторная проверка полномочий по авторитетному источнику непосредственно перед commit команды.
+     * Отозванное членство даёт 404, отсутствие роли — 403.
+     */
+    public void recheckAction(String actorId, String companyId, CompanyAction action) {
+        CompanyView company = repository.companyOf(actorId, companyId).orElseThrow(ApplicationException::notFound);
+        boolean allowed = company.roles().stream()
+                .map(CompanyRole::parse)
+                .flatMap(Optional::stream)
+                .anyMatch(role -> role.allows(action));
+        if (!allowed) {
+            throw new ApplicationException(ErrorKind.FORBIDDEN, "ACTION_FORBIDDEN", "Недостаточно полномочий");
+        }
     }
 
     public void requireAction(AuthenticatedSession session, String companyId, CompanyAction action) {

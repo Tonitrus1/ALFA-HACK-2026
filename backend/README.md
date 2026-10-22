@@ -35,6 +35,15 @@ Java 21, Spring Boot 4.1.1, PostgreSQL 17.11, Maven (через `./mvnw`), Flywa
 - Повышение `access.actor.auth_epoch` мгновенно отзывает все сессии участника.
 - Demo-вход (`/demo/api/v1/accounts`, `/demo/api/v1/session`) существует только в профиле `demo`; там же Flyway подключает синтетический seed `db/seed/demo`: `representative-a` → `company-a`, `representative-b` → `company-b`, `operator-demo`.
 
+## Заявки, команды и симулятор (P05)
+
+- `GET /api/v1/products`; `POST/GET /api/v1/applications`, `GET/PATCH /api/v1/applications/{id}`, `POST .../submit`, `GET .../status`, `GET /api/v1/operations/{id}`.
+- Create — 201 с повтором по `Idempotency-Key` (тот же ресурс; другой body — 409 `IDEMPOTENCY_KEY_REUSED`). PATCH — `If-Match: "v{n}"`, CAS по версии.
+- Submit — 202 + receipt. Повтор с тем же ключом возвращает исходный receipt до проверок состояния. Один commit: заявка → `SUBMITTED`, неизменяемый `submission_snapshot`, `command_operation`, событие `SubmissionRequested` в `journey.outbox`.
+- `OutboxDispatcher` (SKIP LOCKED, lease, backoff, видимый `FAILED`) доставляет события в in-process обработчики. `BankSimulator` по inbox создаёт дело (дедуп по `externalRequestId`), переводит операцию в `SUCCEEDED` и публикует `CaseAccepted` (статус `REVIEW`).
+- Предусловия, которыми владеют другие задачи, — `SubmissionPrerequisites`. Пока нет P08, подтверждённых финансов нет, поэтому submit отказывает `FINANCIAL_CONFIRMATION_REQUIRED`; непустые ссылки на документы/согласия отклоняются до P10/модуля согласий.
+- Синтетический каталог (`working-capital`, `credit-line`, `overdraft`) — в seed профиля `demo`.
+
 ## Запуск
 
 Нужен JDK 21; Maven скачает `./mvnw`.

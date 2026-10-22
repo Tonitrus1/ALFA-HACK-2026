@@ -13,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 /** Приложение целиком на встроенном PostgreSQL с demo-профилем и синтетическим seed. */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@SpringBootTest(properties = "spring.datasource.password=unused")
+@SpringBootTest(properties = {"spring.datasource.password=unused", "credit.scheduling.enabled=false"})
 @AutoConfigureMockMvc
 @ActiveProfiles("demo")
 @Import(EmbeddedPostgresConfiguration.class)
