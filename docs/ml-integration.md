@@ -1,204 +1,55 @@
-# Передача ML-модуля разработчикам backend и UI
+# Документация скоринга: новый адрес
 
-Актуально на 21 октября 2026. Объём этой поставки после уточнения задачи: **обученная модель, настоящий Risk API, PostgreSQL-хранилище снимков/inference, шесть воспроизводимых сценариев и документация интеграции**. UI и жизненный цикл кредитной заявки реализуют другие разработчики.
+Документ перенесён по единому стандарту 22.10.2026. Исходный код `f14d090a956d2a9063da57a53c269237b5df6298` не изменён. [Основная точка входа](../ml/scoring/README.md), [каталог](ml/README.md), [интеграция](ml/scoring/integration.md). Старые разделы ниже сохраняют ссылки и якоря. Исторический полный текст доступен в Git-снимке до миграции.
 
-## 1. Что умеет модель
+<a id="1-что-умеет-модель"></a>
 
-Модель считает непрерывный `score` от 0 до 1 по восьми отношениям финансовой отчётности. Алгоритм: `CatBoostClassifier` с подбором гиперпараметров через Optuna. Код преобразования общий для обучения и serving: `ml/scoring/features.py`.
+## Что умеет модель
 
-Назначение результата строго `BANKRUPTCY_PROXY / DEMONSTRATION / DEMO_RESEARCH`. Компании, финансы и целевая переменная полностью вымышлены. Это не банковская PD, не оценка настоящих российских компаний и не обещание кредита.
+Актуальный раздел: [документация](ml/scoring/model-card.md).
 
-Модель не возвращает APPROVED/DECLINED. Эти маршруты выбирает backend policy. Исполняемый эталон для переноса и проверки интеграции: `ml/scoring/demo_policy.py`; он не изменяет заявки и не выпускает оферты. Сценарный CLI объединяет настоящие ML-вызовы с этим эталоном, чтобы разработчик мог воспроизвести маршруты заранее.
+<a id="2-запуск"></a>
 
-## 2. Запуск
+## Запуск
 
-Подготовленный стенд на этом компьютере, из корня репозитория:
+Актуальный раздел: [документация](ml/scoring/setup.md).
 
-```sh
-./scripts/demo up --offline
-```
+<a id="3-настройка-и-секреты"></a>
 
-Сервис: `http://127.0.0.1:8001`. Java, Node, браузер и frontend для этого не нужны. Если сервис уже работает, останавливать его перед повторным запуском: `./scripts/demo down`.
+## Настройка и секреты
 
-Проверка сценариев и тестов:
+Актуальный раздел: [документация](ml/scoring/setup.md#настройки).
 
-```sh
-./scripts/demo scenarios
-./scripts/demo test
-PYTHONPATH=ml .venv/bin/python scripts/verify_ml_runtime.py
-```
+<a id="4-контракт-вызова"></a>
 
-Сценарии используют настоящий HTTP inference и долговечные записи PostgreSQL. Прогон добавляет синтетические снимки/inference и не удаляет прошлые. `verify_ml_runtime.py` перезапускает только выделенный ML-стенд, проверяет восстановление и моделирует отказ записи.
+## Контракт вызова
 
-Первичная установка на macOS arm64 (нужны сеть, Python 3.12, инструменты сборки Apple):
+Актуальный раздел: [документация](ml/scoring/integration.md).
 
-```sh
-./scripts/setup-ml.sh
-./scripts/demo up --offline
-```
+<a id="5-финансовые-поля-и-точность"></a>
 
-Эта ML-ветка включает готовую модель в `ml/artifacts/baseline/`, подготовленные синтетические компании в `ml/generated/companies.json` и полный датасет в `datasets/ru-sme-dataset-10000/`. Переобучение перед запуском не требуется. Сеть нужна для первой установки Python-пакетов и подготовки PostgreSQL; запуск использует локальную модель.
+## Финансовые поля и точность
 
-Для отдельного переобучения выполните `./scripts/demo train`: по умолчанию используется датасет внутри репозитория. Другой путь задаётся `--dataset` либо `DATASET_PATH`; обучение читает только локальные файлы. Native launcher проверен на macOS arm64; Linux/Windows и контейнеры не проверялись. Для другого deployment разработчик может запустить `uvicorn scoring.server:app` с переменными ниже и собственной PostgreSQL 17.
+Актуальный раздел: [документация](ml/scoring/integration.md#запросы-и-ответы).
 
-Раздельные команды: `./scripts/demo migrate` создаёт **credit_scoring_demo** и применяет SQL из `ml/migrations`; `./scripts/demo train` обучает offline; `./scripts/demo scenarios` читает маленькие fixtures. Отдельный seed БД не нужен: финансовые примеры хранятся в `ml/fixtures/scenarios.json`, сервер не читает их при inference.
+<a id="6-policy-и-сценарии"></a>
 
-Безопасный сброс:
+## Policy и сценарии
 
-```sh
-./scripts/demo reset --confirm credit_scoring_demo
-./scripts/demo up --offline
-```
+Актуальный раздел: [документация](ml/scoring/architecture.md#алгоритм-обработки-правила-и-fallback).
 
-Сброс очищает только `ml.features` и `ml.inferences` в выделенной локальной БД. Проверяются фиксированные имя/адрес БД, маркер кластера и владелец проекта. Артефакты/fixtures/датасет сохраняются. Произвольный DSN для reset не принимается.
+<a id="7-обучение-артефакты-и-фактическая-проверка"></a>
 
-## 3. Настройка и секреты
+## Обучение, артефакты и фактическая проверка
 
-Локальный launcher генерирует `.local/runtime.json` с правами 0600; файл исключён из Git. Не копировать токен в frontend. Для ручного запуска backend/ML:
+Актуальный раздел: [документация](ml/scoring/model-card.md).
 
-| Переменная | Значение / смысл |
-| --- | --- |
-| `PYTHONPATH` | абсолютный путь к `ml` |
-| `MODEL_BUNDLE` | путь к подготовленному `ml/artifacts/baseline` |
-| `ML_DATABASE_URL` | PostgreSQL DSN роли, имеющей только SELECT/INSERT в `ml` |
-| `ML_INTERNAL_TOKEN` | общий служебный токен backend → ML |
-| `OPENBLAS_NUM_THREADS`, `OMP_NUM_THREADS` | `1` для воспроизводимого локального CPU-стенда |
+<a id="8-что-реализовать-интегратору"></a>
 
-Все реализованные endpoints, включая `/health`, требуют `Authorization: Bearer <ML_INTERNAL_TOKEN>`. Порт слушает только loopback. При отдельном размещении сервисов инженер отвечает за сетевую изоляцию/аутентификацию и передаёт backend токен через секреты deployment. Браузер вызывает backend.
+## Что реализовать интегратору
 
-## 4. Контракт вызова
-
-Каноническая спецификация: `docs/architecture/contracts/internal.openapi.json`. Ограничения реализованного ML-профиля перечислены в `local-risk-profile.json`. Точная runtime-схема запросов доступна в `/openapi.json`. Остальные операции большого HACKATHON-1.5 контракта остаются спецификацией.
-
-1. Backend сохраняет подтверждённый неизменяемый финансовый снимок и пакет отправки. Передаёт точную копию финансового блока в **POST `/internal/v2/feature-snapshots`**.
-2. ML проверяет финансовые значения, digest и временную доступность; сохраняет неизменяемый FeatureSnapshot. **GET `/internal/v2/feature-snapshots/{id}`** читает именно эту версию.
-3. Backend вызывает **POST `/internal/v2/risk/evaluations`** с ID/digest снимка, схемой 2, закреплённым bundleDigest и requestId попытки.
-4. ML возвращает результат только после commit inference record. Backend отдельно применяет policy к своим закреплённым данным и условиям заявки.
-5. **GET `/internal/v2/bundle`** возвращает manifest и подготовленную policy с T_manual. Закреплять эти версии на попытку; изменение bundle требует перепроверки policy и fixtures.
-
-Полные работающие примеры запросов и фактических ответов лежат в `ml/examples/`. UUID в ответах относятся к выполненному прогону; после reset сначала создаётся новый снимок. Python-клиент для интеграционного примера: `ml/scoring/client.py`.
-
-Пример создания признаков (`financialStatement` полностью приведён в examples):
-
-```json
-{
-  "applicationId": "DEMO:application-1",
-  "submissionSnapshotId": "submission-1",
-  "financialSnapshotId": "financial-1",
-  "financialSnapshotDigest": "<SHA-256 канонического financialStatement>",
-  "financialStatementVersion": 1,
-  "asOf": "2026-10-21T00:00:00Z",
-  "latestSourceAvailableAt": "2026-04-01T00:00:00Z",
-  "purpose": "DEMO_RESEARCH",
-  "financialStatement": "<объект из ml/examples/create-feature.request.json>"
-}
-```
-
-Это структурное пояснение с placeholders; для исполнения использовать JSON-файлы в `ml/examples`. Даты ISO-8601 с timezone. Период отчётности в этом bundle: 01.01.2025–31.12.2025; дата доступности должна следовать после периода и быть не позже asOf.
-
-Risk request:
-
-```json
-{
-  "requestId": "attempt-1",
-  "featureSnapshotId": "<ID ответа feature API>",
-  "featureSnapshotDigest": "<snapshotDigest ответа>",
-  "featureSchemaVersion": 2,
-  "bundleDigest": "<bundleDigest из manifest>",
-  "purpose": "DEMO_RESEARCH"
-}
-```
-
-Успешный ответ содержит `requestId`, `inferenceId`, `featureSnapshotId`, `featureSnapshotDigest`, `bundleDigest`, `modelVersion`, `releaseId`, `score`, `scoreKind`, `calibrationStatus`, `purpose`, `internalReasonCodes`. `releaseId` в исследовательском профиле равен версии локального bundle; он не означает одобрение банковского релиза.
+Актуальный раздел: [документация](ml/scoring/integration.md#обязанности-backend-и-frontend).
 
 ### Повторы, ошибки и дедлайны
 
-`(submissionSnapshotId, featureCodeDigest)` — идемпотентная идентичность feature input. Повтор точного тела возвращает исходный snapshot; иное тело с той же идентичностью даёт 409. `requestId` — ключ одной оценки: то же тело возвращает исходный inferenceId/score; другое тело даёт 409. Конкурентные повторы защищены блокировкой и уникальными ограничениями PostgreSQL.
-
-| HTTP / отказ | Действие интегратора |
-| --- | --- |
-| 403 | Исправить служебную аутентификацию; не ретраить из браузера |
-| 404 | Проверить точный ID снимка |
-| 409 | Проверить digest/закреплённый bundle и повтор ключа с другим телом |
-| 422 | Исправить формат, финансовые данные, purpose, schema или время доступности |
-| timeout / 5xx / нет долговечной записи | Видимый MANUAL в backend, без score=0 |
-
-Risk budget — 3 секунды. Backend должен ограничить общий deadline, включая feature-вызов, очередь и фиксацию fallback. Пример клиента задаёт сетевой timeout каждому запросу; production-адаптер backend должен учитывать оставшееся общее время. При сетевой неопределённости повторять исходное тело с исходным requestId. Создание нового requestId не является retry.
-
-Запоздалый ответ не должен менять отменённую/заменённую попытку или автоматически выпускать оферту после fallback MANUAL. Это CAS/state-machine обязанность backend; ML не имеет доступа к его таблицам. Хранение application/session/outbox, RFI amendment, оферт и принятия не входит в реализацию ML.
-
-## 5. Финансовые поля и точность
-
-API принимает **целые копейки**, не float-рубли. Восемь обязательных полей:
-
-| Поле API | Коэффициент |
-| --- | --- |
-| totalAssetsMinor | знаменатель активов |
-| currentAssetsMinor | X3, X4 |
-| totalLiabilitiesMinor | X2, X8 |
-| currentLiabilitiesMinor | X3, X4 |
-| equityMinor | X8, X10 |
-| revenueMinor | X9 и cap backend policy |
-| netProfitMinor | X1 |
-| ebitMinor | X7 |
-
-X1=profit/assets; X2=liabilities/assets; X3=(currentAssets−currentLiabilities)/assets; X4=currentAssets/currentLiabilities; X7=EBIT/assets; X8=equity/liabilities; X9=revenue/assets; X10=equity/assets. Все признаки считаются сервером. Запрос с ручными features/target/score не принимается.
-
-Исходные рубли из Parquet конвертируются Decimal → int, без промежуточного float. Диапазон денег: ±9007199254740991 копейка; отрицательные капитал/прибыль/EBIT допустимы. Assets>0; текущие части не больше итогов; баланс assets=liabilities+equity с явным допуском **1 копейка**. Валюта RUB, стандарт DEMO. Пустое значение не ноль; обязательная форма до submit должна быть полностью заполнена и подтверждена backend.
-
-При нулевых обязательствах X4/X8 дают `null`. CatBoost получает NaN и обрабатывает их через `nan_mode=Min`; отдельные imputer и scaler не используются. Batch/online используют один feature-builder.
-
-Digest: SHA-256 UTF-8 JSON, ключи объектов рекурсивно сортируются, без пробелов, `ensure_ascii=False`, без NaN/Infinity. Financial digest считается от точного `financialStatement`. Snapshot digest — от всех полей FeatureSnapshot кроме самого `snapshotDigest`; ID/версии/время входят в hash. Backend может хранить snapshotDigest, возвращённый ML, и передавать его без повторной сериализации вещественных коэффициентов.
-
-## 6. Policy и сценарии
-
-Порог T_manual=**0.03504223273828764**, версия policy **synthetic-demo-policy-3**. Это верхние 20% score среди пригодных validation-примеров для оборотного продукта: 1205 пригодных, 241 на ручную проверку; 38 искусственных событий среди пригодных, 26 среди направленных на проверку; на границе один score. Норматив банка из этого не следует.
-
-Приоритет: ошибка данных → существенное расхождение выручки с reference → жёсткая продуктовая пригодность → отрицательный капитал/долг ≥90% активов → нулевая выручка/неподдерживаемый случай → сбой ML → score≥T_manual → превышение cap → одобрение. Точный эталон в `demo_policy.py` и `local-demo-policy.json`.
-
-cap = min(product.maxAmountMinor, revenueMinor // 4). Ниже минимума продукта оферта не создаётся: MANUAL. Высокий score всегда раньше ALTERNATIVE. Изменение суммы не меняет финансовый score.
-
-| Сценарий | Данные / действие | Проверенный результат |
-| --- | --- | --- |
-| S01 | Согласованные источники, низкий настоящий score, 200 тыс. RUB | APPROVED |
-| S02 | Корректный баланс, обязательства 95% активов | DECLINED до вызова модели |
-| S03 | Выручка в декларации ×2 против reference | NEEDS_INFO; коррекция выручки в новом снимке → настоящий inference → APPROVED |
-| S04 | Финансы S01, запрос 5 000 000,01 RUB | ALTERNATIVE на допустимую сумму |
-| S05 | Другой train-пример, проходящий жёсткие правила, высокий настоящий score | MANUAL |
-| S06 | Применимые данные, отказ именно вызова risk после создания признаков | MANUAL без score/inferenceId |
-
-S06 использует явный fault в сценарном клиенте: только risk-запрос конкретной попытки направляется на закрытый локальный порт. Рабочий ML API не читает scenarioId/expectedOutcome и не содержит переключателя подготовленных score. После сценария обычные вызовы продолжают работать.
-
-`ml/fixtures/scenarios.json` содержит маленькие вымышленные входные данные, закреплённый bundleDigest и происхождение из train. `expectations.json` читает только тестовый/сценарный runner. Переименование карточки или изменение допустимых финансов не фиксирует маршрут: исход снова вычисляется. Для RFI backend хранит исходную reference-версию; коррекция создаёт amendment и новую попытку, исходный пакет неизменяем.
-
-CLI проверяет путь до решения policy. REVIEW/ACCEPTED/COMPLETED, операторское решение, expiry/cancel и банковские оферты описаны для реализации коллегами; из наличия ML-сценария они не считаются готовыми.
-
-## 7. Обучение, артефакты и фактическая проверка
-
-Данные: только `training_simulation.parquet` / `simulation_splits/*.parquet`. Сохранён split train=7016/352 событий, validation=1494/80, test=1490/80. Прежний UCI/60/20/20 заменён этим поставленным синтетическим разделением. Hybrids/реальные ИНН и файл `simulation_truth_DO_NOT_USE_AS_FEATURES` не открываются для обучения/подбора/демо-примеров.
-
-Optuna TPESampler(seed=42), 30 trials, трёхкратная StratifiedKFold на train; objective — средняя Average Precision. MedianPruner прекращает неперспективные trials. Подбираются iterations, depth, learning_rate, l2_leaf_reg, random_strength, bagging_temperature, rsm, border_count и auto_class_weights. Внутри CV действует early stopping по Logloss; финальное количество деревьев — медиана fold tree counts. Пять лучших завершённых trials переобучаются на всём train; версия выбирается по validation AP. Файлы model/policy и study фиксируются в `selection-lock.json` до чтения test. Полная история в `reports/optuna-study.json`. Калибровка не применялась.
-
-Переобучение: `./scripts/demo train --trials 30 --folds 3 --threads 4`. Число кандидатов для validation задаётся `--shortlist 5`. Опциональный `--storage sqlite:///.local/optuna.sqlite3` сохраняет study в локальную БД; один запуск создаёт новое study, при повторном использовании того же имени нужен другой путь.
-
-На test: ROC-AUC **0.90449**, Average Precision **0.40560**, prevalence **0.05369**, Brier **0.03999**, log loss **0.14347**. Полный отчёт содержит confusion matrix на T_manual и распределения score; matrix считается на всём split, а review coverage — на пригодном validation-подмножестве. Все числа относятся к искусственной симуляции.
-
-Bundle: `ml/artifacts/baseline/` — CatBoost model, manifest с версиями библиотек/dataset+split+evaluation hashes, feature code digest, selection lock, policy, model card и `SHA256SUMS`. Startup проверяет hashes и версии; ничего не скачивает и не обучает. По поручению владельца этот bundle и полный датасет включены в ML-ветку Git вместе с отчётами и synthetic fixtures. Остальные локальные наборы, модели, секреты и база остаются исключены. Это исследовательская сборка; независимый peer review для командного релиза ещё нужен.
-
-Датасет сохранён без изменения исходных файлов, включая `MANIFEST.sha256`, происхождение и описания. В нём есть реальные реквизиты ООО из открытого реестра, гибридный набор с искусственными финансами и полностью синтетическая обучающая выборка. Реальные реквизиты и гибридные записи не используются моделью. Подробности: `datasets/ru-sme-dataset-10000/DATASET_README_RU.md`. Каталог-дубликат с суффиксом ` 2` не включён.
-
-Выполнены 14 unit/API проверок: Decimal, баланс/знак/нулевой долг, batch-online parity, whitelist/manifest, CatBoost/Optuna selection, приоритет policy и равенство порогу, cap/minimum, реальные concurrent retries, conflicts/digests/purpose/schema/auth и API schemas. Фактический протокол runtime — `reports/ml-runtime.json`; результаты S01–S06 и 30 последовательных замеров feature+inference — `reports/ml-scenarios.json`. Это latency standalone ML, не время банковского пути и не нагрузочное испытание нескольких клиентов.
-
-При `up --offline` и PostgreSQL, и ML запускаются под системным macOS sandbox с разрешением loopback/Unix sockets и запретом внешней сети. Проверены настоящее внешнее TCP-блокирование, перезапуск с сохранением snapshot/inference, неизменность bundle и отказ результата при недоступной долговечной записи.
-
-## 8. Что реализовать интегратору
-
-- Финансовый источник/черновик, provenance, полномочия, согласие и явное подтверждение восьми значений.
-- Immutable финансовые/пакетные snapshots и reference, доступную к моменту submit.
-- Вызовы Feature → Risk с общим бюджетом и закреплёнными версиями; долговечные operation/outbox/inbox.
-- Policy по заданному приоритету; публичное объяснение без score/internalReasonCodes.
-- RFI correction/explanation, amendment, попытки и защита от запоздавшего inference.
-- Оферты, CAS принятия/expiry/cancel, отдельные операторские права и демонстрационное завершение.
-- UI финансовой формы, статуса, RFI и предложений. В UI нет порога и пересчёта банковского решения.
-
-OCR, RAG, ranking, внешние ФНС/БКИ/банковские сервисы не реализованы в этом ML-срезе. Их существующие контракты сохранены.
+См. [ошибки и повторы](ml/scoring/integration.md#ошибки-timeout-retry-идемпотентность-и-fallback).

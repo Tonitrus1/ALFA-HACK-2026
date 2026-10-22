@@ -1,0 +1,42 @@
+{
+  "status": "PASS",
+  "checkedAt": "2026-10-22T14:12:57+05:00",
+  "sourceBranch": "ml/local-scoring-runtime",
+  "sourceCommit": "f14d090a956d2a9063da57a53c269237b5df6298",
+  "scope": "Documentation layout, links, heading order, command context/syntax and immutable existing files only",
+  "checks": {
+    "serviceDocuments": 9,
+    "localLinksChecked": 126,
+    "shellBlocksSyntaxChecked": 10,
+    "existingFilesVerifiedUnchanged": 217,
+    "runtimeExecuted": false,
+    "assistantBranchModified": false,
+    "standardSourcePreserved": true
+  },
+  "errors": [],
+  "documentSha256": {
+    "README.md": "b38df0bd85447ce8dc69302145ee15872790427761a0af2255a2fde41d6a8857",
+    "docs/ml/DOCUMENTATION-STANDARD.md": "f341311bad45379825712df39f911ffce350bfe7f1e5211b4c4a742fb31a1860",
+    "docs/ml/README.md": "d2cea63bd75cbcf13309f9b892d5261de9a3dec04bdba123f4cc6e42ecb9658e",
+    "docs/ml/scoring/CHANGELOG.md": "d7761ca6aaff4e963857fc2c4265f74d669cb26285110a8e4248db2976468a1c",
+    "docs/ml/scoring/THIRD_PARTY_NOTICES.md": "0fa8087b478b1d9114b1cb100b8f11b22de0caf358e160a90443c995d1d15030",
+    "docs/ml/scoring/architecture.md": "4e569c975bb8a2b161a8575e0c2fc3a16bf09dab51e7eadbbe868a440aa34305",
+    "docs/ml/scoring/data.md": "d135d854f079e18978aaf69e0ba3e1148f748c267f75b57850a40eea26f85de7",
+    "docs/ml/scoring/integration.md": "8fb7f440c0da49d6d7b98e94aa28d16ef7e121c6eddeac261d85a7decddc0cce",
+    "docs/ml/scoring/model-card.md": "47fa9d214224ab37a22adce184c77b3095286cdd22e247ad189886dcc9d3cf85",
+    "docs/ml/scoring/operations.md": "6dffc06890172740982d37fa9c301fb8d94473b7f51181591ec8c3da3e9ddff0",
+    "docs/ml/scoring/setup.md": "bce74388f33db17025fb296665be3935874488e80efdfd1955c3137a4788b21d",
+    "docs/ml/scoring/verification.md": "b389c633f4925821765f1c8d952dd611dbbd17b89b6f3a69c1132eefff462c96",
+    "docs/ml-integration.md": "390ca463f18b2f5c5c33122d06612ce64d11811b352d33e64e19ca00f655ccf9",
+    "ml/README.md": "8aa9e0beb7869f457e3eacecc4f58b0a4ffafcaf292a4bed99a7a102bd62aa5f",
+    "ml/scoring/README.md": "caf1c146bfe806ab9dd383f5a7da191f7414451f6d86c9807409cd5c9c731615"
+  },
+  "notExecuted": [
+    "service startup",
+    "new API or unit runtime tests",
+    "model evaluation or training",
+    "database reset or migration",
+    "cross-platform setup",
+    "frontend/backend joint acceptance"
+  ]
+}
