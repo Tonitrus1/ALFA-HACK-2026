@@ -1,0 +1,21 @@
+# Локальная БД для разработки backend. Не является профилем развёртывания (deploy/profiles).
+# Пароль задаётся в backend/.env (см. .env.example), файл .env не коммитится.
+services:
+  postgres:
+    image: postgres:17.11
+    environment:
+      POSTGRES_DB: credit
+      POSTGRES_USER: ${DB_USER:-credit}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in backend/.env}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - credit-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d credit"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  credit-pgdata:
