@@ -2,7 +2,7 @@
 
 Дата: 22.10.2026. Локальная среда: macOS arm64, JDK 21.0.13, Python 3.12, отдельный PostgreSQL 17 и отдельные порты. Исходные стенды пользователя не изменялись.
 
-- Backend unit/integration/architecture: 120 выполненных проверок без ошибок; opt-in live ML проверяется отдельным прогоном. Сводка `backend-tests.json`.
+- Backend unit/integration/architecture: 122 выполненных проверки без ошибок; opt-in live ML проверяется отдельным прогоном. Сводка `backend-tests.json`.
 - Java backend -> bridge -> реальные CatBoost/E5/PG: 4 проверки, включая реальный RFI и backend balance tolerance. `backend-real-ml.xml`.
 - Legacy Risk regression, включая исходный HTTP API: 31 PASS. `risk-regression.xml`.
 - Feed regression с настоящей offline E5: 58 PASS. `feed-regression.xml`.

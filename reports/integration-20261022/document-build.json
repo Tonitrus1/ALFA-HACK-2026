@@ -1,25 +1,13 @@
 {
   "status": "BUILT",
   "pdfPages": 9,
-  "visualReview": "PASS",
+  "visualReview": "PENDING",
   "files": {
-    "docs/integration-mvp.md": "9b464cd60b0721001437f0c418cf32791e63e4243c317bc98d5f17c37eeaf53b",
-    "docs/integration-audit.md": "f94fb079ad4674ff72e070b18a8707235c68dc14c47edeeb16b478862fffe7fb",
-    "docs/architecture/integration-guide.pdf": "23c1bbf8548567752b6baa103f1913619a44e8ec1f63b83bd5a2c91d37cf2ca9",
-    "docs/architecture/diagrams/integrated-mvp.svg": "814d57bebae68611a5be291acaa0dffc1c5a7bc0857f6343d656a2a73b4fe513",
+    "docs/integration-mvp.md": "300af339151c95f57f5de264c669676d1be6e1b4287b7ffa39b981a1a82236cb",
+    "docs/integration-audit.md": "1d35f2ea47b1d1bb07041c8a141b5e61b304b337989eeceeab1c3d9731ec1738",
+    "docs/architecture/integration-guide.pdf": "55345a1b40a76a55dc75cc6e4a38912730f7dbb41463bad1da1516da1ec3a93c",
+    "docs/architecture/diagrams/integrated-mvp.svg": "db4f90729703ab012e4758b72bc8e07439450af650499517874d8d27b72ad0f1",
     "docs/architecture/contracts/backend-ml.openapi.json": "8d47f47878949b87a9e3fb382ecfa7e947e842ab711cbb3905ed584dc9593a6a",
     "ml/openapi.json": "7d0c65f972e76addbac4074dc0c9e5e42e968a44bd2d1d3bb1680031e89344a6"
-  },
-  "reviewedPages": [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9
-  ],
-  "reviewMethod": "All pages rendered with Poppler and visually inspected in contact sheets; no clipping or orphan headings."
+  }
 }

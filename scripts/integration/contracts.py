@@ -20,4 +20,5 @@ source=root/'ml/feed/catalog';target=root/'backend/app/src/main/resources/feed'
 target.mkdir(parents=True,exist_ok=True)
 shutil.copy2(source/'cards.json',target/'cards.json')
 shutil.copytree(source/'illustrations',target/'illustrations',dirs_exist_ok=True)
+shutil.copy2(root/'ml/bridge/fixtures/backend-policy.json', root/'backend/app/src/test/resources/backend-policy.json')
 print(json.dumps({'bridgeVersion':bridge.version,'catalogDigest':Catalog().digest,'runtimeRiskPaths':len(risk.openapi()['paths'])}))

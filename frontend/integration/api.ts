@@ -51,7 +51,7 @@ export class BackendApi {
   feedback(exposureId: string, itemId: string, action: 'VIEW' | 'CLICK' | 'HELPFUL' | 'NOT_INTERESTED', clientEventId: string, occurredAt: string): Promise<unknown> {
     // On retry the caller MUST reuse clientEventId, occurredAt and the original payload.
     // VIEW is sent only after >=50% visibility for >=1000 ms, never on receipt of a page.
-    return this.request('/api/v1/recommendation-feedback', 'POST', { exposureId, itemId, action, clientEventId, occurredAt });
+    return this.request('/api/v1/recommendation-feedback', 'POST', { exposureId, itemId, action, clientEventId, occurredAt }, { 'Idempotency-Key': clientEventId });
   }
   financialStatement(applicationId: string): Promise<unknown> { return this.request(`/api/v1/applications/${encodeURIComponent(applicationId)}/financial-statement`); }
   saveFinancialStatement(applicationId: string, value: FinancialStatement, containerVersion: number, key: string): Promise<unknown> {

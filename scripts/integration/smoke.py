@@ -21,6 +21,7 @@ class Client:
         if self.session:
             headers['X-Company-Context']=str(self.session['contextVersion'])
             if method!='GET':headers['X-CSRF-Token']=self.session['csrfToken']
+        if path=='/api/v1/recommendation-feedback' and body is not None:headers['Idempotency-Key']=body['clientEventId']
         data=None if body is None else json.dumps(body,ensure_ascii=False).encode()
         if data is not None:headers['Content-Type']='application/json'
         try:

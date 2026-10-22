@@ -1,0 +1,15 @@
+{
+  "runId": 39825379742,
+  "commit": "8f9b7b18f051d0c9526670eed173257f6f9a345a",
+  "url": "https://github.com/Tonitrus1/ALFA-HACK-2026/actions/runs/39825379742",
+  "status": "FAIL",
+  "passed": [
+    "Linux backend tests",
+    "TypeScript client",
+    "Docker build",
+    "Linux E5 preparation",
+    "internal service readiness"
+  ],
+  "failed": "Public host HTTP readiness",
+  "correction": "Separate HTTP gateway on ingress and internal networks; backend and ML remain internal. Pending repeat CI verification."
+}

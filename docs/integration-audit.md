@@ -17,7 +17,7 @@
 | I09 | Legacy RankingGateway hash - строки с переносом; Feed - sorted canonical JSON | 409/некорректный подбор | ML legacy adapter + современный Feed endpoint | Проверено |
 | I10 | Публичная лента и её состояние отсутствовали | Готовая модель недоступна пользователю | Минимальный workspace Feed-срез с PG и изоляцией actor/company | Проверено public HTTP |
 | I11 | По умолчанию contract-double | Ложное ощущение готовности модели | Compose принудительно ML_MODE=http; evidence различает MODEL/RULES | Проверено Java |
-| I12 | Проверенный launcher macOS, нет общего Linux runtime | Невоспроизводимая передача | Compose, контейнеры, offline model preparation и Linux CI | Фактический Linux run указан в отчёте |
+| I12 | Проверенный launcher macOS, нет общего Linux runtime | Невоспроизводимая передача | Compose, HTTP gateway между ingress/internal, offline model preparation и Linux CI | Фактический Linux run указан в отчёте |
 | I13 | Frontend provisional-v1 отличается путями, полями, статусами и CAS | Нельзя подключить заменой URL | Поставлен типизированный клиент фактического API; полный UI отдельно | Adapter реализован, UI не принят |
 | I14 | Свежий антифрод требует независимого reference | Придуманное происхождение/ложный антифрод | Не активировать; требуется авторитетный источник и отдельная policy | Отложено |
 | I15 | Свежий Feed меняет каталог и добавляет CatBoost | Незаметная смена модели и критериев | Отдельный модельный release, без замены проверенного E5 baseline | Отложено |

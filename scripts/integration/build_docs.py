@@ -22,12 +22,12 @@ def main():
     renderer=importlib.util.module_from_spec(spec);spec.loader.exec_module(renderer)
     renderer.ST['h2'].keepWithNext=False
     renderer.ST['h3'].keepWithNext=False
-    nodes=[('UI / API client',30,70,160,64,'#edf3fb'),('Java backend',250,70,180,64,'#edf3fb'),
-           ('ML bridge',500,70,170,64,'#f0edfb'),('Risk / CatBoost',750,25,180,64,'#f0edfb'),
+    nodes=[('UI / API client',20,70,140,64,'#edf3fb'),('HTTP gateway',195,70,140,64,'#fff4df'),('Java backend',370,70,150,64,'#edf3fb'),
+           ('ML bridge',560,70,150,64,'#f0edfb'),('Risk / CatBoost',750,25,180,64,'#f0edfb'),
            ('Feed / E5 CPU',750,130,180,64,'#f0edfb'),('Backend PostgreSQL',240,260,200,64,'#eaf5ef'),
            ('ML PostgreSQL',500,260,200,64,'#eaf5ef'),('ClamAV',240,390,200,64,'#fff4df')]
-    edges=[(190,102,250,102),(430,102,500,102),(670,90,750,57),(670,115,750,162),
-           (340,134,340,260),(585,134,600,260),(840,89,700,275),(340,324,340,390)]
+    edges=[(160,102,195,102),(335,102,370,102),(520,102,560,102),(710,90,750,57),(710,115,750,162),
+           (445,134,340,260),(635,134,600,260),(840,89,700,275),(340,324,340,390)]
     svg=['<svg xmlns="http://www.w3.org/2000/svg" width="980" height="510" viewBox="0 0 980 510">',
          '<rect width="980" height="510" fill="white"/>',
          '<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8" fill="#527183"/></marker></defs>']
@@ -35,7 +35,7 @@ def main():
     for label,x,y,w,h,color in nodes:
         svg.append(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="8" fill="{color}" stroke="#758999"/>')
         svg.append(f'<text x="{x+w/2}" y="{y+h/2+5}" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#182b3b">{escape(label)}</text>')
-    svg.append('<text x="30" y="490" font-family="sans-serif" font-size="14">Runtime: internal network; only backend port is published. Two databases, separate owners.</text></svg>')
+    svg.append('<text x="30" y="490" font-family="sans-serif" font-size="14">Runtime: internal network; only HTTP gateway is published. Two databases, separate owners.</text></svg>')
     diagram=ARCH/'diagrams/integrated-mvp.svg';diagram.write_text('\n'.join(svg)+'\n')
     class Diagram(Flowable):
         def __init__(self):super().__init__();self.width=495;self.height=258

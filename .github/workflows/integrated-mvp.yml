@@ -2,9 +2,13 @@ name: Integrated backend and ML MVP
 on:
   push:
     branches: ['integration/backend-ml-mvp']
+    paths: ['backend/**', 'ml/**', 'frontend/integration/**', 'deploy/**', 'compose.yaml', 'scripts/integration/**', '.github/workflows/integrated-mvp.yml']
   pull_request:
     paths: ['backend/**', 'ml/**', 'deploy/**', 'compose.yaml', 'scripts/integration/**', '.github/workflows/integrated-mvp.yml']
   workflow_dispatch:
+concurrency:
+  group: integrated-mvp-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:

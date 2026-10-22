@@ -1,0 +1,338 @@
+[
+  {
+    "name": "approved",
+    "values": {
+      "totalAssetsMinor": 100000000,
+      "totalLiabilitiesMinor": 40000000,
+      "currentAssetsMinor": 50000000,
+      "currentLiabilitiesMinor": 20000000,
+      "equityMinor": 60000000,
+      "revenueMinor": 300000000,
+      "netProfitMinor": 10000000,
+      "ebitMinor": 15000000
+    },
+    "args": {
+      "amount": 50000000,
+      "product_min": 10000000,
+      "product_max": 500000000,
+      "minimum_age": 6,
+      "age": 40,
+      "preliminary_revenue": null,
+      "already_requested": false,
+      "score": 0.1
+    },
+    "outcome": "APPROVED"
+  },
+  {
+    "name": "below-threshold",
+    "values": {
+      "totalAssetsMinor": 100000000,
+      "totalLiabilitiesMinor": 40000000,
+      "currentAssetsMinor": 50000000,
+      "currentLiabilitiesMinor": 20000000,
+      "equityMinor": 60000000,
+      "revenueMinor": 300000000,
+      "netProfitMinor": 10000000,
+      "ebitMinor": 15000000
+    },
+    "args": {
+      "amount": 50000000,
+      "product_min": 10000000,
+      "product_max": 500000000,
+      "minimum_age": 6,
+      "age": 40,
+      "preliminary_revenue": null,
+      "already_requested": false,
+      "score": 0.499999
+    },
+    "outcome": "APPROVED"
+  },
+  {
+    "name": "threshold-tie",
+    "values": {
+      "totalAssetsMinor": 100000000,
+      "totalLiabilitiesMinor": 40000000,
+      "currentAssetsMinor": 50000000,
+      "currentLiabilitiesMinor": 20000000,
+      "equityMinor": 60000000,
+      "revenueMinor": 300000000,
+      "netProfitMinor": 10000000,
+      "ebitMinor": 15000000
+    },
+    "args": {
+      "amount": 50000000,
+      "product_min": 10000000,
+      "product_max": 500000000,
+      "minimum_age": 6,
+      "age": 40,
+      "preliminary_revenue": null,
+      "already_requested": false,
+      "score": 0.5
+    },
+    "outcome": "MANUAL"
+  },
+  {
+    "name": "missing-risk",
+    "values": {
+      "totalAssetsMinor": 100000000,
+      "totalLiabilitiesMinor": 40000000,
+      "currentAssetsMinor": 50000000,
+      "currentLiabilitiesMinor": 20000000,
+      "equityMinor": 60000000,
+      "revenueMinor": 300000000,
+      "netProfitMinor": 10000000,
+      "ebitMinor": 15000000
+    },
+    "args": {
+      "amount": 50000000,
+      "product_min": 10000000,
+      "product_max": 500000000,
+      "minimum_age": 6,
+      "age": 40,
+      "preliminary_revenue": null,
+      "already_requested": false,
+      "score": null
+    },
+    "outcome": "MANUAL"
+  },
+  {
+    "name": "cap-before-risk",
+    "values": {
+      "totalAssetsMinor": 100000000,
+      "totalLiabilitiesMinor": 40000000,
+      "currentAssetsMinor": 50000000,
+      "currentLiabilitiesMinor": 20000000,
+      "equityMinor": 60000000,
+      "revenueMinor": 100000000,
+      "netProfitMinor": 10000000,
+      "ebitMinor": 15000000
+    },
+    "args": {
+      "amount": 50000000,
+      "product_min": 10000000,
+      "product_max": 500000000,
+      "minimum_age": 6,
+      "age": 40,
+      "preliminary_revenue": null,
+      "already_requested": false,
+      "score": 0.99
+    },
+    "outcome": "ALTERNATIVE"
+  },
+  {
+    "name": "cap-below-minimum",
+    "values": {
+      "totalAssetsMinor": 100000000,
+      "totalLiabilitiesMinor": 40000000,
+      "currentAssetsMinor": 50000000,
+      "currentLiabilitiesMinor": 20000000,
+      "equityMinor": 60000000,
+      "revenueMinor": 10000000,
+      "netProfitMinor": 10000000,
+      "ebitMinor": 15000000
+    },
+    "args": {
+      "amount": 50000000,
+      "product_min": 10000000,
+      "product_max": 500000000,
+      "minimum_age": 6,
+      "age": 40,
+      "preliminary_revenue": null,
+      "already_requested": false,
+      "score": 0.1
+    },
+    "outcome": "DECLINED"
+  },
+  {
+    "name": "zero-before-equity",
+    "values": {
+      "totalAssetsMinor": 100000000,
+      "totalLiabilitiesMinor": 40000000,
+      "currentAssetsMinor": 50000000,
+      "currentLiabilitiesMinor": 20000000,
+      "equityMinor": -1,
+      "revenueMinor": 0,
+      "netProfitMinor": 10000000,
+      "ebitMinor": 15000000
+    },
+    "args": {
+      "amount": 50000000,
+      "product_min": 10000000,
+      "product_max": 500000000,
+      "minimum_age": 6,
+      "age": 40,
+      "preliminary_revenue": null,
+      "already_requested": false,
+      "score": 0.1
+    },
+    "outcome": "MANUAL"
+  },
+  {
+    "name": "unknown-age",
+    "values": {
+      "totalAssetsMinor": 100000000,
+      "totalLiabilitiesMinor": 40000000,
+      "currentAssetsMinor": 50000000,
+      "currentLiabilitiesMinor": 20000000,
+      "equityMinor": -1,
+      "revenueMinor": 300000000,
+      "netProfitMinor": 10000000,
+      "ebitMinor": 15000000
+    },
+    "args": {
+      "amount": 50000000,
+      "product_min": 10000000,
+      "product_max": 500000000,
+      "minimum_age": 6,
+      "age": null,
+      "preliminary_revenue": null,
+      "already_requested": false,
+      "score": 0.1
+    },
+    "outcome": "MANUAL"
+  },
+  {
+    "name": "rfi-boundary",
+    "values": {
+      "totalAssetsMinor": 100000000,
+      "totalLiabilitiesMinor": 40000000,
+      "currentAssetsMinor": 50000000,
+      "currentLiabilitiesMinor": 20000000,
+      "equityMinor": 60000000,
+      "revenueMinor": 300000000,
+      "netProfitMinor": 10000000,
+      "ebitMinor": 15000000
+    },
+    "args": {
+      "amount": 50000000,
+      "product_min": 10000000,
+      "product_max": 500000000,
+      "minimum_age": 6,
+      "age": 40,
+      "preliminary_revenue": 450000000,
+      "already_requested": false,
+      "score": 0.1
+    },
+    "outcome": "APPROVED"
+  },
+  {
+    "name": "rfi-above-boundary",
+    "values": {
+      "totalAssetsMinor": 100000000,
+      "totalLiabilitiesMinor": 40000000,
+      "currentAssetsMinor": 50000000,
+      "currentLiabilitiesMinor": 20000000,
+      "equityMinor": 60000000,
+      "revenueMinor": 300000000,
+      "netProfitMinor": 10000000,
+      "ebitMinor": 15000000
+    },
+    "args": {
+      "amount": 50000000,
+      "product_min": 10000000,
+      "product_max": 500000000,
+      "minimum_age": 6,
+      "age": 40,
+      "preliminary_revenue": 450000001,
+      "already_requested": false,
+      "score": 0.1
+    },
+    "outcome": "NEEDS_INFO"
+  },
+  {
+    "name": "rfi-correction",
+    "values": {
+      "totalAssetsMinor": 100000000,
+      "totalLiabilitiesMinor": 40000000,
+      "currentAssetsMinor": 50000000,
+      "currentLiabilitiesMinor": 20000000,
+      "equityMinor": 60000000,
+      "revenueMinor": 300000000,
+      "netProfitMinor": 10000000,
+      "ebitMinor": 15000000
+    },
+    "args": {
+      "amount": 50000000,
+      "product_min": 10000000,
+      "product_max": 500000000,
+      "minimum_age": 6,
+      "age": 40,
+      "preliminary_revenue": 900000000,
+      "already_requested": true,
+      "score": 0.1
+    },
+    "outcome": "APPROVED"
+  },
+  {
+    "name": "debt-rounding",
+    "values": {
+      "totalAssetsMinor": 100000000,
+      "totalLiabilitiesMinor": 89999999,
+      "currentAssetsMinor": 50000000,
+      "currentLiabilitiesMinor": 20000000,
+      "equityMinor": 60000000,
+      "revenueMinor": 300000000,
+      "netProfitMinor": 10000000,
+      "ebitMinor": 15000000
+    },
+    "args": {
+      "amount": 50000000,
+      "product_min": 10000000,
+      "product_max": 500000000,
+      "minimum_age": 6,
+      "age": 40,
+      "preliminary_revenue": null,
+      "already_requested": false,
+      "score": 0.1
+    },
+    "outcome": "DECLINED"
+  },
+  {
+    "name": "below-debt-limit",
+    "values": {
+      "totalAssetsMinor": 100000000,
+      "totalLiabilitiesMinor": 89999900,
+      "currentAssetsMinor": 50000000,
+      "currentLiabilitiesMinor": 20000000,
+      "equityMinor": 60000000,
+      "revenueMinor": 300000000,
+      "netProfitMinor": 10000000,
+      "ebitMinor": 15000000
+    },
+    "args": {
+      "amount": 50000000,
+      "product_min": 10000000,
+      "product_max": 500000000,
+      "minimum_age": 6,
+      "age": 40,
+      "preliminary_revenue": null,
+      "already_requested": false,
+      "score": 0.1
+    },
+    "outcome": "APPROVED"
+  },
+  {
+    "name": "business-too-young",
+    "values": {
+      "totalAssetsMinor": 100000000,
+      "totalLiabilitiesMinor": 40000000,
+      "currentAssetsMinor": 50000000,
+      "currentLiabilitiesMinor": 20000000,
+      "equityMinor": 60000000,
+      "revenueMinor": 300000000,
+      "netProfitMinor": 10000000,
+      "ebitMinor": 15000000
+    },
+    "args": {
+      "amount": 50000000,
+      "product_min": 10000000,
+      "product_max": 500000000,
+      "minimum_age": 6,
+      "age": 5,
+      "preliminary_revenue": null,
+      "already_requested": false,
+      "score": 0.1
+    },
+    "outcome": "DECLINED"
+  }
+]
