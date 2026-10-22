@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "date": "2026-10-21",
+  "scope": "FEED contract corrections; public backend and UI are still not implemented",
+  "feedTests": {
+    "tests": 58,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "riskRegression": {
+    "tests": 14,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "architecture": {
+    "checks": 426,
+    "failed": 0,
+    "schemaFixtures": 185,
+    "negativeSchemaFixtures": 104,
+    "semanticDesignOracles": 21,
+    "publicOperations": 63,
+    "internalOperations": 28,
+    "demoOperations": 6
+  },
+  "contractVersion": "1.4.1-design",
+  "changes": [
+    "F1: FEED service and reference client use canonical X-Service-Token; legacy Bearer is rejected",
+    "F2: runtime OpenAPI declares ServiceIdentity and actual MLError bodies for 403/409/422/503",
+    "F3: scope is required; reasonCategory is bounded; duplicate IDs and incomplete explanations are rejected",
+    "F4: GET /api/v1/feed/saved, SavedFeed/SavedFeedCard, savedVersion and cursor/exposure semantics specified",
+    "FeedCard.userReaction is required; normal cursor replay refreshes reactions without reordering content"
+  ],
+  "evidence": {
+    "feedTests": "feed-tests.xml",
+    "riskTests": "ml-audit-20261021/historical-feed-risk-tests.xml",
+    "architecture": "../docs/architecture/validation-report.json",
+    "reproducibility": "../docs/architecture/evidence/reproducibility-report.json"
+  },
+  "limitations": [
+    "Saved-feed endpoint is specified, not implemented by a public backend.",
+    "No joint frontend/backend end-to-end acceptance has been executed.",
+    "Model quality limitations from the audit remain unchanged."
+  ],
+  "sha256": {
+    "ml/feed/openapi.json": "7b3a143b6ee1e041fd0fc009c37b6a6a69c8cabdec7032322658429cd3d0bffe",
+    "docs/architecture/contracts/public.openapi.json": "7ea9d1f731b7bf58214bd79410895a27657b07f6dff89e89a9453f1e76d3f924",
+    "docs/architecture/contracts/internal.openapi.json": "3c9759043c1520fd49f13e5728017bd01a8b86b3f47ed36c20cc79f59020392b"
+  }
+}

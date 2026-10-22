@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "date": "2026-10-21",
+  "feedTests": {
+    "tests": 44,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "riskRegression": {
+    "tests": 14,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "architecture": {
+    "checks": 413,
+    "failed": 0,
+    "schemaFixtures": 175,
+    "negativeSchemaFixtures": 97,
+    "semanticDesignOracles": 21,
+    "publicOperations": 62,
+    "internalOperations": 28,
+    "demoOperations": 6
+  },
+  "catalogDigest": "20a2e621ecfaa6172ac6d222967ed86cbc097b7bd372699dea9b674aa98bce2f",
+  "editorial": {
+    "cards": 36,
+    "wordCountMin": 64,
+    "wordCountMax": 72,
+    "svgVisualReview": "PASS: all six rendered and inspected"
+  },
+  "httpSmoke": {
+    "feedHttp": "PASS",
+    "feedExternalNetwork": "OS_DENIED_LOOPBACK_ONLY",
+    "mode": "MODEL",
+    "releaseId": "feed-e5-v1-d068f7fcb894",
+    "riskReadyConcurrently": true
+  },
+  "reproducibility": "Pinned config re-downloaded with TLS verification; existing pinned weights reused; re-embedded catalog and manifest byte-identical",
+  "limitations": [
+    "No shared frontend/backend implementation or joint UI acceptance exists in this delivery.",
+    "Relevance checks are hand-reviewed MVP scenarios, not a measurement of user benefit.",
+    "Diagnostic paraphrases can displace a secondary theme from top 3."
+  ],
+  "lockedFiles": {
+    "ml/feed/model-lock.json": "b0e05ecd8dc8ca1a001a2891e7b1c9d0fa389ba58b09e32c86015243a6f57b13",
+    "ml/feed/requirements.lock.txt": "961c31b728cd680640979dc23b804e4e87f1b56cf40750ef4a184190427519aa",
+    "ml/feed/release/manifest.json": "32560f7249fbca6417de76b61386b6492a49b581893a0e57f741f3f5dcc5e13b"
+  }
+}

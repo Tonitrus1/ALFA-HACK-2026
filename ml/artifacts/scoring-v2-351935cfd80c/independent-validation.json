@@ -1,0 +1,201 @@
+{
+  "protocol": {
+    "seed": 2026102105,
+    "rows": 20000,
+    "beforeEvaluation": true,
+    "candidateModelHash": "0917c74937bf94b32753e26e862084e7e4a28076eadc2c5d77689dd1e496cf6c",
+    "baselineModelHash": "2cd91c344d5d62c7c7f0065ef21fb34aec065551f5ec8041cd1a61d5fb1e7fba",
+    "generatorSourceHash": "22948c56106202986b597426ed19502339a6af6712049f6d6893e41778a3565a",
+    "financialSampler": "original generated_finances function, unchanged; new independent RNG streams and fictional IDs",
+    "categorySampler": "empirical real-registry category proportions; identities not reused",
+    "targetLaw": "original probability_score and sigmoid; original fixed intercept, no holdout recalibration",
+    "intercept": -2.5747647590132132,
+    "primary": "eligible Recall@5% (rank budget); AP secondary, ordinary Logloss guard",
+    "promotionCriteria": {
+      "recallDifferenceLower95Above": 0.0,
+      "APDifferenceAtLeast": 0.0,
+      "LoglossDifferenceAtMost": 0.002
+    },
+    "bootstrap": {
+      "replicates": 1000,
+      "seed": 20261021,
+      "pairedCompanyResampling": true
+    },
+    "scope": "independent synthetic covariates/outcomes only; no evidence about actual credit default",
+    "fixedThresholdCoverage": "reported separately; rank budget does not guarantee static-threshold capacity",
+    "noFurtherSelection": true
+  },
+  "dataHash": "2d1691736df1fb93ddeac306f2477a435c20c1808f8af23416e8ee6a7dfc8c1b",
+  "modelVersion": "scoring-v2-351935cfd80c",
+  "baselineVersion": "catboost-optuna-v1",
+  "reports": {
+    "candidate": {
+      "all": {
+        "rows": 20000,
+        "events": 994,
+        "prevalence": 0.0497,
+        "baselineAP": 0.0497,
+        "averagePrecision": 0.2984277945835671,
+        "rocAuc": 0.8449379852724683,
+        "logLoss": 0.15337286937862035,
+        "brier": 0.04053949226557527,
+        "meanPrediction": 0.04987497394910385,
+        "top5": {
+          "reviewed": 1000,
+          "eventsFound": 332,
+          "precision": 0.332,
+          "recall": 0.33400402414486924,
+          "coverage": 0.05
+        },
+        "top10": {
+          "reviewed": 2000,
+          "eventsFound": 482,
+          "precision": 0.241,
+          "recall": 0.48490945674044267,
+          "coverage": 0.1
+        },
+        "top20": {
+          "reviewed": 4000,
+          "eventsFound": 678,
+          "precision": 0.1695,
+          "recall": 0.682092555331992,
+          "coverage": 0.2
+        }
+      },
+      "eligible": {
+        "rows": 16284,
+        "events": 467,
+        "prevalence": 0.028678457381478752,
+        "baselineAP": 0.028678457381478752,
+        "averagePrecision": 0.1506693958884336,
+        "rocAuc": 0.8095481523890959,
+        "logLoss": 0.11023593652583777,
+        "brier": 0.026102445255826563,
+        "meanPrediction": 0.027195414352086934,
+        "top5": {
+          "reviewed": 814,
+          "eventsFound": 123,
+          "precision": 0.1511056511056511,
+          "recall": 0.2633832976445396,
+          "coverage": 0.04998771800540408
+        },
+        "top10": {
+          "reviewed": 1628,
+          "eventsFound": 199,
+          "precision": 0.12223587223587223,
+          "recall": 0.4261241970021413,
+          "coverage": 0.09997543601080816
+        },
+        "top20": {
+          "reviewed": 3256,
+          "eventsFound": 293,
+          "precision": 0.08998771498771499,
+          "recall": 0.6274089935760171,
+          "coverage": 0.19995087202161632
+        }
+      }
+    },
+    "baseline": {
+      "all": {
+        "rows": 20000,
+        "events": 994,
+        "prevalence": 0.0497,
+        "baselineAP": 0.0497,
+        "averagePrecision": 0.2929929050082747,
+        "rocAuc": 0.8363814371020398,
+        "logLoss": 0.15574949662411747,
+        "brier": 0.040688897081643194,
+        "meanPrediction": 0.04961647073482465,
+        "top5": {
+          "reviewed": 1000,
+          "eventsFound": 329,
+          "precision": 0.329,
+          "recall": 0.33098591549295775,
+          "coverage": 0.05
+        },
+        "top10": {
+          "reviewed": 2000,
+          "eventsFound": 476,
+          "precision": 0.238,
+          "recall": 0.4788732394366197,
+          "coverage": 0.1
+        },
+        "top20": {
+          "reviewed": 4000,
+          "eventsFound": 668,
+          "precision": 0.167,
+          "recall": 0.6720321931589537,
+          "coverage": 0.2
+        }
+      },
+      "eligible": {
+        "rows": 16284,
+        "events": 467,
+        "prevalence": 0.028678457381478752,
+        "baselineAP": 0.028678457381478752,
+        "averagePrecision": 0.13856365971354753,
+        "rocAuc": 0.7979292467013306,
+        "logLoss": 0.11240931294083073,
+        "brier": 0.026303482127902955,
+        "meanPrediction": 0.0272184985275129,
+        "top5": {
+          "reviewed": 814,
+          "eventsFound": 113,
+          "precision": 0.13882063882063883,
+          "recall": 0.24197002141327623,
+          "coverage": 0.04998771800540408
+        },
+        "top10": {
+          "reviewed": 1628,
+          "eventsFound": 195,
+          "precision": 0.11977886977886978,
+          "recall": 0.41755888650963596,
+          "coverage": 0.09997543601080816
+        },
+        "top20": {
+          "reviewed": 3256,
+          "eventsFound": 288,
+          "precision": 0.08845208845208845,
+          "recall": 0.6167023554603854,
+          "coverage": 0.19995087202161632
+        }
+      }
+    }
+  },
+  "eligiblePairedDifference": {
+    "recall5": 0.02141327623126338,
+    "averagePrecision": 0.012105736174886056,
+    "logLoss": -0.0021733764149929613
+  },
+  "paired95": {
+    "recall5": [
+      0.0,
+      0.0460602561868247
+    ],
+    "averagePrecision": [
+      -0.002219365293174937,
+      0.0260207826705315
+    ],
+    "logLoss": [
+      -0.0030849065426481366,
+      -0.0011573518838465327
+    ]
+  },
+  "fixedThresholdCandidate": {
+    "reviewed": 881,
+    "coverage": 0.05410218619503807,
+    "eventsFound": 130,
+    "recall": 0.278372591006424,
+    "threshold": 0.09265521435647191
+  },
+  "checks": {
+    "primaryRecallLower95Positive": false,
+    "APNotWorse": true,
+    "ordinaryLoglossGuard": true
+  },
+  "passed": false,
+  "interpretation": "one independent synthetic confirmation, fixed trained models; not retraining uncertainty or real-default validation",
+  "uniqueRows": 20000,
+  "overlapOriginalIds": 0,
+  "overlapOriginalFinanceVectors": 0
+}

@@ -4,12 +4,13 @@ import requests
 from ml_manage import ROOT,admin,env,up,down
 from scoring.client import RiskClient
 from scoring.demo_policy import after_risk
-m=json.loads((ROOT/'ml/artifacts/baseline/manifest.json').read_text());client=RiskClient('http://127.0.0.1:8001',env()['ML_INTERNAL_TOKEN'],m['bundleDigest'])
-s=json.loads((ROOT/'ml/fixtures/scenarios.json').read_text())['companies'][0]['reference'];snapshot=client.create_snapshot(client.snapshot_request(s));b=client.risk_request(snapshot);prediction=client.evaluate(b)
-artifacts={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (ROOT/'ml/artifacts/baseline').iterdir() if p.is_file()}
+bundle=Path(env()['MODEL_BUNDLE']);m=json.loads((bundle/'manifest.json').read_text());client=RiskClient('http://127.0.0.1:8001',env()['ML_INTERNAL_TOKEN'],m['bundleDigest'])
+fixtures=bundle/'scenarios.json' if (bundle/'scenarios.json').exists() else ROOT/'ml/fixtures/scenarios.json'
+s=json.loads(fixtures.read_text())['companies'][0]['reference'];snapshot=client.create_snapshot(client.snapshot_request(s));b=client.risk_request(snapshot);prediction=client.evaluate(b)
+artifacts={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in bundle.iterdir() if p.is_file()}
 down();up(True)
 assert client.evaluate(b)==prediction;assert client.call('/internal/v2/feature-snapshots/'+snapshot['featureSnapshotId'])==snapshot
-assert artifacts=={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (ROOT/'ml/artifacts/baseline').iterdir() if p.is_file()}
+assert artifacts=={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in bundle.iterdir() if p.is_file()}
 checks=[{'name':'restart_preserves_immutable_snapshot_and_exact_inference','passed':True},{'name':'runtime_does_not_train_or_change_bundle','passed':True}]
 
 second=client.create_snapshot(client.snapshot_request(s));blocked_request=client.risk_request(second);db=admin();db.execute('begin');db.execute('lock ml.inferences in access exclusive mode');started=time.perf_counter()

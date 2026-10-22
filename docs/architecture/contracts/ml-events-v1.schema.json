@@ -717,7 +717,9 @@
               "type": "string",
               "enum": [
                 "VIEW",
-                "CLICK"
+                "CLICK",
+                "HELPFUL",
+                "NOT_INTERESTED"
               ]
             }
           },

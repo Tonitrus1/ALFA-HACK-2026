@@ -49,7 +49,7 @@ def structure():
     for part in ref[2:].split('/'):target=target[part.replace('~1','/').replace('~0','~')]
    except Exception:bad.append(ref)
   ck(label+'-all-refs-resolve',not bad,bad)
- ck('public-count',len(ops(P))==60);ck('demo-count',len(ops(D))==6)
+ ck('public-count',len(ops(P))==63);ck('demo-count',len(ops(D))==6)
  ck('demo-isolation',not(set(P['paths'])&set(D['paths'])))
  copies=[]
  for n in ['general','backend','frontend','ml']:
@@ -61,8 +61,11 @@ def structure():
  ck('snapshot-read-route','/internal/v2/feature-snapshots/{featureSnapshotId}' in I['paths'])
  ck('financial-package-fields',all(set(['financialStatementVersion','financialSnapshotId','financialStatement'])<=set(I['components']['schemas'][x]['required']) for x in ['SubmissionPackage','AmendmentPackage']))
  ck('feature-input-complete',set(['financialStatement','financialSnapshotId','financialSnapshotDigest'])<=set(I['components']['schemas']['MLFeatureSnapshotInput']['required']))
- ck('ranking-text-inputs',set(['contextText','candidateTexts'])<=set(I['components']['schemas']['MLRankingRequest']['required']))
+ ck('ranking-text-inputs',set(['contextText','candidateTexts'])<=set(I['components']['schemas']['MLRankingRequest']['allOf'][0]['then']['required']))
  ck('ranking-metadata-required',all('rankingMetadata' in P['components']['schemas'][n]['required'] for n in ['RecommendationList','Feed']))
+ ck('feed-service-identity',I['components']['securitySchemes']['ServiceIdentity']['name']=='X-Service-Token')
+ ck('saved-feed-read-route',P['paths']['/api/v1/feed/saved']['get']['operationId']=='getSavedFeed')
+ ck('feed-user-reaction-required','userReaction' in P['components']['schemas']['FeedCard']['required'])
  for name in ['Submit','InformationResponse']:ck(name.lower()+'-financial-required','financialStatementVersion' in P['components']['schemas'][name]['required'])
  ck('session-context-version','contextVersion' in P['components']['schemas']['Session']['required'])
  ck('no-public-external-key','externalRequestId' not in json.dumps(P['components']['schemas']['Operation']))
@@ -102,12 +105,31 @@ def regression_fixtures():
   else:
    schema='ML'+schema;doc=P if schema in P['components']['schemas'] else I
   if schema=='MLFeatureSnapshot':val.update(financialSnapshotId='fin-demo-1',financialSnapshotDigest='a'*64)
-  if schema=='MLRankingRequest':
+  if schema=='MLRankingResult' and val.get('scope')=='FEED':
+   val.update(catalogDigest='a'*64,explanations={})
+  if schema=='MLRankingRequest' and val.get('scope')=='FEED':
+   for key in ['stage','contextCategory','contextText','fundingPurpose','eligibilityVersion']:val.pop(key,None)
+   val.update(profile={},catalogDigest='a'*64,exposureId='ex-fixture')
+  if schema=='MLRankingRequest' and val.get('scope')=='PRODUCT':
    val.update(contextText='Оборотные средства',candidateTexts=[dict(itemId=x,text='Утверждённое описание '+x) for x in val.get('candidateIds',[])])
   fixture('regression-'+f['id'],doc,schema,val,f['valid'],'previous ML schema fixture, adapted only for explicit1.4 inputs')
 
 
 def current_fixtures():
+ saved_card={'contentId':'cash-01','version':1,'title':'Кассовый разрыв','text':'Пример полного текста карточки.',
+             'topic':'CASH_GAP','depth':'BASICS','illustration':'/assets/feed/v1/illustrations/cash_gap.svg',
+             'reasonCategory':'SAVED_HELPFUL','reason':'Вы отметили этот материал как полезный.','userReaction':'HELPFUL'}
+ saved={'cards':[saved_card],'exposureId':'saved-ex-a','catalogVersion':1,'catalogDigest':'a'*64,
+        'savedVersion':1,'hasMore':False}
+ fixture('saved-feed-valid',P,'SavedFeed',saved,True)
+ fixture('saved-feed-empty',P,'SavedFeed',dict(saved,cards=[],savedVersion=0),True)
+ fixture('saved-feed-continuation',P,'SavedFeed',dict(saved,hasMore=True,nextCursor='opaque-saved-cursor'),True)
+ fixture('saved-feed-missing-cursor',P,'SavedFeed',dict(saved,hasMore=True),False)
+ fixture('saved-feed-extra-cursor',P,'SavedFeed',dict(saved,nextCursor='unnecessary'),False)
+ for field in ['exposureId','savedVersion','catalogDigest']:
+  val=copy.deepcopy(saved);val.pop(field);fixture('saved-feed-needs-'+field,P,'SavedFeed',val,False)
+ val=copy.deepcopy(saved);val['cards'][0]['userReaction']='NOT_INTERESTED';fixture('saved-feed-only-helpful',P,'SavedFeed',val,False)
+ val=copy.deepcopy(saved_card);val.pop('userReaction');fixture('feed-card-needs-reaction',P,'FeedCard',val,False)
  financial={'periodStart':'2025-01-01','periodEnd':'2025-12-31','reportingStandard':'DEMO','currency':'RUB','values':{'totalAssetsMinor':100000000,'totalLiabilitiesMinor':60000000,'currentAssetsMinor':50000000,'currentLiabilitiesMinor':25000000,'equityMinor':40000000,'revenueMinor':150000000,'netProfitMinor':12000000,'ebitMinor':18000000},'sourceDocumentReferences':[]}
  fixture('demo-financial-valid',P,'MLFinancialInput',financial,True)
  for standard in ['RSBU','IFRS']:
@@ -138,7 +160,7 @@ def current_fixtures():
  for n in ['contextText','candidateTexts']:
   v=copy.deepcopy(rank);v.pop(n);fixture('ranking-request-needs-'+n,I,'MLRankingRequest',v,False)
  for n in ['Feed','RecommendationList']:
-  v={'cards':[],'rankingMode':'RULES'} if n=='Feed' else {'items':[]}
+  v={'cards':[],'rankingMode':'RULES','hasMore':False} if n=='Feed' else {'items':[]}
   fixture('metadata-absent-'+n,P,n,v,False)
   v['rankingMetadata']={'exposureId':'ex-a','releaseId':'rules-v1','mode':'RULES','candidateSetDigest':'a'*64,'catalogVersion':1}
   fixture('metadata-present-'+n,P,n,v,True)
@@ -242,8 +264,8 @@ def graphs_and_profiles():
   elif '/session' in path or '/companies' in path or '/logout' in path:ts=['P03','P04'];role='BACKEND+FRONTEND'
   else:ts=['P05','P06','P15','P16'];role='BACKEND+FRONTEND'
   rows.append(dict(operationId=op['operationId'],method=method.upper(),path=path,owner=role,taskIds=ts,implemented=False))
- wr('operation-task-map.json',rows);ck('operation-task-coverage',len(rows)==60 and all(set(r['taskIds'])<=set(by) for r in rows))
- collection=rd('contracts/requests.postman_collection.json');ck('collection-coverage',len(collection['item'])==60)
+ wr('operation-task-map.json',rows);ck('operation-task-coverage',len(rows)==63 and all(set(r['taskIds'])<=set(by) for r in rows))
+ collection=rd('contracts/requests.postman_collection.json');ck('collection-coverage',len(collection['item'])==63)
 
 
 def documents_and_evidence():

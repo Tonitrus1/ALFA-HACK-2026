@@ -1,0 +1,2148 @@
+{
+  "status": "PASS",
+  "scope": "Static specification/contracts/design fixtures only. No application, models, Docker, performance, security, DR or bank integration executed.",
+  "applicationImplemented": false,
+  "runtimeTestsExecuted": false,
+  "counts": {
+    "checks": 426,
+    "failed": 0,
+    "schemaFixtures": 185,
+    "negativeSchemaFixtures": 104,
+    "semanticDesignOracles": 21,
+    "publicOperations": 63,
+    "internalOperations": 28,
+    "demoOperations": 6
+  },
+  "checks": [
+    {
+      "check": "json:acceptance-cases.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:build-report.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contract-fixtures.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/adapter-bindings.schema.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/bank-target-release-policy.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/credit-events-v1.schema.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/data-model.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/dataset-manifest.schema.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/demo.openapi.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/deployment-spec.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/credit/ApplicationWithdrawn.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/credit/CaseAccepted.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/credit/CaseStateChanged.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/credit/ConsentRevoked.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/credit/DecisionRecorded.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/credit/DocumentExtractionReady.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/credit/DocumentProcessingRequested.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/credit/DocumentScanCompleted.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/credit/FulfillmentCompleted.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/credit/InformationRequested.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/credit/InformationResponseSubmitted.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/credit/OfferAcceptanceRequested.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/credit/OfferAccepted.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/credit/OfferExpired.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/credit/SubmissionRequested.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/credit/WithdrawalRequested.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/ml/event-KBDocumentPublished.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/ml/event-KBDocumentRevoked.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/ml/event-MLReleaseActivated.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/ml/event-MLReleaseApprovalRecorded.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/ml/event-MLReleaseValidated.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/ml/event-MLRollbackCompleted.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/ml/event-MLUpdateRequested.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/ml/event-RecommendationExposureRecorded.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/ml/event-RecommendationFeedbackRecorded.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/profiles/bank-target.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/profiles/local-integrations.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/examples/profiles/local-mvp.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/experiment-manifest.schema.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/feature-snapshot.schema.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/internal.openapi.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/local-demo-policy.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/local-risk-profile.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/ml-events-v1.schema.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/policy.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/public.openapi.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/release-manifest.schema.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/requests.postman_collection.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/runtime-policy.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/service-role-map.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/state-machine.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/technology-adapters.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:diagram-manifest.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:evidence/adapter-source-checks.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:evidence/fixture-migration-log.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:evidence/input-preservation-report.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:evidence/legacy-path-migration.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:evidence/original-sha256.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:evidence/primary-sources.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:evidence/prior-audit-findings.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:evidence/prior-audit-recheck.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:evidence/reproducibility-report.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:evidence/revision-history.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:evidence/schedule-analysis.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:evidence/technical-evidence.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:finding-check-map.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:findings.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:operation-task-map.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:packages/backend/api/demo.openapi.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:packages/backend/api/internal.openapi.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:packages/backend/api/openapi.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:packages/frontend/api/demo.openapi.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:packages/frontend/api/internal.openapi.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:packages/frontend/api/openapi.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:packages/general/api/demo.openapi.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:packages/general/api/internal.openapi.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:packages/general/api/openapi.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:packages/ml/api/demo.openapi.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:packages/ml/api/internal.openapi.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:packages/ml/api/openapi.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:semantic-fixtures.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:source-manifest.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:sources/diagrams.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:tasks.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:templates/provider-evidence.template.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:traceability.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:validation-report.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:visual-review.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "public-openapi",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "public-unique-operation-ids",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "public-all-refs-resolve",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "internal-openapi",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "internal-unique-operation-ids",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "internal-all-refs-resolve",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "demo-openapi",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "demo-unique-operation-ids",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "demo-all-refs-resolve",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "public-count",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "demo-count",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "demo-isolation",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "copies-identical",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "all-four-packages",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "no-legacy-risk",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "rag-internal-route",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "snapshot-read-route",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "financial-package-fields",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "feature-input-complete",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ranking-text-inputs",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "ranking-metadata-required",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "feed-service-identity",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "saved-feed-read-route",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "feed-user-reaction-required",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "submit-financial-required",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "informationresponse-financial-required",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "session-context-version",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "no-public-external-key",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "rfi-draft-version",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "document-refs-required",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "rfi-confirm-route",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "case-snapshot-route",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "worker-lease-required",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "file-error-schema:put",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "file-error-schema:get",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "operation-list-recovery",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "public-no-raw-score",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "jsonschema:credit-events-v1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "jsonschema:ml-events-v1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "jsonschema:dataset-manifest",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "jsonschema:experiment-manifest",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "jsonschema:feature-snapshot",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "jsonschema:release-manifest",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-frontend-example-DemoLogin0",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-frontend-example-InformationDraft1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-frontend-example-DocumentRequirements2",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-frontend-example-Capabilities3",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-frontend-example-DemoAction4",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-frontend-example-HistoryPage5",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-frontend-example-ClientStreamMessage6",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-frontend-example-ClientStreamMessage7",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-frontend-example-OperationList8",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-frontend-example-UploadInput9",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-information-item-field-valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-information-item-field-needs-target",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-information-item-forbidden-field",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-information-item-document-valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-information-item-document-needs-target",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-clear-fields-valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-clear-required-terms-forbidden",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-forged-confirmation-forbidden",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-empty-draft-patch-forbidden",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-confirm-extraction-valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-confidence-not-client-controlled",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-extraction-source-required",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-submit-valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-submit-needs-documentReferences",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-submit-needs-requirementsVersion",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-information-response-valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-information-response-needs-draft-version",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-upload-valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-upload-needs-expectedDocumentVersion",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-upload-needs-requirementId",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-upload-request-version-required",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-upload-rfi-context-valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-version-invalid-0",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-version-invalid-9007199254740992",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-demo-offer-complete",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-demo-offer-needs-termsDisclosure",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-demo-offer-needs-validUntil",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-demo-approve-needs-offer",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-scan-clean-valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-scan-needs-leaseToken",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-scan-needs-workerId",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-scan-needs-cleanObjectRef",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-scan-error-remains-quarantine",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-stream-snapshot-barrier",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-stream-snapshot-not-complete-company",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-credit-package-typed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-credit-package-arbitrary-json-forbidden",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-financial-input",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-financial-confirmation",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-feature-snapshot",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-risk-request",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-risk-result",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-ranking-request",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-ranking-result",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-assistant-answer",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-release-manifest",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-dataset-manifest",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-experiment-manifest",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-approval",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-forged-confirmation",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-confirmed-without-provenance",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-fractional-minor-units",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-negative-liabilities",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-proxy-as-validated-pd",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-score-out-of-range",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-product-without-eligibility",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-duplicate-ranked-id",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-answer-without-source",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-search-only-generated-answer",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-external-citation-url",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-forged-approval-actor",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-risk-without-feature-registry",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-rag-manifest",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-rag-without-embedding",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-event-MLUpdateRequested",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-invalid-event-extra-MLUpdateRequested",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-event-MLReleaseValidated",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-invalid-event-extra-MLReleaseValidated",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-event-MLReleaseApprovalRecorded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-invalid-event-extra-MLReleaseApprovalRecorded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-event-MLReleaseActivated",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-invalid-event-extra-MLReleaseActivated",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-event-MLRollbackCompleted",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-invalid-event-extra-MLRollbackCompleted",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-event-KBDocumentPublished",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-invalid-event-extra-KBDocumentPublished",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-event-KBDocumentRevoked",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-invalid-event-extra-KBDocumentRevoked",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-event-RecommendationExposureRecorded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-invalid-event-extra-RecommendationExposureRecorded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-valid-event-RecommendationFeedbackRecorded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:regression-invalid-event-extra-RecommendationFeedbackRecorded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:saved-feed-valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:saved-feed-empty",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:saved-feed-continuation",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:saved-feed-missing-cursor",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:saved-feed-extra-cursor",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:saved-feed-needs-exposureId",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:saved-feed-needs-savedVersion",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:saved-feed-needs-catalogDigest",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:saved-feed-only-helpful",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:feed-card-needs-reaction",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:demo-financial-valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:finance-standard-RSBU",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:finance-standard-IFRS",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:fractional-minor-totalAssetsMinor",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:fractional-minor-totalLiabilitiesMinor",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:fractional-minor-equityMinor",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:fractional-minor-netProfitMinor",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:forged-financial-confirmed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:feature-input-complete",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:feature-input-needs-financialSnapshotId",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:feature-input-needs-financialSnapshotDigest",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:feature-input-needs-financialStatement",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:typed-package-SubmissionPackage",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:typed-package-needs-SubmissionPackage-financialStatementVersion",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:typed-package-needs-SubmissionPackage-financialSnapshotId",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:typed-package-needs-SubmissionPackage-financialStatement",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:typed-package-AmendmentPackage",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:typed-package-needs-AmendmentPackage-financialStatementVersion",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:typed-package-needs-AmendmentPackage-financialSnapshotId",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:typed-package-needs-AmendmentPackage-financialStatement",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:rag-context-valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:rag-context-needs-companyId",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:rag-context-needs-subjectRef",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:rag-context-needs-allowedSources",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:rag-context-needs-kbEpoch",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:rag-no-tool-permissions",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:ranking-request-text-valid",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:ranking-request-needs-contextText",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:ranking-request-needs-candidateTexts",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:metadata-absent-Feed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:metadata-present-Feed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:metadata-absent-RecommendationList",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:metadata-present-RecommendationList",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-credit-ApplicationWithdrawn",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-credit-ApplicationWithdrawn",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-credit-CaseAccepted",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-credit-CaseAccepted",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-credit-CaseStateChanged",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-credit-CaseStateChanged",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-credit-ConsentRevoked",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-credit-ConsentRevoked",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-credit-DecisionRecorded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-credit-DecisionRecorded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-credit-DocumentExtractionReady",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-credit-DocumentExtractionReady",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-credit-DocumentProcessingRequested",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-credit-DocumentProcessingRequested",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-credit-DocumentScanCompleted",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-credit-DocumentScanCompleted",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-credit-FulfillmentCompleted",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-credit-FulfillmentCompleted",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-credit-InformationRequested",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-credit-InformationRequested",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-credit-InformationResponseSubmitted",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-credit-InformationResponseSubmitted",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-credit-OfferAcceptanceRequested",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-credit-OfferAcceptanceRequested",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-credit-OfferAccepted",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-credit-OfferAccepted",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-credit-OfferExpired",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-credit-OfferExpired",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-credit-SubmissionRequested",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-credit-SubmissionRequested",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-credit-WithdrawalRequested",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-credit-WithdrawalRequested",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-ml-event-KBDocumentPublished",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-ml-event-KBDocumentPublished",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-ml-event-KBDocumentRevoked",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-ml-event-KBDocumentRevoked",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-ml-event-MLReleaseActivated",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-ml-event-MLReleaseActivated",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-ml-event-MLReleaseApprovalRecorded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-ml-event-MLReleaseApprovalRecorded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-ml-event-MLReleaseValidated",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-ml-event-MLReleaseValidated",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-ml-event-MLRollbackCompleted",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-ml-event-MLRollbackCompleted",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-ml-event-MLUpdateRequested",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-ml-event-MLUpdateRequested",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-ml-event-RecommendationExposureRecorded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-ml-event-RecommendationExposureRecorded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-ml-event-RecommendationFeedbackRecorded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture:event-strict-ml-event-RecommendationFeedbackRecorded",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "negative-fixtures",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "typed-package-fixtures",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "serialized-fixtures-revalidated",
+      "passed": true,
+      "detail": "Reopened and validated 185 saved fixtures"
+    },
+    {
+      "check": "fixture-migration-log",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:permutation-0",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:permutation-1",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:permutation-2",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:permutation-3",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:candidate-texts-4",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:candidate-texts-5",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:candidate-texts-6",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:context-7",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:context-8",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:snapshot-digest-9",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:snapshot-digest-10",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:financial-version-11",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:financial-version-12",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:rag-revoke-13",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:rag-revoke-14",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:rag-revoke-15",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:exposure-16",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:exposure-17",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:exposure-18",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:asof-19",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "design-oracle:asof-20",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "task-dag",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "task-hours",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "task-records",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "runtime-not-executed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "acceptance-task-links",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "state-coverage",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "state-transition-refs",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "terminal-states",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "all-states-reachable",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "cpu-profile",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "service-role-map",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "service-deps-resolve",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "only-web-exposed",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "cpu-no-required-gpu",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "model-selection",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "budget-consistency",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "target-separation",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "adapter-contract-records",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "adapter-task-links",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "binding-schema:local-mvp",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "binding-coverage:local-mvp",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "local-bindings-only",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "binding-schema:local-integrations",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "binding-coverage:local-integrations",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "binding-schema:bank-target",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "binding-coverage:bank-target",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "target-bindings-only",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "binding-negative:unknown",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "binding-negative:missing",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "binding-negative:automatic-fallback",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "binding-negative:wrong-pair",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "adapter-not-runtime",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "optional-services-isolated",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "token-budget-port",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "no-runtime-download-training",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "release-profiles",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "git-handbook",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "jury-traceability",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "requirement-traceability",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "screen-route-coverage",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "operation-task-coverage",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "collection-coverage",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "markdown-links",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "offline-html-links",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "drawio-all-edges-bound",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "drawio-scene-count",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "diagram-node-no-overlap",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "archive-file-count",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "archive-hashes",
+      "passed": true,
+      "detail": "[]"
+    },
+    {
+      "check": "finding-source:H01",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H02",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H03",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H04",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H05",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H06",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H07",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H08",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H09",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H10",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H11",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H12",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H13",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H14",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H15",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H16",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H17",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H18",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H19",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-source:H20",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "prior-audit-recheck",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "nine-pdf-deliverables",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "pdf-readable:development-plan.pdf",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "pdf-readable:architecture-audit.pdf",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "pdf-readable:technology-adapters.pdf",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "pdf-readable:git-and-jury-guide.pdf",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "pdf-readable:architecture-atlas.pdf",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "pdf-readable:packages/frontend/frontend-guide.pdf",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "pdf-readable:packages/general/general-guide.pdf",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "pdf-readable:packages/backend/backend-guide.pdf",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "pdf-readable:packages/ml/ml-guide.pdf",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "deterministic-build",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "self-contained",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "runtime-not-misrepresented",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "visual-hashes-current",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "finding-check-links",
+      "passed": true,
+      "detail": "[]"
+    }
+  ]
+}

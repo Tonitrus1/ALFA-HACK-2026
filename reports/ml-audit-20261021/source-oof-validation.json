@@ -1,0 +1,16 @@
+{
+  "oofMatchesTargetsEligibility": true,
+  "foldMembershipRecreated": true,
+  "rows": 7016,
+  "repeats": 3,
+  "folds": 5,
+  "membershipRows": 21048,
+  "foldMetricsVerified": 60,
+  "developmentFamilies": [
+    "constant",
+    "logistic",
+    "balanced",
+    "catboost"
+  ],
+  "finalPreprocessingMatchesTrain": true
+}

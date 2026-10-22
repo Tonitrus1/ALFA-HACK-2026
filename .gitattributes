@@ -5,3 +5,4 @@ datasets/ru-sme-dataset-10000/**/*.parquet -diff
 datasets/ru-sme-dataset-10000/**/*.xml -diff
 datasets/ru-sme-dataset-10000/**/*.html -diff
 ml/artifacts/baseline/model.joblib -text -diff
+ml/feed/release/embeddings.npy -text -diff

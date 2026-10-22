@@ -206,7 +206,7 @@ def diagrams():
 
 
 def request_collection():
- spec=rd('contracts/public.openapi.json');collection={'info':{'name':'Credit Workspace HACKATHON-1.5 - contract request templates','schema':'https://schema.getpostman.com/json/collection/v2.1.0/collection.json','description':'60 API templates. This is not an executed E2E collection. Set runtime IDs/session/CSRF and provide body from the canonical schema. No application is included.'},'variable':[{'key':'baseUrl','value':'http://localhost:8080'},{'key':'companyContext','value':'1'},{'key':'csrfToken','value':''}],'item':[]}
+ spec=rd('contracts/public.openapi.json');collection={'info':{'name':'Credit Workspace HACKATHON-1.5 - contract request templates','schema':'https://schema.getpostman.com/json/collection/v2.1.0/collection.json','description':'API templates generated from the canonical public contract. This is not an executed E2E collection. Set runtime IDs/session/CSRF and provide body from the canonical schema. No application is included.'},'variable':[{'key':'baseUrl','value':'http://localhost:8080'},{'key':'companyContext','value':'1'},{'key':'csrfToken','value':''}],'item':[]}
  for path,item in spec['paths'].items():
   for m,op in item.items():
    if m not in HTTP:continue

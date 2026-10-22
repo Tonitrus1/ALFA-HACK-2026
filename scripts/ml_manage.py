@@ -3,6 +3,9 @@ from pathlib import Path
 import psycopg
 from psycopg import sql
 ROOT=Path(__file__).resolve().parents[1];os.chdir(ROOT)
+import sys
+sys.path.insert(0,str(ROOT/'ml'))
+from scoring.releases import selected_bundle,activate
 LOCAL=ROOT/'.local';CLUSTER=LOCAL/'pgdata';PG=LOCAL/'tools/pg/bin';DBNAME='credit_scoring_demo';CONFIG=LOCAL/'runtime.json'
 def run(args,**kw):return subprocess.run([str(x) for x in args],check=True,**kw)
 def config():
@@ -49,9 +52,9 @@ def migrate():
                 with db.transaction():db.execute(p.read_text());db.execute('insert into public.demo_migrations values(%s,%s)',(p.name,h))
     print('Standalone ML database prepared')
 def env():
-    cfg=config();e=os.environ.copy();e.update({'PYTHONPATH':str(ROOT/'ml'),'MODEL_BUNDLE':str(ROOT/'ml/artifacts/baseline'),'ML_INTERNAL_TOKEN':cfg['ML_INTERNAL_TOKEN'],'ML_DATABASE_URL':f"postgresql://ml_runtime:{cfg['mlPassword']}@127.0.0.1:55432/{DBNAME}",'OPENBLAS_NUM_THREADS':'1','OMP_NUM_THREADS':'1','PYTHONUNBUFFERED':'1'});return e
+    cfg=config();e=os.environ.copy();e.update({'PYTHONPATH':str(ROOT/'ml'),'MODEL_BUNDLE':str(selected_bundle(ROOT,os.environ.get('MODEL_BUNDLE'))),'ML_INTERNAL_TOKEN':cfg['ML_INTERNAL_TOKEN'],'ML_DATABASE_URL':f"postgresql://ml_runtime:{cfg['mlPassword']}@127.0.0.1:55432/{DBNAME}",'OPENBLAS_NUM_THREADS':'1','OMP_NUM_THREADS':'1','PYTHONUNBUFFERED':'1'});return e
 def up(offline=False):
-    assert (ROOT/'ml/artifacts/baseline/manifest.json').exists(),'Train offline before startup'
+    assert (selected_bundle(ROOT,os.environ.get('MODEL_BUNDLE'))/'manifest.json').exists(),'Prepare a bundle before startup'
     db_start(offline);pid=LOCAL/'ml.pid'
     if pid.exists():
         try:os.kill(int(pid.read_text()),0);raise RuntimeError('ML already running; use down before changing mode')
@@ -84,11 +87,20 @@ def reset(confirmation):
         db.execute('truncate ml.features,ml.inferences')
     print('Cleared only ml.features and ml.inferences in dedicated synthetic database; bundle/fixtures retained')
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('command',choices=['migrate','up','down','train','scenarios','test','reset']);p.add_argument('--offline',action='store_true');p.add_argument('--confirm');p.add_argument('--trials',type=int,default=30);p.add_argument('--folds',type=int,default=3);p.add_argument('--threads',type=int,default=4);p.add_argument('--shortlist',type=int,default=5);p.add_argument('--storage');p.add_argument('--dataset',default=os.environ.get('DATASET_PATH',str(ROOT/'datasets/ru-sme-dataset-10000')));a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('command',choices=['migrate','up','down','train','scenarios','test','reset','activate','active']);p.add_argument('--offline',action='store_true');p.add_argument('--confirm');p.add_argument('--trials',type=int);p.add_argument('--folds',type=int,default=5);p.add_argument('--repeats',type=int,default=3);p.add_argument('--threads',type=int,default=2);p.add_argument('--shortlist',type=int);p.add_argument('--storage');p.add_argument('--output');p.add_argument('--family',choices=['auto','logistic','catboost'],default='auto');p.add_argument('--bundle');p.add_argument('--dataset',default=os.environ.get('DATASET_PATH',str(ROOT/'datasets/ru-sme-dataset-10000')));a=p.parse_args()
     if a.command=='migrate':migrate()
     elif a.command=='up':up(a.offline)
     elif a.command=='down':down()
     elif a.command=='reset':reset(a.confirm)
-    elif a.command=='train':run([ROOT/'.venv/bin/python','-m','scoring.train','--dataset',a.dataset,'--trials',a.trials,'--folds',a.folds,'--threads',a.threads,'--shortlist',a.shortlist]+(['--storage',a.storage] if a.storage else []),env=env())
+    elif a.command=='train':
+        options=[ROOT/'.venv/bin/python','-m','scoring.train','--dataset',a.dataset,'--folds',a.folds,'--repeats',a.repeats,'--threads',a.threads,'--family',a.family]
+        for flag,value in [('--output',a.output),('--trials',a.trials),('--shortlist',a.shortlist),('--storage',a.storage)]:
+            if value is not None:options += [flag,value]
+        training_env=os.environ.copy();training_env['PYTHONPATH']=str(ROOT/'ml')
+        run(options,env=training_env)
+    elif a.command=='activate':
+        if not a.bundle:p.error('activate requires --bundle')
+        print(json.dumps(activate(a.bundle,ROOT),indent=2));print('Selection saved. Restart the service with down/up; clients must pin the new bundle digest.')
+    elif a.command=='active':print(selected_bundle(ROOT,os.environ.get('MODEL_BUNDLE')))
     elif a.command=='scenarios':run([ROOT/'.venv/bin/python','-m','scoring.scenarios'],env=env())
     elif a.command=='test':run([ROOT/'.venv/bin/python','-m','pytest','ml/tests','-q','--junitxml=reports/ml-tests.xml'],env=env())

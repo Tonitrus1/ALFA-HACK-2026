@@ -1,0 +1,62 @@
+{
+  "modelVersion": "scoring-v2-351935cfd80c",
+  "modelType": "Pipeline",
+  "featureSchemaVersion": 2,
+  "featureCodeDigest": "2d59d6b8fd40976b0ca11dbf195f77546e6b5112b85cdc2af8c969326e1723eb",
+  "featureSchemaDigest": "9c3857c9c410345334e593b8479bcdc745e38aac450385ecda6d931fe323e470",
+  "features": [
+    "X1",
+    "X2",
+    "X3",
+    "X4",
+    "X7",
+    "X8",
+    "X9",
+    "X10"
+  ],
+  "rawWhitelist": [
+    "total_assets",
+    "current_assets",
+    "total_liabilities",
+    "current_liabilities",
+    "equity",
+    "revenue",
+    "net_profit",
+    "ebit"
+  ],
+  "scoreKind": "BANKRUPTCY_PROXY",
+  "validationStatus": "DEMONSTRATION",
+  "purpose": "DEMO_RESEARCH",
+  "financialsSynthetic": true,
+  "labelsSynthetic": true,
+  "datasetHash": "50004cdc80011d31e5b8bc413fdfa6c0be4cf501886a75b277fa65d3db9b1e7b",
+  "python": "3.12.13",
+  "libraries": {
+    "numpy": "2.2.6",
+    "scikit-learn": "1.6.1",
+    "scipy": "1.15.3",
+    "joblib": "1.6.0",
+    "pyarrow": "20.0.0",
+    "catboost": "1.2.8",
+    "optuna": "4.3.0"
+  },
+  "createdUTC": "2026-10-21T15:18:00.455018+00:00",
+  "releaseStatus": "evaluated-candidate",
+  "compatibility": "schema 2 requests, eight raw fields and risk response unchanged",
+  "artifacts": {
+    "compatibility.json": "63d504285fc3fb7e210ea611df871996537b0db2b5e7be623beeaeb0ff4e420b",
+    "evaluation.json": "477595e8b57ebd140aceb5e1200635034ef5f4715fb6784edade5b0eeab51dd3",
+    "expectations.json": "9457bb1fa46455c99b3b094053665a2d8e75024c13a11e3d69cab1a91516d51d",
+    "feature-schema.json": "9c3857c9c410345334e593b8479bcdc745e38aac450385ecda6d931fe323e470",
+    "fold-membership.json": "e7cc1fecd6ec433bb4562ba140af8a710055cc42e2aecf38ebc57b4cb307f602",
+    "independent-validation.json": "418ed8156c2b8f8ddca64585eaed38130d59dfaa1465b25ec4efea66068c080a",
+    "model-card.md": "e64da9a7b16d7ef50b25ef7c3544a8c173e9efa9af0163ded7874de35bde864c",
+    "model.joblib": "0917c74937bf94b32753e26e862084e7e4a28076eadc2c5d77689dd1e496cf6c",
+    "oof-predictions.npz": "cefeca163131c4a190c112cd8b4d1a7387b6390d78ed2794eeea25d2c4b08a2a",
+    "policy.json": "8ba31698beb7d9a7b0ba1db7ccdd322a98be0240be45e42de7fb04a8a272f2bd",
+    "protocol.json": "ea6e1758634c6a81a8db1e53d0bb32aff14b8a25ad4a1797b857b9a74ca393aa",
+    "scenarios.json": "138997840e5b444c91c2514025087e55b422ec4f51f6305de1c0e9f24868189a",
+    "selection-lock.json": "45c35f0e26afac3b6a62f9a830b670197eb8dab2a69767db9fd6f6dd1a8d8683"
+  },
+  "bundleDigest": "1875fa0e05086e2f6cc9e55f13cd23ecc4548deee0a9e2571ce0f3f0574980ef"
+}

@@ -1,0 +1,26 @@
+{
+  "mode": "offline replay of existing evidence; not a new independent test",
+  "verified": true,
+  "qualityGatePassed": false,
+  "activated": false,
+  "eligibleRows": 16284,
+  "eligibleEvents": 467,
+  "candidateEventsFound": 123,
+  "baselineEventsFound": 113,
+  "paired95": {
+    "recall5": [
+      0.0,
+      0.0460602561868247
+    ],
+    "averagePrecision": [
+      -0.002219365293174937,
+      0.0260207826705315
+    ],
+    "logLoss": [
+      -0.0030849065426481366,
+      -0.0011573518838465327
+    ]
+  },
+  "dataHash": "2d1691736df1fb93ddeac306f2477a435c20c1808f8af23416e8ee6a7dfc8c1b",
+  "candidateBundleDigest": "1875fa0e05086e2f6cc9e55f13cd23ecc4548deee0a9e2571ce0f3f0574980ef"
+}

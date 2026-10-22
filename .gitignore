@@ -94,3 +94,10 @@ ml/generated/*
 
 !/ml/artifacts/baseline/optuna-study.json
 !/ml/artifacts/baseline/feature-schema.json
+
+# Approved evaluated candidate, for reproducible review; baseline remains active.
+!/ml/artifacts/scoring-v2-351935cfd80c/
+!/ml/artifacts/scoring-v2-351935cfd80c/**
+
+# E5 local environment and downloaded bundle (reproduced with pinned revision + SHA256)
+.venv-feed/

@@ -1,0 +1,179 @@
+{
+  "status": "PASS",
+  "unresolvedBlockingDefects": 0,
+  "date": "2026-10-21",
+  "scope": "Independent validation of frozen integration checkout with reused local Python 3.12 environments and pinned local E5; isolated HTTP processes used existing dedicated synthetic PostgreSQL.",
+  "riskBaseline": {
+    "tests": 31,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "port": 18742,
+    "compatibility": {
+      "passed": true,
+      "modelHash": "2cd91c344d5d62c7c7f0065ef21fb34aec065551f5ec8041cd1a61d5fb1e7fba",
+      "bundleDigestAtTest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+      "schemaUnchanged": true,
+      "scenariosPassed": true,
+      "restartPreservesSnapshotAndInference": true,
+      "failedPersistenceReturns503": true,
+      "idempotencyConflictsAuthenticationAndMissingRatios": "pytest tests.xml",
+      "scope": "real local HTTP + dedicated PostgreSQL; no frontend/backend lifecycle claimed"
+    }
+  },
+  "riskCandidate": {
+    "tests": 31,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "port": 18743,
+    "compatibility": {
+      "passed": true,
+      "modelHash": "0917c74937bf94b32753e26e862084e7e4a28076eadc2c5d77689dd1e496cf6c",
+      "bundleDigestAtTest": "1875fa0e05086e2f6cc9e55f13cd23ecc4548deee0a9e2571ce0f3f0574980ef",
+      "schemaUnchanged": true,
+      "scenariosPassed": true,
+      "restartPreservesSnapshotAndInference": true,
+      "failedPersistenceReturns503": true,
+      "idempotencyConflictsAuthenticationAndMissingRatios": "pytest tests.xml",
+      "scope": "real local HTTP + dedicated PostgreSQL; no frontend/backend lifecycle claimed"
+    }
+  },
+  "feed": {
+    "tests": 58,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "withRealOfflineE5": true,
+    "evaluatedCases": 5,
+    "timing": {
+      "samples": 30,
+      "warm": true,
+      "unit": "ms",
+      "p50": 32.34958302346058,
+      "p95": 44.33625434176062,
+      "max": 59.71983296331018
+    }
+  },
+  "architecture": {
+    "checks": 426,
+    "failed": 0,
+    "schemaFixtures": 185,
+    "negativeSchemaFixtures": 104,
+    "semanticDesignOracles": 21,
+    "publicOperations": 63,
+    "internalOperations": 28,
+    "demoOperations": 6
+  },
+  "offlineReplay": {
+    "mode": "offline replay of existing evidence; not a new independent test",
+    "verified": true,
+    "qualityGatePassed": false,
+    "activated": false,
+    "eligibleRows": 16284,
+    "eligibleEvents": 467,
+    "candidateEventsFound": 123,
+    "baselineEventsFound": 113,
+    "paired95": {
+      "recall5": [
+        0.0,
+        0.0460602561868247
+      ],
+      "averagePrecision": [
+        -0.002219365293174937,
+        0.0260207826705315
+      ],
+      "logLoss": [
+        -0.0030849065426481366,
+        -0.0011573518838465327
+      ]
+    },
+    "dataHash": "2d1691736df1fb93ddeac306f2477a435c20c1808f8af23416e8ee6a7dfc8c1b",
+    "candidateBundleDigest": "1875fa0e05086e2f6cc9e55f13cd23ecc4548deee0a9e2571ce0f3f0574980ef"
+  },
+  "negativeChecks": {
+    "candidateActivationRejected": true,
+    "reason": "Independent confirmation and compatibility checks required before activation",
+    "selectionUnchanged": true,
+    "degeneratePolicyExplicitReject": true,
+    "tamperedEvidenceRejected": true
+  },
+  "integrity": {
+    "architecturePass": true,
+    "checksums": {
+      "docs/architecture": {
+        "files": 143,
+        "failures": []
+      },
+      "datasets/ru-sme-dataset-10000": {
+        "files": 20,
+        "failures": []
+      },
+      "ml/artifacts/baseline": {
+        "files": 8,
+        "failures": []
+      },
+      "ml/artifacts/scoring-v2-351935cfd80c": {
+        "files": 14,
+        "failures": []
+      },
+      "ml/experiments/scoring-v2-351935cfd80c": {
+        "files": 8,
+        "failures": []
+      },
+      "ml/feed/release": {
+        "files": 9,
+        "failures": [],
+        "externalModelFilesVerifiedAgainstLocalBundle": [
+          "model/README.md",
+          "model/config.json",
+          "model/model.safetensors",
+          "model/sentencepiece.bpe.model",
+          "model/special_tokens_map.json",
+          "model/tokenizer.json",
+          "model/tokenizer_config.json"
+        ]
+      }
+    },
+    "handoffBrokenLinks": [],
+    "frozenFilesChecked": 134,
+    "frozenFileDifferences": [],
+    "stagedPrivatePaths": [],
+    "stagedFilesOver10MiB": [],
+    "stagedFiles": 137,
+    "approvedEvidenceLinkChange": {
+      "path": "reports/feed-contract-validation.json",
+      "sha256": "55e5238dc0cd0d632d0ae2a848f62a966a14c624922d7a58f8e6a9afc9366bd4",
+      "scope": "Only historical XML relative path; source unchanged"
+    }
+  },
+  "activeBundle": {
+    "path": "ml/artifacts/baseline",
+    "bundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+    "modelVersion": "catboost-optuna-v1"
+  },
+  "sourceOOF": {
+    "oofMatchesTargetsEligibility": true,
+    "foldMembershipRecreated": true,
+    "rows": 7016,
+    "repeats": 3,
+    "folds": 5,
+    "membershipRows": 21048,
+    "foldMetricsVerified": 60,
+    "developmentFamilies": [
+      "constant",
+      "logistic",
+      "balanced",
+      "catboost"
+    ],
+    "finalPreprocessingMatchesTrain": true
+  },
+  "limitations": [
+    "No clean dependency installation was repeated.",
+    "No frontend/backend application lifecycle E2E or CI run was executed.",
+    "All training/evaluation finance and labels are synthetic; real credit-default quality is not established.",
+    "Feed scenarios are acceptance/regression checks, not measured user benefit.",
+    "Local E5 weights are external to Git; preparation must be repeated or artifact bundle supplied on a new machine.",
+    "Offline replay repeats the already inspected saved holdout, not a new independent experiment or model retraining."
+  ]
+}

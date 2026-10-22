@@ -1,0 +1,93 @@
+{
+  "version": 2,
+  "task": "synthetic demonstration; future intent credit default, not observed default labels",
+  "data": "original train only; historical validation/test not read",
+  "primary": "eligible Recall@5%",
+  "tieBreakers": [
+    "eligible AP",
+    "ordinary eligible Logloss"
+  ],
+  "folds": 5,
+  "repeats": 3,
+  "seeds": [
+    20261021,
+    20261022,
+    20261023
+  ],
+  "innerFolds": 3,
+  "boundedCandidates": {
+    "logistic": [
+      {
+        "family": "logistic",
+        "C": 0.01,
+        "balanced": false
+      },
+      {
+        "family": "logistic",
+        "C": 0.1,
+        "balanced": false
+      },
+      {
+        "family": "logistic",
+        "C": 1.0,
+        "balanced": false
+      },
+      {
+        "family": "logistic",
+        "C": 10.0,
+        "balanced": false
+      }
+    ],
+    "balanced": [
+      {
+        "family": "logistic",
+        "C": 0.1,
+        "balanced": true
+      }
+    ],
+    "catboost": [
+      {
+        "family": "catboost",
+        "iterations": 400,
+        "depth": 3,
+        "l2_leaf_reg": 10.0
+      },
+      {
+        "family": "catboost",
+        "iterations": 400,
+        "depth": 4,
+        "l2_leaf_reg": 10.0
+      }
+    ]
+  },
+  "classWeights": "unweighted default; Balanced diagnostic only",
+  "earlyStopping": "fixed iterations chosen within development; no outer-fold early stopping",
+  "calibration": "none; requires separate evidence",
+  "independence": "reused synthetic train; final confirmation required",
+  "featureContract": {
+    "schema": 2,
+    "features": [
+      "X1",
+      "X2",
+      "X3",
+      "X4",
+      "X7",
+      "X8",
+      "X9",
+      "X10"
+    ],
+    "rawWhitelist": [
+      "total_assets",
+      "current_assets",
+      "total_liabilities",
+      "current_liabilities",
+      "equity",
+      "revenue",
+      "net_profit",
+      "ebit"
+    ]
+  },
+  "trainHash": "50004cdc80011d31e5b8bc413fdfa6c0be4cf501886a75b277fa65d3db9b1e7b",
+  "sourceHash": "711694a76666b59ce196c9842521b0f26bf1c091e20d0a9e0f13a6dca24456b4",
+  "learningSourceHash": "f9e7bb15216810da2ff83d850def5ba74fbecede20ce3b495c75c98e3bba9363"
+}

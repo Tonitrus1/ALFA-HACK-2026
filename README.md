@@ -2,9 +2,11 @@
 
 Совместный проект команды из пяти человек для Alfa Hack 2026.
 
-Реализован **локальный ML-срез скоринга**: обученный CatBoost с подбором гиперпараметров Optuna, Risk API, PostgreSQL snapshots/inference, S01–S06 и документация интеграции. UI и backend-процесс заявки реализуют другие участники. Полный объём HACKATHON-1.5 остаётся спецификацией.
+Реализован **локальный ML-срез скоринга**: рабочий CatBoost baseline, обучение новых кандидатов логрега/CatBoost с вложенной оценкой, Risk API, PostgreSQL snapshots/inference, S01–S06 и документация интеграции. Новые кандидаты сохраняют контракт восьми финансовых полей и не заменяют рабочую модель автоматически. UI и backend-процесс заявки реализуют другие участники. Полный объём HACKATHON-1.5 остаётся спецификацией.
 
 Запуск подготовленного ML: `./scripts/demo up --offline`; сценарии: `./scripts/demo scenarios`. Первичная подготовка, обучение, API и границы ответственности: [передача ML-модуля](docs/ml-integration.md).
+
+Реализована также **ML-лента о финансировании бизнеса**: локальная E5 на CPU, 36 карточек, шесть SVG, внутренний API на 8002 и резервный подбор. Подготовка: `./scripts/feed setup`, `./scripts/feed prepare --download`; [запуск и интеграция ленты](docs/feed-integration.md), [модуль](ml/feed/README.md).
 
 ## Направления разработки
 
@@ -16,6 +18,8 @@
 
 ## Документация
 
+- [Передача объединённых ML-модулей команде: ветки, контракты, запуск и ограничения](docs/ml-team-handoff.md).
+- [Аудит ML, исправления и дальнейший план качества](docs/ml-audit-20261021.md).
 - [Оглавление архитектуры HACKATHON-1.5](docs/architecture/README.md).
 - [Общая архитектура](docs/architecture/packages/general/docs/guide.md) и [PDF](docs/architecture/packages/general/general-guide.pdf).
 - [План разработки](docs/architecture/docs/development-plan.md).

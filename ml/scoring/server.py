@@ -1,12 +1,9 @@
-import hashlib
-import importlib.metadata
 import json
 import os
 from contextlib import asynccontextmanager
 from datetime import datetime
 from pathlib import Path
 from uuid import uuid4
-import joblib
 import numpy as np
 import psycopg
 from psycopg.types.json import Jsonb
@@ -16,6 +13,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
 from typing import Literal
 from .features import build, digest, code_digest, FEATURES
+from .bundle import load_bundle, read_manifest, predict_probability
 
 class FinancialInput(BaseModel):
     model_config=ConfigDict(extra='forbid')
@@ -57,20 +55,12 @@ def auth(authorization: str=Header('')):
     import secrets
     if not secrets.compare_digest(authorization,'Bearer '+TOKEN): error(403,'Internal role required')
 def get_manifest():
-    m=json.loads((BUNDLE/'manifest.json').read_text()); claimed=m.pop('bundleDigest')
-    if digest(m)!=claimed or m['featureCodeDigest']!=code_digest(): raise RuntimeError('Bundle or feature code digest mismatch')
-    if (m['scoreKind'],m['validationStatus'],m['purpose'])!=('BANKRUPTCY_PROXY','DEMONSTRATION','DEMO_RESEARCH'): raise RuntimeError('Unsupported risk interpretation')
-    for name,h in m['artifacts'].items():
-        if hashlib.sha256((BUNDLE/name).read_bytes()).hexdigest()!=h: raise RuntimeError('Artifact checksum mismatch: '+name)
-    for lib in ['numpy','scikit-learn','scipy','joblib','catboost']:
-        if importlib.metadata.version(lib)!=m['libraries'][lib]: raise RuntimeError('Library version mismatch: '+lib)
-    m['bundleDigest']=claimed; return m
+    return read_manifest(BUNDLE)
 @asynccontextmanager
 async def lifespan(app):
     global model,manifest,policy
-    manifest=get_manifest(); model=joblib.load(BUNDLE/'model.joblib'); policy=json.loads((BUNDLE/'policy.json').read_text())
+    model,manifest,policy=load_bundle(BUNDLE)
     with db() as c: c.execute('select count(*) from ml.inferences').fetchone()
-    model.predict_proba(np.zeros((1,len(FEATURES))))
     yield
 app=FastAPI(title='Risk API v2',lifespan=lifespan,dependencies=[Depends(auth)])
 
@@ -134,7 +124,7 @@ def evaluate(body:RiskRequest):
         s=row['payload']; check=dict(s); check.pop('snapshotDigest')
         if digest(check)!=s['snapshotDigest'] or s['snapshotDigest']!=body['featureSnapshotDigest'] or s['featureCodeDigest']!=manifest['featureCodeDigest']: error(409,'Snapshot integrity mismatch')
         vector=np.array([[np.nan if s['features'][k] is None else s['features'][k] for k in FEATURES]])
-        score=float(model.predict_proba(vector)[0,1])
+        score=float(predict_probability(model,vector)[0])
         result={'requestId':body['requestId'],'inferenceId':str(uuid4()),'featureSnapshotId':s['featureSnapshotId'],
                 'featureSnapshotDigest':s['snapshotDigest'],'modelVersion':manifest['modelVersion'],'bundleDigest':manifest['bundleDigest'],
                 'score':score,'scoreKind':'BANKRUPTCY_PROXY','calibrationStatus':'DEMONSTRATION','releaseId':manifest['modelVersion'],'purpose':'DEMO_RESEARCH','internalReasonCodes':['SYNTHETIC_SIMULATION']}
