@@ -11,7 +11,7 @@ from scoring.features import matrix,digest
 ROOT=Path(__file__).resolve().parents[2]
 @pytest.fixture
 def client():
-    m=json.loads((ROOT/'ml/artifacts/baseline/manifest.json').read_text());return RiskClient('http://127.0.0.1:8001',os.environ['ML_INTERNAL_TOKEN'],m['bundleDigest'])
+    m=json.loads((ROOT/'ml/artifacts/baseline/manifest.json').read_text());return RiskClient(os.environ.get('ML_API_URL','http://127.0.0.1:8001'),os.environ['ML_INTERNAL_TOKEN'],m['bundleDigest'])
 @pytest.fixture
 def request_body(client):return client.snapshot_request(json.loads((ROOT/'ml/fixtures/scenarios.json').read_text())['companies'][0]['reference'])
 def test_feature_and_risk_replay_concurrency_and_contract(client,request_body):
@@ -44,7 +44,7 @@ def test_forbidden_purpose_schema_raw_features_and_future_source(client,request_
     bad={**request_body,'latestSourceAvailableAt':'2099-01-01T00:00:00Z'}
     with pytest.raises(requests.HTTPError) as e:client.create_snapshot(bad)
     assert e.value.response.status_code==422
-    r=requests.get('http://127.0.0.1:8001/health');assert r.status_code==403
+    r=requests.get(client.base_url+'/health');assert r.status_code==403
 
 def test_zero_denominator_online(client,request_body):
     v=request_body['financialStatement']['values'];v.update(totalLiabilitiesMinor=0,currentLiabilitiesMinor=0,equityMinor=v['totalAssetsMinor']);request_body['financialSnapshotDigest']=digest(request_body['financialStatement'])

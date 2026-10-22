@@ -1,0 +1,70 @@
+{
+  "applicationId": "DEMO:S01",
+  "submissionSnapshotId": "edc1949c-5426-4d94-8668-b16890bb5395",
+  "financialSnapshotId": "520c82f9-e220-451b-8871-f9bf6e54af3d",
+  "financialSnapshotDigest": "052f20117381f5f9f66272b65bb2ca721878c4526107a66ca8b6f97aad7040e3",
+  "financialStatementVersion": 1,
+  "asOf": "2026-10-22T09:55:20.370920+00:00",
+  "latestSourceAvailableAt": "2026-04-01T00:00:00Z",
+  "purpose": "DEMO_RESEARCH",
+  "financialStatement": {
+    "periodStart": "2025-01-01",
+    "periodEnd": "2025-12-31",
+    "reportingStandard": "DEMO",
+    "currency": "RUB",
+    "values": {
+      "currentAssetsMinor": 1633233164,
+      "currentLiabilitiesMinor": 158120246,
+      "ebitMinor": 1062220169,
+      "equityMinor": 1373639643,
+      "netProfitMinor": 837815739,
+      "revenueMinor": 4044174564,
+      "totalAssetsMinor": 1746438733,
+      "totalLiabilitiesMinor": 372799090
+    },
+    "sourceDocumentReferences": []
+  },
+  "riskFeatureSnapshotId": "68665c51-5db4-4f99-b377-c77037e08e98",
+  "referenceSnapshotId": "DEMO:REFERENCE:b8b2d401-5fdd-484a-a60a-03b20e663a77",
+  "referenceSnapshotDigest": "052f20117381f5f9f66272b65bb2ca721878c4526107a66ca8b6f97aad7040e3",
+  "referenceAvailableAt": "2026-04-01T00:00:00Z",
+  "referenceStatement": {
+    "periodStart": "2025-01-01",
+    "periodEnd": "2025-12-31",
+    "reportingStandard": "DEMO",
+    "currency": "RUB",
+    "values": {
+      "totalAssetsMinor": 1746438733,
+      "currentAssetsMinor": 1633233164,
+      "totalLiabilitiesMinor": 372799090,
+      "currentLiabilitiesMinor": 158120246,
+      "equityMinor": 1373639643,
+      "revenueMinor": 4044174564,
+      "netProfitMinor": 837815739,
+      "ebitMinor": 1062220169
+    },
+    "sourceDocumentReferences": []
+  },
+  "featureSnapshotId": "348fb982-e1db-4225-8be0-f9c7d1a5a1f1",
+  "featureSchemaVersion": 1,
+  "featureCodeDigest": "f4769a1499c71f2788514e8685fbffc11a210af8540667f5dc21a8bef96972f9",
+  "features": {
+    "delta_totalAssetsMinor": 0.0,
+    "abs_delta_totalAssetsMinor": 0.0,
+    "delta_currentAssetsMinor": 0.0,
+    "abs_delta_currentAssetsMinor": 0.0,
+    "delta_totalLiabilitiesMinor": 0.0,
+    "abs_delta_totalLiabilitiesMinor": 0.0,
+    "delta_currentLiabilitiesMinor": 0.0,
+    "abs_delta_currentLiabilitiesMinor": 0.0,
+    "delta_equityMinor": 0.0,
+    "abs_delta_equityMinor": 0.0,
+    "delta_revenueMinor": 0.0,
+    "abs_delta_revenueMinor": 0.0,
+    "delta_netProfitMinor": 0.0,
+    "abs_delta_netProfitMinor": 0.0,
+    "delta_ebitMinor": 0.0,
+    "abs_delta_ebitMinor": 0.0
+  },
+  "snapshotDigest": "6c11739aeb20baa1c37e9c2d254407a2d8516d1c65a8b97705a9bbbeb8dee65f"
+}

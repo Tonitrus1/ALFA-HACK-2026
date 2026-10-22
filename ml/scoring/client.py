@@ -7,9 +7,9 @@ class RiskClient:
     def __init__(self,base_url,token,bundle_digest):
         self.base_url=base_url.rstrip('/');self.bundle_digest=bundle_digest
         self.http=requests.Session();self.http.trust_env=False;self.http.headers['Authorization']='Bearer '+token
-    def call(self,path,body=None,base_url=None):
+    def call(self,path,body=None,base_url=None,timeout=3):
         url=(base_url or self.base_url)+path
-        response=self.http.get(url,timeout=3) if body is None else self.http.post(url,json=body,timeout=3)
+        response=self.http.get(url,timeout=timeout) if body is None else self.http.post(url,json=body,timeout=timeout)
         response.raise_for_status();return response.json()
     def snapshot_request(self,statement,source_available_at='2026-04-01T00:00:00Z'):
 

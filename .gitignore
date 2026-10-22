@@ -25,6 +25,7 @@ Thumbs.db
 # Dependencies, caches and generated application output
 node_modules/
 .venv/
+.venv
 venv/
 __pycache__/
 *.py[cod]
@@ -94,3 +95,8 @@ ml/generated/*
 
 !/ml/artifacts/baseline/optuna-study.json
 !/ml/artifacts/baseline/feature-schema.json
+
+# Authorized synthetic manipulation model and reproducible paired simulation.
+!/ml/artifacts/fraud-demo-v1/
+!/ml/artifacts/fraud-demo-v1/**
+!/ml/artifacts/fraud-demo-v1/model.joblib

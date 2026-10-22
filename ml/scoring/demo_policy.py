@@ -28,3 +28,30 @@ def after_risk(statement,amount,score,threshold,product='working',ml_error=False
     if cap<p['minAmountMinor']:return result('MANUAL','CAP_BELOW_MINIMUM')
     if amount>cap:return result('ALTERNATIVE','AMOUNT_ABOVE_CAP',cap)
     return result('APPROVED','WITHIN_DEMO_RULES',amount)
+
+
+DUAL_VERSION = 'synthetic-dual-policy-4'
+
+
+def after_models(statement, amount, risk_score, risk_threshold, fraud_score,
+                 fraud_threshold, product='working', ml_error=False):
+    """Both independent estimates are mandatory; never average their scores."""
+    import math
+
+    def valid(value):
+        return (isinstance(value, (float, int)) and not isinstance(value, bool)
+                and math.isfinite(value) and 0 <= value <= 1)
+
+    if ml_error or not all(valid(x) for x in (risk_score, risk_threshold, fraud_score, fraud_threshold)):
+        decision = result('MANUAL', 'ML_FAILURE')
+        reasons = ['ML_FAILURE']
+    else:
+        reasons = []
+        if fraud_score >= fraud_threshold:
+            reasons.append('SUSPECTED_FINANCIAL_MANIPULATION')
+        if risk_score >= risk_threshold:
+            reasons.append('MODEL_REVIEW_BUDGET')
+        decision = (result('MANUAL', reasons[0]) if reasons
+                    else after_risk(statement, amount, risk_score, risk_threshold, product))
+    return {**decision, 'policyVersion': DUAL_VERSION,
+            'reasonCodes': reasons or [decision['rule']]}

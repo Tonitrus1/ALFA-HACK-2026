@@ -1,0 +1,870 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Synthetic manipulation proxy \u2014 additive internal API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/internal/v1/fraud/bundle": {
+      "get": {
+        "tags": [
+          "Demonstration manipulation proxy"
+        ],
+        "summary": "Bundle",
+        "operationId": "bundle_internal_v1_fraud_bundle_get",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/internal/v1/fraud/feature-snapshots": {
+      "post": {
+        "tags": [
+          "Demonstration manipulation proxy"
+        ],
+        "summary": "Create Snapshot",
+        "operationId": "create_snapshot_internal_v1_fraud_feature_snapshots_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FraudFeatureInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FraudSnapshot"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/internal/v1/fraud/feature-snapshots/{snapshot_id}": {
+      "get": {
+        "tags": [
+          "Demonstration manipulation proxy"
+        ],
+        "summary": "Get Snapshot",
+        "operationId": "get_snapshot_internal_v1_fraud_feature_snapshots__snapshot_id__get",
+        "parameters": [
+          {
+            "name": "snapshot_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Snapshot Id"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FraudSnapshot"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/internal/v1/fraud/evaluations": {
+      "post": {
+        "tags": [
+          "Demonstration manipulation proxy"
+        ],
+        "summary": "Evaluate",
+        "operationId": "evaluate_internal_v1_fraud_evaluations_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FraudRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FraudResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FeatureInput": {
+        "properties": {
+          "applicationId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Applicationid"
+          },
+          "submissionSnapshotId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Submissionsnapshotid"
+          },
+          "financialSnapshotId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Financialsnapshotid"
+          },
+          "financialSnapshotDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Financialsnapshotdigest"
+          },
+          "financialStatementVersion": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "minimum": 1.0,
+            "title": "Financialstatementversion"
+          },
+          "asOf": {
+            "type": "string",
+            "title": "Asof"
+          },
+          "latestSourceAvailableAt": {
+            "type": "string",
+            "title": "Latestsourceavailableat"
+          },
+          "purpose": {
+            "type": "string",
+            "const": "DEMO_RESEARCH",
+            "title": "Purpose"
+          },
+          "financialStatement": {
+            "$ref": "#/components/schemas/FinancialInput"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "applicationId",
+          "submissionSnapshotId",
+          "financialSnapshotId",
+          "financialSnapshotDigest",
+          "financialStatementVersion",
+          "asOf",
+          "latestSourceAvailableAt",
+          "purpose",
+          "financialStatement"
+        ],
+        "title": "FeatureInput"
+      },
+      "FinancialInput": {
+        "properties": {
+          "periodStart": {
+            "type": "string",
+            "title": "Periodstart"
+          },
+          "periodEnd": {
+            "type": "string",
+            "title": "Periodend"
+          },
+          "reportingStandard": {
+            "type": "string",
+            "const": "DEMO",
+            "title": "Reportingstandard"
+          },
+          "currency": {
+            "type": "string",
+            "const": "RUB",
+            "title": "Currency"
+          },
+          "values": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Values"
+          },
+          "sourceDocumentReferences": {
+            "items": {},
+            "type": "array",
+            "maxItems": 0,
+            "title": "Sourcedocumentreferences"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "periodStart",
+          "periodEnd",
+          "reportingStandard",
+          "currency",
+          "values",
+          "sourceDocumentReferences"
+        ],
+        "title": "FinancialInput"
+      },
+      "FraudFeatureInput": {
+        "properties": {
+          "applicationId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Applicationid"
+          },
+          "submissionSnapshotId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Submissionsnapshotid"
+          },
+          "financialSnapshotId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Financialsnapshotid"
+          },
+          "financialSnapshotDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Financialsnapshotdigest"
+          },
+          "financialStatementVersion": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "minimum": 1.0,
+            "title": "Financialstatementversion"
+          },
+          "asOf": {
+            "type": "string",
+            "title": "Asof"
+          },
+          "latestSourceAvailableAt": {
+            "type": "string",
+            "title": "Latestsourceavailableat"
+          },
+          "purpose": {
+            "type": "string",
+            "const": "DEMO_RESEARCH",
+            "title": "Purpose"
+          },
+          "financialStatement": {
+            "$ref": "#/components/schemas/FinancialInput"
+          },
+          "riskFeatureSnapshotId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Riskfeaturesnapshotid"
+          },
+          "referenceSnapshotId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Referencesnapshotid"
+          },
+          "referenceSnapshotDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Referencesnapshotdigest"
+          },
+          "referenceAvailableAt": {
+            "type": "string",
+            "title": "Referenceavailableat"
+          },
+          "referenceStatement": {
+            "$ref": "#/components/schemas/FinancialInput"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "applicationId",
+          "submissionSnapshotId",
+          "financialSnapshotId",
+          "financialSnapshotDigest",
+          "financialStatementVersion",
+          "asOf",
+          "latestSourceAvailableAt",
+          "purpose",
+          "financialStatement",
+          "riskFeatureSnapshotId",
+          "referenceSnapshotId",
+          "referenceSnapshotDigest",
+          "referenceAvailableAt",
+          "referenceStatement"
+        ],
+        "title": "FraudFeatureInput"
+      },
+      "FraudFeatures": {
+        "properties": {
+          "delta_totalAssetsMinor": {
+            "type": "number",
+            "title": "Delta Totalassetsminor"
+          },
+          "abs_delta_totalAssetsMinor": {
+            "type": "number",
+            "title": "Abs Delta Totalassetsminor"
+          },
+          "delta_currentAssetsMinor": {
+            "type": "number",
+            "title": "Delta Currentassetsminor"
+          },
+          "abs_delta_currentAssetsMinor": {
+            "type": "number",
+            "title": "Abs Delta Currentassetsminor"
+          },
+          "delta_totalLiabilitiesMinor": {
+            "type": "number",
+            "title": "Delta Totalliabilitiesminor"
+          },
+          "abs_delta_totalLiabilitiesMinor": {
+            "type": "number",
+            "title": "Abs Delta Totalliabilitiesminor"
+          },
+          "delta_currentLiabilitiesMinor": {
+            "type": "number",
+            "title": "Delta Currentliabilitiesminor"
+          },
+          "abs_delta_currentLiabilitiesMinor": {
+            "type": "number",
+            "title": "Abs Delta Currentliabilitiesminor"
+          },
+          "delta_equityMinor": {
+            "type": "number",
+            "title": "Delta Equityminor"
+          },
+          "abs_delta_equityMinor": {
+            "type": "number",
+            "title": "Abs Delta Equityminor"
+          },
+          "delta_revenueMinor": {
+            "type": "number",
+            "title": "Delta Revenueminor"
+          },
+          "abs_delta_revenueMinor": {
+            "type": "number",
+            "title": "Abs Delta Revenueminor"
+          },
+          "delta_netProfitMinor": {
+            "type": "number",
+            "title": "Delta Netprofitminor"
+          },
+          "abs_delta_netProfitMinor": {
+            "type": "number",
+            "title": "Abs Delta Netprofitminor"
+          },
+          "delta_ebitMinor": {
+            "type": "number",
+            "title": "Delta Ebitminor"
+          },
+          "abs_delta_ebitMinor": {
+            "type": "number",
+            "title": "Abs Delta Ebitminor"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "delta_totalAssetsMinor",
+          "abs_delta_totalAssetsMinor",
+          "delta_currentAssetsMinor",
+          "abs_delta_currentAssetsMinor",
+          "delta_totalLiabilitiesMinor",
+          "abs_delta_totalLiabilitiesMinor",
+          "delta_currentLiabilitiesMinor",
+          "abs_delta_currentLiabilitiesMinor",
+          "delta_equityMinor",
+          "abs_delta_equityMinor",
+          "delta_revenueMinor",
+          "abs_delta_revenueMinor",
+          "delta_netProfitMinor",
+          "abs_delta_netProfitMinor",
+          "delta_ebitMinor",
+          "abs_delta_ebitMinor"
+        ],
+        "title": "FraudFeatures"
+      },
+      "FraudRequest": {
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Requestid"
+          },
+          "featureSnapshotId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Featuresnapshotid"
+          },
+          "featureSnapshotDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Featuresnapshotdigest"
+          },
+          "bundleDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Bundledigest"
+          },
+          "riskInferenceId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Riskinferenceid"
+          },
+          "purpose": {
+            "type": "string",
+            "const": "DEMO_RESEARCH",
+            "title": "Purpose"
+          },
+          "featureSchemaVersion": {
+            "type": "integer",
+            "const": 1,
+            "title": "Featureschemaversion"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requestId",
+          "featureSnapshotId",
+          "featureSnapshotDigest",
+          "bundleDigest",
+          "riskInferenceId",
+          "purpose",
+          "featureSchemaVersion"
+        ],
+        "title": "FraudRequest"
+      },
+      "FraudResult": {
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "title": "Requestid"
+          },
+          "riskInferenceId": {
+            "type": "string",
+            "title": "Riskinferenceid"
+          },
+          "inferenceId": {
+            "type": "string",
+            "title": "Inferenceid"
+          },
+          "applicationId": {
+            "type": "string",
+            "title": "Applicationid"
+          },
+          "submissionSnapshotId": {
+            "type": "string",
+            "title": "Submissionsnapshotid"
+          },
+          "financialSnapshotDigest": {
+            "type": "string",
+            "title": "Financialsnapshotdigest"
+          },
+          "referenceSnapshotId": {
+            "type": "string",
+            "title": "Referencesnapshotid"
+          },
+          "referenceSnapshotDigest": {
+            "type": "string",
+            "title": "Referencesnapshotdigest"
+          },
+          "riskFeatureSnapshotId": {
+            "type": "string",
+            "title": "Riskfeaturesnapshotid"
+          },
+          "featureSnapshotId": {
+            "type": "string",
+            "title": "Featuresnapshotid"
+          },
+          "featureSnapshotDigest": {
+            "type": "string",
+            "title": "Featuresnapshotdigest"
+          },
+          "modelVersion": {
+            "type": "string",
+            "title": "Modelversion"
+          },
+          "bundleDigest": {
+            "type": "string",
+            "title": "Bundledigest"
+          },
+          "riskBundleDigest": {
+            "type": "string",
+            "title": "Riskbundledigest"
+          },
+          "score": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Score"
+          },
+          "scoreKind": {
+            "type": "string",
+            "const": "SYNTHETIC_MANIPULATION_PROXY",
+            "title": "Scorekind"
+          },
+          "calibrationStatus": {
+            "type": "string",
+            "const": "DEMONSTRATION",
+            "title": "Calibrationstatus"
+          },
+          "purpose": {
+            "type": "string",
+            "const": "DEMO_RESEARCH",
+            "title": "Purpose"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requestId",
+          "riskInferenceId",
+          "inferenceId",
+          "applicationId",
+          "submissionSnapshotId",
+          "financialSnapshotDigest",
+          "referenceSnapshotId",
+          "referenceSnapshotDigest",
+          "riskFeatureSnapshotId",
+          "featureSnapshotId",
+          "featureSnapshotDigest",
+          "modelVersion",
+          "bundleDigest",
+          "riskBundleDigest",
+          "score",
+          "scoreKind",
+          "calibrationStatus",
+          "purpose"
+        ],
+        "title": "FraudResult"
+      },
+      "FraudSnapshot": {
+        "properties": {
+          "applicationId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Applicationid"
+          },
+          "submissionSnapshotId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Submissionsnapshotid"
+          },
+          "financialSnapshotId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Financialsnapshotid"
+          },
+          "financialSnapshotDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Financialsnapshotdigest"
+          },
+          "financialStatementVersion": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "minimum": 1.0,
+            "title": "Financialstatementversion"
+          },
+          "asOf": {
+            "type": "string",
+            "title": "Asof"
+          },
+          "latestSourceAvailableAt": {
+            "type": "string",
+            "title": "Latestsourceavailableat"
+          },
+          "purpose": {
+            "type": "string",
+            "const": "DEMO_RESEARCH",
+            "title": "Purpose"
+          },
+          "financialStatement": {
+            "$ref": "#/components/schemas/FinancialInput"
+          },
+          "riskFeatureSnapshotId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Riskfeaturesnapshotid"
+          },
+          "referenceSnapshotId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Referencesnapshotid"
+          },
+          "referenceSnapshotDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Referencesnapshotdigest"
+          },
+          "referenceAvailableAt": {
+            "type": "string",
+            "title": "Referenceavailableat"
+          },
+          "referenceStatement": {
+            "$ref": "#/components/schemas/FinancialInput"
+          },
+          "featureSnapshotId": {
+            "type": "string",
+            "title": "Featuresnapshotid"
+          },
+          "featureSchemaVersion": {
+            "type": "integer",
+            "const": 1,
+            "title": "Featureschemaversion"
+          },
+          "featureCodeDigest": {
+            "type": "string",
+            "title": "Featurecodedigest"
+          },
+          "features": {
+            "$ref": "#/components/schemas/FraudFeatures"
+          },
+          "snapshotDigest": {
+            "type": "string",
+            "title": "Snapshotdigest"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "applicationId",
+          "submissionSnapshotId",
+          "financialSnapshotId",
+          "financialSnapshotDigest",
+          "financialStatementVersion",
+          "asOf",
+          "latestSourceAvailableAt",
+          "purpose",
+          "financialStatement",
+          "riskFeatureSnapshotId",
+          "referenceSnapshotId",
+          "referenceSnapshotDigest",
+          "referenceAvailableAt",
+          "referenceStatement",
+          "featureSnapshotId",
+          "featureSchemaVersion",
+          "featureCodeDigest",
+          "features",
+          "snapshotDigest"
+        ],
+        "title": "FraudSnapshot"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "RiskRequest": {
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Requestid"
+          },
+          "featureSnapshotId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Featuresnapshotid"
+          },
+          "featureSnapshotDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Featuresnapshotdigest"
+          },
+          "bundleDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Bundledigest"
+          },
+          "purpose": {
+            "type": "string",
+            "const": "DEMO_RESEARCH",
+            "title": "Purpose"
+          },
+          "featureSchemaVersion": {
+            "type": "integer",
+            "const": 2,
+            "title": "Featureschemaversion"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requestId",
+          "featureSnapshotId",
+          "featureSnapshotDigest",
+          "bundleDigest",
+          "purpose",
+          "featureSchemaVersion"
+        ],
+        "title": "RiskRequest"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

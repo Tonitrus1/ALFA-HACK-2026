@@ -1,0 +1,91 @@
+{
+  "interpretation": "Synthetic generator benchmark only; not real fraud performance",
+  "validation": {
+    "rows": 10458,
+    "eligibleRows": 8490,
+    "eligibleBenign": 4753,
+    "eligibleManipulations": 3737,
+    "averagePrecision": 0.8784680175363226,
+    "rocAuc": 0.9460135905038862,
+    "confusionMatrix": [
+      [
+        4541,
+        212
+      ],
+      [
+        2182,
+        1555
+      ]
+    ],
+    "precision": 0.8800226372382569,
+    "recall": 0.4161091784854161,
+    "falsePositiveRate": 0.04460340837365874,
+    "rulesOnlyDetectionAfterPrecheck": 0,
+    "additionalManipulationsDetected": 1555,
+    "additionalBeyondCreditReview": 1212,
+    "manualRateBefore": 0.1972909305064782,
+    "manualRateAfter": 0.360188457008245,
+    "manualRateIncrease": 0.16289752650176678
+  },
+  "test": {
+    "rows": 10430,
+    "eligibleRows": 8510,
+    "eligibleBenign": 4764,
+    "eligibleManipulations": 3746,
+    "averagePrecision": 0.8890780005329395,
+    "rocAuc": 0.9509289617853782,
+    "confusionMatrix": [
+      [
+        4563,
+        201
+      ],
+      [
+        2182,
+        1564
+      ]
+    ],
+    "precision": 0.8861189801699717,
+    "recall": 0.4175120128136679,
+    "falsePositiveRate": 0.04219143576826197,
+    "rulesOnlyDetectionAfterPrecheck": 0,
+    "additionalManipulationsDetected": 1564,
+    "additionalBeyondCreditReview": 1198,
+    "manualRateBefore": 0.21692126909518214,
+    "manualRateAfter": 0.37497062279670973,
+    "manualRateIncrease": 0.15804935370152762
+  },
+  "heldOutAttackFamily": {
+    "rows": 1490,
+    "eligibleRows": 1335,
+    "eligibleBenign": 0,
+    "eligibleManipulations": 1335,
+    "averagePrecision": null,
+    "rocAuc": null,
+    "confusionMatrix": [
+      [
+        0,
+        0
+      ],
+      [
+        1335,
+        0
+      ]
+    ],
+    "precision": 0.0,
+    "recall": 0.0,
+    "falsePositiveRate": 0.0,
+    "rulesOnlyDetectionAfterPrecheck": 0,
+    "additionalManipulationsDetected": 0,
+    "additionalBeyondCreditReview": 0,
+    "manualRateBefore": 0.20524344569288389,
+    "manualRateAfter": 0.20524344569288389,
+    "manualRateIncrease": 0.0
+  },
+  "testCompanyDigest": "15b7434af4a3ebcc1626257658819ad3486b12c6e0abe03cf191ea31f8182e54",
+  "routingEnabled": true,
+  "gate": "validation/test FPR<=5% and additional detections beyond credit review",
+  "classMix": "4 benign and 3 manipulated statements per base company; not a real fraud prevalence",
+  "manualRateDenominator": "statements passing all preliminary policy checks",
+  "heldOutGeneralizationSupported": false,
+  "protocolNote": "The initial implementation added an unrequested held-out-recall release condition. Corrected to the approved acceptance criteria after evaluation; model, threshold and all scores unchanged. The failed held-out result is preserved and limits interpretation."
+}

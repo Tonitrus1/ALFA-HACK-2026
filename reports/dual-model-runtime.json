@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "scope": "Own isolated local two-model demo API/PostgreSQL",
+  "checks": [
+    {
+      "name": "restart_preserves_both_exact_model_results_and_snapshots",
+      "passed": true
+    },
+    {
+      "name": "durability_failure_inferences_falls_back_then_recovers",
+      "passed": true,
+      "seconds": 2.0169392499956302
+    },
+    {
+      "name": "durability_failure_fraud_inferences_falls_back_then_recovers",
+      "passed": true,
+      "seconds": 2.0285139170009643
+    },
+    {
+      "name": "fraud_records_immutable_and_runtime_insert_select_only",
+      "passed": true
+    },
+    {
+      "name": "every_credit_baseline_artifact_byte_identical_to_git_HEAD",
+      "passed": true
+    },
+    {
+      "name": "external_network_denied_by_os_profile",
+      "passed": true
+    }
+  ],
+  "riskBundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+  "fraudBundleDigest": "b5f6e6be603a368469de08e2424912c08d97cdba37862af049f006b7ec9628c9",
+  "baselineHashes": {
+    "feature-schema.json": "9c3857c9c410345334e593b8479bcdc745e38aac450385ecda6d931fe323e470",
+    "policy.json": "0b249e1412aa9da5992f343bf90728ceb967e27238113aa46f846b49225003d0",
+    "model-card.md": "5aea51135472b10217792e5638d4ff3018c2a86782c069d52c559b8789b425fe",
+    "optuna-study.json": "a361e6e79a6ca78533dc83110c0d3d87b5262a0fda65f5ef2053a1f093fdf1e3",
+    "model.joblib": "2cd91c344d5d62c7c7f0065ef21fb34aec065551f5ec8041cd1a61d5fb1e7fba",
+    "manifest.json": "7ae67646c6ec920f7fb979a3dec769954fb740a33e17992fc49c2041529f1926",
+    "selection-lock.json": "95abd3f30bd3543b47dc6670b6bb558957dec9bd49e13d93c76c7f88f09f804f",
+    "SHA256SUMS": "1acc30a739bca5a8208ecc7316da24529b7eeb917994eed806c66f3a579883bc",
+    "evaluation.json": "a65a110c9a2ca3f53186a1498e308d2ec7ed185fe047b176e040e667aedbbb92"
+  },
+  "apiUrl": "http://127.0.0.1:8002"
+}

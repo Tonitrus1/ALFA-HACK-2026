@@ -4,7 +4,7 @@ import requests
 from ml_manage import ROOT,admin,env,up,down
 from scoring.client import RiskClient
 from scoring.demo_policy import after_risk
-m=json.loads((ROOT/'ml/artifacts/baseline/manifest.json').read_text());client=RiskClient('http://127.0.0.1:8001',env()['ML_INTERNAL_TOKEN'],m['bundleDigest'])
+m=json.loads((ROOT/'ml/artifacts/baseline/manifest.json').read_text());client=RiskClient(env()['ML_API_URL'],env()['ML_INTERNAL_TOKEN'],m['bundleDigest'])
 s=json.loads((ROOT/'ml/fixtures/scenarios.json').read_text())['companies'][0]['reference'];snapshot=client.create_snapshot(client.snapshot_request(s));b=client.risk_request(snapshot);prediction=client.evaluate(b)
 artifacts={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in (ROOT/'ml/artifacts/baseline').iterdir() if p.is_file()}
 down();up(True)

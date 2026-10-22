@@ -16,6 +16,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
 from typing import Literal
 from .features import build, digest, code_digest, FEATURES
+from .fraud_api import FraudRuntime, create_router
 
 class FinancialInput(BaseModel):
     model_config=ConfigDict(extra='forbid')
@@ -50,6 +51,7 @@ DSN=os.environ['ML_DATABASE_URL']
 TOKEN=os.environ['ML_INTERNAL_TOKEN']
 if len(TOKEN)<16: raise RuntimeError('Internal token must be explicitly configured (at least 16 characters)')
 model=None; manifest=None; policy=None
+fraud_runtime=FraudRuntime(os.environ.get('FRAUD_MODEL_BUNDLE','ml/artifacts/fraud-demo-v1'))
 
 def db(): return psycopg.connect(DSN, row_factory=dict_row, connect_timeout=2, options='-c statement_timeout=2000')
 def error(n,msg): raise HTTPException(n,msg)
@@ -71,8 +73,11 @@ async def lifespan(app):
     manifest=get_manifest(); model=joblib.load(BUNDLE/'model.joblib'); policy=json.loads((BUNDLE/'policy.json').read_text())
     with db() as c: c.execute('select count(*) from ml.inferences').fetchone()
     model.predict_proba(np.zeros((1,len(FEATURES))))
+    fraud_runtime.load(manifest['bundleDigest'])
+    with db() as c: c.execute('select count(*) from ml.fraud_inferences').fetchone()
     yield
 app=FastAPI(title='Risk API v2',lifespan=lifespan,dependencies=[Depends(auth)])
+app.include_router(create_router(db, FeatureInput, FinancialInput, fraud_runtime))
 
 @app.exception_handler(psycopg.Error)
 def persistence_unavailable(request,exc):

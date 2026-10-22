@@ -1,0 +1,11 @@
+{
+  "seed": 20261022,
+  "version": "paired-financial-manipulation-v1",
+  "generatorDigest": "0bb343babe29aff59b6403fc46e3c352cacb81f6ba5175698c46a56ff0c76f91",
+  "files": {
+    "train.parquet": "b0b9abe3a662ac07a89ec3dc008753ed100eeb37ab03a4918643c24fd9167c10",
+    "test.parquet": "9d39568ae456fdaaf707cbac5445c8a866f6eaefda1fa30050341d482b6e025f",
+    "held-out.parquet": "f6c1d9745b28401abc29d7ed16a471f20ea655858e3e5568a53743f2d4a5650e",
+    "validation.parquet": "67ad4895585304f723d8d8bb37ddf836d63fc3d3e600220f67b686d8dc236b38"
+  }
+}
