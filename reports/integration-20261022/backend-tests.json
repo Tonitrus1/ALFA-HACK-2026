@@ -3,155 +3,162 @@
     {
       "suite": "ru.alfahack.credit.documents.infrastructure.ClamAvScannerTest",
       "tests": 4,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.applications.RestartKeepsDraftTest",
       "tests": 1,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.access.JdbcSessionAdapterTest",
       "tests": 5,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.workspace.FeedRulesParityTest",
       "tests": 1,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.access.AccessIsolationTest",
       "tests": 12,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.architecture.ModuleBoundariesTest",
       "tests": 5,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.integration.DemoPolicyV1Test",
       "tests": 6,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.applications.SubmitFlowTest",
       "tests": 6,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.documents.DocumentFlowTest",
       "tests": 10,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.MigrationsTest",
       "tests": 3,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.applications.FinancialStatementTest",
       "tests": 11,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.platform.bindings.AdapterBindingsTest",
       "tests": 6,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.integration.RiskOutageTest",
       "tests": 1,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    {
+      "suite": "ru.alfahack.credit.integration.BackendPolicyParityTest",
+      "tests": 1,
+      "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.applications.ApplicationDraftTest",
       "tests": 9,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.adapters.LocalAdapterContractTest",
       "tests": 15,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.documents.FileInspectorTest",
       "tests": 7,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.ml.MlGatewaysTest",
       "tests": 6,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.workspace.FeedFlowTest",
-      "tests": 4,
-      "failures": 0,
+      "tests": 6,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.platform.bindings.ProviderStubsTest",
       "tests": 1,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.integration.RealMlFlowTest",
-      "tests": 3,
-      "failures": 0,
+      "tests": 4,
       "errors": 0,
-      "skipped": 3
+      "failures": 0,
+      "skipped": 4
     },
     {
       "suite": "ru.alfahack.credit.integration.DecisionFlowTest",
       "tests": 4,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     },
     {
       "suite": "ru.alfahack.credit.platform.bindings.CompositionRootTest",
       "tests": 3,
-      "failures": 0,
       "errors": 0,
+      "failures": 0,
       "skipped": 0
     }
   ]

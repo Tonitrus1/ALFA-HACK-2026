@@ -2,7 +2,7 @@
 
 Дата: 22.10.2026. Локальная среда: macOS arm64, JDK 21.0.13, Python 3.12, отдельный PostgreSQL 17 и отдельные порты. Исходные стенды пользователя не изменялись.
 
-- Backend unit/integration/architecture: 122 выполненных проверки без ошибок; opt-in live ML проверяется отдельным прогоном. Сводка `backend-tests.json`.
+- Backend unit/integration/architecture: 123 выполненных проверки без ошибок; opt-in live ML проверяется отдельным прогоном. Сводка `backend-tests.json`.
 - Java backend -> bridge -> реальные CatBoost/E5/PG: 4 проверки, включая реальный RFI и backend balance tolerance. `backend-real-ml.xml`.
 - Legacy Risk regression, включая исходный HTTP API: 31 PASS. `risk-regression.xml`.
 - Feed regression с настоящей offline E5: 58 PASS. `feed-regression.xml`.
@@ -18,6 +18,8 @@
 
 При одновременной загрузке нескольких E5-экземпляров один live Java-запрос превысил бюджет и корректно перешёл на RULES; повторный полный прогон без конкурирующей загрузки прошёл MODEL. Нагрузочные SLO, p95/p99 и ресурсные пределы этим не установлены.
 
-**Linux Docker Compose: ожидается отдельный GitHub Actions run.** Docker отсутствует на этом Mac. Локальные результаты не означают Linux PASS. Workflow собирает чистые образы, готовит веса на Linux, проверяет public API, restart, отказы и запрет внешнего TCP; результат будет указан отдельным отчётом.
+**Linux Docker Compose: PASS для 084600a в [run 39826516232](https://github.com/Tonitrus1/ALFA-HACK-2026/actions/runs/39826516232).** Проверка текущей ревизии - в [PR checks](https://github.com/Tonitrus1/ALFA-HACK-2026/pull/2/checks); код после этого прогона дополнен V16 для отката. Docker отсутствует на этом Mac. Локальные результаты не заменяют CI текущей ревизии. Workflow собирает чистые образы, готовит веса на Linux, проверяет public API, restart, отказы и запрет внешнего TCP; результат будет указан отдельным отчётом.
 
 Первоначальные сбои проверки локали embedded PostgreSQL, ошибки новых тестов и недостающий FEED_BUNDLE исправлены перед финальными прогонами. Исторические отчёты в других папках не считаются доказательством этой интеграции.
+
+Проверка обратной совместимости миграции V16: предыдущий backend 8f9b7b1 читает сохранённые решения/cursor и создаёт новые заявки/реакции на обновлённой схеме; отчёты rollback-replay-http.json и rollback-public-http.json. Возврат новой сборки проверяется rollback-restore-http.json. HTTP-клиент использует стабильный Idempotency-Key=clientEventId.

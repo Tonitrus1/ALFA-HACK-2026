@@ -20,8 +20,8 @@ def main():
     from pypdf import PdfReader
     spec=importlib.util.spec_from_file_location('architecture_render',ARCH/'sources/build.py')
     renderer=importlib.util.module_from_spec(spec);spec.loader.exec_module(renderer)
-    renderer.ST['h2'].keepWithNext=False
-    renderer.ST['h3'].keepWithNext=False
+    renderer.ST['h2'].keepWithNext=True
+    renderer.ST['h3'].keepWithNext=True
     nodes=[('UI / API client',20,70,140,64,'#edf3fb'),('HTTP gateway',195,70,140,64,'#fff4df'),('Java backend',370,70,150,64,'#edf3fb'),
            ('ML bridge',560,70,150,64,'#f0edfb'),('Risk / CatBoost',750,25,180,64,'#f0edfb'),
            ('Feed / E5 CPU',750,130,180,64,'#f0edfb'),('Backend PostgreSQL',240,260,200,64,'#eaf5ef'),
@@ -60,6 +60,7 @@ def main():
         text=(ROOT/'docs'/filename).read_text()
         text=re.sub(r'```mermaid.*?```','Схема компонентов приведена на титульной странице и в отдельном SVG.',text,flags=re.S)
         text=re.sub(r'```(?:sh)?\n(.*?)```', lambda m: '\n'.join('- `'+line.strip().rstrip('\\').strip()+'`' for line in m[1].splitlines() if line.strip()), text, flags=re.S)
+        text=text.replace('## Реестр', '**Реестр**')
         parts=text.split('## Сравнение вариантов')
         story.extend(renderer.mdflow(parts[0]))
         if len(parts)>1:

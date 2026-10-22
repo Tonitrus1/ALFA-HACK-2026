@@ -100,7 +100,7 @@ class FeedFlowTest {
         assertThat(
                         jdbc.sql(
                                         "SELECT saved_version FROM workspace.feed_state WHERE"
-                                            + " actor_id='representative-a'")
+                                                + " actor_id='representative-a'")
                                 .query(Long.class)
                                 .single())
                 .isEqualTo(3);
@@ -205,5 +205,22 @@ class FeedFlowTest {
             else assertThat(JsonPath.<Boolean>read(response, "$.hasMore")).isFalse();
         }
         assertThat(issued).hasSize(36);
+    }
+
+    @Test
+    void previousBackendCanInsertAfterAdditiveMigration() {
+        String id = UUID.randomUUID().toString();
+        jdbc.sql(
+                        "INSERT INTO"
+                            + " workspace.feed_event(actor_id,company_id,event_id,fingerprint,payload)"
+                            + " VALUES('representative-a','company-a',:id,'legacy','{}'::jsonb)")
+                .param("id", id)
+                .update();
+        assertThat(
+                        jdbc.sql("SELECT client_key FROM workspace.feed_event WHERE event_id=:id")
+                                .param("id", id)
+                                .query(String.class)
+                                .single())
+                .isEqualTo(id);
     }
 }

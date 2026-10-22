@@ -10,7 +10,7 @@ import urllib.request
 
 ROOT=Path(__file__).resolve().parents[2]
 LOCAL=ROOT/'.local/integration-native'
-p=argparse.ArgumentParser();p.add_argument('--java',type=Path,required=True);a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('--java',type=Path,required=True);p.add_argument('--jar',type=Path,default=ROOT/'backend/app/target/credit-app-0.1.0-SNAPSHOT.jar');a=p.parse_args()
 cfg=json.loads((LOCAL/'config.json').read_text())
 if (LOCAL/'backend.pid').exists():raise SystemExit('Existing backend PID file; stop dedicated native environment first.')
 import psycopg
@@ -20,7 +20,7 @@ env=os.environ.copy();env.update(SPRING_PROFILES_ACTIVE='demo',DB_URL='jdbc:post
     DB_USER='integration_admin',DB_PASSWORD=cfg['password'],ML_MODE='http',ML_BASE_URL='http://127.0.0.1:18000',
     ML_SERVICE_TOKEN=cfg['token'],SERVER_PORT='18080',SERVER_ADDRESS='127.0.0.1',CREDIT_SCANNER_ENABLED='false',OBJECTS_ROOT=str(LOCAL/'objects'))
 with (LOCAL/'backend.log').open('ab') as log:
-    process=subprocess.Popen([str(a.java.absolute()),'-jar',str(ROOT/'backend/app/target/credit-app-0.1.0-SNAPSHOT.jar')],env=env,cwd=ROOT,stdout=log,stderr=log,start_new_session=True)
+    process=subprocess.Popen([str(a.java.absolute()),'-jar',str(a.jar.absolute())],env=env,cwd=ROOT,stdout=log,stderr=log,start_new_session=True)
 (LOCAL/'backend.pid').write_text(str(process.pid))
 for _ in range(120):
     if process.poll() is not None:raise RuntimeError('Backend exited; inspect dedicated backend.log')

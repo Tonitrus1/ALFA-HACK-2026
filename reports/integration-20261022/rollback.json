@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "previousCommit": "8f9b7b18f051d0c9526670eed173257f6f9a345a",
+  "databaseMigrations": "V1-V16 retained; no downgrade, truncate or deletion",
+  "checks": [
+    "new_schema_reads_previous_data",
+    "previous_backend_reads_saved_page_and_decision",
+    "previous_backend_creates_new_application_and_feedback",
+    "restored_current_backend_replays_previous_backend_results"
+  ],
+  "artifacts": [
+    {
+      "role": "previous-backend",
+      "sha256": "29165152feab2c14480650e8359ac8e2663dd670374248712567fe31c87b78b0"
+    },
+    {
+      "role": "current-backend",
+      "sha256": "86a85c714087222f609f1bacb7e6c235763a0808d335f296c1b80a239185d93d"
+    }
+  ]
+}
