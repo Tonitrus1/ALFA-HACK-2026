@@ -129,6 +129,54 @@
         }
       }
     },
+    "/internal/compat/v1/feature-snapshots": {
+      "post": {
+        "summary": "Create Backend Snapshot",
+        "operationId": "create_backend_snapshot_internal_compat_v1_feature_snapshots_post",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BackendFeatureInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/internal/v2/feature-snapshots/{snapshot_id}": {
       "get": {
         "summary": "Snapshot",
@@ -227,6 +275,115 @@
   },
   "components": {
     "schemas": {
+      "BackendFeatureInput": {
+        "properties": {
+          "applicationId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Applicationid"
+          },
+          "submissionSnapshotId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Submissionsnapshotid"
+          },
+          "financialSnapshotId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Financialsnapshotid"
+          },
+          "financialSnapshotDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Financialsnapshotdigest"
+          },
+          "financialStatementVersion": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "minimum": 1.0,
+            "title": "Financialstatementversion"
+          },
+          "asOf": {
+            "type": "string",
+            "title": "Asof"
+          },
+          "latestSourceAvailableAt": {
+            "type": "string",
+            "title": "Latestsourceavailableat"
+          },
+          "purpose": {
+            "type": "string",
+            "const": "DEMO_RESEARCH",
+            "title": "Purpose"
+          },
+          "financialStatement": {
+            "$ref": "#/components/schemas/BackendFinancialInput"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "applicationId",
+          "submissionSnapshotId",
+          "financialSnapshotId",
+          "financialSnapshotDigest",
+          "financialStatementVersion",
+          "asOf",
+          "latestSourceAvailableAt",
+          "purpose",
+          "financialStatement"
+        ],
+        "title": "BackendFeatureInput"
+      },
+      "BackendFinancialInput": {
+        "properties": {
+          "periodStart": {
+            "type": "string",
+            "title": "Periodstart"
+          },
+          "periodEnd": {
+            "type": "string",
+            "title": "Periodend"
+          },
+          "reportingStandard": {
+            "type": "string",
+            "const": "DEMO",
+            "title": "Reportingstandard"
+          },
+          "currency": {
+            "type": "string",
+            "const": "RUB",
+            "title": "Currency"
+          },
+          "values": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Values"
+          },
+          "sourceDocumentReferences": {
+            "items": {},
+            "type": "array",
+            "maxItems": 100,
+            "title": "Sourcedocumentreferences"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "periodStart",
+          "periodEnd",
+          "reportingStandard",
+          "currency",
+          "values",
+          "sourceDocumentReferences"
+        ],
+        "title": "BackendFinancialInput"
+      },
       "FeatureInput": {
         "properties": {
           "applicationId": {

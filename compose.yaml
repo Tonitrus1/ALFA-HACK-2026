@@ -1,0 +1,104 @@
+name: credit-integrated-mvp
+x-python-health: &python-health
+  interval: 10s
+  timeout: 5s
+  retries: 12
+  start_period: 120s
+services:
+  backend-db:
+    image: postgres:17.11-bookworm
+    environment:
+      POSTGRES_DB: credit
+      POSTGRES_USER: credit
+      POSTGRES_PASSWORD: ${BACKEND_DB_PASSWORD:?Run scripts/integration/configure.py first}
+    volumes: [backend-db:/var/lib/postgresql/data]
+    networks: [internal]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U credit -d credit']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  ml-db:
+    image: postgres:17.11-bookworm
+    environment:
+      POSTGRES_DB: credit_ml
+      POSTGRES_USER: ml_admin
+      POSTGRES_PASSWORD: ${ML_ADMIN_PASSWORD:?Run configure first}
+      ML_DB_PASSWORD: ${ML_DB_PASSWORD:?Run configure first}
+    volumes:
+      - ml-db:/var/lib/postgresql/data
+      - ./deploy/ml-init.sh:/docker-entrypoint-initdb.d/01-ml.sh:ro
+      - ./ml/migrations:/migrations:ro
+    networks: [internal]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U ml_admin -d credit_ml']
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  risk:
+    build: {context: ., dockerfile: deploy/Dockerfile.risk}
+    environment:
+      ML_DATABASE_URL: postgresql://ml_runtime:${ML_DB_PASSWORD}@ml-db:5432/credit_ml
+      ML_INTERNAL_TOKEN: ${ML_SERVICE_TOKEN:?Run configure first}
+      MODEL_BUNDLE: /app/ml/artifacts/baseline
+    depends_on: {ml-db: {condition: service_healthy}}
+    networks: [internal]
+    healthcheck:
+      <<: *python-health
+      test: [CMD, python, -c, "import os,urllib.request; urllib.request.urlopen(urllib.request.Request('http://localhost:8001/health',headers={'Authorization':'Bearer '+os.environ['ML_INTERNAL_TOKEN']}),timeout=3)"]
+  feed:
+    image: credit-mvp-feed:local
+    build: {context: ., dockerfile: deploy/Dockerfile.feed}
+    environment:
+      ML_INTERNAL_TOKEN: ${ML_SERVICE_TOKEN}
+      FEED_BUNDLE: /bundle
+    volumes: [./.local/feed-bundle:/bundle:ro]
+    networks: [internal]
+    healthcheck:
+      <<: *python-health
+      test: [CMD, python, -c, "import os,urllib.request; urllib.request.urlopen(urllib.request.Request('http://localhost:8002/health',headers={'X-Service-Token':os.environ['ML_INTERNAL_TOKEN']}),timeout=3)"]
+  ml-bridge:
+    build: {context: ., dockerfile: deploy/Dockerfile.bridge}
+    environment:
+      ML_DATABASE_URL: postgresql://ml_runtime:${ML_DB_PASSWORD}@ml-db:5432/credit_ml
+      ML_SERVICE_TOKEN: ${ML_SERVICE_TOKEN}
+      RISK_BASE_URL: http://risk:8001
+      FEED_BASE_URL: http://feed:8002
+    depends_on:
+      risk: {condition: service_healthy}
+      feed: {condition: service_healthy}
+    networks: [internal]
+    healthcheck:
+      <<: *python-health
+      test: [CMD, python, -c, "import os,urllib.request; urllib.request.urlopen(urllib.request.Request('http://localhost:8000/health',headers={'X-Service-Token':os.environ['ML_SERVICE_TOKEN']}),timeout=3)"]
+  scanner:
+    image: clamav/clamav:1.4
+    environment:
+      CLAMAV_NO_FRESHCLAMD: 'true'
+    networks: [internal]
+  backend:
+    build: {context: ., dockerfile: deploy/Dockerfile.backend}
+    environment:
+      SPRING_PROFILES_ACTIVE: demo
+      DB_URL: jdbc:postgresql://backend-db:5432/credit
+      DB_USER: credit
+      DB_PASSWORD: ${BACKEND_DB_PASSWORD}
+      ML_MODE: http
+      ML_BASE_URL: http://ml-bridge:8000
+      ML_SERVICE_TOKEN: ${ML_SERVICE_TOKEN}
+      OBJECTS_ROOT: /objects
+      CLAMD_HOST: scanner
+      CREDIT_SCANNER_ENABLED: 'true'
+    depends_on:
+      backend-db: {condition: service_healthy}
+      scanner: {condition: service_started}
+      ml-bridge: {condition: service_healthy}
+    ports: ['127.0.0.1:8080:8080']
+    volumes: [objects:/objects]
+    networks: [internal]
+networks:
+  internal: {internal: true}
+volumes:
+  backend-db:
+  ml-db:
+  objects:

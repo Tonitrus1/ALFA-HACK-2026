@@ -14,6 +14,7 @@ from pydantic import BaseModel, ConfigDict, Field, StrictInt
 from typing import Literal
 from .features import build, digest, code_digest, FEATURES
 from .bundle import load_bundle, read_manifest, predict_probability
+from .backend_input import build_backend, adapter_digest
 
 class FinancialInput(BaseModel):
     model_config=ConfigDict(extra='forbid')
@@ -42,6 +43,12 @@ class RiskRequest(BaseModel):
     bundleDigest:str=Field(pattern='^[0-9a-f]{64}$')
     purpose:Literal['DEMO_RESEARCH']
     featureSchemaVersion:Literal[2]
+
+class BackendFinancialInput(FinancialInput):
+    sourceDocumentReferences:list=Field(max_length=100)
+
+class BackendFeatureInput(FeatureInput):
+    financialStatement:BackendFinancialInput
 
 BUNDLE=Path(os.environ.get('MODEL_BUNDLE','ml/artifacts/baseline'))
 DSN=os.environ['ML_DATABASE_URL']
@@ -73,9 +80,16 @@ def health():
     with db() as c: c.execute('select 1').fetchone()
     return {'ready':True,'bundleDigest':manifest['bundleDigest']}
 @app.get('/internal/v2/bundle')
-def bundle(): return {'manifest':manifest,'policy':policy}
+def bundle(): return {'manifest':manifest,'policy':policy,'backendInputAdapterDigest':adapter_digest()}
 @app.post('/internal/v2/feature-snapshots')
 def create_snapshot(body:FeatureInput):
+    return persist_snapshot(body, backend=False)
+
+@app.post('/internal/compat/v1/feature-snapshots')
+def create_backend_snapshot(body:BackendFeatureInput):
+    return persist_snapshot(body, backend=True)
+
+def persist_snapshot(body, backend=False):
     body=body.model_dump()
     required={'applicationId','submissionSnapshotId','financialStatementVersion','asOf','purpose','financialSnapshotId','financialSnapshotDigest','financialStatement','latestSourceAvailableAt'}
     if set(body)!=required or body['purpose']!='DEMO_RESEARCH': error(422,'Unsupported snapshot input/purpose')
@@ -83,9 +97,9 @@ def create_snapshot(body:FeatureInput):
     try:
         available=datetime.fromisoformat(body['latestSourceAvailableAt'].replace('Z','+00:00'));as_of=datetime.fromisoformat(body['asOf'].replace('Z','+00:00'))
         if available.tzinfo is None or as_of.tzinfo is None or available>as_of or available.date()<=datetime.fromisoformat(body['financialStatement']['periodEnd']).date(): error(422,'Source/report/asOf chronology invalid')
-        features=build(body['financialStatement'])
+        features=(build_backend if backend else build)(body['financialStatement'])
     except (ValueError,KeyError,TypeError) as e: error(422,str(e))
-    identity=body['submissionSnapshotId']+':'+manifest['featureCodeDigest']; h=digest(body)
+    identity=(('backend:'+body['financialSnapshotId']+':'+adapter_digest()) if backend else body['submissionSnapshotId'])+':'+manifest['featureCodeDigest']; h=digest(body)
     with db() as c:
         c.execute('select pg_advisory_xact_lock(hashtextextended(%s,0))',(identity,))
         old=c.execute('select * from ml.features where identity=%s',(identity,)).fetchone()
@@ -98,6 +112,7 @@ def create_snapshot(body:FeatureInput):
               'latestSourceAvailableAt':body['latestSourceAvailableAt'],'financialSnapshotId':body['financialSnapshotId'],
               'financialSnapshotDigest':body['financialSnapshotDigest'],'features':features,
               'missingFeatures':[k for k,v in features.items() if v is None]}
+        if backend: snap['inputAdapterDigest']=adapter_digest()
         snap['snapshotDigest']=digest(snap)
         c.execute('insert into ml.features(id,identity,input_hash,payload) values(%s,%s,%s,%s)',(snap['featureSnapshotId'],identity,h,Jsonb(snap)))
     return snap

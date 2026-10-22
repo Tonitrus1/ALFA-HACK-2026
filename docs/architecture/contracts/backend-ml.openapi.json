@@ -1,0 +1,691 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Backend ML compatibility API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_health_get",
+        "parameters": [
+          {
+            "name": "x-service-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "X-Service-Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/internal/v2/feature-snapshots": {
+      "post": {
+        "summary": "Features",
+        "operationId": "features_internal_v2_feature_snapshots_post",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Idempotency-Key"
+            }
+          },
+          {
+            "name": "x-service-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "X-Service-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeatureCall"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/internal/v2/risk/evaluations": {
+      "post": {
+        "summary": "Evaluate",
+        "operationId": "evaluate_internal_v2_risk_evaluations_post",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Idempotency-Key"
+            }
+          },
+          {
+            "name": "x-service-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "X-Service-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RiskCall"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/internal/v2/feed/rankings": {
+      "post": {
+        "summary": "Feed Ranking",
+        "operationId": "feed_ranking_internal_v2_feed_rankings_post",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Idempotency-Key"
+            }
+          },
+          {
+            "name": "x-service-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "X-Service-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RankingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/internal/v2/rankings": {
+      "post": {
+        "summary": "Legacy Ranking",
+        "operationId": "legacy_ranking_internal_v2_rankings_post",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Idempotency-Key"
+            }
+          },
+          {
+            "name": "x-service-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "X-Service-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": true,
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Business": {
+        "type": "string",
+        "enum": [
+          "RETAIL",
+          "SERVICES",
+          "MANUFACTURING",
+          "WHOLESALE",
+          "HOSPITALITY",
+          "OTHER"
+        ],
+        "title": "Business"
+      },
+      "CandidateText": {
+        "properties": {
+          "itemId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Itemid"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Text"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "itemId",
+          "text"
+        ],
+        "title": "CandidateText"
+      },
+      "Depth": {
+        "type": "string",
+        "enum": [
+          "BASICS",
+          "EXPLAINED",
+          "PRACTICAL"
+        ],
+        "title": "Depth"
+      },
+      "FeatureCall": {
+        "properties": {
+          "applicationId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Applicationid"
+          },
+          "submissionSnapshotId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Submissionsnapshotid"
+          },
+          "financialStatementVersion": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Financialstatementversion"
+          },
+          "asOf": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Asof"
+          },
+          "purpose": {
+            "type": "string",
+            "const": "DEMO_RESEARCH",
+            "title": "Purpose"
+          },
+          "financialSnapshotId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Financialsnapshotid"
+          },
+          "financialSnapshotDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Financialsnapshotdigest"
+          },
+          "financialStatement": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Financialstatement"
+          },
+          "latestSourceAvailableAt": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Latestsourceavailableat"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "applicationId",
+          "submissionSnapshotId",
+          "financialStatementVersion",
+          "asOf",
+          "purpose",
+          "financialSnapshotId",
+          "financialSnapshotDigest",
+          "financialStatement",
+          "latestSourceAvailableAt"
+        ],
+        "title": "FeatureCall"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Help": {
+        "type": "string",
+        "enum": [
+          "AMOUNT",
+          "OPTIONS",
+          "COST",
+          "APPLICATION"
+        ],
+        "title": "Help"
+      },
+      "Profile": {
+        "properties": {
+          "task": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Task"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "help": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Help"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "depth": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Depth"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "businessCategory": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Business"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "applicationStage": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Stage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Profile"
+      },
+      "RankingRequest": {
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Requestid"
+          },
+          "scope": {
+            "type": "string",
+            "const": "FEED",
+            "title": "Scope"
+          },
+          "exposureId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Exposureid"
+          },
+          "candidateIds": {
+            "items": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "uniqueItems": true,
+            "title": "Candidateids"
+          },
+          "candidateSetDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Candidatesetdigest"
+          },
+          "catalogVersion": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "minimum": 1.0,
+            "title": "Catalogversion"
+          },
+          "catalogDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Catalogdigest"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/Profile"
+          },
+          "topicReactions": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ReactionCounts"
+            },
+            "propertyNames": {
+              "$ref": "#/components/schemas/Topic"
+            },
+            "type": "object",
+            "title": "Topicreactions"
+          },
+          "candidateTexts": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/CandidateText"
+                },
+                "type": "array",
+                "maxItems": 100,
+                "minItems": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Candidatetexts"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requestId",
+          "scope",
+          "exposureId",
+          "candidateIds",
+          "candidateSetDigest",
+          "catalogVersion",
+          "catalogDigest",
+          "profile"
+        ],
+        "title": "RankingRequest"
+      },
+      "ReactionCounts": {
+        "properties": {
+          "helpful": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "minimum": 0.0,
+            "title": "Helpful",
+            "default": 0
+          },
+          "notInterested": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "minimum": 0.0,
+            "title": "Notinterested",
+            "default": 0
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ReactionCounts"
+      },
+      "RiskCall": {
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Requestid"
+          },
+          "featureSnapshotId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Featuresnapshotid"
+          },
+          "featureSnapshotDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Featuresnapshotdigest"
+          },
+          "featureSchemaVersion": {
+            "type": "integer",
+            "const": 2,
+            "title": "Featureschemaversion"
+          },
+          "purpose": {
+            "type": "string",
+            "const": "DEMO_RESEARCH",
+            "title": "Purpose"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requestId",
+          "featureSnapshotId",
+          "featureSnapshotDigest",
+          "featureSchemaVersion",
+          "purpose"
+        ],
+        "title": "RiskCall"
+      },
+      "Stage": {
+        "type": "string",
+        "enum": [
+          "DRAFT",
+          "SUBMITTED",
+          "NEEDS_INFORMATION",
+          "REVIEW",
+          "DECISION"
+        ],
+        "title": "Stage"
+      },
+      "Task": {
+        "type": "string",
+        "enum": [
+          "PURCHASE",
+          "CASH_GAP",
+          "EQUIPMENT",
+          "EXPANSION",
+          "EXPLORING"
+        ],
+        "title": "Task"
+      },
+      "Topic": {
+        "type": "string",
+        "enum": [
+          "CASH_GAP",
+          "WORKING_CAPITAL",
+          "SEASONALITY",
+          "EQUIPMENT",
+          "APPLICATION",
+          "FINANCING_COST"
+        ],
+        "title": "Topic"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

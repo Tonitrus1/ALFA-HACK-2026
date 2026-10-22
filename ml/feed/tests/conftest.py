@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 import pytest
 
@@ -27,4 +28,4 @@ def real_model(request, catalog):
     if not request.config.getoption('--with-model'):
         pytest.skip('Use --with-model to require real offline E5')
     from ml.feed.ranker import ModelRanker
-    return ModelRanker(catalog, Path('.local/feed-bundle'))
+    return ModelRanker(catalog, Path(os.environ.get('FEED_BUNDLE', '.local/feed-bundle')))

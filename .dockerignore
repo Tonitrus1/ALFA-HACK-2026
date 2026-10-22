@@ -1,0 +1,10 @@
+.git
+.local
+.venv*
+**/__pycache__
+**/target
+.env*
+node_modules
+reports
+datasets
+docs

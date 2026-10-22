@@ -1,0 +1,10 @@
+FROM maven:3.9-eclipse-temurin-21 AS build
+WORKDIR /src/backend
+COPY backend .
+RUN mvn -B -ntp package -DskipTests
+FROM eclipse-temurin:21-jre-jammy
+WORKDIR /app
+COPY --from=build /src/backend/app/target/credit-app-0.1.0-SNAPSHOT.jar app.jar
+RUN useradd --uid 10001 --create-home service && mkdir /objects && chown service /objects
+USER service
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

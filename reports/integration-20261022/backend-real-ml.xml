@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="ru.alfahack.credit.integration.RealMlFlowTest" time="6.725" tests="4" errors="0" skipped="0" failures="0" flakes="0">
+  <testcase name="realRiskIsRecordedAndRepeatedReviewKeepsOneInference" classname="ru.alfahack.credit.integration.RealMlFlowTest" time="1.092">
+    </testcase>
+  <testcase name="backendBalanceToleranceUsesRealModelWithoutRepair" classname="ru.alfahack.credit.integration.RealMlFlowTest" time="0.244" />
+  <testcase name="realFinanceOnlyRfiRoundTrip" classname="ru.alfahack.credit.integration.RealMlFlowTest" time="0.588" />
+  <testcase name="realFeedReturnsModelAndPublicContract" classname="ru.alfahack.credit.integration.RealMlFlowTest" time="0.444" />
+</testsuite>

@@ -1,0 +1,71 @@
+spring:
+  application:
+    name: credit-backend
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/credit}
+    username: ${DB_USER:credit}
+    # Пароль только из окружения (backend/.env или переменная DB_PASSWORD); в репозитории его нет.
+    password: ${DB_PASSWORD}
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+  servlet:
+    multipart:
+      enabled: false
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    # Миграции лежат по модулям-владельцам: db/migration/<module>/V<n>__*.sql.
+    # Номера версий глобальные; порядок согласует backend-владелец.
+    locations: classpath:db/migration
+
+credit:
+  adapters:
+    profile: local-mvp
+    automatic-provider-fallback: false
+    bindings:
+      sessions: JdbcSessionAdapter
+      cache: BoundedLocalCacheAdapter
+      events: PostgresOutboxTransportAdapter
+      objects: VersionedFilesystemObjectAdapter
+  session:
+    ttl: PT8H
+    cookie-secure: true
+  demo:
+    enabled: false
+  scheduling:
+    enabled: true
+  outbox:
+    poll-interval: PT1S
+  cache:
+    max-entries: 10000
+  scanner:
+    # In-process сканер (роль file-scanner) и ClamAV clamd в контейнере scanner.
+    enabled: true
+    clamd-host: ${CLAMD_HOST:scanner}
+    clamd-port: ${CLAMD_PORT:3310}
+    timeout: PT30S
+    poll-interval: PT2S
+  internal:
+    # Секреты служебных ролей X-Service-Token (>= 32 символов); пусто — роль отключена.
+    service-tokens:
+      file-scanner: ${FILE_SCANNER_TOKEN:}
+      document-ocr: ${DOCUMENT_OCR_TOKEN:}
+  ml:
+    # contract-double — детерминированный двойник до готовности моделей; http — ML-сервис (internal v2).
+    mode: ${ML_MODE:contract-double}
+    base-url: ${ML_BASE_URL:}
+    service-token: ${ML_SERVICE_TOKEN:}
+  review:
+    poll-interval: PT2S
+  objects:
+    # Постоянный том файлов (quarantine/clean). В контейнере задаётся OBJECTS_ROOT на volume.
+    root: ${OBJECTS_ROOT:${user.home}/.local/share/credit-backend/objects}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

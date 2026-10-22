@@ -4,7 +4,7 @@
   "applicationImplemented": false,
   "runtimeTestsExecuted": false,
   "counts": {
-    "checks": 426,
+    "checks": 427,
     "failed": 0,
     "schemaFixtures": 185,
     "negativeSchemaFixtures": 104,
@@ -31,6 +31,11 @@
     },
     {
       "check": "json:contracts/adapter-bindings.schema.json",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "json:contracts/backend-ml.openapi.json",
       "passed": true,
       "detail": ""
     },
