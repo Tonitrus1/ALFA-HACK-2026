@@ -24,20 +24,18 @@ import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import ru.alfahack.credit.journey.application.OutboxDispatcher;
 import ru.alfahack.credit.support.Bodies;
-import ru.alfahack.credit.support.ConfirmedFinancials;
 import ru.alfahack.credit.support.DemoClient;
+import ru.alfahack.credit.support.Financials;
 import ru.alfahack.credit.support.IntegrationTest;
 
-/** P05 «submit receipt dedup» и событие симулятора: SUBMITTED → REVIEW через outbox. */
+/** P05 «submit receipt dedup» и событие симулятора: SUBMITTED → REVIEW через outbox; финансы подтверждены через API. */
 @IntegrationTest
-@Import(ConfirmedFinancials.class)
 class SubmitFlowTest {
 
     @Autowired
@@ -61,7 +59,10 @@ class SubmitFlowTest {
                         .header("Idempotency-Key", "create-" + UUID.randomUUID()))
                 .andExpect(status().isCreated())
                 .andReturn().getResponse().getContentAsString();
-        return JsonPath.read(body, "$.applicationId");
+        String id = JsonPath.read(body, "$.applicationId");
+        // Сохранение (v2) и подтверждение (v3) финансовой анкеты; submit ожидает версию 3.
+        Financials.fillAndConfirm(mvc, a, id, 1);
+        return id;
     }
 
     MvcResult submit(String applicationId, String key, String body) throws Exception {
@@ -75,22 +76,22 @@ class SubmitFlowTest {
         String id = createDraft(50_000_000);
         String key = "submit-" + UUID.randomUUID();
 
-        MvcResult first = submit(id, key, Bodies.submit(1, 1));
+        MvcResult first = submit(id, key, Bodies.submit(3, 1));
         assertThat(first.getResponse().getStatus()).isEqualTo(202);
         String operationId = JsonPath.read(first.getResponse().getContentAsString(), "$.operationId");
         assertThat(first.getResponse().getHeader("Location")).isEqualTo("/api/v1/operations/" + operationId);
         assertThat(first.getResponse().getHeader("Retry-After")).isEqualTo("1");
 
-        MvcResult repeat = submit(id, key, Bodies.submit(1, 1));
+        MvcResult repeat = submit(id, key, Bodies.submit(3, 1));
         assertThat(repeat.getResponse().getStatus()).isEqualTo(202);
         assertThat(repeat.getResponse().getContentAsString()).isEqualTo(first.getResponse().getContentAsString());
 
-        MvcResult otherBody = submit(id, key, Bodies.submit(2, 1));
+        MvcResult otherBody = submit(id, key, Bodies.submit(4, 1));
         assertThat(otherBody.getResponse().getStatus()).isEqualTo(409);
         assertThat((String) JsonPath.read(otherBody.getResponse().getContentAsString(), "$.code"))
                 .isEqualTo("IDEMPOTENCY_KEY_REUSED");
 
-        MvcResult otherKey = submit(id, "submit-" + UUID.randomUUID(), Bodies.submit(1, 1));
+        MvcResult otherKey = submit(id, "submit-" + UUID.randomUUID(), Bodies.submit(3, 1));
         assertThat(otherKey.getResponse().getStatus()).isEqualTo(409);
         assertThat((String) JsonPath.read(otherKey.getResponse().getContentAsString(), "$.code"))
                 .isEqualTo("APPLICATION_ALREADY_SUBMITTED");
@@ -108,7 +109,7 @@ class SubmitFlowTest {
         try {
             List<Future<MvcResult>> futures = new ArrayList<>();
             for (int i = 0; i < 4; i++) {
-                Callable<MvcResult> call = () -> submit(id, key, Bodies.submit(1, 1));
+                Callable<MvcResult> call = () -> submit(id, key, Bodies.submit(3, 1));
                 futures.add(pool.submit(call));
             }
             Set<String> operationIds = new HashSet<>();
@@ -127,7 +128,7 @@ class SubmitFlowTest {
     @Test
     void simulatorAcceptsCaseOnceAndOperationSucceeds() throws Exception {
         String id = createDraft(50_000_000);
-        String body = submit(id, "submit-" + UUID.randomUUID(), Bodies.submit(1, 1)).getResponse().getContentAsString();
+        String body = submit(id, "submit-" + UUID.randomUUID(), Bodies.submit(3, 1)).getResponse().getContentAsString();
         String operationId = JsonPath.read(body, "$.operationId");
 
         mvc.perform(a.sign(get("/api/v1/operations/" + operationId)))
@@ -164,9 +165,9 @@ class SubmitFlowTest {
     @Test
     void submittedApplicationIsImmutable() throws Exception {
         String id = createDraft(50_000_000);
-        submit(id, "submit-" + UUID.randomUUID(), Bodies.submit(1, 1));
+        submit(id, "submit-" + UUID.randomUUID(), Bodies.submit(3, 1));
 
-        mvc.perform(a.json(patch("/api/v1/applications/" + id), "{\"termMonths\":6}").header("If-Match", "\"v2\""))
+        mvc.perform(a.json(patch("/api/v1/applications/" + id), "{\"termMonths\":6}").header("If-Match", "\"v4\""))
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.code").value("APPLICATION_NOT_EDITABLE"));
         assertThatThrownBy(() -> jdbc.sql(
@@ -180,26 +181,26 @@ class SubmitFlowTest {
         String id = createDraft(50_000_000);
         assertThat(submit(id, "submit-" + UUID.randomUUID(), Bodies.submit(7, 1)).getResponse().getStatus())
                 .isEqualTo(409);
-        assertThat(submit(id, "submit-" + UUID.randomUUID(), Bodies.submit(1, 2)).getResponse().getContentAsString())
+        assertThat(submit(id, "submit-" + UUID.randomUUID(), Bodies.submit(3, 2)).getResponse().getContentAsString())
                 .contains("FINANCIAL_CONFIRMATION_REQUIRED");
         assertThat(submit(id, "submit-" + UUID.randomUUID(), """
-                {"expectedVersion":1,"consentRecordIds":[],"documentIds":["d1"],"documentReferences":[],
+                {"expectedVersion":3,"consentRecordIds":[],"documentIds":["d1"],"documentReferences":[],
                  "requirementsVersion":1,"financialStatementVersion":1}
                 """).getResponse().getContentAsString()).contains("DOCUMENT_REFERENCES_MISMATCH");
         assertThat(submit(id, "submit-" + UUID.randomUUID(), """
-                {"expectedVersion":1,"consentRecordIds":[],"documentIds":[],"documentReferences":[],
+                {"expectedVersion":3,"consentRecordIds":[],"documentIds":[],"documentReferences":[],
                  "requirementsVersion":2,"financialStatementVersion":1}
                 """).getResponse().getContentAsString()).contains("DOCUMENT_REQUIREMENTS_CHANGED");
 
         String tooBig = createDraft(900_000_000);
-        assertThat(submit(tooBig, "submit-" + UUID.randomUUID(), Bodies.submit(1, 1)).getResponse().getContentAsString())
+        assertThat(submit(tooBig, "submit-" + UUID.randomUUID(), Bodies.submit(3, 1)).getResponse().getContentAsString())
                 .contains("TERMS_OUT_OF_RANGE");
     }
 
     @Test
     void operationIsVisibleOnlyToItsActorAndCompany() throws Exception {
         String id = createDraft(50_000_000);
-        String body = submit(id, "submit-" + UUID.randomUUID(), Bodies.submit(1, 1)).getResponse().getContentAsString();
+        String body = submit(id, "submit-" + UUID.randomUUID(), Bodies.submit(3, 1)).getResponse().getContentAsString();
         String operationId = JsonPath.read(body, "$.operationId");
         DemoClient b = DemoClient.login(mvc, "representative-b");
 

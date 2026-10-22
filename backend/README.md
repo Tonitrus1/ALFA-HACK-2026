@@ -41,8 +41,15 @@ Java 21, Spring Boot 4.1.1, PostgreSQL 17.11, Maven (через `./mvnw`), Flywa
 - Create — 201 с повтором по `Idempotency-Key` (тот же ресурс; другой body — 409 `IDEMPOTENCY_KEY_REUSED`). PATCH — `If-Match: "v{n}"`, CAS по версии.
 - Submit — 202 + receipt. Повтор с тем же ключом возвращает исходный receipt до проверок состояния. Один commit: заявка → `SUBMITTED`, неизменяемый `submission_snapshot`, `command_operation`, событие `SubmissionRequested` в `journey.outbox`.
 - `OutboxDispatcher` (SKIP LOCKED, lease, backoff, видимый `FAILED`) доставляет события в in-process обработчики. `BankSimulator` по inbox создаёт дело (дедуп по `externalRequestId`), переводит операцию в `SUCCEEDED` и публикует `CaseAccepted` (статус `REVIEW`).
-- Предусловия, которыми владеют другие задачи, — `SubmissionPrerequisites`. Пока нет P08, подтверждённых финансов нет, поэтому submit отказывает `FINANCIAL_CONFIRMATION_REQUIRED`; непустые ссылки на документы/согласия отклоняются до P10/модуля согласий.
+- Предусловия submit — `SubmissionPrerequisites`: финансы (P08) проверяются по-настоящему; непустые ссылки на документы/согласия отклоняются до P10/модуля согласий (`DocumentReferenceGate`).
 - Синтетический каталог (`working-capital`, `credit-line`, `overdraft`) — в seed профиля `demo`.
+
+## Финансовая анкета (P08)
+
+- `GET/PUT /api/v1/applications/{id}/financial-statement`, `POST .../confirm`; `If-Match` — ETag заявки (`containerVersion`), не `statementVersion`.
+- PUT заменяет форму DEMO Financial v1 (один календарный год, RUB, копейки; неполный черновик разрешён). Изменение содержимого → новая `statementVersion`, подтверждение сброшено. Тот же ввод ничего не меняет.
+- Confirm: все 8 полей, `totalAssets > 0`, `currentAssets ≤ totalAssets`, `currentLiabilities ≤ totalLiabilities`, баланс с demo-допуском `max(100 коп., 1% totalAssets)`, точные `documentReferences`. Provenance (MANUAL, actor, time) формирует сервер; клиент не может прислать `confirmed`/provenance.
+- Submit закрепляет неизменяемый `financial_snapshot` подтверждённой версии в той же транзакции; `financialSnapshotId` создаёт сервер.
 
 ## Запуск
 

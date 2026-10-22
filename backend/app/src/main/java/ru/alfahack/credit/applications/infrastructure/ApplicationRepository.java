@@ -138,6 +138,18 @@ public class ApplicationRepository {
                 .update() == 1;
     }
 
+    /** Версия контейнера (ETag) растёт при изменении финансовой формы черновика. */
+    public boolean bumpVersion(String applicationId, long expectedVersion, Instant now) {
+        return jdbc.sql("""
+                        UPDATE applications.application SET version = version + 1, updated_at = :now
+                        WHERE application_id = :id AND version = :expectedVersion AND status = 'DRAFT'
+                        """)
+                .param("now", Timestamp.from(now))
+                .param("id", applicationId)
+                .param("expectedVersion", expectedVersion)
+                .update() == 1;
+    }
+
     public boolean markSubmitted(
             String applicationId, long expectedVersion, long financialStatementVersion, String financialSnapshotId,
             Instant now) {
