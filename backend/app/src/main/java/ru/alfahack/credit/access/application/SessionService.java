@@ -112,6 +112,8 @@ public class SessionService {
         return new ApplicationException(ErrorKind.CONFLICT, COMPANY_CONTEXT_CHANGED, "Компания в сессии изменилась");
     }
 
+    public void logout(AuthenticatedSession session) { revokeQuietly(session); }
+
     private void revokeQuietly(AuthenticatedSession previous) {
         try {
             sessions.revoke(previous.sessionHash(), previous.version());

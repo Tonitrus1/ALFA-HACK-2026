@@ -13,10 +13,20 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
 from typing import Literal
 
-from feed.catalog import Catalog, candidate_digest
-from feed.integration import make_request
-from feed.ranker import RulesRanker, validate_request, RankingError
-from feed.schemas import RankingRequest, RankingResult
+# Selecting a release changes technical ranking/catalog compatibility, never business policy.
+FEED_RELEASE = os.environ.get('FEED_RELEASE', 'v1')
+if FEED_RELEASE == 'v1':
+    from feed.catalog import Catalog, candidate_digest
+    from feed.integration import make_request
+    from feed.ranker import RulesRanker, validate_request, RankingError
+    from feed.schemas import RankingRequest, RankingResult
+elif FEED_RELEASE == 'v2':
+    from feed_v2.catalog import Catalog, candidate_digest
+    from feed_v2.integration import make_request
+    from feed_v2.ranker import RulesRanker, validate_request, RankingError
+    from feed_v2.schemas import RankingRequest, RankingResult
+else:
+    raise RuntimeError('FEED_RELEASE must be v1 or v2')
 from scoring.features import digest
 from .store import Conflict, Store
 
@@ -44,6 +54,16 @@ class RiskCall(BaseModel):
     featureSnapshotDigest: str = Field(pattern='^[0-9a-f]{64}$')
     featureSchemaVersion: Literal[2]
     purpose: Literal['DEMO_RESEARCH']
+
+
+class FraudCall(BaseModel):
+    model_config = ConfigDict(extra='forbid')
+    companyId: str = Field(min_length=1, max_length=128)
+    applicationId: str = Field(min_length=1, max_length=128)
+    attemptId: str = Field(min_length=1, max_length=128)
+    financialSnapshotId: str = Field(min_length=1, max_length=128)
+    riskInferenceId: str = Field(min_length=1, max_length=128)
+    reference: dict
 
 
 def backend_statement_digest(statement, version):
@@ -122,11 +142,11 @@ def create_app(store=None, risk_transport=None, feed_transport=None, token=None)
     def ranking(body):
         validate_request(catalog, body)
         def execute(pinned):
-            if pinned['catalogDigest'] != catalog.digest:
+            wire = pinned.get('body', pinned)
+            if wire['catalogDigest'] != catalog.digest:
                 raise Conflict('Pinned catalog is unavailable')
             try:
-                raw = upstream(feed, 'POST', '/internal/v2/rankings', pinned,
-                               pinned['requestId'])
+                raw = upstream(feed, 'POST', '/internal/v2/rankings', wire, wire['requestId'])
             except HTTPException as exc:
                 if exc.status_code not in (429, 500, 502, 503, 504):
                     raise
@@ -135,11 +155,21 @@ def create_app(store=None, risk_transport=None, feed_transport=None, token=None)
             if (result.requestId != body.requestId or result.exposureId != body.exposureId
                     or result.candidateSetDigest != body.candidateSetDigest
                     or result.catalogDigest != body.catalogDigest
+                    or len(result.rankedIds) != len(body.candidateIds)
                     or set(result.rankedIds) != set(body.candidateIds)):
                 raise Conflict('Upstream ranking identity/permutation mismatch')
+            if result.mode == 'MODEL' and pinned.get('releaseId') and result.releaseId != pinned['releaseId']:
+                raise Conflict('Pinned feed release is unavailable; retry cannot repin')
             return result.model_dump(mode='json')
         payload = body.model_dump(mode='json', exclude_none=True)
-        return store.call('feed:' + body.requestId, payload, lambda: payload, execute)
+        def prepare():
+            try:
+                metadata = upstream(feed, 'GET', '/health')
+            except HTTPException:
+                metadata = {}
+            return {'body': payload, 'releaseId': metadata.get('releaseId'),
+                    'bundleDigest': metadata.get('bundleDigest'), 'catalogDigest': catalog.digest}
+        return store.call('feed:' + body.requestId, payload, prepare, execute)
 
     @app.get('/health')
     def health():
@@ -219,6 +249,68 @@ def create_app(store=None, risk_transport=None, feed_transport=None, token=None)
             return {k: v for k, v in dict(result, featureSnapshotDigest=body.featureSnapshotDigest).items()
                     if k != 'purpose'}
         return store.call('risk:' + body.requestId, payload, prepare, execute)
+
+    @app.post('/internal/compat/v1/fraud/evaluations')
+    def fraud_evaluate(body: FraudCall, idempotency_key: str = Header(alias='Idempotency-Key')):
+        if idempotency_key != 'fraud:' + body.attemptId:
+            raise Conflict('Fraud key must identify review attempt')
+        features = store.get('features:' + body.financialSnapshotId)
+        inference = store.get('risk:risk:' + body.financialSnapshotId)
+        if not features or not features['response'] or not inference or not inference['response']:
+            raise Conflict('Fraud requires persisted Risk for exact financial snapshot')
+        native = features['response']['native']
+        source = features['request']['body']
+        risk_result = inference['response']
+        if (source['applicationId'] != body.applicationId or risk_result['inferenceId'] != body.riskInferenceId
+                or risk_result['featureSnapshotId'] != native['featureSnapshotId']):
+            raise Conflict('Fraud/Risk application/snapshot/inference mismatch')
+        ref = body.reference
+        required = {'referenceId','companyId','version','source','availableAt','statement','statementDigest','recordDigest'}
+        if (set(ref) != required or ref['companyId'] != body.companyId or ref['source'] != 'SYNTHETIC_DEMO'
+                or type(ref['version']) is not int or ref['version'] < 1
+                or digest(ref['statement']) != ref['statementDigest']
+                or digest({k:v for k,v in ref.items() if k != 'recordDigest'}) != ref['recordDigest']):
+            raise Conflict('Invalid synthetic reference identity/provenance/digest')
+        payload = body.model_dump(mode='json')
+        def prepare():
+            metadata = upstream(risk, 'GET', '/internal/compat/v1/fraud/bundle')
+            manifest = metadata['manifest']
+            if manifest['riskBundleDigest'] != features['response']['bundleDigest']:
+                raise Conflict('Fraud/Risk release mismatch')
+            return {'body': payload, 'bundleDigest': manifest['bundleDigest'],
+                    'inputAdapterDigest': metadata['backendInputAdapterDigest'],
+                    'riskBundleDigest': manifest['riskBundleDigest']}
+        def execute(pinned):
+            metadata = upstream(risk, 'GET', '/internal/compat/v1/fraud/bundle')
+            if (metadata['manifest']['bundleDigest'] != pinned['bundleDigest']
+                    or metadata['backendInputAdapterDigest'] != pinned['inputAdapterDigest']):
+                raise Conflict('Pinned fraud release/adapter unavailable')
+            feature_body = dict(source, riskFeatureSnapshotId=native['featureSnapshotId'],
+                                referenceSnapshotId=ref['referenceId'], referenceSnapshotDigest=ref['statementDigest'],
+                                referenceAvailableAt=ref['availableAt'],referenceStatement=ref['statement'])
+            feature = upstream(risk,'POST','/internal/compat/v1/fraud/feature-snapshots',feature_body)
+            check={k:v for k,v in feature.items() if k != 'snapshotDigest'}
+            if (digest(check) != feature['snapshotDigest'] or feature['referenceSnapshotDigest'] != ref['statementDigest']
+                    or feature['riskFeatureSnapshotId'] != native['featureSnapshotId']):
+                raise Conflict('Fraud feature integrity mismatch')
+            result=upstream(risk,'POST','/internal/compat/v1/fraud/evaluations',{
+                'requestId': risk_result['requestId'], 'featureSnapshotId': feature['featureSnapshotId'],
+                'featureSnapshotDigest':feature['snapshotDigest'], 'bundleDigest':pinned['bundleDigest'],
+                'riskInferenceId':body.riskInferenceId,'purpose':'DEMO_RESEARCH','featureSchemaVersion':1})
+            if (result['bundleDigest'] != pinned['bundleDigest'] or result['riskBundleDigest'] != pinned['riskBundleDigest']
+                    or result['riskInferenceId'] != body.riskInferenceId or result['applicationId'] != body.applicationId
+                    or result['financialSnapshotDigest'] != source['financialSnapshotDigest']
+                    or result['referenceSnapshotId'] != ref['referenceId'] or result['referenceSnapshotDigest'] != ref['statementDigest']
+                    or result['featureSnapshotDigest'] != feature['snapshotDigest']
+                    or result['scoreKind'] != 'SYNTHETIC_MANIPULATION_PROXY'
+                    or result['calibrationStatus'] != 'DEMONSTRATION'
+                    or type(result['score']) not in (int,float) or not 0 <= result['score'] <= 1):
+                raise Conflict('Fraud result identity/integrity mismatch')
+            return dict(result, companyId=body.companyId,attemptId=body.attemptId,financialSnapshotId=body.financialSnapshotId,
+                        backendFinancialSnapshotDigest=features['response']['backend']['financialSnapshotDigest'],
+                        referenceRecordDigest=ref['recordDigest'],referenceSource=ref['source'],referenceVersion=ref['version'],
+                        referenceAvailableAt=ref['availableAt'],inputAdapterDigest=pinned['inputAdapterDigest'])
+        return store.call('fraud:' + body.attemptId, payload, prepare, execute)
 
     @app.post('/internal/v2/feed/rankings')
     def feed_ranking(body: RankingRequest, idempotency_key: str = Header(alias='Idempotency-Key')):

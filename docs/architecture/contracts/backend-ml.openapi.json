@@ -157,6 +157,63 @@
         }
       }
     },
+    "/internal/compat/v1/fraud/evaluations": {
+      "post": {
+        "summary": "Fraud Evaluate",
+        "operationId": "fraud_evaluate_internal_compat_v1_fraud_evaluations_post",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Idempotency-Key"
+            }
+          },
+          {
+            "name": "x-service-token",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "X-Service-Token"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FraudCall"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/internal/v2/feed/rankings": {
       "post": {
         "summary": "Feed Ranking",
@@ -385,6 +442,56 @@
           "latestSourceAvailableAt"
         ],
         "title": "FeatureCall"
+      },
+      "FraudCall": {
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Companyid"
+          },
+          "applicationId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Applicationid"
+          },
+          "attemptId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Attemptid"
+          },
+          "financialSnapshotId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Financialsnapshotid"
+          },
+          "riskInferenceId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Riskinferenceid"
+          },
+          "reference": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Reference"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "companyId",
+          "applicationId",
+          "attemptId",
+          "financialSnapshotId",
+          "riskInferenceId",
+          "reference"
+        ],
+        "title": "FraudCall"
       },
       "HTTPValidationError": {
         "properties": {

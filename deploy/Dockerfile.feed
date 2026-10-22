@@ -1,10 +1,18 @@
-FROM python:3.12-slim-bookworm
+FROM python:3.12-slim-bookworm AS runtime
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONPATH=/app/ml HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 FEED_CPU_THREADS=2
 WORKDIR /app
-COPY ml/feed/requirements.txt /tmp/requirements.txt
+RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 && rm -rf /var/lib/apt/lists/*
+COPY ml/feed_v2/requirements.txt /tmp/requirements.txt
 # The CPU wheel index prevents a multi-GB CUDA runtime on a CPU-only MVP.
 RUN pip install --no-cache-dir torch==2.6.0 --index-url https://download.pytorch.org/whl/cpu && pip install --no-cache-dir -r /tmp/requirements.txt
 COPY ml/feed ml/feed
+COPY ml/feed_v2 ml/feed_v2
+COPY ml/feed_runtime.py ml/feed_runtime.py
 RUN useradd --uid 10001 --create-home service
 USER service
-CMD ["uvicorn", "feed.server:create_app", "--factory", "--host", "0.0.0.0", "--port", "8002", "--no-access-log"]
+CMD ["uvicorn", "feed_runtime:create_app", "--factory", "--host", "0.0.0.0", "--port", "8002", "--no-access-log"]
+
+FROM runtime AS preparation
+USER root
+RUN pip install --no-cache-dir pytest==8.3.5
+USER service

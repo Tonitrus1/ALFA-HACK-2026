@@ -27,6 +27,14 @@ class SessionController {
         this.sessions = sessions;
     }
 
+    @PostMapping("/logout")
+    org.springframework.http.ResponseEntity<Void> logout(AuthenticatedSession session,
+            @RequestHeader("X-Company-Context") long context) {
+        sessions.logout(session);
+        return org.springframework.http.ResponseEntity.noContent()
+            .header("Set-Cookie", "credit_session=; Path=/; Max-Age=0; HttpOnly; SameSite=Strict").build();
+    }
+
     @GetMapping
     SessionResponse current(AuthenticatedSession session) {
         return SessionResponse.of(session, displayName(session));

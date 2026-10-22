@@ -49,6 +49,7 @@ public class ReviewWorker {
     private final SubmissionQueries submissions;
     private final CatalogService catalog;
     private final RiskGateway risk;
+    private final FraudReviewService fraud;
     private final InformationRequests requests;
     private final InformationResponseService responses;
     private final Outbox outbox;
@@ -56,7 +57,7 @@ public class ReviewWorker {
     private final Clock clock;
 
     public ReviewWorker(ReviewTaskRepository tasks, BankCaseRepository cases, DecisionRepository decisions,
-                        SubmissionQueries submissions, CatalogService catalog, RiskGateway risk,
+                        SubmissionQueries submissions, CatalogService catalog, RiskGateway risk, FraudReviewService fraud,
                         InformationRequests requests, InformationResponseService responses, Outbox outbox,
                         TransactionTemplate transactions, Clock clock) {
         this.tasks = tasks;
@@ -65,6 +66,7 @@ public class ReviewWorker {
         this.submissions = submissions;
         this.catalog = catalog;
         this.risk = risk;
+        this.fraud = fraud;
         this.requests = requests;
         this.responses = responses;
         this.outbox = outbox;
@@ -104,10 +106,17 @@ public class ReviewWorker {
             record(task, bankCase, application, financial, early.get(), Optional.empty(), "NOT_REQUIRED");
             return true;
         }
+        long started = System.nanoTime();
         Optional<RiskAssessment> assessment = risk.assess(new RiskGateway.RiskInput(application.applicationId(),
                 submitted.submissionSnapshotId(), financial.financialSnapshotId(), financial.digest(),
                 financial.statementVersion(), mlStatement(financial.statement()), financial.createdAt()));
         DemoPolicyV1.Decision decision = DemoPolicyV1.withRisk(input, assessment.map(RiskAssessment::score));
+        if (fraud.enabled() && assessment.isPresent()) {
+            Duration remaining=Duration.ofSeconds(6).minusNanos(System.nanoTime()-started);
+            Optional<FraudReviewService.Result> proxy=fraud.assess(task.taskId(),bankCase,financial,assessment.get(),remaining);
+            decision=ru.alfahack.credit.integration.domain.SyntheticFraudPolicy.decide(input,assessment.map(RiskAssessment::score),
+                true,proxy.map(FraudReviewService.Result::score),System.nanoTime()-started>Duration.ofSeconds(6).toNanos());
+        }
         record(task, bankCase, application, financial, decision, assessment,
                 assessment.map(RiskAssessment::mode).orElse("UNAVAILABLE"));
         return true;
@@ -127,7 +136,7 @@ public class ReviewWorker {
             String decisionId = Ids.newId();
             List<String> offerIds = decision.offerAmountMinor() == null ? List.of() : List.of(Ids.newId());
             decisions.insertDecision(new DecisionView(decisionId, bankCase.caseId(), application.applicationId(),
-                    caseVersion, outcome, decision.publicExplanation(), DemoPolicyV1.VERSION, decision.reasonCodes(),
+                    caseVersion, outcome, decision.publicExplanation(), fraud.enabled() ? FraudReviewService.POLICY : DemoPolicyV1.VERSION, decision.reasonCodes(),
                     assessment.map(RiskAssessment::inferenceId).orElse(null), riskMode,
                     financial.financialSnapshotId(), offerIds, now));
             for (String offerId : offerIds) {

@@ -1,10 +1,10 @@
 name: Integrated backend and ML MVP
 on:
   push:
-    branches: ['integration/backend-ml-mvp']
-    paths: ['backend/**', 'ml/**', 'frontend/integration/**', 'deploy/**', 'compose.yaml', 'scripts/integration/**', '.github/workflows/integrated-mvp.yml']
+    branches: ['integration/**']
+    paths: ['backend/**', 'ml/**', 'frontend/**', 'deploy/**', 'compose.yaml', 'scripts/integration/**', '.github/workflows/integrated-mvp.yml']
   pull_request:
-    paths: ['backend/**', 'ml/**', 'deploy/**', 'compose.yaml', 'scripts/integration/**', '.github/workflows/integrated-mvp.yml']
+    paths: ['backend/**', 'ml/**', 'frontend/**', 'deploy/**', 'compose.yaml', 'scripts/integration/**', '.github/workflows/integrated-mvp.yml']
   workflow_dispatch:
 concurrency:
   group: integrated-mvp-${{ github.head_ref || github.ref_name }}
@@ -23,42 +23,28 @@ jobs:
         env: {LC_ALL: C, LANG: C}
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
-      - run: npx --yes --package typescript@5.9.3 tsc --noEmit --strict --target ES2022 --lib ES2022,DOM frontend/integration/api.ts
+      - run: npm ci --no-audit --no-fund
+        working-directory: frontend
+      - run: npm run build && npm test
+        working-directory: frontend
       - uses: actions/upload-artifact@v4
         if: always()
         with: {name: backend-test-results, path: 'backend/**/target/surefire-reports/TEST-*.xml'}
   compose:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - run: python3 -m pip install jsonschema==4.25.1
       - run: python3 scripts/integration/configure.py
       - run: docker compose config --quiet
       - run: docker compose build
-      - name: Prepare pinned E5 on the target Linux CPU environment
-        run: |
-          mkdir -p .local/feed-bundle
-          docker run --rm --user "$(id -u):$(id -g)" -e HOME=/tmp -e HF_HUB_OFFLINE=0 -e TRANSFORMERS_OFFLINE=0 -v "$PWD/.local/feed-bundle:/bundle" --entrypoint python credit-mvp-feed:local -m feed.prepare --bundle /bundle --download
-      - run: docker compose up -d --wait --wait-timeout 300
-      - name: Real public HTTP flow
-        run: python3 scripts/integration/smoke.py --output reports/integration-linux/smoke.json
-      - name: Restart preserves state and accepted responses
-        run: |
-          docker compose restart backend ml-bridge risk
-          python3 scripts/integration/smoke.py --replay --output reports/integration-linux/restart.json
-      - name: Feed outage uses rules
-        run: |
-          docker compose stop feed
-          python3 scripts/integration/smoke.py --expect-feed RULES --output reports/integration-linux/feed-outage.json
-          docker compose start feed
-      - name: Risk outage routes eligible application to manual review
-        run: |
-          docker compose stop risk
-          python3 scripts/integration/smoke.py --risk-outage --output reports/integration-linux/risk-outage.json
-      - name: Runtime network is isolated
-        run: |
-          docker compose exec -T ml-bridge python -c "import socket; s=socket.socket(); s.settimeout(2); result=s.connect_ex(('1.1.1.1',443)); s.close(); assert result != 0, 'External TCP unexpectedly allowed'"
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - run: npm ci --no-audit --no-fund && npx playwright install --with-deps chromium
+        working-directory: frontend
+      - name: Baseline, new releases, browser, failure, persistence and rollback acceptance
+        run: bash scripts/integration/linux_acceptance.sh
       - name: Collect evidence
         if: always()
         run: |
@@ -67,6 +53,11 @@ jobs:
           docker compose images --format json > reports/integration-linux/images.json
       - uses: actions/upload-artifact@v4
         if: always()
-        with: {name: integrated-linux-evidence, path: reports/integration-linux}
+        with:
+          name: integrated-linux-evidence
+          path: |
+            reports/integration-linux
+            reports/ui-feed-antifraud/browser.json
+            .local/browser-results
       - run: docker compose down
         if: always()

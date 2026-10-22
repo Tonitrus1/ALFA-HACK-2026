@@ -97,10 +97,10 @@ class FeedController {
         return feed.feedback(s, event.value(), key);
     }
 
-    @GetMapping(value = "/assets/feed/v1/illustrations/{name}", produces = "image/svg+xml")
+    @GetMapping(value = "/assets/feed/{release:v1|v2}/illustrations/{name}", produces = "image/svg+xml")
     ResponseEntity<byte[]> illustration(
-            @PathVariable @Pattern(regexp = "[a-z_]+\\.svg") String name) throws IOException {
-        ClassPathResource resource = new ClassPathResource("feed/illustrations/" + name);
+            @PathVariable String release, @PathVariable @Pattern(regexp = "[a-z_]+\\.svg") String name) throws IOException {
+        ClassPathResource resource = new ClassPathResource(("v2".equals(release) ? "feed/releases/v2/illustrations/" : "feed/illustrations/") + name);
         if (!resource.exists()) throw ApplicationException.notFound();
         return ResponseEntity.ok()
                 .header("Cache-Control", "public, max-age=3600")

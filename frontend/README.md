@@ -1,15 +1,7 @@
-# Фронтенд
+# Существующий UI на фактическом backend API
 
-> **Интеграционная поставка 22.10.2026:** backend + реальные Risk/Feed, ML bridge и Compose. Текущая архитектура, запуск и ограничения: [руководство интеграции](../docs/integration-mvp.md). Исторические описания ниже относятся к исходным веткам и не подтверждают этот runtime.
+UI перенесён из `/Users/user/Documents/Alfa_hack/frontend`; исходная папка не изменена. Сборка запускает настоящий API-клиент без MSW. `npm ci`, `npm run build`, `npm test`, `npm run test:e2e`. Для локальной разработки `BACKEND_ORIGIN=http://127.0.0.1:18080 npm run dev`; demo Origin 5173 разрешён. В Compose UI раздаёт общий gateway 8080.
 
+Карта DTO и ошибок: `../docs/ui-feed-antifraud-decisions.md`. Полная подготовка и ограничения: `../docs/ui-feed-antifraud-runbook.md`. `docs/INTEGRATION.md` сохранён как исторический provisional-контракт исходного UI и не описывает текущий transport.
 
-Папка для кода пользовательского интерфейса. Реализация ещё не добавлена.
-
-- [Руководство фронтенда](../docs/architecture/packages/frontend/docs/guide.md).
-- [Руководство в PDF](../docs/architecture/packages/frontend/frontend-guide.pdf).
-- [Публичный API](../docs/architecture/contracts/public.openapi.json).
-- [Интеграция рекомендательной ленты](../docs/feed-integration.md#обязанности-backend-и-frontend): карточки и SVG, реакции, видимость, пагинация и сохранённое.
-- [Примеры ответов ленты](../ml/feed/examples/).
-- [Правила работы команды](../CONTRIBUTING.md).
-
-Создавайте ветку под задачу от свежей `main`, например `frontend/login`, и открывайте Pull Request в `main`.
+Playwright integrated config использует реальный backend и модели. Для Linux сначала `npx playwright install --with-deps chromium`; для локального macOS используется установленный Chrome. Сервер должен быть запущен заранее; mock mode в точке входа отсутствует. Чат и OCR появятся позже.

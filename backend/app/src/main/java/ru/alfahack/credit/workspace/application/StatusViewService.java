@@ -60,7 +60,8 @@ public class StatusViewService {
             case "DRAFT" -> new NextAction("CONTINUE", "Продолжить заполнение", path);
             case "NEEDS_INFO" -> new NextAction("PROVIDE_INFORMATION", "Дополнить сведения", path + "/information");
             case "APPROVED", "ALTERNATIVE" -> new NextAction("VIEW_OFFER", "Посмотреть предложение", path + "/offer");
-            case "ACCEPTED", "COMPLETED", "DECLINED", "CANCELLED", "EXPIRED" ->
+            case "ACCEPTED" -> new NextAction("VIEW_OFFER", "Завершить демооформление", path + "/offer");
+            case "COMPLETED", "DECLINED", "CANCELLED", "EXPIRED" ->
                     new NextAction("VIEW_RESULT", "Посмотреть результат", path);
             default -> new NextAction("WAIT", "Ожидайте решения банка", path);
         };

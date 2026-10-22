@@ -6,6 +6,7 @@ COPY ml/requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 COPY ml/scoring ml/scoring
 COPY ml/artifacts/baseline ml/artifacts/baseline
+COPY ml/artifacts/fraud-demo-v1 ml/artifacts/fraud-demo-v1
 RUN useradd --uid 10001 --create-home service
 USER service
 CMD ["uvicorn", "scoring.server:app", "--host", "0.0.0.0", "--port", "8001", "--no-access-log"]

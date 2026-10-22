@@ -1,3 +1,7 @@
+## UI / Feed v2 / synthetic proxy
+
+Новый интеграционный срез и приёмка: [руководство](docs/ui-feed-antifraud-runbook.md), [решения по контрактам](docs/ui-feed-antifraud-decisions.md). Исходный E5 v1 сохранён; CatBoost Feed включается только явно. Чат/OCR запланированы отдельно.
+
 # Кредитный кабинет предпринимателя
 
 > **Интеграционная поставка 22.10.2026:** backend + реальные Risk/Feed, ML bridge и Compose. Текущая архитектура, запуск и ограничения: [docs/integration-mvp.md](docs/integration-mvp.md). Исторические описания ниже относятся к исходным веткам и не подтверждают этот runtime.

@@ -35,24 +35,37 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
+  ml-migrate:
+    image: postgres:17.11-bookworm
+    environment:
+      ML_ADMIN_PASSWORD: ${ML_ADMIN_PASSWORD}
+    volumes:
+      - ./deploy/ml-apply.sh:/apply.sh:ro
+      - ./ml/migrations:/migrations:ro
+    command: [sh, /apply.sh]
+    networks: [internal]
+    depends_on: {ml-db: {condition: service_healthy}}
   risk:
     build: {context: ., dockerfile: deploy/Dockerfile.risk}
     environment:
       ML_DATABASE_URL: postgresql://ml_runtime:${ML_DB_PASSWORD}@ml-db:5432/credit_ml
       ML_INTERNAL_TOKEN: ${ML_SERVICE_TOKEN:?Run configure first}
       MODEL_BUNDLE: /app/ml/artifacts/baseline
-    depends_on: {ml-db: {condition: service_healthy}}
+      FRAUD_MODE: ${FRAUD_MODE:-off}
+    depends_on: {ml-db: {condition: service_healthy}, ml-migrate: {condition: service_completed_successfully}}
     networks: [internal]
     healthcheck:
       <<: *python-health
       test: [CMD, python, -c, "import os,urllib.request; urllib.request.urlopen(urllib.request.Request('http://localhost:8001/health',headers={'Authorization':'Bearer '+os.environ['ML_INTERNAL_TOKEN']}),timeout=3)"]
   feed:
     image: credit-mvp-feed:local
-    build: {context: ., dockerfile: deploy/Dockerfile.feed}
+    build: {context: ., dockerfile: deploy/Dockerfile.feed, target: runtime}
     environment:
       ML_INTERNAL_TOKEN: ${ML_SERVICE_TOKEN}
       FEED_BUNDLE: /bundle
-    volumes: [./.local/feed-bundle:/bundle:ro]
+      FEED_RELEASE: ${FEED_RELEASE:-v1}
+      FEED_RANKER: ${FEED_RANKER:-e5}
+    volumes: ["${FEED_BUNDLE_PATH:-./.local/feed-bundle}:/bundle:ro"]
     networks: [internal]
     healthcheck:
       <<: *python-health
@@ -64,6 +77,7 @@ services:
       ML_SERVICE_TOKEN: ${ML_SERVICE_TOKEN}
       RISK_BASE_URL: http://risk:8001
       FEED_BASE_URL: http://feed:8002
+      FEED_RELEASE: ${FEED_RELEASE:-v1}
     depends_on:
       risk: {condition: service_healthy}
       feed: {condition: service_healthy}
@@ -84,6 +98,8 @@ services:
       DB_USER: credit
       DB_PASSWORD: ${BACKEND_DB_PASSWORD}
       ML_MODE: http
+      FEED_RELEASE: ${FEED_RELEASE:-v1}
+      FRAUD_MODE: ${FRAUD_MODE:-off}
       ML_BASE_URL: http://ml-bridge:8000
       ML_SERVICE_TOKEN: ${ML_SERVICE_TOKEN}
       OBJECTS_ROOT: /objects
@@ -96,8 +112,7 @@ services:
     volumes: [objects:/objects]
     networks: [internal]
   gateway:
-    image: nginx:1.28-alpine
-    volumes: [./deploy/nginx.conf:/etc/nginx/nginx.conf:ro]
+    build: {context: ., dockerfile: deploy/Dockerfile.gateway}
     ports: ['127.0.0.1:8080:8080']
     depends_on: [backend]
     networks: [ingress, internal]

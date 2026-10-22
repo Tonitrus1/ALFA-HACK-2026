@@ -7,6 +7,7 @@ COPY ml/bridge ml/bridge
 COPY ml/scoring/features.py ml/scoring/features.py
 COPY ml/scoring/__init__.py ml/scoring/__init__.py
 COPY ml/feed ml/feed
+COPY ml/feed_v2 ml/feed_v2
 RUN useradd --uid 10001 --create-home service
 USER service
 CMD ["uvicorn", "bridge.server:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000", "--no-access-log"]

@@ -53,6 +53,10 @@ credit:
     service-tokens:
       file-scanner: ${FILE_SCANNER_TOKEN:}
       document-ocr: ${DOCUMENT_OCR_TOKEN:}
+  fraud:
+    mode: ${FRAUD_MODE:off}
+  feed:
+    release: ${FEED_RELEASE:v1}
   ml:
     # contract-double — детерминированный двойник до готовности моделей; http — ML-сервис (internal v2).
     mode: ${ML_MODE:contract-double}

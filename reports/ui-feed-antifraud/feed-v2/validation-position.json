@@ -1,0 +1,30 @@
+{
+  "valid": true,
+  "isSynthetic": true,
+  "requests": 4000,
+  "contexts": 500,
+  "events": 20158,
+  "actions": {
+    "VIEW": 9631,
+    "CLICK": 5688,
+    "HELPFUL": 3188,
+    "NOT_INTERESTED": 1651
+  },
+  "splits": {
+    "train": 350,
+    "validation": 75,
+    "test": 75
+  },
+  "checks": [
+    "checksums",
+    "analytics_schema",
+    "context_disjoint_splits",
+    "exposure_membership",
+    "versions",
+    "positions",
+    "event_id_uniqueness",
+    "timestamps",
+    "eligibility_replay",
+    "point_in_time_reactions"
+  ]
+}

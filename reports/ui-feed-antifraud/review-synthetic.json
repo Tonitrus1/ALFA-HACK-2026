@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "checks": [
+    "real_dual_model_approved",
+    "missing_independent_reference_manual",
+    "signed_kopeck_roundtrip_no_public_scores"
+  ],
+  "applications": [
+    {
+      "applicationId": "789a8974-f411-46ce-bc01-2b4616b6a2bb",
+      "status": "APPROVED",
+      "year": "2025",
+      "signed": false
+    },
+    {
+      "applicationId": "931533b8-7f94-4de5-a9d2-12a173f61e7d",
+      "status": "MANUAL",
+      "year": "2024",
+      "signed": false
+    },
+    {
+      "applicationId": "1a3d28b8-3658-4bc4-b76a-208da068b094",
+      "status": "APPROVED",
+      "year": "2025",
+      "signed": true
+    }
+  ]
+}

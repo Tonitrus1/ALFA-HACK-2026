@@ -101,3 +101,14 @@ ml/generated/*
 
 # E5 local environment and downloaded bundle (reproduced with pinned revision + SHA256)
 .venv-feed/
+
+# Frontend generated output and local browser evidence
+node_modules/
+frontend/dist/
+frontend/*.tsbuildinfo
+frontend/test-results/
+frontend/playwright-report/
+
+# Explicitly selected research fraud artifact; original checksums retained.
+!/ml/artifacts/fraud-demo-v1/
+!/ml/artifacts/fraud-demo-v1/**

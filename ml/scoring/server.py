@@ -15,6 +15,7 @@ from typing import Literal
 from .features import build, digest, code_digest, FEATURES
 from .bundle import load_bundle, read_manifest, predict_probability
 from .backend_input import build_backend, adapter_digest
+from .fraud_api import FraudRuntime, create_router
 
 class FinancialInput(BaseModel):
     model_config=ConfigDict(extra='forbid')
@@ -55,6 +56,7 @@ DSN=os.environ['ML_DATABASE_URL']
 TOKEN=os.environ['ML_INTERNAL_TOKEN']
 if len(TOKEN)<16: raise RuntimeError('Internal token must be explicitly configured (at least 16 characters)')
 model=None; manifest=None; policy=None
+fraud_runtime=FraudRuntime(os.environ.get('FRAUD_MODEL_BUNDLE','ml/artifacts/fraud-demo-v1'))
 
 def db(): return psycopg.connect(DSN, row_factory=dict_row, connect_timeout=2, options='-c statement_timeout=2000')
 def error(n,msg): raise HTTPException(n,msg)
@@ -68,8 +70,19 @@ async def lifespan(app):
     global model,manifest,policy
     model,manifest,policy=load_bundle(BUNDLE)
     with db() as c: c.execute('select count(*) from ml.inferences').fetchone()
+    if os.environ.get('FRAUD_MODE','off') == 'synthetic':
+        try:
+            fraud_runtime.load(manifest['bundleDigest'])
+            with db() as c: c.execute('select count(*) from ml.fraud_inferences').fetchone()
+        except Exception:
+            # Fraud readiness must not take down the existing Risk API.
+            import logging
+            logging.getLogger(__name__).exception('Synthetic fraud unavailable; required reviews use MANUAL')
+            fraud_runtime.manifest=None
     yield
 app=FastAPI(title='Risk API v2',lifespan=lifespan,dependencies=[Depends(auth)])
+
+app.include_router(create_router(db, BackendFeatureInput, BackendFinancialInput, fraud_runtime, backend=True))
 
 @app.exception_handler(psycopg.Error)
 def persistence_unavailable(request,exc):

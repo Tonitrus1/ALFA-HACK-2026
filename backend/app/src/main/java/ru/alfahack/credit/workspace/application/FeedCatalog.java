@@ -18,11 +18,12 @@ public class FeedCatalog {
     public final Map<String, Map<String, Object>> cards = new TreeMap<>();
     private final JsonMapper json;
 
-    public FeedCatalog(JsonMapper json) throws IOException {
+    public FeedCatalog(JsonMapper json, @org.springframework.beans.factory.annotation.Value("${credit.feed.release:v1}") String release) throws IOException {
         this.json = json;
+        if (!Set.of("v1", "v2").contains(release)) throw new IllegalArgumentException("Unknown feed release");
         Map<String, Object> source =
                 json.readValue(
-                        new ClassPathResource("feed/cards.json").getInputStream(),
+                        new ClassPathResource("v2".equals(release) ? "feed/releases/v2/cards.json" : "feed/cards.json").getInputStream(),
                         new TypeReference<>() {});
         version = ((Number) source.get("catalogVersion")).longValue();
         digest = hash(source);

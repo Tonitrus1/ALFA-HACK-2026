@@ -87,7 +87,8 @@ def create_app(bundle: Path | None = None, token: str | None = None, ranker_fact
             raise RankingError('MODEL_UNAVAILABLE', 'Feed model is unavailable', 503)
         return {'ready': True, 'catalogVersion': request.app.state.catalog.version,
                 'catalogDigest': request.app.state.catalog.digest,
-                'releaseId': request.app.state.ranker.release_id}
+                'releaseId': request.app.state.ranker.release_id,
+                'bundleDigest': getattr(request.app.state.ranker, 'bundle_digest', None)}
 
     @app.post('/internal/v2/rankings', response_model=RankingResult,
               operation_id='rankEligibleCandidates', responses={

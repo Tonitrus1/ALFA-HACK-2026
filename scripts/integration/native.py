@@ -23,6 +23,7 @@ def run(args,**kw):return subprocess.run([str(x) for x in args],check=True,**kw)
 def main():
     p=argparse.ArgumentParser();p.add_argument('command',choices=['up','down']);p.add_argument('--pg-bin',type=Path)
     p.add_argument('--risk-python',type=Path);p.add_argument('--feed-python',type=Path);p.add_argument('--feed-bundle',type=Path)
+    p.add_argument('--fraud-mode',choices=['off','synthetic'],default='off');p.add_argument('--feed-release',choices=['v1','v2'],default='v1');p.add_argument('--feed-ranker',choices=['e5','catboost'],default='e5')
     a=p.parse_args();LOCAL.mkdir(parents=True,exist_ok=True)
     config=LOCAL/'config.json'
     if a.command=='down':
@@ -66,10 +67,10 @@ def main():
             else:db.execute(f.read_text());db.execute('insert into public.integration_migrations values(%s,%s)',(f.name,sha))
     env=os.environ.copy();env.update(PYTHONPATH=str(ROOT/'ml'),ML_DATABASE_URL=admin_dsn.replace('integration_admin:','ml_runtime:'),
         ML_INTERNAL_TOKEN=cfg['token'],ML_SERVICE_TOKEN=cfg['token'],MODEL_BUNDLE=str(ROOT/'ml/artifacts/baseline'),
-        FEED_BUNDLE=str(a.feed_bundle.resolve()),RISK_BASE_URL='http://127.0.0.1:18001',FEED_BASE_URL='http://127.0.0.1:18002',
+        FRAUD_MODE=a.fraud_mode,FEED_RELEASE=a.feed_release,FEED_RANKER=a.feed_ranker,FEED_BUNDLE=str(a.feed_bundle.resolve()),RISK_BASE_URL='http://127.0.0.1:18001',FEED_BASE_URL='http://127.0.0.1:18002',
         OPENBLAS_NUM_THREADS='1',OMP_NUM_THREADS='1',FEED_CPU_THREADS='2',HF_HUB_OFFLINE='1',TRANSFORMERS_OFFLINE='1')
     for name,python,module,port,factory,header in [('risk',a.risk_python,'scoring.server:app',18001,False,'Authorization'),
-            ('feed',a.feed_python,'feed.server:create_app',18002,True,'X-Service-Token'),
+            ('feed',a.feed_python,'feed_runtime:create_app',18002,True,'X-Service-Token'),
             ('bridge',a.risk_python,'bridge.server:create_app',18000,True,'X-Service-Token')]:
         with (LOCAL/(name+'.log')).open('ab') as log:
             process=subprocess.Popen([str(python.absolute()),'-m','uvicorn',module,*(['--factory'] if factory else []),'--host','127.0.0.1','--port',str(port),'--no-access-log'],cwd=ROOT,env=env,stdout=log,stderr=log,start_new_session=True)

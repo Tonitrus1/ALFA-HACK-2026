@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "seed": 20261023,
+  "users": 500,
+  "sessions": 4,
+  "pages": 2,
+  "pageSize": 6,
+  "randomPolicyShare": 0.7,
+  "emptyProfileShare": 0.1,
+  "partialProfileShare": 0.2,
+  "positionDecay": 0.45,
+  "intentStrength": 0.65,
+  "topicAffinity": {
+    "PURCHASE": [
+      0.1,
+      1.8,
+      0.9,
+      0.1,
+      0.1,
+      0.3
+    ],
+    "CASH_GAP": [
+      1.8,
+      0.6,
+      0.8,
+      0.1,
+      0.1,
+      0.3
+    ],
+    "EQUIPMENT": [
+      0.1,
+      0.1,
+      0.1,
+      1.8,
+      0.4,
+      0.3
+    ],
+    "EXPANSION": [
+      0.2,
+      0.4,
+      0.4,
+      1.5,
+      0.5,
+      0.3
+    ],
+    "EXPLORING": [
+      0.4,
+      0.4,
+      0.3,
+      0.3,
+      1.4,
+      0.8
+    ]
+  },
+  "helpAffinity": {
+    "AMOUNT": [
+      0.6,
+      0.8,
+      0.4,
+      0.3,
+      0.1,
+      0.2
+    ],
+    "OPTIONS": [
+      0.2,
+      0.3,
+      0.2,
+      0.4,
+      0.4,
+      0.4
+    ],
+    "COST": [
+      0.1,
+      0.1,
+      0.1,
+      0.2,
+      0.1,
+      1.8
+    ],
+    "APPLICATION": [
+      0.1,
+      0.1,
+      0.1,
+      0.2,
+      1.8,
+      0.2
+    ]
+  }
+}

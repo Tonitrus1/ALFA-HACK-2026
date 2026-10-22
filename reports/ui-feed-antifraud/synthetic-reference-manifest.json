@@ -1,0 +1,54 @@
+[
+  {
+    "referenceId": "synthetic-company-a-2025-v1",
+    "companyId": "company-a",
+    "version": 1,
+    "source": "SYNTHETIC_DEMO",
+    "availableAt": "2026-01-15T00:00:00Z",
+    "statement": {
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "reportingStandard": "DEMO",
+      "currency": "RUB",
+      "values": {
+        "totalAssetsMinor": 100000000,
+        "totalLiabilitiesMinor": 40000000,
+        "currentAssetsMinor": 50000000,
+        "currentLiabilitiesMinor": 20000000,
+        "equityMinor": 60000000,
+        "revenueMinor": 300000000,
+        "netProfitMinor": 10000000,
+        "ebitMinor": 15000000
+      },
+      "sourceDocumentReferences": []
+    },
+    "statementDigest": "113529b3ee5186cc84798e9e254d9f05ecc1d6f063467021bb2df4ca7c6b0c94",
+    "recordDigest": "12bfb3580948ace71acfc08819ddea8701fa2e3fa70f6dc7f572414a64a0e698"
+  },
+  {
+    "referenceId": "synthetic-company-b-2025-v1",
+    "companyId": "company-b",
+    "version": 1,
+    "source": "SYNTHETIC_DEMO",
+    "availableAt": "2026-01-15T00:00:00Z",
+    "statement": {
+      "periodStart": "2025-01-01",
+      "periodEnd": "2025-12-31",
+      "reportingStandard": "DEMO",
+      "currency": "RUB",
+      "values": {
+        "totalAssetsMinor": 100000000,
+        "totalLiabilitiesMinor": 40000000,
+        "currentAssetsMinor": 50000000,
+        "currentLiabilitiesMinor": 20000000,
+        "equityMinor": 60000000,
+        "revenueMinor": 300000000,
+        "netProfitMinor": 10000000,
+        "ebitMinor": 15000000
+      },
+      "sourceDocumentReferences": []
+    },
+    "statementDigest": "113529b3ee5186cc84798e9e254d9f05ecc1d6f063467021bb2df4ca7c6b0c94",
+    "recordDigest": "acd99aecfb0b25ac8e3bca7216f0ddc3a45d9a1c1dbd31137823fef2512ac568"
+  }
+]
