@@ -1,0 +1,43 @@
+{
+  "status": "PASS",
+  "checkedAt": "2026-10-22T14:12:59+05:00",
+  "sourceBranch": "ml/feed-recommendations",
+  "sourceCommit": "829c1c09bb248f03d730f25526de3b11712370bd",
+  "scope": "Documentation layout, links, heading order, command context/syntax and immutable existing files only",
+  "checks": {
+    "serviceDocuments": 9,
+    "localLinksChecked": 125,
+    "shellBlocksSyntaxChecked": 9,
+    "existingFilesVerifiedUnchanged": 203,
+    "runtimeExecuted": false,
+    "assistantBranchModified": false,
+    "standardSourcePreserved": true
+  },
+  "errors": [],
+  "documentSha256": {
+    "README.md": "123c9dd65e31e95a9d5cd3356931ee48aabae2d3776c2967617f8d6b56c9fcb2",
+    "docs/feed-integration.md": "53a6854cac78ff9f5d58c6d030f22c2f681856bc56c3a7ed1b61ae4667faa5a8",
+    "docs/ml/DOCUMENTATION-STANDARD.md": "f341311bad45379825712df39f911ffce350bfe7f1e5211b4c4a742fb31a1860",
+    "docs/ml/README.md": "f74513695d3f12d2d05bc528c097211e398ed7b2c2c02a9edf2486e5563e1946",
+    "docs/ml/feed/CHANGELOG.md": "f6c01bc2a18b91d2966cd881ddfa30c82d73f190bf6fff2f8bb9508b7c369e1d",
+    "docs/ml/feed/THIRD_PARTY_NOTICES.md": "a6f28b28e3da37185e6a2608278bd698eb77fff3a82a7c37c23cb6411c416b17",
+    "docs/ml/feed/architecture.md": "b2885586d89e515ca43a495ce16737dfebc83fd9f3b0bd86ce5ab3a805f5a00b",
+    "docs/ml/feed/data.md": "fc4501603fcbf0cc7153b9583af7c7ee85d8940cf753c17deac31797adcaeef9",
+    "docs/ml/feed/integration.md": "be1eba1a9bfb5b94681bcdd37f241a790b68013a06cf01f12056f0b7c90486ab",
+    "docs/ml/feed/model-card.md": "1d6ee3ef16c54c705fa064026241cf49fd44bbc66f281183e71023a8655df8f1",
+    "docs/ml/feed/operations.md": "b0f7352f5351b4ee6c21a83b3c14ef3e452494b93943bbd4a59dc504b890ba16",
+    "docs/ml/feed/setup.md": "45b81a13f6ed7a1d8d2111f0224b7b9f20cfbbda0df5783d02050cdfd9ae845f",
+    "docs/ml/feed/verification.md": "0ee0ada15a8d39357ede0c6325431db4281d18fe4fc0c543e0ef3160d9b93d4d",
+    "ml/README.md": "d8310f0b12acbfe604fb517e79182d28c1391f1d93aef5f189c276e6b2a1082c",
+    "ml/feed/README.md": "7c9a03ccd27d3618b8284c4526be6fd654310de2372cc72127cd1139a5a252c3",
+    "ml/feed/model-card.md": "6e372a137f3729c3a632d36713432d2fa61e29f3abe2cba246793e2e2ad87437"
+  },
+  "notExecuted": [
+    "service startup",
+    "new API or unit runtime tests",
+    "model evaluation or training",
+    "database reset or migration",
+    "cross-platform setup",
+    "frontend/backend joint acceptance"
+  ]
+}
