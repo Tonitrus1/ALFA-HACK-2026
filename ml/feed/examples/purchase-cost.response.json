@@ -5,46 +5,82 @@
     "working-03",
     "working-01",
     "cost-03",
+    "application-11",
     "cost-04",
     "season-03",
-    "equipment-01",
     "working-04",
+    "working-11",
+    "cost-08",
+    "equipment-01",
     "equipment-04",
+    "season-11",
+    "equipment-11",
+    "cash-11",
     "cash-04",
+    "working-07",
     "equipment-03",
+    "working-08",
     "season-04",
+    "cost-11",
     "application-03",
+    "application-08",
+    "working-09",
+    "equipment-08",
     "working-06",
+    "application-10",
     "cost-01",
     "equipment-06",
+    "cash-09",
+    "cost-07",
+    "season-08",
     "cash-03",
+    "cash-08",
     "application-04",
     "application-01",
-    "application-02",
     "season-05",
+    "application-07",
+    "application-02",
     "cash-01",
     "season-01",
+    "working-12",
+    "working-10",
+    "cost-09",
     "working-05",
+    "cash-07",
+    "season-10",
+    "cost-12",
+    "equipment-09",
+    "cost-10",
+    "equipment-12",
     "application-06",
     "application-05",
+    "season-09",
     "equipment-05",
     "cash-06",
     "cost-06",
+    "cash-12",
+    "season-12",
     "cost-05",
+    "equipment-07",
     "cash-05",
     "cash-02",
+    "season-07",
     "season-06",
+    "application-12",
     "working-02",
     "cost-02",
     "season-02",
+    "equipment-10",
+    "application-09",
+    "cash-10",
     "equipment-02"
   ],
-  "candidateSetDigest": "2512498dc640d52e8748034990b07c31cceb6c03132734661b5f94df00bf2afc",
+  "candidateSetDigest": "f3d549480290935a00ab87066365f4b5e6a44375ccf667e8c1bd24447e3f778c",
   "exposureId": "ex-purchase-cost",
-  "releaseId": "feed-e5-v1-d068f7fcb894",
+  "releaseId": "feed-e5-v1-7e3c9390da63",
   "mode": "MODEL",
   "reasonCategory": "PROFILE_RELEVANCE",
-  "catalogDigest": "20a2e621ecfaa6172ac6d222967ed86cbc097b7bd372699dea9b674aa98bce2f",
+  "catalogDigest": "367c65a3dc17aab5061e0f06257940517447bc35b3487e56c4c089263bbce6d3",
   "explanations": {
     "working-03": {
       "reasonCategory": "TASK_MATCH",
@@ -58,6 +94,10 @@
       "reasonCategory": "HELP_MATCH",
       "message": "Вы хотите разобраться в стоимости и платежах."
     },
+    "application-11": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
     "cost-04": {
       "reasonCategory": "HELP_MATCH",
       "message": "Вы хотите разобраться в стоимости и платежах."
@@ -66,15 +106,35 @@
       "reasonCategory": "TASK_MATCH",
       "message": "Материал связан с выбранной вами задачей."
     },
-    "equipment-01": {
-      "reasonCategory": "SEMANTIC_MATCH",
-      "message": "Дополняет подборку по вашему запросу."
-    },
     "working-04": {
       "reasonCategory": "TASK_MATCH",
       "message": "Материал связан с выбранной вами задачей."
     },
+    "working-11": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "cost-08": {
+      "reasonCategory": "HELP_MATCH",
+      "message": "Вы хотите разобраться в стоимости и платежах."
+    },
+    "equipment-01": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
+    },
     "equipment-04": {
+      "reasonCategory": "DEPTH_MATCH",
+      "message": "Соответствует выбранной глубине объяснения."
+    },
+    "season-11": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "equipment-11": {
+      "reasonCategory": "DEPTH_MATCH",
+      "message": "Соответствует выбранной глубине объяснения."
+    },
+    "cash-11": {
       "reasonCategory": "DEPTH_MATCH",
       "message": "Соответствует выбранной глубине объяснения."
     },
@@ -82,19 +142,47 @@
       "reasonCategory": "DEPTH_MATCH",
       "message": "Соответствует выбранной глубине объяснения."
     },
+    "working-07": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
     "equipment-03": {
       "reasonCategory": "DEPTH_MATCH",
       "message": "Соответствует выбранной глубине объяснения."
+    },
+    "working-08": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
     },
     "season-04": {
       "reasonCategory": "TASK_MATCH",
       "message": "Материал связан с выбранной вами задачей."
     },
+    "cost-11": {
+      "reasonCategory": "HELP_MATCH",
+      "message": "Вы хотите разобраться в стоимости и платежах."
+    },
     "application-03": {
       "reasonCategory": "TASK_MATCH",
       "message": "Материал связан с выбранной вами задачей."
     },
+    "application-08": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "working-09": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "equipment-08": {
+      "reasonCategory": "DEPTH_MATCH",
+      "message": "Соответствует выбранной глубине объяснения."
+    },
     "working-06": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "application-10": {
       "reasonCategory": "TASK_MATCH",
       "message": "Материал связан с выбранной вами задачей."
     },
@@ -106,7 +194,23 @@
       "reasonCategory": "SEMANTIC_MATCH",
       "message": "Дополняет подборку по вашему запросу."
     },
+    "cash-09": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
+    },
+    "cost-07": {
+      "reasonCategory": "HELP_MATCH",
+      "message": "Вы хотите разобраться в стоимости и платежах."
+    },
+    "season-08": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
     "cash-03": {
+      "reasonCategory": "DEPTH_MATCH",
+      "message": "Соответствует выбранной глубине объяснения."
+    },
+    "cash-08": {
       "reasonCategory": "DEPTH_MATCH",
       "message": "Соответствует выбранной глубине объяснения."
     },
@@ -118,11 +222,15 @@
       "reasonCategory": "TASK_MATCH",
       "message": "Материал связан с выбранной вами задачей."
     },
-    "application-02": {
+    "season-05": {
       "reasonCategory": "TASK_MATCH",
       "message": "Материал связан с выбранной вами задачей."
     },
-    "season-05": {
+    "application-07": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "application-02": {
       "reasonCategory": "TASK_MATCH",
       "message": "Материал связан с выбранной вами задачей."
     },
@@ -134,15 +242,55 @@
       "reasonCategory": "TASK_MATCH",
       "message": "Материал связан с выбранной вами задачей."
     },
+    "working-12": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "working-10": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "cost-09": {
+      "reasonCategory": "HELP_MATCH",
+      "message": "Вы хотите разобраться в стоимости и платежах."
+    },
     "working-05": {
       "reasonCategory": "TASK_MATCH",
       "message": "Материал связан с выбранной вами задачей."
+    },
+    "cash-07": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
+    },
+    "season-10": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "cost-12": {
+      "reasonCategory": "HELP_MATCH",
+      "message": "Вы хотите разобраться в стоимости и платежах."
+    },
+    "equipment-09": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
+    },
+    "cost-10": {
+      "reasonCategory": "HELP_MATCH",
+      "message": "Вы хотите разобраться в стоимости и платежах."
+    },
+    "equipment-12": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
     },
     "application-06": {
       "reasonCategory": "TASK_MATCH",
       "message": "Материал связан с выбранной вами задачей."
     },
     "application-05": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "season-09": {
       "reasonCategory": "TASK_MATCH",
       "message": "Материал связан с выбранной вами задачей."
     },
@@ -158,9 +306,21 @@
       "reasonCategory": "HELP_MATCH",
       "message": "Вы хотите разобраться в стоимости и платежах."
     },
+    "cash-12": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
+    },
+    "season-12": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
     "cost-05": {
       "reasonCategory": "HELP_MATCH",
       "message": "Вы хотите разобраться в стоимости и платежах."
+    },
+    "equipment-07": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
     },
     "cash-05": {
       "reasonCategory": "SEMANTIC_MATCH",
@@ -170,7 +330,15 @@
       "reasonCategory": "SEMANTIC_MATCH",
       "message": "Дополняет подборку по вашему запросу."
     },
+    "season-07": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
     "season-06": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "application-12": {
       "reasonCategory": "TASK_MATCH",
       "message": "Материал связан с выбранной вами задачей."
     },
@@ -185,6 +353,18 @@
     "season-02": {
       "reasonCategory": "TASK_MATCH",
       "message": "Материал связан с выбранной вами задачей."
+    },
+    "equipment-10": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
+    },
+    "application-09": {
+      "reasonCategory": "TASK_MATCH",
+      "message": "Материал связан с выбранной вами задачей."
+    },
+    "cash-10": {
+      "reasonCategory": "SEMANTIC_MATCH",
+      "message": "Дополняет подборку по вашему запросу."
     },
     "equipment-02": {
       "reasonCategory": "SEMANTIC_MATCH",

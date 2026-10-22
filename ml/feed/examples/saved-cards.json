@@ -7,7 +7,7 @@
       "text": "Перед заполнением заявки сформулируйте простое объяснение: на что нужны деньги, сколько не хватает и когда бизнес сможет их возвращать. Если вы пока не уверены в сумме, начните с перечня расходов и доступных собственных средств. Не подменяйте потребность максимально возможным запросом. Практический шаг: запишите цель одним предложением и приложите небольшой расчёт суммы по датам. Такой черновик поможет вам последовательнее заполнить поля и заметить недостающие исходные данные.",
       "topic": "APPLICATION",
       "depth": "BASICS",
-      "illustration": "/assets/feed/v1/illustrations/application.svg",
+      "illustration": "/assets/feed/v2/illustrations/application.svg",
       "reasonCategory": "SAVED_HELPFUL",
       "reason": "Вы отметили этот материал как полезный.",
       "userReaction": "HELPFUL"
@@ -19,15 +19,15 @@
       "text": "Вымышленная ситуация: предприниматель указал сумму покупки оборудования, а в приложенном плане добавил доставку и монтаж. Итоги двух документов различаются без объяснения. Если вы готовите похожую заявку, определите единый состав расходов и отдельно покажите собственное участие. Практический вывод: до отправки сверьте цель, сумму и сроки во всех материалах. Если часть расходов оплачивается самостоятельно, обозначьте это прямо в расчёте, чтобы ваши документы описывали один и тот же проект.",
       "topic": "APPLICATION",
       "depth": "BASICS",
-      "illustration": "/assets/feed/v1/illustrations/application.svg",
+      "illustration": "/assets/feed/v2/illustrations/application.svg",
       "reasonCategory": "SAVED_HELPFUL",
       "reason": "Вы отметили этот материал как полезный.",
       "userReaction": "HELPFUL"
     }
   ],
   "exposureId": "ex-saved-example",
-  "catalogVersion": 1,
-  "catalogDigest": "20a2e621ecfaa6172ac6d222967ed86cbc097b7bd372699dea9b674aa98bce2f",
+  "catalogVersion": 2,
+  "catalogDigest": "367c65a3dc17aab5061e0f06257940517447bc35b3487e56c4c089263bbce6d3",
   "savedVersion": 2,
   "hasMore": false
 }

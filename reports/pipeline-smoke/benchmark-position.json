@@ -1,0 +1,514 @@
+{
+  "isSynthetic": true,
+  "split": "test",
+  "requests": 48,
+  "contexts": 6,
+  "releaseId": "feed-catboost-v1-15902bfc3f3a",
+  "datasetManifestDigest": "bf922e81e97fda137a5af84b0534547085e767bc7c3f5d04216248e5546a370f",
+  "metrics": {
+    "random/raw": {
+      "ndcg3": 0.6104344222118475,
+      "ndcg6": 0.5958551781073353,
+      "recall6": 0.11323594676381658,
+      "topics6": 3.5833333333333335,
+      "simulatedExpectedNotInterestedRate6": 0.06645293947071969,
+      "catalogCoverage6": 0.9861111111111112
+    },
+    "random/diversified": {
+      "ndcg3": 0.5992611192113056,
+      "ndcg6": 0.5653354816244128,
+      "recall6": 0.10581299638461299,
+      "topics6": 4.0625,
+      "simulatedExpectedNotInterestedRate6": 0.06988008305778988,
+      "catalogCoverage6": 0.9861111111111112
+    },
+    "rules/raw": {
+      "ndcg3": 1.0,
+      "ndcg6": 0.9919695804406259,
+      "recall6": 0.17307329606980262,
+      "topics6": 1.3541666666666667,
+      "simulatedExpectedNotInterestedRate6": 0.024175349162830123,
+      "catalogCoverage6": 0.5277777777777778
+    },
+    "rules/diversified": {
+      "ndcg3": 0.9608934394981036,
+      "ndcg6": 0.8374354333317001,
+      "recall6": 0.15093617691057068,
+      "topics6": 3.625,
+      "simulatedExpectedNotInterestedRate6": 0.033724821844688696,
+      "catalogCoverage6": 0.75
+    },
+    "e5/raw": {
+      "ndcg3": 0.8946195351843205,
+      "ndcg6": 0.8323125764456152,
+      "recall6": 0.15065810935355903,
+      "topics6": 2.4375,
+      "simulatedExpectedNotInterestedRate6": 0.03761231587592128,
+      "catalogCoverage6": 0.375
+    },
+    "e5/diversified": {
+      "ndcg3": 0.8485296603070855,
+      "ndcg6": 0.7154880061739802,
+      "recall6": 0.1214078609721923,
+      "topics6": 3.7083333333333335,
+      "simulatedExpectedNotInterestedRate6": 0.046689687455928684,
+      "catalogCoverage6": 0.4305555555555556
+    },
+    "e5_rules/raw": {
+      "ndcg3": 0.981777127690747,
+      "ndcg6": 0.9629011110150246,
+      "recall6": 0.17150879029316593,
+      "topics6": 1.8958333333333333,
+      "simulatedExpectedNotInterestedRate6": 0.02574667452947403,
+      "catalogCoverage6": 0.625
+    },
+    "e5_rules/diversified": {
+      "ndcg3": 0.9524472073143248,
+      "ndcg6": 0.8486280537056746,
+      "recall6": 0.15181116311650075,
+      "topics6": 3.4375,
+      "simulatedExpectedNotInterestedRate6": 0.03371109916971228,
+      "catalogCoverage6": 0.5972222222222222
+    },
+    "catboost/raw": {
+      "ndcg3": 0.8589052494700349,
+      "ndcg6": 0.8290486851356406,
+      "recall6": 0.15226647494898818,
+      "topics6": 2.9375,
+      "simulatedExpectedNotInterestedRate6": 0.03855348881410652,
+      "catalogCoverage6": 0.625
+    },
+    "catboost/diversified": {
+      "ndcg3": 0.8253853404684096,
+      "ndcg6": 0.7505462031711573,
+      "recall6": 0.13597542550256553,
+      "topics6": 3.9166666666666665,
+      "simulatedExpectedNotInterestedRate6": 0.04547410045091869,
+      "catalogCoverage6": 0.6527777777777778
+    }
+  },
+  "clusteredDifferenceCI95": [
+    -0.1883216494512632,
+    -0.017652948800244022
+  ],
+  "relativeNDCG6Improvement": -0.11557695990160444,
+  "slices": {
+    "business:MANUFACTURING": {
+      "random": {
+        "ndcg6": 0.5965099375013476,
+        "requests": 16
+      },
+      "rules": {
+        "ndcg6": 0.9124541893919901,
+        "requests": 16
+      },
+      "e5": {
+        "ndcg6": 0.6440124950182323,
+        "requests": 16
+      },
+      "e5_rules": {
+        "ndcg6": 0.8805422943729257,
+        "requests": 16
+      },
+      "catboost": {
+        "ndcg6": 0.7560681468659247,
+        "requests": 16
+      }
+    },
+    "depth:EXPLAINED": {
+      "random": {
+        "ndcg6": 0.561399181393553,
+        "requests": 16
+      },
+      "rules": {
+        "ndcg6": 0.8806405273496966,
+        "requests": 16
+      },
+      "e5": {
+        "ndcg6": 0.7476324637701764,
+        "requests": 16
+      },
+      "e5_rules": {
+        "ndcg6": 0.8188507443479555,
+        "requests": 16
+      },
+      "catboost": {
+        "ndcg6": 0.7784703103571176,
+        "requests": 16
+      }
+    },
+    "task:EQUIPMENT": {
+      "random": {
+        "ndcg6": 0.5639916337188285,
+        "requests": 24
+      },
+      "rules": {
+        "ndcg6": 0.8942952208106858,
+        "requests": 24
+      },
+      "e5": {
+        "ndcg6": 0.7051460037232765,
+        "requests": 24
+      },
+      "e5_rules": {
+        "ndcg6": 0.8798782375488852,
+        "requests": 24
+      },
+      "catboost": {
+        "ndcg6": 0.7470755071195727,
+        "requests": 24
+      }
+    },
+    "profile:present": {
+      "random": {
+        "ndcg6": 0.5258300780423183,
+        "requests": 40
+      },
+      "rules": {
+        "ndcg6": 0.8523500200910631,
+        "requests": 40
+      },
+      "e5": {
+        "ndcg6": 0.7060131075017992,
+        "requests": 40
+      },
+      "e5_rules": {
+        "ndcg6": 0.8657811645398326,
+        "requests": 40
+      },
+      "catboost": {
+        "ndcg6": 0.7480829438984117,
+        "requests": 40
+      }
+    },
+    "history:empty": {
+      "random": {
+        "ndcg6": 0.4929323679187338,
+        "requests": 7
+      },
+      "rules": {
+        "ndcg6": 0.7684386826242242,
+        "requests": 7
+      },
+      "e5": {
+        "ndcg6": 0.7175475212718064,
+        "requests": 7
+      },
+      "e5_rules": {
+        "ndcg6": 0.7823669213491214,
+        "requests": 7
+      },
+      "catboost": {
+        "ndcg6": 0.7238288535810196,
+        "requests": 7
+      }
+    },
+    "history:present": {
+      "random": {
+        "ndcg6": 0.5776969888424556,
+        "requests": 41
+      },
+      "rules": {
+        "ndcg6": 0.8492153663793179,
+        "requests": 41
+      },
+      "e5": {
+        "ndcg6": 0.715136381645083,
+        "requests": 41
+      },
+      "e5_rules": {
+        "ndcg6": 0.8599409299616716,
+        "requests": 41
+      },
+      "catboost": {
+        "ndcg6": 0.7551077018816688,
+        "requests": 41
+      }
+    },
+    "business:RETAIL": {
+      "random": {
+        "ndcg6": 0.4989550261537903,
+        "requests": 8
+      },
+      "rules": {
+        "ndcg6": 0.857977283648077,
+        "requests": 8
+      },
+      "e5": {
+        "ndcg6": 0.8274130211333652,
+        "requests": 8
+      },
+      "e5_rules": {
+        "ndcg6": 0.8785501239008042,
+        "requests": 8
+      },
+      "catboost": {
+        "ndcg6": 0.7290902276268688,
+        "requests": 8
+      }
+    },
+    "depth:BASICS": {
+      "random": {
+        "ndcg6": 0.4692002066022297,
+        "requests": 16
+      },
+      "rules": {
+        "ndcg6": 0.7927850403189266,
+        "requests": 16
+      },
+      "e5": {
+        "ndcg6": 0.7452689856045298,
+        "requests": 16
+      },
+      "e5_rules": {
+        "ndcg6": 0.8669604294550763,
+        "requests": 16
+      },
+      "catboost": {
+        "ndcg6": 0.7566774902756086,
+        "requests": 16
+      }
+    },
+    "business:MISSING": {
+      "random": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      },
+      "rules": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      },
+      "e5": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      },
+      "e5_rules": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      },
+      "catboost": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      }
+    },
+    "depth:MISSING": {
+      "random": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      },
+      "rules": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      },
+      "e5": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      },
+      "e5_rules": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      },
+      "catboost": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      }
+    },
+    "task:MISSING": {
+      "random": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      },
+      "rules": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      },
+      "e5": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      },
+      "e5_rules": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      },
+      "catboost": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      }
+    },
+    "profile:empty": {
+      "random": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      },
+      "rules": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      },
+      "e5": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      },
+      "e5_rules": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      },
+      "catboost": {
+        "ndcg6": 0.7628624995348854,
+        "requests": 8
+      }
+    },
+    "business:HOSPITALITY": {
+      "random": {
+        "ndcg6": 0.46858774452755303,
+        "requests": 16
+      },
+      "rules": {
+        "ndcg6": 0.789432219011629,
+        "requests": 16
+      },
+      "e5": {
+        "ndcg6": 0.707313763169583,
+        "requests": 16
+      },
+      "e5_rules": {
+        "ndcg6": 0.8446355550262535,
+        "requests": 16
+      },
+      "catboost": {
+        "ndcg6": 0.7495940990666703,
+        "requests": 16
+      }
+    },
+    "task:EXPLORING": {
+      "random": {
+        "ndcg6": 0.46858774452755303,
+        "requests": 16
+      },
+      "rules": {
+        "ndcg6": 0.789432219011629,
+        "requests": 16
+      },
+      "e5": {
+        "ndcg6": 0.707313763169583,
+        "requests": 16
+      },
+      "e5_rules": {
+        "ndcg6": 0.8446355550262535,
+        "requests": 16
+      },
+      "catboost": {
+        "ndcg6": 0.7495940990666703,
+        "requests": 16
+      }
+    },
+    "depth:PRACTICAL": {
+      "random": {
+        "ndcg6": 0.567951614220026,
+        "requests": 8
+      },
+      "rules": {
+        "ndcg6": 0.9148989651180689,
+        "requests": 8
+      },
+      "e5": {
+        "ndcg6": 0.5442626387595831,
+        "requests": 8
+      },
+      "e5_rules": {
+        "ndcg6": 0.9572834750930992,
+        "requests": 8
+      },
+      "catboost": {
+        "ndcg6": 0.6701191182266066,
+        "requests": 8
+      }
+    }
+  },
+  "semanticScenarios": [
+    {
+      "id": "purchase-cost",
+      "expected": [
+        "WORKING_CAPITAL",
+        "FINANCING_COST"
+      ],
+      "actual": [
+        "APPLICATION",
+        "SEASONALITY"
+      ],
+      "passed": false
+    },
+    {
+      "id": "equipment-application",
+      "expected": [
+        "EQUIPMENT",
+        "APPLICATION"
+      ],
+      "actual": [
+        "APPLICATION",
+        "EQUIPMENT"
+      ],
+      "passed": true
+    },
+    {
+      "id": "cash-gap-amount",
+      "expected": [
+        "CASH_GAP"
+      ],
+      "actual": [
+        "APPLICATION",
+        "SEASONALITY",
+        "WORKING_CAPITAL"
+      ],
+      "passed": false
+    },
+    {
+      "id": "application-clarification",
+      "expected": [
+        "APPLICATION"
+      ],
+      "actual": [
+        "APPLICATION",
+        "FINANCING_COST"
+      ],
+      "passed": true
+    },
+    {
+      "id": "expansion-practice",
+      "expected": [
+        "EQUIPMENT"
+      ],
+      "actual": [
+        "APPLICATION",
+        "EQUIPMENT",
+        "SEASONALITY"
+      ],
+      "passed": true
+    }
+  ],
+  "contentReview": {
+    "status": "pending_human_review",
+    "independentHumanReview": false,
+    "cases": 12,
+    "draftMetrics": {
+      "random": 0.18677813640338123,
+      "rules": 0.6747152536794544,
+      "e5": 0.3975642694445005,
+      "e5_rules": 0.4890603942391314,
+      "catboost": 0.38983679973651375
+    },
+    "passed": false
+  },
+  "gates": {
+    "relativeNDCG6": false,
+    "positiveClusterCI": false,
+    "semanticScenarios": false,
+    "humanReview": false
+  },
+  "defaultRanker": "e5",
+  "limitations": [
+    "Oracle relevance and rejection rates are properties of a synthetic world.",
+    "No real-user uplift, causal A/B effect, or unbiased click estimate is established.",
+    "Position is excluded from model features; selection bias is not eliminated.",
+    "AI draft content grades cannot satisfy the human-review gate."
+  ]
+}

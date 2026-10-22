@@ -1,0 +1,46 @@
+{
+  "rankerType": "CatBoostRanker/PairLogit",
+  "featureSchemaVersion": "feed-features-v1",
+  "featureNames": [
+    "task",
+    "help",
+    "depth",
+    "businessCategory",
+    "applicationStage",
+    "item_topic",
+    "item_depth",
+    "item_format",
+    "semantic_similarity",
+    "task_match",
+    "help_match",
+    "depth_match",
+    "business_match",
+    "stage_match",
+    "business_universal",
+    "helpful",
+    "not_interested",
+    "reaction_difference",
+    "task_missing",
+    "help_missing",
+    "depth_missing",
+    "businessCategory_missing",
+    "applicationStage_missing"
+  ],
+  "catboostVersion": "1.2.8",
+  "catalogDigest": "367c65a3dc17aab5061e0f06257940517447bc35b3487e56c4c089263bbce6d3",
+  "catalogVersion": 2,
+  "e5BundleDigest": "7e3c9390da63bb3f185227709e0b4f2e1f82512ea136764acaef3e608070d724",
+  "datasetManifestDigest": "c853ea6077beaaa819e2bae52533ccf734317ab01d49ec5267a79ee146f7244c",
+  "datasetFiles": {
+    "requests.parquet": "11e2d7d146965f7ea278225de320d39d0488e35f577212643c56cdadcb60aa19",
+    "issued.parquet": "28458a38ea1698e5b71b75d0103eefe0bf6c199c7f606ada0a1e641ab5aff6d7",
+    "events.parquet": "53ebe05873f237178ede375afacd9a867c016bfd6e43c0ed7ecbf7e0880afdfe"
+  },
+  "isSynthetic": true,
+  "defaultEligible": false,
+  "files": {
+    "model.cbm": "fb0c3120b99041444822cd6967c339f9132ddaecb94aca4ce5b81b38199f00a6",
+    "training-report.json": "1ac73b82a009729202766da9f59c286afd4a590662e10e44e80e7a2129254bdc"
+  },
+  "bundleDigest": "07a8233cfc3225ecbb8fc3561b4dfe44105bf2d193fc5a36090b3c01b018602f"
+}

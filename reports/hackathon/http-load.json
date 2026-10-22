@@ -1,0 +1,26 @@
+{
+  "kind": "catboost",
+  "releaseId": "feed-catboost-v1-07a8233cfc32",
+  "platform": "macOS-14.5-arm64-arm-64bit",
+  "cpuThreads": 4,
+  "candidates": 72,
+  "concurrency": 4,
+  "samples": 200,
+  "modelLoadSeconds": 5.270726791990455,
+  "coldHTTPReadySeconds": 6.901953791035339,
+  "warmInferenceP95Ms": 33.924204157665365,
+  "cachedInferenceP95Ms": 1.8809124594554303,
+  "httpP50Ms": 147.617437527515,
+  "httpP95Ms": 168.65309614804573,
+  "httpP99Ms": 190.15872449497692,
+  "throughputRPS": 27.053735582395834,
+  "errors": 0,
+  "gates": {
+    "warmP95": true,
+    "httpP95": true
+  },
+  "limitations": [
+    "Single local machine and frozen bundle; not a production capacity estimate.",
+    "Warm inference clears the profile cache; HTTP uses varying typed profiles."
+  ]
+}

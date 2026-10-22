@@ -1,11 +1,11 @@
 {
-  "catalogDigest": "20a2e621ecfaa6172ac6d222967ed86cbc097b7bd372699dea9b674aa98bce2f",
-  "catalogVersion": 1,
+  "catalogDigest": "367c65a3dc17aab5061e0f06257940517447bc35b3487e56c4c089263bbce6d3",
+  "catalogVersion": 2,
   "reviewer": "Codex, редактор ML-поставки",
   "reviewKind": "AI_EDITORIAL_REVIEW",
   "humanBankReview": false,
-  "reviewedAt": "2026-10-21",
-  "scope": "Весь опубликованный набор просмотрен после подготовки; это содержательная проверка MVP, не банковское согласование.",
+  "reviewedAt": "2026-10-22",
+  "scope": "Автоматическая редакционная проверка MVP; человеческое согласование ожидается. Новые материалы не содержат ставок, продуктов и обещаний решения.",
   "checks": [
     "Одна мысль и практический вывод",
     "Обращение на вы",
@@ -230,6 +230,222 @@
       "version": 1,
       "approved": true,
       "note": "Расчёт охватывает цикл до оплаты покупателем; учтены склад, скидки, медленные запасы и сценарий замедления продаж."
+    },
+    {
+      "id": "cash-07",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "cash-08",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "cash-09",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "cash-10",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "cash-11",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "cash-12",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "working-07",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "working-08",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "working-09",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "working-10",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "working-11",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "working-12",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "season-07",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "season-08",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "season-09",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "season-10",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "season-11",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "season-12",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "equipment-07",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "equipment-08",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "equipment-09",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "equipment-10",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "equipment-11",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "equipment-12",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "application-07",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "application-08",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "application-09",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "application-10",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "application-11",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "application-12",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "cost-07",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "cost-08",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "cost-09",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "cost-10",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "cost-11",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
+    },
+    {
+      "id": "cost-12",
+      "version": 1,
+      "approved": true,
+      "note": "AI_EDITORIAL_REVIEW: самостоятельный отраслевой пример; требуется просмотр командой."
     }
   ]
 }

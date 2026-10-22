@@ -1,0 +1,15 @@
+{
+  "command": "./scripts/feed serve-hybrid",
+  "ready": true,
+  "releaseId": "feed-catboost-v1-07a8233cfc32",
+  "mode": "MODEL",
+  "candidates": 72,
+  "emptyProfileMode": "RULES",
+  "health": {
+    "ready": true,
+    "catalogVersion": 2,
+    "catalogDigest": "367c65a3dc17aab5061e0f06257940517447bc35b3487e56c4c089263bbce6d3",
+    "releaseId": "feed-catboost-v1-07a8233cfc32"
+  },
+  "errors": 0
+}

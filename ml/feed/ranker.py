@@ -127,10 +127,12 @@ class RulesRanker:
                     + .02 * bool(not p.depth and self.catalog.cards[i].depth == Depth.BASICS))
                 for i in request.candidateIds}
 
-    def result(self, request, scores, mode, release_id):
-        for i in request.candidateIds:
-            card = self.catalog.cards[i]
-            scores[i] += topic_bonus(request, card.topic) + .03 * bool(request.profile.depth == card.depth)
+    def result(self, request, scores, mode, release_id, *, adjustments=True):
+        scores = dict(scores)
+        if adjustments:
+            for i in request.candidateIds:
+                card = self.catalog.cards[i]
+                scores[i] += topic_bonus(request, card.topic) + .03 * bool(request.profile.depth == card.depth)
         ranked = diversify(request.candidateIds, scores, self.catalog)
         if len(ranked) != len(request.candidateIds) or set(ranked) != set(request.candidateIds):
             raise RuntimeError('Candidate permutation invariant failed')

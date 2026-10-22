@@ -1,44 +1,32 @@
 # Рекомендательная лента
 
-Принимает разрешённый типизированный профиль и кандидатов, возвращает порядок информационных карточек и объяснения для backend. Пользовательское состояние и публичный интерфейс реализуют коллеги.
+ML-сервис на CPU: frozen E5 или экспериментальный CatBoostRanker поверх E5-признака. Каталог v2 содержит 72 русскоязычные карточки. Профиль, кандидаты и предшествующие агрегаты реакций приходят от backend; сервис возвращает точную перестановку кандидатов и пояснения.
 
-| Параметр | Значение |
-|---|---|
-| Статус | Локальный ML реализован; общий backend/frontend и совместная приёмка не поставлены |
-| Актуальность | 22.10.2026; `ml/feed-recommendations`; код `829c1c09bb248f03d730f25526de3b11712370bd` |
-| Проверенная среда | Исторические протоколы: macOS arm64, Python 3.12.13; Docker/Windows/Linux не проверены |
-| Адрес сервиса | 127.0.0.1:8002 |
-| Модели | multilingual-e5-small, закреплённая revision в model-lock; без дообучения; RULES отдельно |
-| Зависимости runtime | Локальные E5/tokenizer/embeddings; без пользовательской БД |
+По умолчанию E5. CatBoost обучен на синтетических событиях и явно помечен как экспериментальный до человеческой проверки контента и разметки. Пользовательская польза на реальном трафике не установлена.
 
-## Назначение и границы
-
-E5 + фиксированные бонусы/разнообразие. Similarity не является вероятностью полезности; реакции/exposures/cursors хранятся у backend. Фактические проверки и непройденные сценарии отдельно перечислены в verification.
-
-## Быстрый запуск
-
-Сначала [первичная подготовка](../../docs/ml/feed/setup.md). Ниже обычный запуск в уже подготовленном окружении; собственный ML_INTERNAL_TOKEN должен быть задан в окружении.
-
-ОС/оболочка: macOS arm64, POSIX shell. Рабочий каталог: корень соответствующей ветки репозитория.
+- [Текущая поставка, запуск и ограничения](../../docs/ml/feed/hackathon.md).
+- [Контракт событий для backend](../../docs/ml/feed/analytics-contract.md).
+- [Измеренные результаты](../../reports/hackathon/README.md).
+- [API и правила интеграции](../../docs/ml/feed/integration.md).
+- [Исторические проверки E5 MVP](../../docs/ml/feed/verification.md).
 
 ```sh
-./scripts/feed serve
+./scripts/feed setup
+./scripts/feed prepare --download
+./scripts/feed pipeline --work .local/run-01 --reports reports/run-01 --model-source .local/feed-bundle/model
+./scripts/feed test --with-model --with-learned
 ```
 
-Ожидается сервис на указанном порту. При запуске не происходит переобучения или скачивания модели.
+После pipeline learned bundle находится в `.local/run-01/catboost`; для тестов задайте `FEED_LEARNED_TEST_BUNDLE=.local/run-01/catboost`. Для сервера выберите `FEED_RANKER=catboost` и такой же `FEED_BUNDLE`. Веса и полные датасеты остаются локальными, вне Git.
 
-## Проверка запуска
+Готовая связка E5 → CatBoost запускается одной командой после задания `ML_INTERNAL_TOKEN`:
 
-Авторизованный `GET http://127.0.0.1:8002/health`: X-Service-Token; ожидается HTTP200 и ready=true. Без токена — 403, без модели — 503. Исполняемая команда — в setup.
+```sh
+./scripts/feed serve-hybrid
+```
 
-## Документация
+Команда выбирает CatBoostRanker с вложенным E5 из `.local/feed-catboost`. Для bundle из pipeline: `FEED_BUNDLE=.local/run-01/catboost ./scripts/feed serve-hybrid`. E5 вычисляет similarity, общий `FeatureBuilder` объединяет его с типизированным профилем и прошлыми реакциями, CatBoost ранжирует кандидатов, затем применяется разнообразие тем. Это одна модель ранжирования поверх E5-признака; повторные ручные бонусы не прибавляются.
 
-- Подготовка и настройки — [setup.md](../../docs/ml/feed/setup.md).
-- Архитектура — [architecture.md](../../docs/ml/feed/architecture.md).
-- API и интеграция — [integration.md](../../docs/ml/feed/integration.md).
-- Модели и качество — [model-card.md](../../docs/ml/feed/model-card.md).
-- Данные и происхождение — [data.md](../../docs/ml/feed/data.md).
-- Обслуживание — [operations.md](../../docs/ml/feed/operations.md).
-- Фактические проверки — [verification.md](../../docs/ml/feed/verification.md).
-- Сторонние компоненты — [THIRD_PARTY_NOTICES.md](../../docs/ml/feed/THIRD_PARTY_NOTICES.md).
-- Изменения — [CHANGELOG.md](../../docs/ml/feed/CHANGELOG.md).
+`./scripts/feed serve` сохраняет обычный выбор через `FEED_RANKER`, по умолчанию E5. При недоступности модели API возвращает 503 для fallback на правила в backend; пустой профиль получает RULES.
+
+`POST /internal/v2/rankings`, `X-Service-Token`, `Idempotency-Key`, предел 100 кандидатов и формат ответа сохранены. FEED работает отдельно от Risk API на порту 8002. Backend/UI/БД и реальный сбор событий реализуют коллеги.

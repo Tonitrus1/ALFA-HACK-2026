@@ -1,0 +1,13 @@
+{
+  "defaultRanker": "e5",
+  "gates": {
+    "relativeNDCG6": false,
+    "positiveClusterCI": false,
+    "semanticScenarios": false,
+    "humanReview": false
+  },
+  "isSynthetic": true,
+  "learnedBundle": ".local/pipeline-smoke/catboost",
+  "e5Bundle": ".local/pipeline-smoke/e5",
+  "humanReviewPending": true
+}

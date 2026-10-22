@@ -8,6 +8,7 @@ from ml.feed.integration import make_request
 
 def pytest_addoption(parser):
     parser.addoption('--with-model', action='store_true', help='Require prepared real E5 bundle')
+    parser.addoption('--with-learned', action='store_true', help='Require trained CatBoost bundle')
 
 
 @pytest.fixture(scope='session')
@@ -28,3 +29,12 @@ def real_model(request, catalog):
         pytest.skip('Use --with-model to require real offline E5')
     from ml.feed.ranker import ModelRanker
     return ModelRanker(catalog, Path('.local/feed-bundle'))
+
+
+@pytest.fixture(scope='session')
+def learned_model(request, catalog):
+    if not request.config.getoption('--with-learned'):
+        pytest.skip('Use --with-learned to require a trained offline bundle')
+    import os
+    from ml.feed.learned import LearnedRanker
+    return LearnedRanker(catalog, Path(os.environ.get('FEED_LEARNED_TEST_BUNDLE', '.local/feed-catboost')))

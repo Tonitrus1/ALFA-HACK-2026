@@ -13,7 +13,7 @@ from ml.feed.schemas import Profile, RankingRequest, Topic
 
 def test_catalog_editorial_and_review_integrity(catalog):
     report = catalog.validate_editorial()
-    assert report['cards'] == 36
+    assert report['cards'] == 72
     review = json.loads(Path('ml/feed/catalog/review.json').read_text())
     assert review['catalogDigest'] == catalog.digest
     assert {c['id'] for c in review['cards']} == set(catalog.cards)
@@ -99,7 +99,7 @@ def test_diversity_permutation_and_stable_ties(catalog):
     ranked = diversify(ids, scores, catalog)
     assert ranked[:2] == ['cash-01', 'cash-02']
     assert len(ranked) == len(ids) and set(ranked) == set(ids)
-    for offset in range(0, 36, 6):
+    for offset in range(0, len(ids), 6):
         assert max(Counter(catalog.cards[i].topic for i in ranked[offset:offset + 6]).values()) <= 2
     single = [i for i in ids if catalog.cards[i].topic == Topic.CASH_GAP]
     assert diversify(single[::-1], {i: 0 for i in single}, catalog) == single

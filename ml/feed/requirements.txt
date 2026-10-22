@@ -8,3 +8,9 @@ fastapi==0.115.12
 pydantic==2.14.1
 uvicorn==0.34.3
 httpx==0.28.1
+
+# Learned ranking and synthetic-data pipeline
+catboost==1.2.8
+pyarrow==20.0.0
+jsonschema==4.26.0
+rfc3339-validator==0.1.4

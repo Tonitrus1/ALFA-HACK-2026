@@ -41,7 +41,7 @@ def evaluate(bundle: Path, output: Path):
             durations.append((time.perf_counter() - start) * 1000)
     report = dict(releaseId=model.release_id, bundleDigest=model.bundle_digest,
                   catalogDigest=catalog.digest, runtime=platform.platform(),
-                  processor=platform.machine(), cpuThreads=4, candidates=36,
+                  processor=platform.machine(), cpuThreads=4, candidates=len(catalog.cards),
                   timing={'samples': len(durations), 'warm': True, 'unit': 'ms',
                           'p50': float(np.percentile(durations, 50)),
                           'p95': float(np.percentile(durations, 95)), 'max': max(durations)},

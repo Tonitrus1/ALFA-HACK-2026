@@ -15,7 +15,7 @@ from .catalog import Catalog, digest, file_digest
 LIBRARIES = ('torch', 'transformers', 'tokenizers', 'numpy', 'safetensors')
 
 
-def prepare(bundle: Path, download: bool = False) -> dict:
+def prepare(bundle: Path, download: bool = False, model_source: Path | None = None) -> dict:
     lock = json.loads(Path(__file__).with_name('model-lock.json').read_text())
     catalog = Catalog()
     catalog.validate_editorial()
@@ -25,6 +25,11 @@ def prepare(bundle: Path, download: bool = False) -> dict:
     model_dir.mkdir(parents=True, exist_ok=True)
     for name in lock['files']:
         target = model_dir / name
+        if not target.exists() and model_source is not None:
+            source = model_source / name
+            if not source.is_file() or file_digest(source) != lock['sha256'][name]:
+                raise ValueError('Source model checksum mismatch: ' + name)
+            shutil.copy2(source, target)
         if not target.exists() and download:
             temporary = target.with_suffix(target.suffix + '.part')
             url = f"https://huggingface.co/{lock['modelId']}/resolve/{lock['revision']}/{name}"
@@ -46,7 +51,7 @@ def prepare(bundle: Path, download: bool = False) -> dict:
     np.save(bundle / 'embeddings.npy', encoder.encode(texts), allow_pickle=False)
     files = {'model/' + name: file_digest(model_dir / name) for name in lock['files']}
     files['embeddings.npy'] = file_digest(bundle / 'embeddings.npy')
-    manifest = {'release': 'feed-e5-v1', 'modelLock': lock, 'catalogDigest': catalog.digest,
+    manifest = {'release': f'feed-e5-catalog-v{catalog.version}', 'modelLock': lock, 'catalogDigest': catalog.digest,
                 'catalogVersion': catalog.version, 'cardIds': ids, 'files': files,
                 'maxCardTokens': max(lengths),
                 'libraries': {lib: importlib.metadata.version(lib) for lib in LIBRARIES}}
@@ -61,8 +66,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--bundle', type=Path, default=Path('.local/feed-bundle'))
     parser.add_argument('--download', action='store_true', help='Explicitly permit network during preparation')
+    parser.add_argument('--model-source', type=Path, help='Copy verified weights from an existing local model directory')
     args = parser.parse_args()
-    result = prepare(args.bundle, args.download)
+    result = prepare(args.bundle, args.download, args.model_source)
     print(json.dumps({'ready': True, 'bundleDigest': result['bundleDigest'],
                       'catalogDigest': result['catalogDigest']}, indent=2))
 

@@ -1,0 +1,49 @@
+name: Feed ML
+on:
+  pull_request:
+    paths: ['ml/feed/**', 'scripts/feed', '.github/workflows/feed.yml']
+  push:
+    paths: ['ml/feed/**', 'scripts/feed', '.github/workflows/feed.yml']
+  workflow_dispatch:
+    inputs:
+      real_model:
+        description: 'Download pinned E5 and run offline training/API smoke'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  contracts-data:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: ml/feed/requirements.lock.txt
+      - run: ./scripts/feed setup
+      - run: ./scripts/feed test --junitxml=reports/feed-ci-tests.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: feed-tests
+          path: reports/feed-ci-tests.xml
+  offline-model:
+    if: github.event_name == 'workflow_dispatch' && inputs.real_model
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: ./scripts/feed setup
+      - run: ./scripts/feed prepare --download
+      - run: ./scripts/feed test --with-model
+      - run: ./scripts/feed pipeline --work .local/ci-run --reports reports/feed-ci --model-source .local/feed-bundle/model --users 100
+      - run: FEED_LEARNED_TEST_BUNDLE=.local/ci-run/catboost ./scripts/feed test --with-learned
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: feed-model-reports
+          path: reports/feed-ci

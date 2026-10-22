@@ -1,0 +1,112 @@
+{
+  "generatorVersion": "feed-simulation-v1",
+  "isSynthetic": true,
+  "timestampsAreSynthetic": true,
+  "config": {
+    "schemaVersion": 1,
+    "seed": 20261023,
+    "users": 500,
+    "sessions": 4,
+    "pages": 2,
+    "pageSize": 6,
+    "randomPolicyShare": 0.7,
+    "emptyProfileShare": 0.1,
+    "partialProfileShare": 0.2,
+    "positionDecay": 0.45,
+    "intentStrength": 0.65,
+    "topicAffinity": {
+      "PURCHASE": [
+        0.1,
+        1.8,
+        0.9,
+        0.1,
+        0.1,
+        0.3
+      ],
+      "CASH_GAP": [
+        1.8,
+        0.6,
+        0.8,
+        0.1,
+        0.1,
+        0.3
+      ],
+      "EQUIPMENT": [
+        0.1,
+        0.1,
+        0.1,
+        1.8,
+        0.4,
+        0.3
+      ],
+      "EXPANSION": [
+        0.2,
+        0.4,
+        0.4,
+        1.5,
+        0.5,
+        0.3
+      ],
+      "EXPLORING": [
+        0.4,
+        0.4,
+        0.3,
+        0.3,
+        1.4,
+        0.8
+      ]
+    },
+    "helpAffinity": {
+      "AMOUNT": [
+        0.6,
+        0.8,
+        0.4,
+        0.3,
+        0.1,
+        0.2
+      ],
+      "OPTIONS": [
+        0.2,
+        0.3,
+        0.2,
+        0.4,
+        0.4,
+        0.4
+      ],
+      "COST": [
+        0.1,
+        0.1,
+        0.1,
+        0.2,
+        0.1,
+        1.8
+      ],
+      "APPLICATION": [
+        0.1,
+        0.1,
+        0.1,
+        0.2,
+        1.8,
+        0.2
+      ]
+    }
+  },
+  "catalogVersion": 2,
+  "catalogDigest": "367c65a3dc17aab5061e0f06257940517447bc35b3487e56c4c089263bbce6d3",
+  "counts": {
+    "requests.parquet": 4000,
+    "issued.parquet": 24000,
+    "events.parquet": 20158,
+    "private/truth.parquet": 4000
+  },
+  "files": {
+    "requests.parquet": "cc6bafe2a199b4e79ea64e74287b02f6c1de89df1ac6d2852d10a473c3d78ecc",
+    "issued.parquet": "447872f33d60395482ba4c181a7ff4f6fee03a75d9a6632dad1d424a861833a6",
+    "events.parquet": "c915d8714cde2ac8b3c001bd514f0b2929ccccc041cabc507e6167176c4fa846",
+    "private/truth.parquet": "f1a3c752c311738957e1d74b80c271dd46ccb9dc3c68d995de814892a345ed39"
+  },
+  "limitations": [
+    "Synthetic outcomes describe the configured world, not real users.",
+    "Private truth must never enter training features or labels."
+  ]
+}

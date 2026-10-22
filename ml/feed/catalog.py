@@ -83,13 +83,15 @@ class Catalog:
 
     def validate_editorial(self) -> dict:
         cards = self.document.cards
-        if len(cards) != 36 or len(self.cards) != 36:
-            raise ValueError('MVP requires 36 published cards')
+        coverage = json.loads((self.path.parent / 'coverage.json').read_text())
+        expected = coverage['catalogs'][str(self.version)]
+        if len(cards) != expected['publishedCards'] or len(self.cards) != expected['publishedCards']:
+            raise ValueError('Published card count differs from coverage configuration')
         counts = Counter((c.topic, c.depth) for c in cards)
-        if any(counts[t, d] != 2 for t in Topic for d in Depth):
-            raise ValueError('Each topic/depth must contain two cards')
+        if any(counts[t, d] != expected['cardsPerTopicDepth'] for t in Topic for d in Depth):
+            raise ValueError('Topic/depth coverage differs from configuration')
         normalized = [re.sub(r'\W+', '', c.text.lower()) for c in cards]
-        if len(set(normalized)) != 36:
+        if len(set(normalized)) != len(cards):
             raise ValueError('Duplicate card texts')
         for i, a in enumerate(normalized):
             from difflib import SequenceMatcher

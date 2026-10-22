@@ -9,14 +9,25 @@ case "$feed_command" in
     .venv-feed/bin/python -m pip install -r ml/feed/requirements.lock.txt
     ;;
   prepare) exec .venv-feed/bin/python -m ml.feed.prepare "$@" ;;
-  serve)
+  pipeline) exec .venv-feed/bin/python -m ml.feed.pipeline "$@" ;;
+  simulate) exec .venv-feed/bin/python -m ml.feed.simulate "$@" ;;
+  validate-data) exec .venv-feed/bin/python -m ml.feed.validate_data "$@" ;;
+  train) exec .venv-feed/bin/python -m ml.feed.train_ranker "$@" ;;
+  benchmark) exec .venv-feed/bin/python -m ml.feed.benchmark "$@" ;;
+  smoke) exec .venv-feed/bin/python -m ml.feed.smoke "$@" ;;
+  demo) exec .venv-feed/bin/python -m ml.feed.demo "$@" ;;
+  serve|serve-hybrid)
     : "${ML_INTERNAL_TOKEN:?Set ML_INTERNAL_TOKEN (16+ characters)}"
+    if [ "$feed_command" = serve-hybrid ]; then
+      export FEED_RANKER=catboost
+      export FEED_BUNDLE="${FEED_BUNDLE:-.local/feed-catboost}"
+    fi
     export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 TOKENIZERS_PARALLELISM=false
     exec .venv-feed/bin/python -m uvicorn ml.feed.server:create_app --factory --host 127.0.0.1 --port 8002 --no-access-log --limit-concurrency 32 "$@"
     ;;
   test) exec .venv-feed/bin/python -m pytest ml/feed/tests -q "$@" ;;
   evaluate|rank) exec .venv-feed/bin/python -m ml.feed.cli "$feed_command" "$@" ;;
   *)
-    printf '%s\n' './scripts/feed setup' './scripts/feed prepare --download' './scripts/feed serve' './scripts/feed test --with-model' './scripts/feed evaluate' './scripts/feed rank ml/feed/examples/purchase-cost.request.json'
+    printf '%s\n' './scripts/feed setup' './scripts/feed prepare --download' './scripts/feed serve' './scripts/feed serve-hybrid' './scripts/feed test --with-model' './scripts/feed evaluate' './scripts/feed rank ml/feed/examples/purchase-cost.request.json' './scripts/feed pipeline --work .local/run-01 --reports reports/run-01 --model-source .local/feed-bundle/model' './scripts/feed train --data .local/feed-synthetic-v1 --output .local/feed-catboost' './scripts/feed benchmark --data .local/feed-synthetic-v1 --output reports/new-benchmark.json' './scripts/feed smoke' './scripts/feed demo'
     ;;
 esac

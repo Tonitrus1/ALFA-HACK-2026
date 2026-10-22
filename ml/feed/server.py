@@ -29,11 +29,21 @@ def error_contract(description, *, retry=False):
     return {'model': MLError, 'description': description, 'headers': headers}
 
 
-def create_app(bundle: Path | None = None, token: str | None = None, ranker_factory=ModelRanker):
+def create_app(bundle: Path | None = None, token: str | None = None, ranker_factory=None):
     token = token if token is not None else os.environ.get('ML_INTERNAL_TOKEN', '')
     if len(token) < 16:
         raise RuntimeError('ML_INTERNAL_TOKEN must be configured (at least 16 characters)')
-    bundle = bundle or Path(os.environ.get('FEED_BUNDLE', '.local/feed-bundle'))
+    kind = os.environ.get('FEED_RANKER', 'e5')
+    if kind not in ('e5', 'catboost'):
+        raise RuntimeError('FEED_RANKER must be e5 or catboost')
+    if ranker_factory is None:
+        if kind == 'catboost':
+            from .learned import LearnedRanker
+            ranker_factory = LearnedRanker
+        else:
+            ranker_factory = ModelRanker
+    default_bundle = '.local/feed-catboost' if kind == 'catboost' else '.local/feed-bundle'
+    bundle = bundle or Path(os.environ.get('FEED_BUNDLE', default_bundle))
 
     def auth(service_token: str | None = Security(service_identity)):
         if not secrets.compare_digest((service_token or '').encode(), token.encode()):

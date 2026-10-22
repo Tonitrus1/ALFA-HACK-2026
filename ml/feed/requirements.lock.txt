@@ -28,6 +28,7 @@ Pygments==2.21.0
 pytest==8.4.0
 PyYAML==6.0.3
 referencing==0.37.0
+rfc3339-validator==0.1.4
 regex==2026.9.29
 requests==2.34.2
 rpds-py==2026.9.1
@@ -43,3 +44,21 @@ typing-inspection==0.4.4
 typing_extensions==4.16.0
 urllib3==2.8.0
 uvicorn==0.34.3
+
+# CatBoost runtime/data dependencies
+catboost==1.2.8
+pyarrow==20.0.0
+pandas==3.0.6
+scipy==1.15.3
+matplotlib==3.11.2
+plotly==7.1.0
+graphviz==0.21
+six==1.17.0
+contourpy==1.4.0
+cycler==0.12.1
+fonttools==4.67.0
+kiwisolver==1.5.1
+pillow==12.3.0
+pyparsing==3.3.3
+python-dateutil==2.9.0.post0
+narwhals==2.27.1
