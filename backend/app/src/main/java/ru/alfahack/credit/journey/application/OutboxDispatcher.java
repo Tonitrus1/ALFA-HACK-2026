@@ -10,12 +10,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import tools.jackson.databind.json.JsonMapper;
+
 import ru.alfahack.credit.journey.infrastructure.OutboxRepository;
 import ru.alfahack.credit.journey.infrastructure.OutboxRepository.ClaimedEvent;
 import ru.alfahack.credit.platform.support.Ids;
+import ru.alfahack.credit.ports.events.EventEnvelope;
+import ru.alfahack.credit.ports.events.EventTransportPort;
 
 /**
- * Локальный транспорт outbox → in-process обработчики (local-mvp). Захват партии через SKIP LOCKED с lease;
+ * Dispatcher транзакционного outbox: доставка через выбранный EventTransportPort (local-mvp — in-process). Захват партии через SKIP LOCKED с lease;
  * каждое событие доставляется в своей транзакции и подтверждается только владельцем актуальной lease.
  * Ошибка — повтор с backoff; после maxAttempts событие становится видимым FAILED, а не исчезает.
  */
@@ -29,15 +33,18 @@ public class OutboxDispatcher {
     static final Duration LEASE = Duration.ofSeconds(30);
 
     private final OutboxRepository outbox;
-    private final List<EventHandler> handlers;
+    private final EventTransportPort transport;
+    private final JsonMapper json;
     private final TransactionTemplate transactions;
     private final Clock clock;
     private final String workerId = "dispatcher-" + Ids.newId();
 
     public OutboxDispatcher(
-            OutboxRepository outbox, List<EventHandler> handlers, TransactionTemplate transactions, Clock clock) {
+            OutboxRepository outbox, EventTransportPort transport, JsonMapper json, TransactionTemplate transactions,
+            Clock clock) {
         this.outbox = outbox;
-        this.handlers = List.copyOf(handlers);
+        this.transport = transport;
+        this.json = json;
         this.transactions = transactions;
         this.clock = clock;
     }
@@ -59,11 +66,10 @@ public class OutboxDispatcher {
     private boolean deliver(ClaimedEvent claimed) {
         try {
             transactions.executeWithoutResult(status -> {
-                for (EventHandler handler : handlers) {
-                    if (handler.handles(claimed.event().eventType())) {
-                        handler.handle(claimed.event());
-                    }
-                }
+                EventMessage event = claimed.event();
+                transport.consume(new EventEnvelope(
+                        event.eventId().toString(), event.eventType(), event.aggregateId(), event.aggregateVersion(),
+                        event.correlationId(), json.writeValueAsString(event)));
                 if (!outbox.markDelivered(claimed.event().eventId(), workerId, clock.instant())) {
                     throw new LeaseLostException();
                 }

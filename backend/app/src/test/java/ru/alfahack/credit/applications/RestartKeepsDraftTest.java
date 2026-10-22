@@ -26,8 +26,8 @@ class RestartKeepsDraftTest {
         return new SpringApplicationBuilder(CreditApplication.class, EmbeddedPostgresConfiguration.class)
                 .web(WebApplicationType.NONE)
                 .profiles("demo")
-                .properties("spring.datasource.password=unused", "credit.scheduling.enabled=false")
-                .run();
+                .run("--spring.datasource.password=unused", "--credit.scheduling.enabled=false",
+                        "--credit.objects.root=" + System.getProperty("java.io.tmpdir") + "/credit-test-objects");
     }
 
     static AuthenticatedSession representativeA() {

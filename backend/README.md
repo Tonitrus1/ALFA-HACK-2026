@@ -18,11 +18,11 @@ Java 21, Spring Boot 4.1.1, PostgreSQL 17.11, Maven (через `./mvnw`), Flywa
 | Путь | Что внутри |
 | --- | --- |
 | `ports/` | Порты способностей: `SessionStorePort`, `CachePort`, `EventTransportPort`, `ObjectStorePort`, классы ошибок. Без Spring и SDK |
-| `adapters/local/` | Локальные адаптеры профиля `local-mvp` (P25) |
+| `adapters/local/` | Локальные адаптеры профиля `local-mvp`: `JdbcSessionAdapter`, `BoundedLocalCacheAdapter`, `PostgresOutboxTransportAdapter`, `VersionedFilesystemObjectAdapter` |
 | `adapters/{redis,kafka,s3}/` | Отключённые каркасы настоящих провайдеров: выбор бросает `ProviderNotImplemented` |
 | `app/` | Spring Boot приложение |
 | `app/.../credit/<module>/` | Модули `access`, `catalog`, `applications`, `consents`, `documents`, `journey`, `integration`, `workspace`, `ml`, `kb`; слои `api` → `application` → `domain`, `infrastructure` |
-| `app/.../credit/platform/bindings/` | Composition root: проверка `credit.adapters.*`; неизвестная привязка останавливает запуск |
+| `app/.../credit/platform/bindings/` | Composition root: по `credit.adapters.*` создаёт ровно одну реализацию каждого порта; неизвестная или неподключённая привязка останавливает запуск, автоматического fallback нет |
 | `app/src/main/resources/db/migration/<module>/` | Flyway-миграции модуля-владельца; номера версий глобальные |
 
 Правила границ проверяет `ModuleBoundariesTest` (ArchUnit): другой модуль доступен только через его `application`, контроллеры не ходят в `infrastructure`, бизнес-модули не зависят от адаптеров.
@@ -59,7 +59,7 @@ Java 21, Spring Boot 4.1.1, PostgreSQL 17.11, Maven (через `./mvnw`), Flywa
 cd backend
 ./mvnw verify                      # сборка и тесты; встроенный PostgreSQL 17.11, Docker не нужен
 
-cp .env.example .env               # задать DB_PASSWORD
+cp .env.example .env               # задать DB_PASSWORD; файлы — в OBJECTS_ROOT (по умолчанию ~/.local/share/credit-backend/objects)
 docker compose up -d               # локальный PostgreSQL 17.11
 set -a; . ./.env; set +a
 ./mvnw install -DskipTests && ./mvnw -pl app spring-boot:run -Dspring-boot.run.profiles=demo

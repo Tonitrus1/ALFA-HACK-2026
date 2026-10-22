@@ -36,6 +36,11 @@ credit:
     enabled: true
   outbox:
     poll-interval: PT1S
+  cache:
+    max-entries: 10000
+  objects:
+    # Постоянный том файлов (quarantine/clean). В контейнере задаётся OBJECTS_ROOT на volume.
+    root: ${OBJECTS_ROOT:${user.home}/.local/share/credit-backend/objects}
 
 management:
   endpoints:
