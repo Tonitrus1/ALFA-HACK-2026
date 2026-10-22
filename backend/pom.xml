@@ -33,6 +33,7 @@
         <archunit.version>1.5.1</archunit.version>
         <embedded-postgres.version>2.2.2</embedded-postgres.version>
         <postgres-binaries.version>17.11.0</postgres-binaries.version>
+        <pdfbox.version>3.0.7</pdfbox.version>
     </properties>
 
     <dependencyManagement>
@@ -61,6 +62,11 @@
                 <groupId>ru.alfahack.credit</groupId>
                 <artifactId>credit-adapters-s3</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.pdfbox</groupId>
+                <artifactId>pdfbox</artifactId>
+                <version>${pdfbox.version}</version>
             </dependency>
             <!-- Встроенный PostgreSQL 17.11 для тестов без Docker; бинарники для всех ОС через BOM. -->
             <dependency>

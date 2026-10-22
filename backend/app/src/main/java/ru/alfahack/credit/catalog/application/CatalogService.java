@@ -30,6 +30,10 @@ public class CatalogService {
         return new ProductPage(page, last.productId());
     }
 
+    public List<DocumentRequirementView> requirements(String productId, long version) {
+        return products.requirements(productId, version);
+    }
+
     /** Точная версия продукта; неактивная тоже возвращается — решение о допустимости за вызывающим. */
     public Optional<ProductView> find(String productId, long version) {
         return products.find(productId, version);

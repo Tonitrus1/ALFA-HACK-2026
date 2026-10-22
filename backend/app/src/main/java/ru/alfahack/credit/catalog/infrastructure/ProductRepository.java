@@ -2,12 +2,14 @@ package ru.alfahack.credit.catalog.infrastructure;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
+import ru.alfahack.credit.catalog.application.DocumentRequirementView;
 import ru.alfahack.credit.catalog.application.ProductView;
 
 @Repository
@@ -48,6 +50,28 @@ public class ProductRepository {
                 .param("version", version)
                 .query((rs, row) -> map(rs))
                 .optional();
+    }
+
+    public List<DocumentRequirementView> requirements(String productId, long version) {
+        return jdbc.sql("""
+                        SELECT requirement_id, title, reason, required, allowed_content_types, max_bytes,
+                               max_pages_for_extraction
+                        FROM catalog.document_requirement
+                        WHERE product_id = :id AND product_version = :version
+                        ORDER BY requirement_id
+                        """)
+                .param("id", productId)
+                .param("version", version)
+                .query((rs, row) -> new DocumentRequirementView(
+                        rs.getString("requirement_id"),
+                        rs.getString("title"),
+                        rs.getString("reason"),
+                        rs.getBoolean("required"),
+                        Arrays.stream((Object[]) rs.getArray("allowed_content_types").getArray())
+                                .map(String.class::cast).toList(),
+                        rs.getInt("max_bytes"),
+                        rs.getInt("max_pages_for_extraction")))
+                .list();
     }
 
     private static ProductView map(ResultSet rs) throws SQLException {

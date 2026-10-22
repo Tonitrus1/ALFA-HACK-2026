@@ -41,7 +41,7 @@ Java 21, Spring Boot 4.1.1, PostgreSQL 17.11, Maven (через `./mvnw`), Flywa
 - Create — 201 с повтором по `Idempotency-Key` (тот же ресурс; другой body — 409 `IDEMPOTENCY_KEY_REUSED`). PATCH — `If-Match: "v{n}"`, CAS по версии.
 - Submit — 202 + receipt. Повтор с тем же ключом возвращает исходный receipt до проверок состояния. Один commit: заявка → `SUBMITTED`, неизменяемый `submission_snapshot`, `command_operation`, событие `SubmissionRequested` в `journey.outbox`.
 - `OutboxDispatcher` (SKIP LOCKED, lease, backoff, видимый `FAILED`) доставляет события в in-process обработчики. `BankSimulator` по inbox создаёт дело (дедуп по `externalRequestId`), переводит операцию в `SUCCEEDED` и публикует `CaseAccepted` (статус `REVIEW`).
-- Предусловия submit — `SubmissionPrerequisites`: финансы (P08) проверяются по-настоящему; непустые ссылки на документы/согласия отклоняются до P10/модуля согласий (`DocumentReferenceGate`).
+- Предусловия submit — `SubmissionPrerequisites`: финансы (P08) и точные CLEAN-ссылки на документы (P10) проверяются по-настоящему; непустой список согласий отклоняется до модуля согласий.
 - Синтетический каталог (`working-capital`, `credit-line`, `overdraft`) — в seed профиля `demo`.
 
 ## Финансовая анкета (P08)
@@ -50,6 +50,14 @@ Java 21, Spring Boot 4.1.1, PostgreSQL 17.11, Maven (через `./mvnw`), Flywa
 - PUT заменяет форму DEMO Financial v1 (один календарный год, RUB, копейки; неполный черновик разрешён). Изменение содержимого → новая `statementVersion`, подтверждение сброшено. Тот же ввод ничего не меняет.
 - Confirm: все 8 полей, `totalAssets > 0`, `currentAssets ≤ totalAssets`, `currentLiabilities ≤ totalLiabilities`, баланс с demo-допуском `max(100 коп., 1% totalAssets)`, точные `documentReferences`. Provenance (MANUAL, actor, time) формирует сервер; клиент не может прислать `confirmed`/provenance.
 - Submit закрепляет неизменяемый `financial_snapshot` подтверждённой версии в той же транзакции; `financialSnapshotId` создаёт сервер.
+
+## Документы и сканер (P10)
+
+- `GET .../document-requirements`, `POST .../documents/upload-intents` (201, грант 10 мин, связан с сессией), `PUT /api/v1/files/uploads/{transferId}` с `X-Upload-Grant` (поток в карантин, 204), `DELETE /api/v1/uploads/{id}`, `GET .../documents`, `GET /api/v1/documents/{id}`, `POST .../download-intents` + `GET /api/v1/files/downloads/{transferId}` с `X-Download-Grant` (только точная CLEAN-версия), `GET .../extraction`.
+- Финализация и отмена загрузки — один CAS upload-state; размер сверяется с объявленным, лимит 10 MiB.
+- In-process сканер (роль `file-scanner`) берёт SCAN-задание с арендой: сигнатура и структура (`FileInspector`: ≤ 5 страниц PDF, без шифрования/JavaScript/вложений, ≤ 40 млн пикселей, полиглоты отклоняются), затем ClamAV `clamd` (`CLAMD_HOST`/`CLAMD_PORT`). CLEAN — только по положительному вердикту; INFECTED → REJECTED; ERROR оставляет карантин, после 5 попыток задание `FAILED`. Выключается `credit.scanner.enabled=false`, если сканер будет внешним.
+- Внутренний API `/internal/v1/document-jobs/{claim,renew,scan-result,extraction-result}` для OCR-worker ML: заголовок `X-Service-Token` (`FILE_SCANNER_TOKEN`, `DOCUMENT_OCR_TOKEN`, ≥ 32 символов). Результат принимается только от текущего поколения непросроченной аренды для той же `objectVersion` (иначе 409 `LEASE_STALE`).
+- Не сделано в P10: `confirm-extraction` (перенос OCR-значений в анкету с OCR-provenance), загрузки по RFI (P15), внешний file-gateway (`/internal/v1/uploads/*/complete`, `/transfers/*/authorize`) — шлюз встроен в backend; сборка осиротевших карантинных байтов.
 
 ## Запуск
 

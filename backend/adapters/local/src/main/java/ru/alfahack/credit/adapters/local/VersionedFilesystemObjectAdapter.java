@@ -130,6 +130,18 @@ public class VersionedFilesystemObjectAdapter implements ObjectStorePort {
         }
     }
 
+    /** Точная карантинная версия с проверкой размера и SHA-256 — только для сканера. */
+    @Override
+    public InputStream openQuarantine(ObjectRef exactRef) {
+        Path file = path(quarantine, exactRef.objectId(), exactRef.version());
+        try {
+            verify(file, exactRef);
+            return Files.newInputStream(file);
+        } catch (IOException e) {
+            throw new PortException(PortErrorClass.UNAVAILABLE, "Object store read failed", e);
+        }
+    }
+
     private void verify(Path file, ObjectRef exactRef) throws IOException {
         if (!Files.isRegularFile(file)) {
             throw new PortException(PortErrorClass.NOT_FOUND, "Object version not found");

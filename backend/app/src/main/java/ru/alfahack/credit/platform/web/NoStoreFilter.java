@@ -17,7 +17,7 @@ class NoStoreFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-        return !(path.startsWith("/api/") || path.startsWith("/demo/api/"));
+        return !(path.startsWith("/api/") || path.startsWith("/demo/api/") || path.startsWith("/internal/"));
     }
 
     @Override

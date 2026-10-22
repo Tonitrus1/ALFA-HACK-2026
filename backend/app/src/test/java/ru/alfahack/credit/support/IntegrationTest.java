@@ -14,7 +14,9 @@ import org.springframework.test.context.ActiveProfiles;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @SpringBootTest(properties = {"spring.datasource.password=unused", "credit.scheduling.enabled=false",
-        "credit.objects.root=${java.io.tmpdir}/credit-test-objects"})
+        "credit.objects.root=${java.io.tmpdir}/credit-test-objects",
+        "credit.internal.service-tokens.file-scanner=" + TestTokens.SCANNER,
+        "credit.internal.service-tokens.document-ocr=" + TestTokens.OCR})
 @AutoConfigureMockMvc
 @ActiveProfiles("demo")
 @Import(EmbeddedPostgresConfiguration.class)

@@ -9,6 +9,9 @@ spring:
   jackson:
     deserialization:
       fail-on-unknown-properties: true
+  servlet:
+    multipart:
+      enabled: false
   jpa:
     open-in-view: false
     hibernate:
@@ -38,6 +41,18 @@ credit:
     poll-interval: PT1S
   cache:
     max-entries: 10000
+  scanner:
+    # In-process сканер (роль file-scanner) и ClamAV clamd в контейнере scanner.
+    enabled: true
+    clamd-host: ${CLAMD_HOST:scanner}
+    clamd-port: ${CLAMD_PORT:3310}
+    timeout: PT30S
+    poll-interval: PT2S
+  internal:
+    # Секреты служебных ролей X-Service-Token (>= 32 символов); пусто — роль отключена.
+    service-tokens:
+      file-scanner: ${FILE_SCANNER_TOKEN:}
+      document-ocr: ${DOCUMENT_OCR_TOKEN:}
   objects:
     # Постоянный том файлов (quarantine/clean). В контейнере задаётся OBJECTS_ROOT на volume.
     root: ${OBJECTS_ROOT:${user.home}/.local/share/credit-backend/objects}
