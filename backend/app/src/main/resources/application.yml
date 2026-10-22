@@ -24,6 +24,11 @@ credit:
       cache: BoundedLocalCacheAdapter
       events: PostgresOutboxTransportAdapter
       objects: VersionedFilesystemObjectAdapter
+  session:
+    ttl: PT8H
+    cookie-secure: true
+  demo:
+    enabled: false
 
 management:
   endpoints:

@@ -11,7 +11,7 @@
 
 ## Стек
 
-Java 21, Spring Boot 4.1.1, PostgreSQL 17.11, Maven (через `./mvnw`), Flyway, ArchUnit, Testcontainers. Это документальные ориентиры; точные версии и digests закрывает P02.
+Java 21, Spring Boot 4.1.1, PostgreSQL 17.11, Maven (через `./mvnw`), Flyway, ArchUnit, embedded-postgres для тестов. Это документальные ориентиры; точные версии и digests закрывает P02.
 
 ## Структура
 
@@ -27,16 +27,24 @@ Java 21, Spring Boot 4.1.1, PostgreSQL 17.11, Maven (через `./mvnw`), Flywa
 
 Правила границ проверяет `ModuleBoundariesTest` (ArchUnit): другой модуль доступен только через его `application`, контроллеры не ходят в `infrastructure`, бизнес-модули не зависят от адаптеров.
 
+## Доступ и сессии (P03)
+
+- Сессия — cookie `credit_session` (HttpOnly, SameSite=Strict); в БД хранится только SHA-256 токена (`access.session`).
+- Все `/api/v1/**` требуют сессию (401). Изменяющие методы требуют `X-CSRF-Token` (403). `X-Company-Context` сверяется с `contextVersion` до эффекта (409 `COMPANY_CONTEXT_CHANGED`).
+- Чужая компания неотличима от несуществующей (404). Для ресурсов компании другие модули используют `CompanyAccessService.requireSelectedCompany` / `requireAction`, а сессию получают параметром контроллера `AuthenticatedSession`.
+- Повышение `access.actor.auth_epoch` мгновенно отзывает все сессии участника.
+- Demo-вход (`/demo/api/v1/accounts`, `/demo/api/v1/session`) существует только в профиле `demo`; там же Flyway подключает синтетический seed `db/seed/demo`: `representative-a` → `company-a`, `representative-b` → `company-b`, `operator-demo`.
+
 ## Запуск
 
 Нужен JDK 21; Maven скачает `./mvnw`.
 
 ```bash
 cd backend
-./mvnw verify                      # сборка и тесты; тест с PostgreSQL пропускается без Docker
+./mvnw verify                      # сборка и тесты; встроенный PostgreSQL 17.11, Docker не нужен
 
 cp .env.example .env               # задать DB_PASSWORD
 docker compose up -d               # локальный PostgreSQL 17.11
 set -a; . ./.env; set +a
-./mvnw install -DskipTests && ./mvnw -pl app spring-boot:run
+./mvnw install -DskipTests && ./mvnw -pl app spring-boot:run -Dspring-boot.run.profiles=demo
 ```
