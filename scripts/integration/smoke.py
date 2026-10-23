@@ -31,6 +31,10 @@ class Client:
             if expected==e.code:return {'expectedHttpStatus':e.code}
             raise AssertionError(f'{method} {path}: unexpected HTTP {e.code}') from None
     def login(self,account='representative-a',company='company-a'):
+        for _ in range(90):
+            try:self.call('/demo/api/v1/accounts');break
+            except (OSError,AssertionError):time.sleep(1)
+        else:raise RuntimeError('Public gateway/backend readiness timeout')
         self.session=self.call('/demo/api/v1/session','POST',{'accountId':account})
         self.session=self.call('/api/v1/session/company','POST',{'companyId':company})
 

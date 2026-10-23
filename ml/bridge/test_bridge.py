@@ -106,3 +106,21 @@ def test_feed_legacy_and_modern_fallback_are_deterministic():
         assert 'confidential' not in json.dumps(store.rows)
         body['candidateSetDigest']='0'*64
         assert c.post('/internal/v2/rankings',json=body,headers=headers).status_code==409
+
+
+def test_feed_retry_cannot_repin_model_release():
+    from feed.ranker import RulesRanker
+    catalog=Catalog();body=__import__('feed.integration',fromlist=['make_request']).make_request(catalog,request_id='pinned-feed',exposure_id='pinned-exposure',candidate_ids=sorted(catalog.cards),profile={'task':'EQUIPMENT'})
+    calls=[]
+    def feed(req):
+        if req.url.path=='/health':return httpx.Response(200,json={'releaseId':'release-A','bundleDigest':'a'*64})
+        calls.append(req)
+        if len(calls)==1:return httpx.Response(409)
+        result=RulesRanker(catalog).rank(body).model_dump(mode='json');result.update(mode='MODEL',releaseId='release-B')
+        return httpx.Response(200,json=result)
+    store=MemoryStore();app=create_app(store=store,token=TOKEN,feed_transport=httpx.MockTransport(feed))
+    with TestClient(app) as c:
+        headers={'X-Service-Token':TOKEN,'Idempotency-Key':body.requestId}
+        assert c.post('/internal/v2/feed/rankings',json=body.model_dump(mode='json'),headers=headers).status_code==409
+        assert c.post('/internal/v2/feed/rankings',json=body.model_dump(mode='json'),headers=headers).status_code==409
+        assert store.get('feed:'+body.requestId)['request']['releaseId']=='release-A'

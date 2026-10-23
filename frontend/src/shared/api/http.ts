@@ -107,9 +107,10 @@ export async function request<T>(path: string, init: RequestInit = {}, file = fa
       throw error;
     }
     if (ownGeneration !== generation) throw new DOMException('Контекст изменился', 'AbortError');
-    if (file) return (await response.blob()) as T;
     if (response.status === 204) return undefined as T;
-    return (await response.json()) as T;
+    const value = file ? await response.blob() : await response.json();
+    if (ownGeneration !== generation) throw new DOMException('Компания изменилась', 'AbortError');
+    return value as T;
   } finally {
     clearTimeout(timeout);
     controllers.delete(controller);

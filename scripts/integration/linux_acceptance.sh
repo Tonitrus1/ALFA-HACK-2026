@@ -41,6 +41,17 @@ export FEED_RELEASE=v1 FEED_BUNDLE_PATH=./.local/feed-bundle FRAUD_MODE=off
 docker compose up -d --wait --wait-timeout 300
 python3 scripts/integration/cursor_release.py --state .local/release-cursor.json --output reports/integration-linux/rollback-cursor.json
 python3 scripts/integration/smoke.py --output reports/integration-linux/rollback-public-flow.json
+# Roll back application Java sources to the verified base, retaining the applied additive migration pack.
+mkdir -p .local/rollback-source
+git archive 5b937b5b3e6761545a6f368ec134d2817d7b1ad7 backend | tar -x -C .local/rollback-source
+cp backend/app/src/main/resources/db/migration/integration/V17__offer_commands.sql backend/app/src/main/resources/db/migration/integration/V18__synthetic_reference.sql .local/rollback-source/backend/app/src/main/resources/db/migration/integration/
+cp backend/app/src/main/resources/db/seed/demo/R__demo_synthetic_reference_seed.sql .local/rollback-source/backend/app/src/main/resources/db/seed/demo/
+docker build -f deploy/Dockerfile.backend -t credit-mvp-backend-rollback:local .local/rollback-source
+printf 'services:\n  backend:\n    image: credit-mvp-backend-rollback:local\n' > .local/rollback-compose.yaml
+docker compose -f compose.yaml -f .local/rollback-compose.yaml up -d --no-build --wait --wait-timeout 300 backend
+python3 scripts/integration/smoke.py --output reports/integration-linux/rollback-java-baseline.json
+python3 scripts/integration/cursor_release.py --state .local/release-cursor.json --output reports/integration-linux/rollback-java-cursor.json
+docker compose up -d --wait --wait-timeout 300 backend
 # Leave the prepared demonstration on E5 v2 and the explicitly selected synthetic proxy.
 export FEED_RELEASE=v2 FEED_BUNDLE_PATH=./.local/feed-v2-linux/e5 FRAUD_MODE=synthetic
 docker compose up -d --wait --wait-timeout 300

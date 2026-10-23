@@ -114,7 +114,7 @@ services:
   gateway:
     build: {context: ., dockerfile: deploy/Dockerfile.gateway}
     ports: ['127.0.0.1:8080:8080']
-    depends_on: [backend]
+    depends_on: {backend: {condition: service_healthy}}
     networks: [ingress, internal]
 networks:
   ingress: {}
