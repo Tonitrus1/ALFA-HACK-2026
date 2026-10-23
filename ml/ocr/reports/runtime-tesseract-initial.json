@@ -1,0 +1,162 @@
+{
+  "synthetic_only": true,
+  "real_ocr": true,
+  "real_llm": true,
+  "checks": {
+    "ready": true,
+    "reject_11_files": true,
+    "reject_51_pages": true,
+    "reject_invalid": true,
+    "auth_required": true
+  },
+  "base": {
+    "job_id": "83ed3a5a-33b7-4390-81af-4e6e6c309717",
+    "status": "succeeded",
+    "error_code": null,
+    "schema_and_sources_valid": true,
+    "provenance": {
+      "prompt_sha256": "1eec3ed3ec204f8cab260b27a20b454c7b87200e733f7dc74edcbfb1eab77afa",
+      "schema_sha256": "9cf63c599a550f2d568b63c581c4c9d1a4de6824f3bf9a0600c0cc1d3364aa0e",
+      "ocr_engine": "tesseract",
+      "ocr_version": "5.3.0",
+      "llm": {
+        "model": "qwen3-30b-a3b",
+        "calls": 7,
+        "validation_repairs": 1,
+        "usage": {
+          "prompt_tokens": 23634,
+          "completion_tokens": 8565,
+          "total_tokens": 32199
+        },
+        "merge": "conservative lexical equality; differing candidates become conflicts"
+      },
+      "seconds": 94.305
+    },
+    "extraction_checks": {
+      "person.full_name": true,
+      "person.birth_date": true,
+      "person.inn": true,
+      "person.snils": true,
+      "person.passport_series": true,
+      "person.passport_number": true,
+      "organization.inn": true,
+      "financial.net_profit": true,
+      "financial.ebit": true,
+      "financial.equity": true,
+      "financial.total_assets": true,
+      "financial.current_assets": true,
+      "financial.current_liabilities": true,
+      "financial.total_debt": true,
+      "financial.revenue": true,
+      "missing_kpp": true,
+      "missing_ogrn": true,
+      "financial_period": false,
+      "financial_currency": true,
+      "extension_demo_code": false,
+      "document_classification": true
+    },
+    "real_pdf_ocr_metrics": {
+      "passport": {
+        "cer": 0.0,
+        "wer": 0.0
+      },
+      "inn": {
+        "cer": 0.0,
+        "wer": 0.0
+      },
+      "snils": {
+        "cer": 0.0,
+        "wer": 0.0
+      },
+      "statement": {
+        "cer": 0.01508,
+        "wer": 0.03846
+      },
+      "financial": {
+        "cer": 0.0,
+        "wer": 0.0
+      },
+      "other": {
+        "cer": 0.0,
+        "wer": 0.0
+      }
+    }
+  },
+  "conflict": {
+    "job_id": "abd08274-8daa-4057-a876-14e0acdfdf9e",
+    "status": "succeeded",
+    "error_code": null,
+    "schema_and_sources_valid": true,
+    "provenance": {
+      "prompt_sha256": "1eec3ed3ec204f8cab260b27a20b454c7b87200e733f7dc74edcbfb1eab77afa",
+      "schema_sha256": "9cf63c599a550f2d568b63c581c4c9d1a4de6824f3bf9a0600c0cc1d3364aa0e",
+      "ocr_engine": "tesseract",
+      "ocr_version": "5.3.0",
+      "llm": {
+        "model": "qwen3-30b-a3b",
+        "calls": 8,
+        "validation_repairs": 1,
+        "usage": {
+          "prompt_tokens": 26723,
+          "completion_tokens": 9747,
+          "total_tokens": 36470
+        },
+        "merge": "conservative lexical equality; differing candidates become conflicts"
+      },
+      "seconds": 83.416
+    },
+    "extraction_checks": {
+      "person.full_name": true,
+      "person.birth_date": true,
+      "person.inn": true,
+      "person.snils": true,
+      "person.passport_series": true,
+      "person.passport_number": true,
+      "organization.inn": true,
+      "financial.net_profit": true,
+      "financial.ebit": true,
+      "financial.equity": true,
+      "financial.total_assets": true,
+      "financial.current_assets": true,
+      "financial.current_liabilities": true,
+      "financial.total_debt": true,
+      "missing_kpp": true,
+      "missing_ogrn": true,
+      "financial_period": false,
+      "financial_currency": true,
+      "extension_demo_code": false,
+      "document_classification": true,
+      "revenue_conflict": true
+    },
+    "real_pdf_ocr_metrics": {
+      "passport": {
+        "cer": 0.0,
+        "wer": 0.0
+      },
+      "inn": {
+        "cer": 0.0,
+        "wer": 0.0
+      },
+      "snils": {
+        "cer": 0.0,
+        "wer": 0.0
+      },
+      "statement": {
+        "cer": 0.01508,
+        "wer": 0.03846
+      },
+      "financial": {
+        "cer": 0.0,
+        "wer": 0.0
+      },
+      "other": {
+        "cer": 0.0,
+        "wer": 0.0
+      },
+      "conflict": {
+        "cer": 0.0,
+        "wer": 0.0
+      }
+    }
+  }
+}

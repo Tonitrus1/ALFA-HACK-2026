@@ -1,0 +1,1 @@
+"""Independent document extraction service."""

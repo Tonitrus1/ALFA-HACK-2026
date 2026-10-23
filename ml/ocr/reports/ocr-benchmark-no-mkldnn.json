@@ -1,0 +1,112 @@
+{
+  "synthetic_only": true,
+  "method": "lowercase + collapse whitespace; Levenshtein CER/WER; cold load separated from warm page inference",
+  "engines": {
+    "paddle": {
+      "version": "3.3.0",
+      "load_seconds": 2.866,
+      "cases": {
+        "passport": {
+          "cer": 0.0,
+          "wer": 0.0,
+          "seconds": 11.291,
+          "blocks": 6
+        },
+        "inn": {
+          "cer": 0.02655,
+          "wer": 0.06667,
+          "seconds": 9.603,
+          "blocks": 4
+        },
+        "snils": {
+          "cer": 0.0,
+          "wer": 0.0,
+          "seconds": 8.48,
+          "blocks": 4
+        },
+        "statement": {
+          "cer": 0.0,
+          "wer": 0.0,
+          "seconds": 9.269,
+          "blocks": 8
+        },
+        "financial": {
+          "cer": 0.00615,
+          "wer": 0.02564,
+          "seconds": 10.453,
+          "blocks": 12
+        },
+        "conflict": {
+          "cer": 0.00649,
+          "wer": 0.04762,
+          "seconds": 8.513,
+          "blocks": 5
+        },
+        "other": {
+          "cer": 0.02703,
+          "wer": 0.07143,
+          "seconds": 7.977,
+          "blocks": 4
+        },
+        "financial_rotated": {
+          "cer": 0.00308,
+          "wer": 0.02564
+        }
+      },
+      "mean_clean_cer": 0.00946
+    },
+    "tesseract": {
+      "version": "0.3.13",
+      "load_seconds": 0.147,
+      "cases": {
+        "passport": {
+          "cer": 0.0,
+          "wer": 0.0,
+          "seconds": 0.884,
+          "blocks": 23
+        },
+        "inn": {
+          "cer": 0.0,
+          "wer": 0.0,
+          "seconds": 0.656,
+          "blocks": 15
+        },
+        "snils": {
+          "cer": 0.0,
+          "wer": 0.0,
+          "seconds": 0.632,
+          "blocks": 14
+        },
+        "statement": {
+          "cer": 0.0,
+          "wer": 0.0,
+          "seconds": 0.767,
+          "blocks": 26
+        },
+        "financial": {
+          "cer": 0.0,
+          "wer": 0.0,
+          "seconds": 0.916,
+          "blocks": 39
+        },
+        "conflict": {
+          "cer": 0.0,
+          "wer": 0.0,
+          "seconds": 0.706,
+          "blocks": 21
+        },
+        "other": {
+          "cer": 0.0,
+          "wer": 0.0,
+          "seconds": 0.654,
+          "blocks": 14
+        },
+        "financial_rotated": {
+          "cer": 0.01538,
+          "wer": 0.05128
+        }
+      },
+      "mean_clean_cer": 0.0
+    }
+  }
+}

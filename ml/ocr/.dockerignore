@@ -1,0 +1,13 @@
+.env
+.git
+.env.*
+.venv
+data
+model-cache
+fixtures/generated
+__pycache__
+.pytest_cache
+.ruff_cache
+reports/local-*
+.cache
+tmp

@@ -1,6 +1,10 @@
 # ML
 
-Папка для кода ML-компонентов и экспериментов. Реализация ещё не добавлена.
+Папка для самостоятельных ML-компонентов и экспериментов.
+
+- [OCR → LLM → Structured JSON](ocr/README.md): независимый CPU-сервис, Docker Compose,
+  типизированная JSON Schema, постоянные задания и TTL 24 часа. Подключение к
+  общему backend/frontend выполняется отдельной интеграцией.
 
 - [Руководство ML](../docs/architecture/packages/ml/docs/guide.md).
 - [Руководство в PDF](../docs/architecture/packages/ml/ml-guide.pdf).
