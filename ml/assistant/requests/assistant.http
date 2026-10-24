@@ -1,0 +1,49 @@
+@base = http://localhost:8000
+@admin = REPLACE_LOCALLY
+@session = REPLACE_WITH_SESSION_ID
+@token = REPLACE_WITH_SESSION_TOKEN
+@candidate = REPLACE_WITH_CANDIDATE_ID
+@sha256 = REPLACE_WITH_EXACT_SHA256
+
+### Create default demo session
+POST {{base}}/v1/sessions
+Content-Type: application/json
+
+{}
+
+### Chat (new ID for each new message; same ID for retry)
+POST {{base}}/v1/sessions/{{session}}/messages
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"client_message_id":"demo-1","message":"Какие документы нужны для demo-app-1?"}
+
+### Find, read and propose a page; may require a continuation depending on model
+POST {{base}}/v1/sessions/{{session}}/messages
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"client_message_id":"demo-2","message":"Найди на cbr.ru материалы о финансировании МСП, прочитай страницу и предложи сохранить её в знания."}
+
+### Inspect exact candidate snapshot
+GET {{base}}/v1/admin/web-candidates/{{candidate}}
+X-Admin-Key: {{admin}}
+
+### Confirm only after checking the text and permitted use
+POST {{base}}/v1/admin/web-candidates/{{candidate}}/confirm
+X-Admin-Key: {{admin}}
+Content-Type: application/json
+
+{"sha256":"{{sha256}}","attribution":"Банк России; ссылка на страницу в метаданных","allowed_use":"УКАЖИТЕ ПРОВЕРЕННОЕ ОСНОВАНИЕ ДЛЯ СОХРАНЕНИЯ"}
+
+### Diagnostic RAG search, no LLM expense
+GET {{base}}/v1/knowledge/search?q=финансирование%20МСП
+X-Admin-Key: {{admin}}
+
+### History
+GET {{base}}/v1/sessions/{{session}}/messages
+Authorization: Bearer {{token}}
+
+### Close and remove temporary materials
+DELETE {{base}}/v1/sessions/{{session}}
+Authorization: Bearer {{token}}

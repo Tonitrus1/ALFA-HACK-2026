@@ -1,0 +1,246 @@
+{
+  "info": {
+    "name": "ALFA Assistant — development",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Внешний платный LLM API. Перед шагом 6 просмотрите снимок и задайте verified_allowed_use. Ключи только локально."
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000"
+    },
+    {
+      "key": "admin_key",
+      "value": ""
+    },
+    {
+      "key": "session_id",
+      "value": ""
+    },
+    {
+      "key": "session_token",
+      "value": ""
+    },
+    {
+      "key": "candidate_id",
+      "value": ""
+    },
+    {
+      "key": "snapshot_sha256",
+      "value": ""
+    },
+    {
+      "key": "verified_allowed_use",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Создать сессию",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/v1/sessions",
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Created', () => pm.response.to.have.status(201));",
+              "const s = pm.response.json();",
+              "pm.collectionVariables.set('session_id', s.session_id);",
+              "pm.collectionVariables.set('session_token', s.session_token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Синтетические продукты",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{session_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/v1/sessions/{{session_id}}/messages",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"client_message_id\": \"{{$guid}}\",\n  \"message\": \"Какие есть синтетические кредитные продукты?\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "3. Связный диалог",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{session_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/v1/sessions/{{session_id}}/messages",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"client_message_id\": \"{{$guid}}\",\n  \"message\": \"А какие документы нужны для demo-app-1?\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "4. Найти, прочитать и предложить сохранить",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{session_token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/v1/sessions/{{session_id}}/messages",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"client_message_id\": \"{{$guid}}\",\n  \"message\": \"Найди на cbr.ru материалы о финансировании МСП, прочитай страницу и предложи сохранить её в знания. Используй поиск в интернете.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const actions = pm.response.json().pending_actions || [];",
+              "if (actions.length) {",
+              "  pm.collectionVariables.set('candidate_id', actions[0].candidate_id);",
+              "  pm.collectionVariables.set('snapshot_sha256', actions[0].sha256);",
+              "} else { console.log('Продолжите диалог: модель ещё не предложила снимок'); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Просмотреть снимок и проверить права хранения",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Admin-Key",
+            "value": "{{admin_key}}"
+          }
+        ],
+        "url": "{{base_url}}/v1/admin/web-candidates/{{candidate_id}}"
+      }
+    },
+    {
+      "name": "6. Подтвердить точный снимок",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-Admin-Key",
+            "value": "{{admin_key}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{base_url}}/v1/admin/web-candidates/{{candidate_id}}/confirm",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sha256\": \"{{snapshot_sha256}}\",\n  \"attribution\": \"Банк России; URL в метаданных\",\n  \"allowed_use\": \"{{verified_allowed_use}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "7. Найти сохранённое в RAG",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-Admin-Key",
+            "value": "{{admin_key}}"
+          }
+        ],
+        "url": "{{base_url}}/v1/knowledge/search?q=финансирование%20МСП"
+      }
+    },
+    {
+      "name": "8. История",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{session_token}}"
+          }
+        ],
+        "url": "{{base_url}}/v1/sessions/{{session_id}}/messages"
+      }
+    },
+    {
+      "name": "9. Закрыть сессию",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{session_token}}"
+          }
+        ],
+        "url": "{{base_url}}/v1/sessions/{{session_id}}"
+      }
+    }
+  ]
+}

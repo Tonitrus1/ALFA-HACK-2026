@@ -1,0 +1,39 @@
+{
+  "is_synthetic": true,
+  "fixture_version": "1",
+  "companies": [
+    {"id": "demo-company-1", "name": "ООО Демонстрационная пекарня"},
+    {"id": "demo-company-2", "name": "ООО Демонстрационный станок"}
+  ],
+  "users": [
+    {"id": "demo-user-1", "company_id": "demo-company-1", "role": "owner"},
+    {"id": "demo-user-2", "company_id": "demo-company-2", "role": "director"}
+  ],
+  "products": [
+    {"id": "demo-working-capital", "name": "Демо Оборотный", "is_synthetic": true,
+     "amount_min_rub": "100000", "amount_max_rub": "5000000", "annual_rate": "24.0",
+     "months_min": 3, "months_max": 36, "collateral": false,
+     "purpose": "Пополнение оборотных средств",
+     "documents": ["Демонстрационная анкета компании", "Синтетическая финансовая отчётность"]},
+    {"id": "demo-equipment", "name": "Демо Оборудование", "is_synthetic": true,
+     "amount_min_rub": "300000", "amount_max_rub": "15000000", "annual_rate": "20.0",
+     "months_min": 6, "months_max": 60, "collateral": true,
+     "purpose": "Покупка оборудования",
+     "documents": ["Демонстрационная анкета компании", "Синтетическая финансовая отчётность", "Демо договор поставки оборудования"]},
+    {"id": "demo-overdraft", "name": "Демо Овердрафт", "is_synthetic": true,
+     "amount_min_rub": "50000", "amount_max_rub": "2000000", "annual_rate": "26.0",
+     "months_min": 1, "months_max": 12, "collateral": false,
+     "purpose": "Временный кассовый разрыв",
+     "documents": ["Демонстрационная анкета компании", "Синтетическая выписка по счёту"]}
+  ],
+  "applications": [
+    {"id": "demo-app-1", "company_id": "demo-company-1", "product_id": "demo-working-capital",
+     "status": "DOCUMENTS_REQUIRED", "next_action": "Добавить синтетическую финансовую отчётность в основном кабинете"},
+    {"id": "demo-app-2", "company_id": "demo-company-1", "product_id": "demo-overdraft",
+     "status": "UNDER_REVIEW", "next_action": "Дождаться результата демонстрационной проверки"},
+    {"id": "demo-app-3", "company_id": "demo-company-2", "product_id": "demo-equipment",
+     "status": "APPROVED", "next_action": "Просмотреть синтетические условия в основном кабинете"},
+    {"id": "demo-app-4", "company_id": "demo-company-2", "product_id": "demo-working-capital",
+     "status": "DECLINED", "next_action": "Посмотреть результат в основном кабинете"}
+  ]
+}

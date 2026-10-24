@@ -1,6 +1,9 @@
 # Локальный ML скоринг
 
-> **Интеграционная поставка 22.10.2026:** backend + реальные Risk/Feed, ML bridge и Compose. Текущая архитектура, запуск и ограничения: [руководство интеграции](../docs/integration-mvp.md). Исторические описания ниже относятся к исходным веткам и не подтверждают этот runtime.
+> Единое приложение и Docker Compose: [README](../README.md).
+
+- [Чат-агент с RAG и веб-поиском](assistant/README.md).
+
 
 
 Реализованы обучение логистической регрессии и CatBoost с ограниченным вложенным подбором, общий feature-builder, Risk API v2, PostgreSQL snapshots/inference и сценарный CLI. Данные и классы полностью синтетические; результат BANKRUPTCY_PROXY / DEMONSTRATION / DEMO_RESEARCH, не банковская PD. Прежний CatBoost/Optuna bundle сохранён как рабочая версия и для отката.

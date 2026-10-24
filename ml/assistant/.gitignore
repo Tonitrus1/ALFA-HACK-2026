@@ -1,0 +1,5 @@
+data/
+model-cache/
+reports/*.log
+reports/*.xml
+reports/model-manifest.local.json
