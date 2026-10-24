@@ -1,0 +1,41 @@
+@base = http://localhost:8001
+@token = {{$dotenv OCR_API_KEY}}
+@job = REPLACE_JOB_ID
+
+GET {{base}}/health/ready
+
+### Schema
+GET {{base}}/v1/schema
+X-API-Key: {{token}}
+
+### Submit generated synthetic PDF
+POST {{base}}/v1/jobs
+X-API-Key: {{token}}
+Content-Type: multipart/form-data; boundary=ocr-boundary
+
+--ocr-boundary
+Content-Disposition: form-data; name="files"; filename="passport.pdf"
+Content-Type: application/pdf
+
+< ../fixtures/generated/passport.pdf
+--ocr-boundary--
+
+### Poll
+GET {{base}}/v1/jobs/{{job}}
+X-API-Key: {{token}}
+
+### OCR evidence
+GET {{base}}/v1/jobs/{{job}}/ocr
+X-API-Key: {{token}}
+
+### Immutable schema snapshot (also for historical results)
+GET {{base}}/v1/jobs/{{job}}/schema
+X-API-Key: {{token}}
+
+### Validated structured result
+GET {{base}}/v1/jobs/{{job}}/result
+X-API-Key: {{token}}
+
+### Delete
+DELETE {{base}}/v1/jobs/{{job}}
+X-API-Key: {{token}}

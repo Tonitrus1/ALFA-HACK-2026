@@ -1,0 +1,7 @@
+{
+  "result_survives_restart": true,
+  "ttl_method": "production cleanup thread with expires timestamp advanced in SQLite; not a 24h wall-clock wait",
+  "real_blank_scan_rejected": true,
+  "expired_job_immediately_inaccessible": true,
+  "expired_files_physically_removed": true
+}

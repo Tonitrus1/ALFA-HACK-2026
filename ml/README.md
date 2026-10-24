@@ -3,6 +3,10 @@
 > Единое приложение и Docker Compose: [README](../README.md).
 
 - [Чат-агент с RAG и веб-поиском](assistant/README.md).
+- [CPU OCR и структурированное извлечение](ocr/README.md).
+
+
+- [Чат-агент с RAG и веб-поиском](assistant/README.md).
 
 
 
