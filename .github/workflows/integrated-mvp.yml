@@ -2,9 +2,9 @@ name: Integrated application acceptance
 on:
   push:
     branches: ['integration/**']
-    paths: ['backend/**', 'ml/**', 'frontend/**', 'deploy/**', 'compose.yaml', '.env.example', 'scripts/**', 'docs/architecture/contracts/**', '.github/workflows/integrated-mvp.yml']
+    paths: ['backend/**', 'ml/**', 'frontend/**', 'deploy/**', 'compose.yaml', '.dockerignore', '.env.example', 'scripts/**', 'docs/architecture/contracts/**', '.github/workflows/integrated-mvp.yml']
   pull_request:
-    paths: ['backend/**', 'ml/**', 'frontend/**', 'deploy/**', 'compose.yaml', '.env.example', 'scripts/**', 'docs/architecture/contracts/**', '.github/workflows/integrated-mvp.yml']
+    paths: ['backend/**', 'ml/**', 'frontend/**', 'deploy/**', 'compose.yaml', '.dockerignore', '.env.example', 'scripts/**', 'docs/architecture/contracts/**', '.github/workflows/integrated-mvp.yml']
   workflow_dispatch:
 concurrency:
   group: integrated-mvp-${{ github.head_ref || github.ref_name }}

@@ -17,7 +17,7 @@ server {
     }
 
     # Keep API paths separate from the SPA fallback, including binary files/SSE.
-    location /api/ {
+    location ~ ^/(api/|demo/api/|assets/feed/) {
         proxy_pass ${BACKEND_ORIGIN};
         proxy_http_version 1.1;
         proxy_set_header Host $http_host;
