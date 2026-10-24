@@ -1,52 +1,89 @@
-## UI / Feed v2 / synthetic proxy
+# Кредитный кабинет — единое приложение
 
-Новый интеграционный срез и приёмка: [руководство](docs/ui-feed-antifraud-runbook.md), [решения по контрактам](docs/ui-feed-antifraud-decisions.md). Исходный E5 v1 сохранён; CatBoost Feed включается только явно. Чат/OCR запланированы отдельно.
+Интеграционная ветка объединяет React UI, Java backend, Risk/Feed, OCR и RAG-ассистента. [Карта всех веток](docs/all-branches-integration.md). Используются синтетические компании, документы и модели; банковские операции не выполняются.
 
-# Кредитный кабинет предпринимателя
+## Требования и первый запуск
 
-> **Интеграционная поставка 22.10.2026:** backend + реальные Risk/Feed, ML bridge и Compose. Текущая архитектура, запуск и ограничения: [docs/integration-mvp.md](docs/integration-mvp.md). Исторические описания ниже относятся к исходным веткам и не подтверждают этот runtime.
+Docker Engine / Docker Desktop с Linux containers и Compose v2.20+; Python 3 нужен только для генерации настроек. Для первой сборки требуется интернет: образы, Maven/npm/Python-пакеты, E5 и токенизатор. Runtime работает на CPU, GPU не требуется. Рекомендуемый запас для локального запуска: 8 CPU, 12 GB RAM, 20 GB свободного диска; это рекомендация, измерения Linux CI приведены отдельно в отчёте.
 
+```sh
+python3 scripts/integration/configure.py
+# Заполните в .env LLM_API_KEY, LLM_BASE_URL, ASSISTANT_LLM_MODEL, OCR_LLM_MODEL.
+docker compose up --build
+```
 
-Совместный проект команды из пяти человек для Alfa Hack 2026.
+Генератор создаёт случайные внутренние пароли/токены с правами файла 0600 и сохраняет существующую конфигурацию. Шаблон без секретов — [.env.example](.env.example). Для старой установки добавьте отсутствующие ключи из шаблона отдельными случайными строками длиной >=32 символов; не меняйте пароли уже инициализированных PostgreSQL volumes без смены пароля в БД.
 
-Реализован **локальный ML-срез скоринга**: рабочий CatBoost baseline, обучение новых кандидатов логрега/CatBoost с вложенной оценкой, Risk API, PostgreSQL snapshots/inference, S01–S06 и документация интеграции. Новые кандидаты сохраняют контракт восьми финансовых полей и не заменяют рабочую модель автоматически. UI и backend-процесс заявки реализуют другие участники. Полный объём HACKATHON-1.5 остаётся спецификацией.
+Адрес кабинета: **http://127.0.0.1:8080**. На странице входа выберите демо-представителя, затем компанию. Основной сценарий: потребность → продукт → заявка → восемь финансовых показателей с подтверждением → документы/согласие → отправка → решение/уточнение → предложение → демооформление. Можно использовать ручной ввод без документов.
 
-Запуск подготовленного ML: `./scripts/demo up --offline`; сценарии: `./scripts/demo scenarios`. Первичная подготовка, обучение, API и границы ответственности: [передача ML-модуля](docs/ml-integration.md).
+Для фонового запуска после заполнения LLM-настроек:
 
-Реализована также **ML-лента о финансировании бизнеса**: локальная E5 на CPU, 36 карточек, шесть SVG, внутренний API на 8002 и резервный подбор. Подготовка: `./scripts/feed setup`, `./scripts/feed prepare --download`; [запуск и интеграция ленты](docs/feed-integration.md), [модуль](ml/feed/README.md).
+```sh
+docker compose up --build -d --wait --wait-timeout 900
+```
 
-## Направления разработки
+`feed-init` и `assistant-init` автоматически подготавливают закреплённые модели в named volumes. Нужна сеть только на первой подготовке; повторный запуск использует сохранённые артефакты. Для автономного переноса нужны образы, `.env` и все volumes. Модели не переобучаются при старте.
 
-| Направление | Папка | Руководство | PDF |
-| --- | --- | --- | --- |
-| Фронтенд | [frontend/](frontend/README.md) | [Архитектура и задачи](docs/architecture/packages/frontend/docs/guide.md) | [Скачать](docs/architecture/packages/frontend/frontend-guide.pdf) |
-| Бэкенд | [backend/](backend/README.md) | [Архитектура и задачи](docs/architecture/packages/backend/docs/guide.md) | [Скачать](docs/architecture/packages/backend/backend-guide.pdf) |
-| ML | [ml/](ml/README.md) | [Архитектура и задачи](docs/architecture/packages/ml/docs/guide.md) | [Скачать](docs/architecture/packages/ml/ml-guide.pdf) |
+## Сервисы и данные
 
-## Документация
+| Сервис | Назначение / хранение |
+|---|---|
+| gateway | Nginx + собранный React, единственный порт хоста 127.0.0.1:8080; `/api/v1` идёт в backend |
+| backend | Spring Boot 4 / Java 21, сессии, CSRF, компании, заявки, финансы, документы, решения, оферты, лента |
+| backend-db | PostgreSQL 17, business state, sessions, transactional outbox и аренды фоновых заданий |
+| ml-db / ml-migrate | Отдельная PostgreSQL ML-схема, snapshots/inference/идемпотентность; миграции до Risk |
+| risk | Настоящий CatBoost risk и опциональный synthetic antifraud proxy, встроенные проверяемые bundles |
+| feed / feed-init | Локальный E5, лента с MODEL/RULES; версия v2 и CatBoost доступны явно |
+| ml-bridge | Согласование backend/ML DTO и digest, долговечный журнал вызовов |
+| scanner | Настоящий ClamAV; файл остаётся в карантине до положительного вердикта |
+| ocr / ocr-worker | Tesseract rus/eng → LLM → JSON-schema; обработчик арендует backend EXTRACT jobs, читает только CLEAN-версию |
+| assistant / assistant-init | E5 + BM25/RRF, знания в SQLite, временные диалоги, OpenAI-compatible LLM, инструменты реального backend-контекста |
+| qdrant | Производный dense-индекс, постоянный volume |
+| searxng | Веб-поиск ассистента по разрешённым доменам |
 
-- [Передача объединённых ML-модулей команде: ветки, контракты, запуск и ограничения](docs/ml-team-handoff.md).
-- [Аудит ML, исправления и дальнейший план качества](docs/ml-audit-20261021.md).
-- [Оглавление архитектуры HACKATHON-1.5](docs/architecture/README.md).
-- [Общая архитектура](docs/architecture/packages/general/docs/guide.md) и [PDF](docs/architecture/packages/general/general-guide.pdf).
-- [План разработки](docs/architecture/docs/development-plan.md).
-- [Атлас схем](docs/architecture/architecture-atlas.pdf), [редактируемая схема draw.io](docs/architecture/architecture.drawio) и [SVG-схемы](docs/architecture/diagrams/).
-- [Аудит архитектуры](docs/architecture/docs/architecture-audit.md).
-- [Технологии и адаптеры](docs/architecture/docs/technology-adapters.md).
-- [Публичный OpenAPI](docs/architecture/contracts/public.openapi.json), [внутренний OpenAPI](docs/architecture/contracts/internal.openapi.json) и [коллекция Postman](docs/architecture/contracts/requests.postman_collection.json).
-- [Критерии приёмки](docs/architecture/docs/acceptance.md).
-- [Исходный регламент работы с Git и защиты проекта](docs/architecture/docs/git-and-jury-guide.md).
+Redis, Kafka и S3 не требуются local-mvp: их функции реализованы существующими JDBC sessions, PostgreSQL outbox, локальным cache и версионированным файловым томом. Сохранённые адаптеры других провайдеров не объявляются подключёнными сервисами.
 
-Актуальные редактируемые контракты находятся в `docs/architecture/contracts/`. API-копии внутри пакетов направлений генерируются: не редактируйте их независимо. Упоминания корневых папок приложения в архитектурном комплекте описывают будущую структуру приложения.
+Backend Flyway запускает аддитивные миграции V1–V19 и demo seed автоматически. ML-миграции применяются отдельным `ml-migrate` с контролем хешей. Ассистент применяет Alembic и один раз публикует стартовый корпус. Постоянные volumes: две БД, документы, E5 bundles, SQLite/индекс знаний, OCR jobs и журнал соответствия OCR/backend jobs.
 
-Полный архитектурный комплект сохранён в `docs/architecture/` с исходной структурой, генераторами, лицензиями, контрольными суммами и архивом исторических материалов. Исходные документы находятся в `docs/architecture/evidence/originals.zip`. Отчёты PASS этого комплекта относятся к статической спецификации, а не к работающему приложению.
+## LLM, OCR и ограничения
 
-HTML-обзор `docs/architecture/index.html` можно открыть локально после скачивания репозитория. Для чтения непосредственно на GitHub используйте Markdown и PDF по ссылкам выше.
+Исходные OCR и assistant ветки рассчитаны на внешний OpenAI-compatible API. Укажите свой endpoint, ключ и доступные модели. Ключ передаётся только AI-сервисам. Реальный вызов может быть платным; в этой демонстрации отправляйте только синтетические документы. Если модель/провайдер требует другие параметры reasoning/response-format, используйте параметры исходных модулей через Compose override; [OCR](ml/ocr/README.md), [ассистент](ml/assistant/README.md).
 
-## Совместная работа
+Без `LLM_API_KEY` кредитный сценарий с ручным вводом, Risk и Feed работают. `/health/ready` OCR и ассистента возвращает **503**, `docker compose --wait` для всей системы не проходит. Это явный блокер полноценной AI-приёмки. Для запуска проверенного ядра без LLM:
 
-Начните с [CONTRIBUTING.md](CONTRIBUTING.md). Общая ветка — `main`; для каждой задачи создаётся отдельная ветка: `frontend/login`, `backend/applications`, `ml/scoring` или `docs/setup`. Изменения проходят Pull Request и проверку другого участника.
+```sh
+docker compose up --build -d --wait --wait-timeout 900 gateway
+```
 
-Владелец репозитория — **@Tonitrus1**. Четыре коллеги будут приглашены после получения их GitHub-логинов; владельцы направлений пока не назначены. Постоянные ветки направлений не используются.
+OCR предлагает кандидатов, не меняет финансы автоматически. В кабинете доступны просмотр и подтверждение; пропущенные значения вводятся вручную. Поле OCR `total_debt` не подменяет `totalLiabilities`: это разные финансовые понятия. Период и единицы сверяются пользователем. Для Paddle сохранён исходный `ml/ocr/Dockerfile`: в override замените build OCR на context `./ml/ocr`, Dockerfile `Dockerfile`, задайте `OCR_ENGINE=paddle`; образ загружает проверяемые CPU-веса при сборке. Обработчик продолжает работать по прежнему API.
 
-При настройке этого приватного репозитория GitHub сообщил, что автоматическая защита `main` требует GitHub Pro. Поэтому пока правила проверки изменений из CONTRIBUTING.md соблюдаются командой по договорённости. Приватность сохранена, платный тариф не подключался.
+При недоступной генерации исходный ассистент может вернуть только реально найденные источники со статусом SEARCH_ONLY; это не LLM-ответ.
+
+Ассистент доступен на `/assistant`, API только через cookie/CSRF backend. Идентичность и контекст выбранной компании задаёт сервер на каждый ход; исходные fixture-продукты не подмешиваются. История диалогов временная: после рестарта ассистента/истечения сессии создаётся новый диалог. Знания/индекс сохраняются. Источники проверяются сервисом; при сохранении веб-кандидатов администратор должен подтвердить точный хеш снимка через внутренний admin API, который не публикуется gateway.
+
+OCR-задания сохраняются 24 часа. Аренды backend продлеваются; устаревшее поколение/версия файла отклоняется. При аварии между отправкой OCR и записью локального соответствия возможен повторный вызов LLM; exactly-once оплаты не обещается. Служебные токены и документы не выводятся в логи.
+
+## Версии Feed и antifraud
+
+По умолчанию используется стабильный E5 v1; synthetic fraud выключен. Для исследовательского antifraud задайте `FRAUD_MODE=synthetic` и пересоздайте Risk/backend. Это proxy синтетических манипуляций, не доказательство мошенничества; недоступность обязательной модели ведёт к MANUAL.
+
+Feed v2 с расширенным каталогом и обученным CatBoost сохранён в `ml/feed_v2`. Подготовка отдельного неизменяемого выпуска и переключение/откат: [runbook](docs/ui-feed-antifraud-runbook.md). Настройки `FEED_RELEASE=v2`, `FEED_RANKER=e5|catboost`, `FEED_BUNDLE_PATH` должны указывать на подготовленный bundle целевой платформы. Прежний E5 остаётся доступен без второго сервиса Feed. Оценки качества моделей получены на синтетике.
+
+## Проверки и диагностика
+
+```sh
+docker compose ps -a
+docker compose logs --tail=100 backend risk feed ml-bridge scanner ocr ocr-worker assistant
+python3 scripts/integration/smoke.py --output reports/manual-smoke.json
+# Требуется frontend/node_modules и установленный Playwright Chromium:
+UI_BASE_URL=http://127.0.0.1:8080 npm --prefix frontend run test:e2e
+# Все backend unit/integration тесты, включая PostgreSQL:
+./backend/mvnw -B -ntp -f backend/pom.xml verify
+npm --prefix frontend test
+```
+
+Linux CI [`.github/workflows/integrated-mvp.yml`](.github/workflows/integrated-mvp.yml) собирает все образы из чистой копии, поднимает ядро с пустыми volumes, проверяет реальный Risk/Feed, браузерный путь до демооформления, загрузку → ClamAV → скачивание, tenant isolation, отказ Risk/Feed, перезапуск и пересоздание контейнеров с сохранением данных. Отдельно стартует AI-сервисы, проверяет настоящий E5/Qdrant и Tesseract; отсутствие LLM-ключа записывается как блокер, не как успешная генерация. Контрактные тесты AI используют явные двойники, не служат доказательством inference. Текущие результаты: [отчёт интеграции](docs/all-branches-integration.md).
+
+При ошибке первой подготовки смотрите `logs feed-init assistant-init`; после восстановления сети повторите `up`. При повреждении артефактов сохраните том и подготовьте новый bundle, не снимайте проверки хешей. `logs ml-migrate backend` показывает миграционные ошибки. ClamAV использует встроенные в образ сигнатуры без freshclam; для новых сигнатур требуется обслуживаемое обновление образа.
+
+Остановка: `docker compose down`. Повторный запуск сохраняет данные. **Не используйте `down -v` для перезапуска** — это удаляет данные. Перед обновлением сохраните `.env`, дампы обеих PostgreSQL, документы и AI volumes; возврат образов не требует удаления аддитивных таблиц. Production-окружение эта поставка не меняет.

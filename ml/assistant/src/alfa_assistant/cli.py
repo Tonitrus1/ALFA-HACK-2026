@@ -4,6 +4,7 @@ import hashlib
 import json
 from datetime import UTC, datetime
 from pathlib import Path
+from uuid import NAMESPACE_URL, uuid5
 
 from .config import Settings
 
@@ -184,7 +185,15 @@ def main():
             manifest = json.loads(Path("corpus/manifest.json").read_text(encoding="utf-8"))
             for doc in manifest["documents"]:
                 path = Path("corpus") / doc["path"]
-                v = kb.ingest(path.read_bytes(), path.name, doc["metadata"])
+                raw = path.read_bytes()
+                document_id = str(uuid5(NAMESPACE_URL, "alfa-corpus-v1:" + doc["path"]))
+                if any(
+                    v["document_id"] == document_id
+                    and v["sha256"] == hashlib.sha256(raw).hexdigest()
+                    for v in kb.repo.versions()
+                ):
+                    continue
+                v = kb.ingest(raw, path.name, doc["metadata"], document_id)
                 kb.publish(v["document_id"], v["version"])
             print("Corpus published")
         kb.reconcile()

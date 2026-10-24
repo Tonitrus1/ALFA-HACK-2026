@@ -2,8 +2,8 @@
   "origin/ml/feed-recommendations": [
     {
       "source": "ml/feed/README.md",
-      "target": "ml/feed/README.md",
-      "status": "review"
+      "target": "ml/feed_v2/README.md",
+      "status": "adapted"
     },
     {
       "source": "ml/feed/__init__.py",
@@ -307,23 +307,23 @@
     },
     {
       "source": "ml/feed/releases/v1/SHA256SUMS",
-      "target": "ml/feed/releases/v1/SHA256SUMS",
-      "status": "review"
+      "target": "ml/feed/release/SHA256SUMS",
+      "status": "legacy-release-preserved"
     },
     {
       "source": "ml/feed/releases/v1/catalog-index.json",
-      "target": "ml/feed/releases/v1/catalog-index.json",
-      "status": "review"
+      "target": "ml/feed/release/catalog-index.json",
+      "status": "legacy-release-preserved"
     },
     {
       "source": "ml/feed/releases/v1/embeddings.npy",
-      "target": "ml/feed/releases/v1/embeddings.npy",
-      "status": "review"
+      "target": "ml/feed/release/embeddings.npy",
+      "status": "legacy-release-preserved"
     },
     {
       "source": "ml/feed/releases/v1/manifest.json",
-      "target": "ml/feed/releases/v1/manifest.json",
-      "status": "review"
+      "target": "ml/feed/release/manifest.json",
+      "status": "legacy-release-preserved"
     },
     {
       "source": "ml/feed/requirements-dev.txt",
@@ -440,7 +440,7 @@
     {
       "source": "ml/scoring/client.py",
       "target": "ml/scoring/client.py",
-      "status": "ported-v2"
+      "status": "adapted"
     },
     {
       "source": "ml/scoring/decision_client.py",
@@ -450,7 +450,7 @@
     {
       "source": "ml/scoring/demo_policy.py",
       "target": "ml/scoring/demo_policy.py",
-      "status": "ported-v2"
+      "status": "adapted"
     },
     {
       "source": "ml/scoring/features.py",
@@ -460,7 +460,7 @@
     {
       "source": "ml/scoring/fraud_api.py",
       "target": "ml/scoring/fraud_api.py",
-      "status": "ported-v2"
+      "status": "adapted"
     },
     {
       "source": "ml/scoring/fraud_data.py",
@@ -480,17 +480,17 @@
     {
       "source": "ml/scoring/scenarios.py",
       "target": "ml/scoring/scenarios.py",
-      "status": "ported-v2"
+      "status": "adapted"
     },
     {
       "source": "ml/scoring/server.py",
       "target": "ml/scoring/server.py",
-      "status": "ported-v2"
+      "status": "adapted"
     },
     {
       "source": "ml/scoring/train.py",
       "target": "ml/scoring/train.py",
-      "status": "ported-v2"
+      "status": "adapted"
     }
   ]
 }

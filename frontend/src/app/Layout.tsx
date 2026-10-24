@@ -80,7 +80,7 @@ export function Layout() {
           </NavLink>
           <NavLink to="/assistant">
             <Sparkles size={19} />
-            AI-помощник · скоро<span className="tiny-tag">AI</span>
+            AI-помощник<span className="tiny-tag">AI</span>
           </NavLink>
         </nav>
         <Link className="new-application" to="/needs">

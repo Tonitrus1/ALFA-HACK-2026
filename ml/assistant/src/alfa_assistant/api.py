@@ -215,12 +215,17 @@ def create_app(settings=None, *, knowledge=None, llm=None, web_search=None, read
     @app.post("/v1/sessions", status_code=201)
     async def new_session(body: CreateSession, x_admin_key: str | None = Header(None)):
         await cleanup()
-        if (body.demo_user_id is not None or body.system_prompt is not None or body.identity is not None) and not is_admin(
-            x_admin_key
-        ):
+        if (
+            body.demo_user_id is not None
+            or body.system_prompt is not None
+            or body.identity is not None
+        ) and not is_admin(x_admin_key):
             raise ServiceError("ADMIN_REQUIRED_FOR_OVERRIDES", 403)
-        user = ({"id": body.identity.actor_id, "company_id": body.identity.company_id}
-                if body.identity else bank.user(body.demo_user_id or "demo-user-1"))
+        user = (
+            {"id": body.identity.actor_id, "company_id": body.identity.company_id}
+            if body.identity
+            else bank.user(body.demo_user_id or "demo-user-1")
+        )
         prompt = body.system_prompt or await run_sync(
             lambda: cfg.system_prompt_path.read_text(encoding="utf-8")
         )
@@ -249,25 +254,60 @@ def create_app(settings=None, *, knowledge=None, llm=None, web_search=None, read
     @app.get("/v1/sessions/{sid}/messages")
     async def history(sid: str, authorization: str | None = Header(None)):
         s, _ = session_auth(sid, authorization)
-        # Public transcript excludes internal tool payloads and never contains reasoning.
-        return {
-            "session_id": sid,
-            "messages": [
+        # Return a transcript without internal tools; revoked knowledge cannot reappear on reload.
+        active = await run_sync(lambda: {v["id"] for v in kb().repo.active_versions()})
+        messages = []
+        for cid, item in s.completed.items():
+            response = item.get("response")
+            if response and any(
+                c.get("type") == "KNOWLEDGE" and c.get("version_id") not in active
+                for c in response.get("citations", [])
+            ):
+                response = {
+                    **response,
+                    "answer": "Ответ скрыт: источник больше недоступен.",
+                    "citations": [],
+                    "pending_actions": [],
+                    "status": "INSUFFICIENT_EVIDENCE",
+                }
+            messages.append(
                 {
                     "client_message_id": cid,
                     "message": item["text"],
-                    "response": item.get("response"),
+                    "response": response,
                     "error": item.get("error"),
                 }
-                for cid, item in s.completed.items()
-            ],
-            "usage": s.usage,
+            )
+        return {"session_id": sid, "messages": messages, "usage": s.usage}
+
+    @app.get("/v1/sessions/{sid}/sources/{document_id}/{version}")
+    async def cited_source(
+        sid: str, document_id: str, version: int, authorization: str | None = Header(None)
+    ):
+        session, _ = session_auth(sid, authorization)
+        cited = any(
+            citation.get("document_id") == document_id and citation.get("version") == version
+            for item in session.completed.values()
+            for citation in (item.get("response") or {}).get("citations", [])
+        )
+        if not cited:
+            raise ServiceError("SOURCE_NOT_FOUND", 404)
+        source = await run_sync(lambda: kb().repo.version(document_id, version))
+        if source["state"] != "PUBLISHED":
+            raise ServiceError("SOURCE_REVOKED", 404)
+        return {
+            "title": source["metadata"]["title"],
+            "text": source["text"],
+            "metadata": source["metadata"],
         }
 
     @app.post("/v1/sessions/{sid}/messages", response_model=ChatResponse)
     async def chat(
-        sid: str, body: NewMessage, request: Request, authorization: str | None = Header(None),
-        x_admin_key: str | None = Header(None)
+        sid: str,
+        body: NewMessage,
+        request: Request,
+        authorization: str | None = Header(None),
+        x_admin_key: str | None = Header(None),
     ):
         s, _ = session_auth(sid, authorization)
         if s.trusted_identity and body.bank_context is None:

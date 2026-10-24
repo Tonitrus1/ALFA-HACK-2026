@@ -1,3 +1,5 @@
+> Общий запуск, реальный API и проверки: [README приложения](../README.md). В интеграционной ветке MSW не запускается. Описания provisional-v1 ниже — история исходной frontend-поставки.
+
 # Существующий UI на фактическом backend API
 
 UI перенесён из `/Users/user/Documents/Alfa_hack/frontend`; исходная папка не изменена. Сборка запускает настоящий API-клиент без MSW. `npm ci`, `npm run build`, `npm test`, `npm run test:e2e`. Для локальной разработки `BACKEND_ORIGIN=http://127.0.0.1:18080 npm run dev`; demo Origin 5173 разрешён. В Compose UI раздаёт общий gateway 8080.

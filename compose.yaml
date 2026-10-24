@@ -53,7 +53,7 @@ services:
     networks: [internal]
     depends_on: {ml-db: {condition: service_healthy}}
   risk:
-    build: {context: ., dockerfile: deploy/Dockerfile.risk}
+    build: {context: ., dockerfile: deploy/Dockerfile.risk, target: runtime}
     environment:
       ML_DATABASE_URL: postgresql://ml_runtime:${ML_DB_PASSWORD}@ml-db:5432/credit_ml
       ML_INTERNAL_TOKEN: ${ML_SERVICE_TOKEN:?Run configure first}
@@ -208,6 +208,11 @@ services:
   gateway:
     build: {context: ., dockerfile: deploy/Dockerfile.gateway}
     ports: ['127.0.0.1:8080:8080']
+    healthcheck:
+      test: [CMD, wget, -q, -O, /dev/null, 'http://127.0.0.1:8080/healthz']
+      interval: 10s
+      timeout: 3s
+      retries: 10
     depends_on: {backend: {condition: service_healthy}}
     networks: [ingress, internal]
 networks:

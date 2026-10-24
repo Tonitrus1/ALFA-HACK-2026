@@ -27,5 +27,22 @@ print(json.dumps({{"httpStatus":r.code,"body":json.load(r)}}))''']
     configured=body['dependencies']['llm_key_configured'] if service=='assistant' else body['llm_configured']
     assert state['httpStatus']==(200 if configured else 503), state
     report[service]={**state,'externalLlmInference':'NOT_VERIFIED' if configured else 'BLOCKED_LLM_API_KEY_MISSING'}
+# A missing LLM key permits genuine search-only evidence, never generated text.
+if report['assistant']['body']['dependencies']['llm_key_configured'] is False:
+    from smoke import Client
+    from uuid import uuid4
+    client=Client('http://127.0.0.1:8080'); client.login()
+    conversation='acceptance-'+str(uuid4())
+    path='/api/v1/assistant/conversations/'+conversation
+    assert client.call(path+'/messages')['messages']==[]
+    answer=client.call(path+'/messages','POST',{'clientMessageId':str(uuid4()),'text':'Какие документы нужны для Демо Оборотный?'})
+    assert answer['status']=='SEARCH_ONLY' and answer['citations'], answer.get('status')
+    citation=next(c for c in answer['citations'] if c['type']=='KNOWLEDGE')
+    source=client.call(path+'/sources/'+citation['document_id']+'/'+str(citation['version']))
+    assert source['text']
+    assert len(client.call(path+'/messages')['messages'])==1
+    other=Client(client.base); other.login('representative-b','company-b')
+    assert other.call(path+'/messages')['messages']==[]
+    report['publicAssistant']={'status':'PASS','checks':['cookie/CSRF backend adapter','real E5/BM25 search-only','cited source content','history','company isolation'],'generatedLlmAnswer':'NOT_VERIFIED'}
 a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report))

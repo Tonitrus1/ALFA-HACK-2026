@@ -3,19 +3,26 @@ set -eu
 cd "$(CDPATH='' cd -- "$(dirname -- "$0")/.." && pwd)"
 feed_command=${1:-help}
 [ "$#" -eq 0 ] || shift
+feed_release=${FEED_RELEASE:-v1}
+case "$feed_release" in v1) feed_module=ml.feed ;; v2) feed_module=ml.feed_v2 ;; *) echo 'FEED_RELEASE must be v1 or v2' >&2; exit 2 ;; esac
 case "$feed_command" in
   setup)
     "${PYTHON_BIN:-python3.12}" -m venv .venv-feed
-    .venv-feed/bin/python -m pip install -r ml/feed/requirements.lock.txt
+    .venv-feed/bin/python -m pip install -r ml/${feed_module#ml.}/requirements.lock.txt
     ;;
-  prepare) exec .venv-feed/bin/python -m ml.feed.prepare "$@" ;;
-  serve)
+  prepare) exec .venv-feed/bin/python -m "$feed_module.prepare" "$@" ;;
+  pipeline|simulate|validate-data|train|benchmark|smoke|demo)
+    case "$feed_command" in validate-data) feed_task=validate_data ;; train) feed_task=train_ranker ;; *) feed_task=$feed_command ;; esac
+    exec .venv-feed/bin/python -m "ml.feed_v2.$feed_task" "$@"
+    ;;
+  serve|serve-hybrid)
+    if [ "$feed_command" = serve-hybrid ]; then feed_module=ml.feed_v2; export FEED_RELEASE=v2 FEED_RANKER=catboost; fi
     : "${ML_INTERNAL_TOKEN:?Set ML_INTERNAL_TOKEN (16+ characters)}"
     export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 TOKENIZERS_PARALLELISM=false
-    exec .venv-feed/bin/python -m uvicorn ml.feed.server:create_app --factory --host 127.0.0.1 --port 8002 --no-access-log --limit-concurrency 32 "$@"
+    exec .venv-feed/bin/python -m uvicorn "$feed_module.server:create_app" --factory --host 127.0.0.1 --port 8002 --no-access-log --limit-concurrency 32 "$@"
     ;;
-  test) exec .venv-feed/bin/python -m pytest ml/feed/tests -q "$@" ;;
-  evaluate|rank) exec .venv-feed/bin/python -m ml.feed.cli "$feed_command" "$@" ;;
+  test) exec .venv-feed/bin/python -m pytest "ml/${feed_module#ml.}/tests" -q "$@" ;;
+  evaluate|rank) exec .venv-feed/bin/python -m "$feed_module.cli" "$feed_command" "$@" ;;
   *)
     printf '%s\n' './scripts/feed setup' './scripts/feed prepare --download' './scripts/feed serve' './scripts/feed test --with-model' './scripts/feed evaluate' './scripts/feed rank ml/feed/examples/purchase-cost.request.json'
     ;;

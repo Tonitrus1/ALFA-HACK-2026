@@ -394,7 +394,9 @@ class Agent:
                 state["pending"][c["id"]] = action
                 return {"pending_action": action, "published": False}
             state["bank_used"] = True
-            bank = BackendContextGateway(session.bank_context) if session.bank_context else self.bank
+            bank = (
+                BackendContextGateway(session.bank_context) if session.bank_context else self.bank
+            )
             if name == "list_credit_products":
                 return bank.products()
             if name == "get_application_status":

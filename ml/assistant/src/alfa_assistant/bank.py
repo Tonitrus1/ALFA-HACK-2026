@@ -64,6 +64,7 @@ def annuity(args: AnnuityArgs):
 
 class BackendContextGateway(SyntheticBankGateway):
     """Read-only snapshot rebuilt by the authenticated backend for every chat turn."""
+
     def __init__(self, context):
         self.data = context
 

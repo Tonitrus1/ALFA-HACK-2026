@@ -87,7 +87,7 @@ def reset(confirmation):
         db.execute('truncate ml.features,ml.inferences')
     print('Cleared only ml.features and ml.inferences in dedicated synthetic database; bundle/fixtures retained')
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('command',choices=['migrate','up','down','train','scenarios','test','reset','activate','active']);p.add_argument('--offline',action='store_true');p.add_argument('--confirm');p.add_argument('--trials',type=int);p.add_argument('--folds',type=int,default=5);p.add_argument('--repeats',type=int,default=3);p.add_argument('--threads',type=int,default=2);p.add_argument('--shortlist',type=int);p.add_argument('--storage');p.add_argument('--output');p.add_argument('--family',choices=['auto','logistic','catboost'],default='auto');p.add_argument('--bundle');p.add_argument('--dataset',default=os.environ.get('DATASET_PATH',str(ROOT/'datasets/ru-sme-dataset-10000')));a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('command',choices=['migrate','up','down','train','train-fraud','scenarios','dual-scenarios','test','reset','activate','active']);p.add_argument('--offline',action='store_true');p.add_argument('--confirm');p.add_argument('--trials',type=int);p.add_argument('--folds',type=int,default=5);p.add_argument('--repeats',type=int,default=3);p.add_argument('--threads',type=int,default=2);p.add_argument('--shortlist',type=int);p.add_argument('--storage');p.add_argument('--output');p.add_argument('--family',choices=['auto','logistic','catboost'],default='auto');p.add_argument('--bundle');p.add_argument('--dataset',default=os.environ.get('DATASET_PATH',str(ROOT/'datasets/ru-sme-dataset-10000')));a=p.parse_args()
     if a.command=='migrate':migrate()
     elif a.command=='up':up(a.offline)
     elif a.command=='down':down()
@@ -102,5 +102,9 @@ if __name__=='__main__':
         if not a.bundle:p.error('activate requires --bundle')
         print(json.dumps(activate(a.bundle,ROOT),indent=2));print('Selection saved. Restart the service with down/up; clients must pin the new bundle digest.')
     elif a.command=='active':print(selected_bundle(ROOT,os.environ.get('MODEL_BUNDLE')))
+    elif a.command=='train-fraud':
+        if not a.output:p.error('train-fraud requires a new --output directory')
+        run([ROOT/'.venv/bin/python','-m','scoring.fraud_train','--dataset',a.dataset,'--output',a.output],env=env())
+    elif a.command=='dual-scenarios':run([ROOT/'.venv/bin/python','-m','scoring.scenarios','--dual'],env=env())
     elif a.command=='scenarios':run([ROOT/'.venv/bin/python','-m','scoring.scenarios'],env=env())
     elif a.command=='test':run([ROOT/'.venv/bin/python','-m','pytest','ml/tests','-q','--junitxml=reports/ml-tests.xml'],env=env())

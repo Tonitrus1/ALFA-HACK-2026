@@ -14,7 +14,7 @@ import {
 import { StatusPage } from '../features/journey/StatusPage';
 import { InformationPage } from '../features/journey/InformationPage';
 import { OfferPage } from '../features/offers/OfferPage';
-import { Assistant } from '../features/assistant/Assistant';
+import { Assistant, AssistantSource } from '../features/assistant/Assistant';
 import { FilesPage } from '../features/documents/Documents';
 import { Disclosure, PageTitle, Panel } from '../shared/ui/common';
 function Unavailable({title}: {title: string}) { return <><PageTitle title={title} /><Panel>Функция пока недоступна. История, запросы уточнений и результаты доступны на странице заявки.</Panel></>; }
@@ -80,6 +80,7 @@ export function Router() {
             <Route path="applications/:id/files" element={<FilesPage />} />
             <Route path="offers/:offerId" element={<OfferPage />} />
             <Route path="inbox" element={<Unavailable title="Сообщения" />} />
+            <Route path="assistant/:conversationId/sources/:documentId/:version" element={<AssistantSource />} />
             <Route path="assistant/:conversationId?" element={<Assistant />} />
             <Route path="help/:topic" element={<Help />} />
             <Route

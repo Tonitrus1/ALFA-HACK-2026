@@ -58,6 +58,20 @@ public class AssistantController {
         } catch (RestClientException ex) { throw unavailable(); }
     }
 
+    @GetMapping("/sources/{documentId}/{version}")
+    @Transactional
+    public Map<?,?> source(AuthenticatedSession session, @PathVariable String conversationId,
+            @PathVariable String documentId, @PathVariable int version) {
+        Remote s=conversation(session,conversationId);
+        try {
+            return remote.get().uri("/v1/sessions/{id}/sources/{doc}/{version}",s.id(),documentId,version)
+                .header("Authorization","Bearer "+s.token()).retrieve().body(Map.class);
+        } catch(RestClientResponseException ex) {
+            if(ex.getStatusCode().value()==404)throw ApplicationException.notFound();
+            throw unavailable();
+        } catch(RestClientException ex) { throw unavailable(); }
+    }
+
     @PostMapping("/messages")
     @Transactional
     public Map<?,?> message(AuthenticatedSession session, @PathVariable String conversationId, @Valid @RequestBody Message body) {

@@ -172,6 +172,22 @@
               ],
               "title": "Authorization"
             }
+          },
+          {
+            "name": "x-admin-key",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Admin-Key"
+            }
           }
         ],
         "requestBody": {
@@ -192,6 +208,77 @@
                 "schema": {
                   "$ref": "#/components/schemas/ChatResponse"
                 }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sessions/{sid}/sources/{document_id}/{version}": {
+      "get": {
+        "summary": "Cited Source",
+        "operationId": "cited_source_v1_sessions__sid__sources__document_id___version__get",
+        "parameters": [
+          {
+            "name": "sid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Sid"
+            }
+          },
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Document Id"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Version"
+            }
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
               }
             }
           },
@@ -770,6 +857,40 @@
   },
   "components": {
     "schemas": {
+      "BankContext": {
+        "properties": {
+          "company_id": {
+            "type": "string",
+            "title": "Company Id"
+          },
+          "products": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "maxItems": 1000,
+            "title": "Products"
+          },
+          "applications": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "maxItems": 10000,
+            "title": "Applications"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "company_id",
+          "products",
+          "applications"
+        ],
+        "title": "BankContext"
+      },
       "Body_import_knowledge_v1_admin_knowledge_import_post": {
         "properties": {
           "metadata": {
@@ -931,6 +1052,16 @@
       },
       "CreateSession": {
         "properties": {
+          "identity": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Identity"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "demo_user_id": {
             "anyOf": [
               {
@@ -972,6 +1103,29 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "Identity": {
+        "properties": {
+          "actor_id": {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Actor Id"
+          },
+          "company_id": {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Company Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "actor_id",
+          "company_id"
+        ],
+        "title": "Identity"
       },
       "KnowledgeCitation": {
         "properties": {
@@ -1132,6 +1286,16 @@
       },
       "NewMessage": {
         "properties": {
+          "bank_context": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/BankContext"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "client_message_id": {
             "type": "string",
             "maxLength": 128,
