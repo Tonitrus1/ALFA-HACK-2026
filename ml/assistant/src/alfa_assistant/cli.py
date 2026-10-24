@@ -4,7 +4,6 @@ import hashlib
 import json
 from datetime import UTC, datetime
 from pathlib import Path
-from uuid import NAMESPACE_URL, uuid5
 
 from .config import Settings
 
@@ -161,6 +160,16 @@ def calibrate(settings):
     print("Set DENSE_MIN_SCORE=" + str(threshold))
 
 
+def seed_corpus(kb, corpus=Path("corpus")):
+    """Repository deduplicates raw hashes; only it allocates document identities."""
+    manifest = json.loads((corpus / "manifest.json").read_text(encoding="utf-8"))
+    for doc in manifest["documents"]:
+        path = corpus / doc["path"]
+        version = kb.ingest(path.read_bytes(), path.name, doc["metadata"])
+        if version["state"] != "REVOKED":
+            kb.publish(version["document_id"], version["version"])
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -182,19 +191,7 @@ def main():
     else:
         kb = service(settings)
         if args.command == "seed":
-            manifest = json.loads(Path("corpus/manifest.json").read_text(encoding="utf-8"))
-            for doc in manifest["documents"]:
-                path = Path("corpus") / doc["path"]
-                raw = path.read_bytes()
-                document_id = str(uuid5(NAMESPACE_URL, "alfa-corpus-v1:" + doc["path"]))
-                if any(
-                    v["document_id"] == document_id
-                    and v["sha256"] == hashlib.sha256(raw).hexdigest()
-                    for v in kb.repo.versions()
-                ):
-                    continue
-                v = kb.ingest(raw, path.name, doc["metadata"], document_id)
-                kb.publish(v["document_id"], v["version"])
+            seed_corpus(kb)
             print("Corpus published")
         kb.reconcile()
         print("Index rebuilt from SQLite")

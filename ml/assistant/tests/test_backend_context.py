@@ -81,3 +81,20 @@ def test_cited_source_and_history_recheck_publication(client, app, kb, meta):
     assert client.get(url, headers=headers).status_code == 404
     transcript = client.get(f"/v1/sessions/{sid}/messages", headers=headers).json()
     assert "Text relying" not in str(transcript)
+
+
+def test_seed_creates_missing_documents_and_is_idempotent_without_reviving_revoked(kb):
+    from pathlib import Path
+
+    from alfa_assistant.cli import seed_corpus
+
+    corpus = Path(__file__).resolve().parents[1] / "corpus"
+    seed_corpus(kb, corpus)
+    versions = kb.repo.versions()
+    assert len(versions) == 17
+    assert all(v["state"] == "PUBLISHED" for v in versions)
+    first = versions[0]
+    kb.revoke(first["document_id"], first["version"])
+    seed_corpus(kb, corpus)
+    assert len(kb.repo.versions()) == 17
+    assert kb.repo.version(first["document_id"], first["version"])["state"] == "REVOKED"

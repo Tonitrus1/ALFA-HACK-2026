@@ -16,7 +16,7 @@ case "$feed_command" in
     exec .venv-feed/bin/python -m "ml.feed_v2.$feed_task" "$@"
     ;;
   serve|serve-hybrid)
-    if [ "$feed_command" = serve-hybrid ]; then feed_module=ml.feed_v2; export FEED_RELEASE=v2 FEED_RANKER=catboost; fi
+    if [ "$feed_command" = serve-hybrid ]; then feed_module=ml.feed_v2; export FEED_RELEASE=v2 FEED_RANKER=catboost; export FEED_BUNDLE="${FEED_BUNDLE:-.local/feed-catboost}"; fi
     : "${ML_INTERNAL_TOKEN:?Set ML_INTERNAL_TOKEN (16+ characters)}"
     export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 TOKENIZERS_PARALLELISM=false
     exec .venv-feed/bin/python -m uvicorn "$feed_module.server:create_app" --factory --host 127.0.0.1 --port 8002 --no-access-log --limit-concurrency 32 "$@"
