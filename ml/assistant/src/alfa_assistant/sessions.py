@@ -18,6 +18,8 @@ class Session:
     parameters: dict
     created_at: float
     last_activity: float
+    trusted_identity: bool = False
+    bank_context: dict | None = None
     busy: bool = False
     turns: list[list[dict]] = field(default_factory=list)
     turn_versions: list[set[str]] = field(default_factory=list)

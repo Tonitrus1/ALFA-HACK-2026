@@ -39,6 +39,6 @@ describe('отправляемый снимок', () => {
   it('не допускает произвольные бизнес-переходы', () => {
     expect(canTransition('MANUAL', 'DECLINED')).toBe(false);
     expect(canTransition('DRAFT', 'COMPLETED')).toBe(false);
-    expect(canTransition('PROCESSING', 'NEEDS_INFORMATION')).toBe(true);
+    expect(canTransition('REVIEW', 'NEEDS_INFO')).toBe(true);
   });
 });

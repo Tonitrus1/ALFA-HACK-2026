@@ -1,5 +1,6 @@
 package ru.alfahack.credit.documents.application;
 
+import java.io.InputStream;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
@@ -17,6 +18,7 @@ import ru.alfahack.credit.platform.support.Ids;
 import ru.alfahack.credit.platform.support.Times;
 import ru.alfahack.credit.platform.support.Tokens;
 import ru.alfahack.credit.ports.PortException;
+import ru.alfahack.credit.ports.objects.ActorScope;
 import ru.alfahack.credit.ports.objects.ObjectRef;
 import ru.alfahack.credit.ports.objects.ObjectStorePort;
 import ru.alfahack.credit.ports.objects.ScanReceipt;
@@ -135,6 +137,17 @@ public class DocumentJobService {
         documents.recordExtraction(document.documentId(), document.objectVersion(), result.status(), extractionId, now);
         jobs.finish(jobId, "DONE", "FAILED".equals(result.status()) ? "EXTRACTION_FAILED" : null, now);
         return new JobCommands.Receipt(extractionId, now);
+    }
+
+    @Transactional
+    public InputStream openExtractionInput(String jobId, JobCommands.LeaseProof proof) {
+        Lease lease=currentLease(jobId, EXTRACT, proof, Times.now(clock));
+        DocumentView document=documents.find(lease.documentId()).orElseThrow();
+        if (!"CLEAN".equals(document.scanState()) || !lease.objectVersion().equals(document.objectVersion())) {
+            throw DocumentErrors.conflict("LEASE_STALE", "Документ изменился");
+        }
+        return objects.openClean(document.objectRef(ScanStatus.CLEAN),
+                new ActorScope("document-ocr", document.companyId()));
     }
 
     private Lease currentLease(String jobId, String jobType, JobCommands.LeaseProof proof, Instant now) {

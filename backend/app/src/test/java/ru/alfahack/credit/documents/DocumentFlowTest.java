@@ -240,12 +240,25 @@ class DocumentFlowTest {
         String objectVersion = JsonPath.read(first, "$.objectVersion");
         assertThat((String) JsonPath.read(first, "$.documentId")).isEqualTo(documentId);
 
+        mvc.perform(get("/internal/v1/document-jobs/" + jobId + "/content")
+                        .header("X-Service-Token", TestTokens.OCR).header("X-Worker-Id", "ocr-1")
+                        .header("X-Lease-Generation", 1).header("X-Lease-Token", (String)JsonPath.read(first,"$.leaseToken")))
+                .andExpect(status().isOk());
+        mvc.perform(get("/internal/v1/document-jobs/" + jobId + "/content")
+                        .header("X-Service-Token", TestTokens.SCANNER).header("X-Worker-Id", "ocr-1")
+                        .header("X-Lease-Generation", 1).header("X-Lease-Token", (String)JsonPath.read(first,"$.leaseToken")))
+                .andExpect(status().isForbidden());
+
         // Аренда истекла и задание перехвачено другим worker: результат первого поколения отклоняется.
         jdbc.sql("UPDATE documents.document_job SET lease_until = now() - interval '1 second' WHERE job_id = :id")
                 .param("id", jobId).update();
         String second = claimExtract("ocr-2");
         assertThat(((Number) JsonPath.read(second, "$.generation")).longValue()).isEqualTo(2);
 
+        mvc.perform(get("/internal/v1/document-jobs/" + jobId + "/content")
+                        .header("X-Service-Token", TestTokens.OCR).header("X-Worker-Id", "ocr-1")
+                        .header("X-Lease-Generation", 1).header("X-Lease-Token", (String)JsonPath.read(first,"$.leaseToken")))
+                .andExpect(status().isConflict());
         extractionResult(jobId, first, "ocr-1", objectVersion)
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.code").value("LEASE_STALE"));

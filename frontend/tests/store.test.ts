@@ -67,7 +67,7 @@ describe('согласованный демосценарий', () => {
     const { store, call, a } = await submit();
     store.progress(a);
     store.progress(a);
-    expect(a.status).toBe('OFFERED');
+    expect(a.status).toBe('APPROVED');
     const offer = store.offers.get(a.offerId!)!;
     const accepted = (await (
       await call(`/offers/${offer.id}/accept`, 'POST', { version: 1 }, 1, 'accept-1')
@@ -114,7 +114,7 @@ describe('согласованный демосценарий', () => {
     const { store, call, a } = await submit('rfi');
     store.progress(a);
     store.progress(a);
-    expect(a.status).toBe('NEEDS_INFORMATION');
+    expect(a.status).toBe('NEEDS_INFO');
     const r = structuredClone(store.information.get(a.requestId!)!);
     r.finance.ebit = '1';
     expect(
@@ -166,7 +166,7 @@ describe('согласованный демосценарий', () => {
       ).status,
     ).toBe(200);
     store.progress(a, true);
-    expect(a.status).toBe('OFFERED');
+    expect(a.status).toBe('APPROVED');
     expect(store.applications.size).toBe(1);
   });
   it('нельзя получить заявку другой компании', async () => {

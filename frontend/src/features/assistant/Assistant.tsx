@@ -8,7 +8,8 @@ import { api } from '../../shared/api/client';
 import type { AssistantMessage } from '../../shared/types/domain';
 import { ErrorState, PageTitle, Panel } from '../../shared/ui/common';
 export function allowedSource(href: string) {
-  return /^\/help\/(application|finance)$/.test(href);
+  if (/^\/help\/(application|finance)$/.test(href)) return true;
+  try { const u=new URL(href); return u.protocol==='https:' && ['alfabank.ru','cbr.ru','fincult.info','nalog.gov.ru'].some(d=>u.hostname===d || u.hostname.endsWith('.'+d)); } catch { return false; }
 }
 export function Assistant() {
   const { conversationId = 'general' } = useParams(),
@@ -95,10 +96,10 @@ export function Assistant() {
                   m.sources
                     ?.filter((s) => allowedSource(s.href))
                     .map((s) => (
-                      <Link className="source-link" to={s.href} key={s.href}>
+                      <a className="source-link" href={s.href} key={s.href} target="_blank" rel="noopener noreferrer">
                         <BookOpen size={14} />
                         {s.title}
-                      </Link>
+                      </a>
                     ))}
               </article>
             ))}

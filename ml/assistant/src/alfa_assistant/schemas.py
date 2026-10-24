@@ -9,12 +9,25 @@ class StrictModel(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
 
+class Identity(StrictModel):
+    actor_id: str = Field(min_length=1, max_length=256)
+    company_id: str = Field(min_length=1, max_length=256)
+
+
+class BankContext(StrictModel):
+    company_id: str
+    products: list[dict] = Field(max_length=1000)
+    applications: list[dict] = Field(max_length=10000)
+
+
 class CreateSession(StrictModel):
+    identity: Identity | None = None
     demo_user_id: str | None = None
     system_prompt: str | None = Field(None, min_length=1, max_length=20000)
 
 
 class NewMessage(StrictModel):
+    bank_context: BankContext | None = None
     client_message_id: str = Field(min_length=1, max_length=128)
     message: str = Field(min_length=1, max_length=8000)
 

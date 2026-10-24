@@ -53,6 +53,9 @@ credit:
     service-tokens:
       file-scanner: ${FILE_SCANNER_TOKEN:}
       document-ocr: ${DOCUMENT_OCR_TOKEN:}
+  assistant:
+    base-url: ${ASSISTANT_BASE_URL:}
+    service-token: ${ASSISTANT_SERVICE_TOKEN:}
   fraud:
     mode: ${FRAUD_MODE:off}
   feed:
@@ -73,3 +76,5 @@ management:
     web:
       exposure:
         include: health
+
+# Integrated optional external LLM service, never exposed directly to browsers.

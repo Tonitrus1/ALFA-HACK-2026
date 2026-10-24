@@ -5,6 +5,13 @@ x-python-health: &python-health
   retries: 12
   start_period: 120s
 services:
+  feed-init:
+    image: credit-mvp-feed:local
+    build: {context: ., dockerfile: deploy/Dockerfile.feed, target: runtime}
+    environment: {HF_HUB_OFFLINE: '0', TRANSFORMERS_OFFLINE: '0'}
+    command: [sh, /feed-init.sh]
+    volumes: ["${FEED_BUNDLE_PATH:-feed-bundle}:/bundle"]
+    networks: [outbound]
   backend-db:
     image: postgres:17.11-bookworm
     environment:
@@ -58,6 +65,7 @@ services:
       <<: *python-health
       test: [CMD, python, -c, "import os,urllib.request; urllib.request.urlopen(urllib.request.Request('http://localhost:8001/health',headers={'Authorization':'Bearer '+os.environ['ML_INTERNAL_TOKEN']}),timeout=3)"]
   feed:
+    depends_on: {feed-init: {condition: service_completed_successfully}}
     image: credit-mvp-feed:local
     build: {context: ., dockerfile: deploy/Dockerfile.feed, target: runtime}
     environment:
@@ -65,7 +73,7 @@ services:
       FEED_BUNDLE: /bundle
       FEED_RELEASE: ${FEED_RELEASE:-v1}
       FEED_RANKER: ${FEED_RANKER:-e5}
-    volumes: ["${FEED_BUNDLE_PATH:-./.local/feed-bundle}:/bundle:ro"]
+    volumes: ["${FEED_BUNDLE_PATH:-feed-bundle}:/bundle:ro"]
     networks: [internal]
     healthcheck:
       <<: *python-health
@@ -89,6 +97,12 @@ services:
     image: clamav/clamav:1.4
     environment:
       CLAMAV_NO_FRESHCLAMD: 'true'
+    healthcheck:
+      test: [CMD, clamdcheck.sh]
+      interval: 10s
+      timeout: 5s
+      retries: 60
+      start_period: 60s
     networks: [internal]
   backend:
     build: {context: ., dockerfile: deploy/Dockerfile.backend}
@@ -102,15 +116,95 @@ services:
       FRAUD_MODE: ${FRAUD_MODE:-off}
       ML_BASE_URL: http://ml-bridge:8000
       ML_SERVICE_TOKEN: ${ML_SERVICE_TOKEN}
+      ASSISTANT_BASE_URL: http://assistant:8000
+      ASSISTANT_SERVICE_TOKEN: ${ASSISTANT_SERVICE_TOKEN:?Run configure first}
+      DOCUMENT_OCR_TOKEN: ${DOCUMENT_OCR_TOKEN:?Run configure first}
       OBJECTS_ROOT: /objects
       CLAMD_HOST: scanner
       CREDIT_SCANNER_ENABLED: 'true'
     depends_on:
       backend-db: {condition: service_healthy}
-      scanner: {condition: service_started}
+      scanner: {condition: service_healthy}
       ml-bridge: {condition: service_healthy}
     volumes: [objects:/objects]
     networks: [internal]
+  qdrant:
+    image: qdrant/qdrant:v1.15.5@sha256:0fb8897412abc81d1c0430a899b9a81eb8328aa634e7242d1bc804c1fe8fe863
+    volumes: [qdrant-data:/qdrant/storage]
+    networks: [internal]
+    restart: unless-stopped
+  searxng:
+    image: searxng/searxng:2026.10.19-81371861f@sha256:5ed0323b5f5f8701264ef65e239a2bd83cb57098f2b971fa30bf79c06eeae271
+    volumes: [./ml/assistant/searxng/settings.yml:/etc/searxng/settings.yml:ro]
+    environment: {SEARXNG_SECRET: '${SEARXNG_SECRET:?Run configure first}'}
+    networks: [internal, outbound]
+    restart: unless-stopped
+  assistant-init:
+    image: credit-integrated-assistant:local
+    build: {context: ., dockerfile: deploy/Dockerfile.assistant}
+    environment: {HF_HUB_OFFLINE: '0', TRANSFORMERS_OFFLINE: '0', MODEL_DIR: /app/model-cache}
+    command: [sh, /assistant-init.sh]
+    volumes: [assistant-models:/app/model-cache]
+    networks: [outbound]
+  assistant:
+    image: credit-integrated-assistant:local
+    build: {context: ., dockerfile: deploy/Dockerfile.assistant}
+    environment:
+      ADMIN_API_KEY: ${ASSISTANT_SERVICE_TOKEN}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_BASE_URL: ${LLM_BASE_URL:-https://api.aitunnel.ru/v1}
+      LLM_MODEL: ${ASSISTANT_LLM_MODEL:-qwen3-30b-a3b}
+      DATA_DIR: /app/data
+      DATABASE_URL: sqlite:////app/data/knowledge.sqlite3
+      MODEL_DIR: /app/model-cache
+      QDRANT_URL: http://qdrant:6333
+      SEARXNG_URL: http://searxng:8080
+      DENSE_MIN_SCORE: '0.822329951176193'
+    volumes: [assistant-data:/app/data, assistant-models:/app/model-cache]
+    depends_on:
+      assistant-init: {condition: service_completed_successfully}
+      qdrant: {condition: service_started}
+      searxng: {condition: service_started}
+    networks: [internal, outbound]
+    healthcheck:
+      <<: *python-health
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/health/ready',timeout=4)"]
+    restart: unless-stopped
+  ocr:
+    image: credit-integrated-ocr:local
+    build: {context: ., dockerfile: deploy/Dockerfile.ocr}
+    environment:
+      OCR_API_KEY: ${OCR_API_KEY:?Run configure first}
+      OCR_ENGINE: tesseract
+      DATA_DIR: /app/data
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_BASE_URL: ${LLM_BASE_URL:-https://api.aitunnel.ru/v1}
+      LLM_MODEL: ${OCR_LLM_MODEL:-deepseek-v4.1-flash-1017}
+      CPU_THREADS: '2'
+    volumes: [ocr-data:/app/data]
+    networks: [internal, outbound]
+    healthcheck:
+      <<: *python-health
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8001/health/ready',timeout=4)"]
+    restart: unless-stopped
+  ocr-worker:
+    image: credit-integrated-ocr:local
+    build: {context: ., dockerfile: deploy/Dockerfile.ocr}
+    command: [python, -m, alfa_ocr.backend_worker]
+    environment:
+      DOCUMENT_OCR_TOKEN: ${DOCUMENT_OCR_TOKEN}
+      OCR_API_KEY: ${OCR_API_KEY}
+      BACKEND_URL: http://backend:8080
+      OCR_URL: http://ocr:8001
+      CONNECTOR_DATA_DIR: /data
+    volumes: [ocr-worker-data:/data]
+    depends_on: {backend: {condition: service_healthy}, ocr: {condition: service_started}}
+    networks: [internal]
+    healthcheck:
+      test: [CMD, python, -c, "import time,pathlib; assert time.time()-pathlib.Path('/data/heartbeat').stat().st_mtime<90"]
+      interval: 30s
+      start_period: 30s
+    restart: unless-stopped
   gateway:
     build: {context: ., dockerfile: deploy/Dockerfile.gateway}
     ports: ['127.0.0.1:8080:8080']
@@ -118,8 +212,15 @@ services:
     networks: [ingress, internal]
 networks:
   ingress: {}
+  outbound: {}
   internal: {internal: true}
 volumes:
   backend-db:
   ml-db:
   objects:
+  feed-bundle:
+  assistant-data:
+  assistant-models:
+  qdrant-data:
+  ocr-data:
+  ocr-worker-data:

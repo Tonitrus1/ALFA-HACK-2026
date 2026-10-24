@@ -60,3 +60,22 @@ def annuity(args: AnnuityArgs):
             "provenance": {"type": "CALCULATION", "formula": "annuity_v1"},
             "notice": "Примерный расчёт без комиссий и индивидуальных условий. Не предложение банка.",
         }
+
+
+class BackendContextGateway(SyntheticBankGateway):
+    """Read-only snapshot rebuilt by the authenticated backend for every chat turn."""
+    def __init__(self, context):
+        self.data = context
+
+    def products(self):
+        return {"provenance": {"type": "BACKEND_SNAPSHOT"}, "products": self.data["products"]}
+
+    def application(self, application_id, company_id):
+        result = super().application(application_id, company_id)
+        result["provenance"] = {"type": "BACKEND_SNAPSHOT"}
+        return result
+
+    def documents(self, args, company_id):
+        result = super().documents(args, company_id)
+        result["provenance"] = {"type": "BACKEND_SNAPSHOT"}
+        return result

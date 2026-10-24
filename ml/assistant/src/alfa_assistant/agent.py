@@ -6,7 +6,7 @@ from uuid import uuid4
 
 from pydantic import ValidationError
 
-from .bank import annuity
+from .bank import BackendContextGateway, annuity
 from .errors import ServiceError
 from .llm import public_content, wire_json
 from .schemas import (
@@ -394,12 +394,13 @@ class Agent:
                 state["pending"][c["id"]] = action
                 return {"pending_action": action, "published": False}
             state["bank_used"] = True
+            bank = BackendContextGateway(session.bank_context) if session.bank_context else self.bank
             if name == "list_credit_products":
-                return self.bank.products()
+                return bank.products()
             if name == "get_application_status":
-                return self.bank.application(args.application_id, session.company_id)
+                return bank.application(args.application_id, session.company_id)
             if name == "get_required_documents":
-                return self.bank.documents(args, session.company_id)
+                return bank.documents(args, session.company_id)
             return annuity(args)
         except ServiceError as exc:
             return {"error": {"code": exc.code}}

@@ -9,7 +9,7 @@
     "preview": "vite preview --host 127.0.0.1",
     "typecheck": "tsc -b",
     "lint": "eslint .",
-    "test": "vitest run tests/integrated.money.test.ts",
+    "test": "vitest run",
     "test:e2e": "playwright test --config playwright.integrated.config.ts",
     "format": "prettier --write src tests tools *.ts *.js docs README.md package.json",
     "format:check": "prettier --check src tests tools *.ts *.js docs README.md package.json",

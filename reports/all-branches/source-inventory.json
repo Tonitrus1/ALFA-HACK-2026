@@ -1,0 +1,496 @@
+{
+  "origin/ml/feed-recommendations": [
+    {
+      "source": "ml/feed/README.md",
+      "target": "ml/feed/README.md",
+      "status": "review"
+    },
+    {
+      "source": "ml/feed/__init__.py",
+      "target": "ml/feed/__init__.py",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/analytics.schema.json",
+      "target": "ml/feed_v2/analytics.schema.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/backend_reference.py",
+      "target": "ml/feed/backend_reference.py",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/benchmark.py",
+      "target": "ml/feed_v2/benchmark.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/catalog.py",
+      "target": "ml/feed_v2/catalog.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/catalog/cards.json",
+      "target": "ml/feed_v2/catalog/cards.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/catalog/coverage.json",
+      "target": "ml/feed_v2/catalog/coverage.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/catalog/illustrations/application.svg",
+      "target": "ml/feed/catalog/illustrations/application.svg",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/catalog/illustrations/cash_gap.svg",
+      "target": "ml/feed/catalog/illustrations/cash_gap.svg",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/catalog/illustrations/equipment.svg",
+      "target": "ml/feed/catalog/illustrations/equipment.svg",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/catalog/illustrations/financing_cost.svg",
+      "target": "ml/feed/catalog/illustrations/financing_cost.svg",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/catalog/illustrations/seasonality.svg",
+      "target": "ml/feed/catalog/illustrations/seasonality.svg",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/catalog/illustrations/working_capital.svg",
+      "target": "ml/feed/catalog/illustrations/working_capital.svg",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/catalog/review.json",
+      "target": "ml/feed_v2/catalog/review.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/catalog/versions/v1/cards.json",
+      "target": "ml/feed_v2/catalog/versions/v1/cards.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/catalog/versions/v1/coverage.json",
+      "target": "ml/feed_v2/catalog/versions/v1/coverage.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/catalog/versions/v1/illustrations/application.svg",
+      "target": "ml/feed_v2/catalog/versions/v1/illustrations/application.svg",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/catalog/versions/v1/illustrations/cash_gap.svg",
+      "target": "ml/feed_v2/catalog/versions/v1/illustrations/cash_gap.svg",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/catalog/versions/v1/illustrations/equipment.svg",
+      "target": "ml/feed_v2/catalog/versions/v1/illustrations/equipment.svg",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/catalog/versions/v1/illustrations/financing_cost.svg",
+      "target": "ml/feed_v2/catalog/versions/v1/illustrations/financing_cost.svg",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/catalog/versions/v1/illustrations/seasonality.svg",
+      "target": "ml/feed_v2/catalog/versions/v1/illustrations/seasonality.svg",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/catalog/versions/v1/illustrations/working_capital.svg",
+      "target": "ml/feed_v2/catalog/versions/v1/illustrations/working_capital.svg",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/catalog/versions/v1/review.json",
+      "target": "ml/feed_v2/catalog/versions/v1/review.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/cli.py",
+      "target": "ml/feed_v2/cli.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/dataset.py",
+      "target": "ml/feed_v2/dataset.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/demo.py",
+      "target": "ml/feed_v2/demo.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/encoder.py",
+      "target": "ml/feed/encoder.py",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/examples/analytics-export.json",
+      "target": "ml/feed_v2/examples/analytics-export.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/examples/empty.feed.json",
+      "target": "ml/feed_v2/examples/empty.feed.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/examples/equipment-application.feed.json",
+      "target": "ml/feed_v2/examples/equipment-application.feed.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/examples/equipment-application.request.json",
+      "target": "ml/feed_v2/examples/equipment-application.request.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/examples/equipment-application.response.json",
+      "target": "ml/feed_v2/examples/equipment-application.response.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/examples/feedback-helpful.json",
+      "target": "ml/feed/examples/feedback-helpful.json",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/examples/feedback-not_interested.json",
+      "target": "ml/feed/examples/feedback-not_interested.json",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/examples/feedback-view.json",
+      "target": "ml/feed/examples/feedback-view.json",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/examples/intro.request.json",
+      "target": "ml/feed_v2/examples/intro.request.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/examples/intro.response.json",
+      "target": "ml/feed_v2/examples/intro.response.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/examples/preferences.json",
+      "target": "ml/feed/examples/preferences.json",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/examples/purchase-cost.feed.json",
+      "target": "ml/feed_v2/examples/purchase-cost.feed.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/examples/purchase-cost.request.json",
+      "target": "ml/feed_v2/examples/purchase-cost.request.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/examples/purchase-cost.response.json",
+      "target": "ml/feed_v2/examples/purchase-cost.response.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/examples/saved-cards.json",
+      "target": "ml/feed_v2/examples/saved-cards.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/examples/saved-empty.json",
+      "target": "ml/feed_v2/examples/saved-empty.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/export_examples.py",
+      "target": "ml/feed/export_examples.py",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/features.py",
+      "target": "ml/feed_v2/features.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/fixtures/content-review.json",
+      "target": "ml/feed_v2/fixtures/content-review.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/fixtures/scenarios.json",
+      "target": "ml/feed/fixtures/scenarios.json",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/integration.py",
+      "target": "ml/feed/integration.py",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/learned.py",
+      "target": "ml/feed_v2/learned.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/metrics.py",
+      "target": "ml/feed_v2/metrics.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/model-card.md",
+      "target": "ml/feed_v2/model-card.md",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/model-lock.json",
+      "target": "ml/feed/model-lock.json",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/openapi.json",
+      "target": "ml/feed/openapi.json",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/pipeline.py",
+      "target": "ml/feed_v2/pipeline.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/prepare.py",
+      "target": "ml/feed_v2/prepare.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/ranker.py",
+      "target": "ml/feed_v2/ranker.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/release/SHA256SUMS",
+      "target": "ml/feed_v2/release/SHA256SUMS",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/release/catalog-index.json",
+      "target": "ml/feed_v2/release/catalog-index.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/release/embeddings.npy",
+      "target": "ml/feed_v2/release/embeddings.npy",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/release/manifest.json",
+      "target": "ml/feed_v2/release/manifest.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/releases/v1/SHA256SUMS",
+      "target": "ml/feed/releases/v1/SHA256SUMS",
+      "status": "review"
+    },
+    {
+      "source": "ml/feed/releases/v1/catalog-index.json",
+      "target": "ml/feed/releases/v1/catalog-index.json",
+      "status": "review"
+    },
+    {
+      "source": "ml/feed/releases/v1/embeddings.npy",
+      "target": "ml/feed/releases/v1/embeddings.npy",
+      "status": "review"
+    },
+    {
+      "source": "ml/feed/releases/v1/manifest.json",
+      "target": "ml/feed/releases/v1/manifest.json",
+      "status": "review"
+    },
+    {
+      "source": "ml/feed/requirements-dev.txt",
+      "target": "ml/feed_v2/requirements-dev.txt",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/requirements.lock.txt",
+      "target": "ml/feed_v2/requirements.lock.txt",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/requirements.txt",
+      "target": "ml/feed_v2/requirements.txt",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/schemas.py",
+      "target": "ml/feed/schemas.py",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/server.py",
+      "target": "ml/feed_v2/server.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/simulate.py",
+      "target": "ml/feed_v2/simulate.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/simulation-intent-stress.json",
+      "target": "ml/feed_v2/simulation-intent-stress.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/simulation-position-stress.json",
+      "target": "ml/feed_v2/simulation-position-stress.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/simulation.json",
+      "target": "ml/feed_v2/simulation.json",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/smoke.py",
+      "target": "ml/feed_v2/smoke.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/tests/conftest.py",
+      "target": "ml/feed_v2/tests/conftest.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/tests/test_api.py",
+      "target": "ml/feed/tests/test_api.py",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/tests/test_backend_boundary.py",
+      "target": "ml/feed/tests/test_backend_boundary.py",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/tests/test_contracts.py",
+      "target": "ml/feed/tests/test_contracts.py",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/tests/test_learned_runtime.py",
+      "target": "ml/feed_v2/tests/test_learned_runtime.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/tests/test_learning.py",
+      "target": "ml/feed_v2/tests/test_learning.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/tests/test_model.py",
+      "target": "ml/feed/tests/test_model.py",
+      "status": "identical"
+    },
+    {
+      "source": "ml/feed/tests/test_ranking.py",
+      "target": "ml/feed_v2/tests/test_ranking.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/train_ranker.py",
+      "target": "ml/feed_v2/train_ranker.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/feed/validate_data.py",
+      "target": "ml/feed_v2/validate_data.py",
+      "status": "ported-v2"
+    }
+  ],
+  "origin/ml/local-scoring-runtime": [
+    {
+      "source": "ml/scoring/README.md",
+      "target": "ml/scoring/README.md",
+      "status": "identical"
+    },
+    {
+      "source": "ml/scoring/__init__.py",
+      "target": "ml/scoring/__init__.py",
+      "status": "identical"
+    },
+    {
+      "source": "ml/scoring/client.py",
+      "target": "ml/scoring/client.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/scoring/decision_client.py",
+      "target": "ml/scoring/decision_client.py",
+      "status": "identical"
+    },
+    {
+      "source": "ml/scoring/demo_policy.py",
+      "target": "ml/scoring/demo_policy.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/scoring/features.py",
+      "target": "ml/scoring/features.py",
+      "status": "identical"
+    },
+    {
+      "source": "ml/scoring/fraud_api.py",
+      "target": "ml/scoring/fraud_api.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/scoring/fraud_data.py",
+      "target": "ml/scoring/fraud_data.py",
+      "status": "identical"
+    },
+    {
+      "source": "ml/scoring/fraud_features.py",
+      "target": "ml/scoring/fraud_features.py",
+      "status": "identical"
+    },
+    {
+      "source": "ml/scoring/fraud_train.py",
+      "target": "ml/scoring/fraud_train.py",
+      "status": "identical"
+    },
+    {
+      "source": "ml/scoring/scenarios.py",
+      "target": "ml/scoring/scenarios.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/scoring/server.py",
+      "target": "ml/scoring/server.py",
+      "status": "ported-v2"
+    },
+    {
+      "source": "ml/scoring/train.py",
+      "target": "ml/scoring/train.py",
+      "status": "ported-v2"
+    }
+  ]
+}

@@ -93,6 +93,9 @@ async function saveInformation(r:InformationRequest) {
 }
 type WireOffer={offerId:string;applicationId:string;version:number;status:Offer['status'];amount:{amountMinor:number};termMonths:number;termsDisclosure:string;validUntil:string};
 async function offer(id:string):Promise<Offer>{const w=await request<WireOffer>('/api/v1/offers/'+enc(id));return {id:w.offerId,applicationId:w.applicationId,version:w.version,status:w.status,amount:String(w.amount.amountMinor),months:w.termMonths,rate:'См. условия',termsDisclosure:w.termsDisclosure,expiresAt:w.validUntil};}
+type AssistantResponse={message_id:string;status:AssistantMessage['state'];answer:string;citations:{title:string;url?:string;metadata?:{source_url?:string}}[]};
+function assistantMessage(r:AssistantResponse):AssistantMessage{return {id:r.message_id,role:'assistant',text:r.answer,state:r.status,sources:r.citations.map(c=>({title:c.title,href:c.url??c.metadata?.source_url??'/help/application'}))};}
+async function stableAssistant(id:string,text:string,signal:AbortSignal){return request<AssistantResponse>('/api/v1/assistant/conversations/'+enc(id)+'/messages',{method:'POST',signal,body:json({clientMessageId:crypto.randomUUID(),text})});}
 export const api={
   accounts:()=>request<{items:{accountId:string;displayName:string}[]}>('/demo/api/v1/accounts').then(p=>p.items),
   session,companies,
@@ -106,17 +109,33 @@ export const api={
   createApplication:(productId:string,need:Need)=>{const key=crypto.randomUUID();return command(async()=>{const product=await api.product(productId);const a=await request<WireApp>('/api/v1/applications',{method:'POST',headers:{'Idempotency-Key':key},body:json({companyId:context.get()?.companyId,productId,productVersion:product.version,need:{purpose:need.purpose,amount:{amountMinor:minor(fromKopecks(need.amount)),currency:'RUB'},termMonths:need.months}})});return application(a.applicationId);});},
   save,
   submit:(a:Application,docs:DocumentItem[]=[])=>command(async()=>{const s=await request<Statement>(path(a.id)+'/financial-statement');if(!s.confirmed)throw new Error('Подтвердите все финансовые значения');const req=await request<{requirementsVersion:number}>(path(a.id)+'/document-requirements');await stable(path(a.id)+'/submit','POST',{expectedVersion:a.version,financialStatementVersion:s.statementVersion,requirementsVersion:req.requirementsVersion,consentRecordIds:[],documentIds:references(docs).map(d=>d.documentId),documentReferences:references(docs)});return application(a.id);}),
-  documents:async(id:string):Promise<DocumentItem[]> => (await list<{documentId:string;version:number;fileName:string;scanState:string;extractionState:string;objectVersion:string;sizeBytes?:number;contentType?:string}>(path(id)+'/documents')).map(d=>({id:d.documentId,applicationId:id,name:d.fileName,size:d.sizeBytes??0,type:d.contentType??'',documentVersion:d.version,objectVersion:d.objectVersion,status:d.scanState==='CLEAN'?'CLEAN':['QUARANTINE','SCANNING'].includes(d.scanState)?d.scanState as 'QUARANTINE'|'SCANNING':'FAILED',ocrStatus:'PENDING',canDownload:d.scanState==='CLEAN'})),
-  upload:async(id:string,file:File,onProgress:(n:number)=>void)=>{const r=await request<{requirementsVersion:number;items:{requirementId:string;allowedContentTypes:string[]}[]}>(path(id)+'/document-requirements');const req=r.items.find(r=>r.allowedContentTypes.includes(file.type));if(!req)throw new Error('Нет серверного требования для такого типа файла');const intent=await stable<{uploadUrl:string;grant:string;documentId:string;maxBytes:number}>(path(id)+'/documents/upload-intents','POST',{fileName:file.name,declaredMimeType:file.type,sizeBytes:file.size,documentType:req.requirementId,requirementId:req.requirementId,requirementsVersion:r.requirementsVersion});if(file.size>intent.maxBytes)throw new Error('Файл слишком большой');await request<void>(intent.uploadUrl,{method:'PUT',headers:{'Content-Type':file.type,'X-Upload-Grant':intent.grant},body:file});onProgress(100);return intent.documentId;},
+  documents:async(id:string):Promise<DocumentItem[]> => Promise.all((await list<{documentId:string;version:number;fileName:string;scanState:string;extractionState:string;extractionId?:string;objectVersion:string;sizeBytes?:number;contentType?:string}>(path(id)+'/documents')).map(async d=>{
+    const item:DocumentItem={id:d.documentId,applicationId:id,name:d.fileName,size:d.sizeBytes??0,type:d.contentType??'',documentVersion:d.version,objectVersion:d.objectVersion,status:d.scanState==='CLEAN'?'CLEAN':d.scanState==='QUARANTINED'?'QUARANTINE':['QUARANTINE','SCANNING'].includes(d.scanState)?d.scanState as 'QUARANTINE'|'SCANNING':'FAILED',ocrStatus:['READY','FAILED'].includes(d.extractionState)?d.extractionState as 'READY'|'FAILED':'PENDING',extractionId:d.extractionId,canDownload:d.scanState==='CLEAN'};
+    if(item.ocrStatus==='READY'){
+      const e=await request<{extractionId:string;documentVersion:number;objectVersion:string;fields:{name:string;value:string}[]}>('/api/v1/documents/'+enc(d.documentId)+'/extraction');
+      item.extractionId=e.extractionId;
+      item.values=Object.fromEntries(Object.keys(financeFields).map(k=>[k,e.fields.find(f=>f.name===k)?.value??''])) as Finance;
+    }
+    return item;
+  })),
+  upload:async(id:string,file:File,onProgress:(n:number)=>void)=>{const r=await request<{requirementsVersion:number;items:{requirementId:string;allowedContentTypes:string[]}[]}>(path(id)+'/document-requirements');const req=r.items.find(r=>r.allowedContentTypes.includes(file.type));if(!req)throw new Error('Нет серверного требования для такого типа файла');const intent=await stable<{uploadUrl:string;grant:string;documentId:string;maxBytes:number}>(path(id)+'/documents/upload-intents','POST',{fileName:file.name,declaredMimeType:file.type,sizeBytes:file.size,documentType:req.requirementId==='financial-statement'?'FINANCIAL_STATEMENT':req.requirementId,requirementId:req.requirementId,requirementsVersion:r.requirementsVersion});if(file.size>intent.maxBytes)throw new Error('Файл слишком большой');await request<void>(intent.uploadUrl,{method:'PUT',headers:{'Content-Type':file.type,'X-Upload-Grant':intent.grant},body:file});onProgress(100);return intent.documentId;},
   file:async(id:string)=>{const d=await request<{downloadUrl:string;grant:string}>('/api/v1/documents/'+enc(id)+'/download-intents',{method:'POST'});return request<Blob>(d.downloadUrl,{headers:{'X-Download-Grant':d.grant}},true);},
-  confirmOcr:(_id:string,_doc:DocumentItem,_f:Draft['finance'],_c:Draft['confirmed'],_v:number)=>unsupported<Application>(),
+  confirmOcr:async(id:string,doc:DocumentItem,f:Draft['finance'],c:Draft['confirmed'],v:number)=>{
+    const [fresh,extraction]=await Promise.all([application(id),request<{extractionId:string;documentVersion:number;objectVersion:string}>('/api/v1/documents/'+enc(doc.id)+'/extraction')]);
+    if(fresh.financialVersion!==v || extraction.extractionId!==doc.extractionId || extraction.objectVersion!==doc.objectVersion)throw new ApiError(409,'Документ или финансовые данные изменились. Откройте сверку заново.');
+    return save(id,{...fresh.draft,finance:f,confirmed:c},fresh.version);
+  },
   information,saveInformation,
   respond:(r:InformationRequest,_docs:DocumentItem[]=[])=>command(async()=>{const s=await request<Statement>(path(r.applicationId)+`/information-requests/${enc(r.id)}/draft/financial-statement`);if(!s.confirmed)throw new Error('Подтвердите уточнения');await stable(path(r.applicationId)+`/information-requests/${enc(r.id)}/responses`,'POST',{requestVersion:r.requestVersion,requirementsVersion:r.requirementsVersion,draftVersion:r.draftVersion,financialStatementVersion:s.statementVersion,documentIds:[],documentReferences:[]});return application(r.applicationId);}),
   offer,offerForApplication:async(id:string)=>{const d=await request<{offerIds:string[]}>(path(id)+'/decision');if(!d.offerIds.length)throw new ApiError(404,'Предложение отсутствует');return offer(d.offerIds[0]);},
   accept:(o:Offer)=>command(async()=>{await stable('/api/v1/offers/'+enc(o.id)+'/accept','POST',{expectedVersion:o.version},o.version);return offer(o.id);}),
   complete:(o:Offer)=>command(async()=>{await stable('/api/v1/offers/'+enc(o.id)+'/complete','POST',{expectedVersion:o.version},o.version);return offer(o.id);}),
   notices:()=>unsupported<Notice[]>(),readNotice:(_id:string)=>unsupported<void>(),
-  conversation:(_id:string)=>unsupported<AssistantMessage[]>(),ask:(_id:string,_text:string,_signal:AbortSignal)=>unsupported<AssistantMessage>(),
+  conversation:async(id:string)=>{
+    const h=await request<{messages:{client_message_id:string;message:string;response?:AssistantResponse}[]}>('/api/v1/assistant/conversations/'+enc(id)+'/messages');
+    return h.messages.flatMap(m=>[{id:m.client_message_id,role:'user' as const,text:m.message},...(m.response?[assistantMessage(m.response)]:[])]);
+  },
+  ask:async(id:string,text:string,signal:AbortSignal)=>assistantMessage(await stableAssistant(id,text,signal)),
   preferences:()=>request<Preferences>('/api/v1/feed/preferences?'+companyQuery()),
   savePreferences:(p:Preferences)=>request<Preferences>('/api/v1/feed/preferences?'+companyQuery(),{method:'PUT',body:json(p)}),
   feed:(cursor?:string)=>request<Feed>('/api/v1/feed?'+companyQuery()+(cursor?'&cursor='+enc(cursor):'')),

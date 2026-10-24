@@ -8,7 +8,8 @@ RUN pip install --no-cache-dir torch==2.6.0 --index-url https://download.pytorch
 COPY ml/feed ml/feed
 COPY ml/feed_v2 ml/feed_v2
 COPY ml/feed_runtime.py ml/feed_runtime.py
-RUN useradd --uid 10001 --create-home service
+COPY deploy/feed-init.sh /feed-init.sh
+RUN useradd --uid 10001 --create-home service && mkdir /bundle && chown service /bundle
 USER service
 CMD ["uvicorn", "feed_runtime:create_app", "--factory", "--host", "0.0.0.0", "--port", "8002", "--no-access-log"]
 

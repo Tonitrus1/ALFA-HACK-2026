@@ -16,6 +16,10 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -136,6 +140,17 @@ class InternalDocumentJobController {
                                 field.page()))
                         .toList()));
         return new Receipt(receipt.receiptId(), receipt.recordedAt());
+    }
+
+    @GetMapping("/{jobId}/content")
+    ResponseEntity<InputStreamResource> content(HttpServletRequest request, @PathVariable String jobId,
+            @RequestHeader("X-Worker-Id") String worker,
+            @RequestHeader("X-Lease-Generation") long generation,
+            @RequestHeader("X-Lease-Token") String token) {
+        ServiceRoles.require(request, Set.of(OCR));
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .body(new InputStreamResource(jobs.openExtractionInput(jobId,
+                new JobCommands.LeaseProof(worker,generation,token))));
     }
 
     private static void requireRoleFor(HttpServletRequest request, String jobType) {

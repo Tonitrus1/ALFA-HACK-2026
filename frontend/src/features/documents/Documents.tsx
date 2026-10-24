@@ -30,7 +30,7 @@ export function DocumentUploader({ applicationId }: { applicationId: string }) {
       queryKey: ['documents', applicationId],
       queryFn: () => api.documents(applicationId),
       refetchInterval: (q) =>
-        q.state.data?.some((d) => ['QUARANTINE', 'SCANNING'].includes(d.status)) ? 1500 : false,
+        q.state.data?.some((d) => ['QUARANTINE', 'SCANNING'].includes(d.status) || (d.status==='CLEAN' && d.ocrStatus==='PENDING')) ? 1500 : false,
     }),
     [progress, setProgress] = useState<number>(),
     [error, setError] = useState<unknown>();
@@ -71,7 +71,7 @@ export function DocumentUploader({ applicationId }: { applicationId: string }) {
       </label>
       {progress !== undefined && <Progress percent={progress} />}
       <p className="muted small">
-        Проверка безопасности выполняется сервером. OCR недоступен. Не загружайте реальные документы.
+        Проверка безопасности выполняется сервером. Распознавание начинается после проверки файла. Используйте синтетические документы.
       </p>
       {!!error && <ErrorState error={error} />}
       <div className="file-list">
@@ -201,7 +201,7 @@ function OcrForm({ document, close }: { document: DocumentItem; close: () => voi
   return (
     <form onSubmit={submit}>
       <p>
-        Источник: {document.name}, страница 1. OCR в деморежиме синтетический. Любое изменение
+        Источник: {document.name}. Сверьте период, единицы и значения с оригиналом. Поля без надёжного результата заполните вручную. Любое изменение
         сбрасывает подтверждение.
       </p>
       <div className="financial-grid">

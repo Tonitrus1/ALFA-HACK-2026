@@ -14,6 +14,7 @@ import {
 import { StatusPage } from '../features/journey/StatusPage';
 import { InformationPage } from '../features/journey/InformationPage';
 import { OfferPage } from '../features/offers/OfferPage';
+import { Assistant } from '../features/assistant/Assistant';
 import { FilesPage } from '../features/documents/Documents';
 import { Disclosure, PageTitle, Panel } from '../shared/ui/common';
 function Unavailable({title}: {title: string}) { return <><PageTitle title={title} /><Panel>Функция пока недоступна. История, запросы уточнений и результаты доступны на странице заявки.</Panel></>; }
@@ -39,7 +40,7 @@ function Help() {
         <h2>{topic === 'finance' ? 'Подтвердите каждое значение' : 'Двигайтесь по шагам'}</h2>
         <p>
           {topic === 'finance'
-            ? 'OCR недоступен; используйте ручной ввод. Отметьте каждый показатель только после проверки. Изменение суммы или периода сбрасывает подтверждение. '
+            ? 'После распознавания сверьте значения с документом; недостающие поля заполните вручную. Отметьте каждый показатель только после проверки. Изменение суммы или периода сбрасывает подтверждение. '
             : 'Финансы → документы и согласия → проверка. Дождитесь сохранения перед отправкой. Если потребуется уточнение, откройте запрос в той же заявке. Ручная проверка не означает отказ.'}
         </p>
         <h2>Ограничения демонстрации</h2>
@@ -79,7 +80,7 @@ export function Router() {
             <Route path="applications/:id/files" element={<FilesPage />} />
             <Route path="offers/:offerId" element={<OfferPage />} />
             <Route path="inbox" element={<Unavailable title="Сообщения" />} />
-            <Route path="assistant/:conversationId?" element={<Unavailable title="AI-помощник" />} />
+            <Route path="assistant/:conversationId?" element={<Assistant />} />
             <Route path="help/:topic" element={<Help />} />
             <Route
               path="*"

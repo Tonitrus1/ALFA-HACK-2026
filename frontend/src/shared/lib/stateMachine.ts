@@ -11,4 +11,4 @@ export const demoTransitions: Record<Status, Status[]> = {
   ACCEPTED: ['COMPLETED'],
   COMPLETED: [], ALTERNATIVE: ['ACCEPTED'], CANCELLED: [], EXPIRED: [],
 };
-export const canTransition = (from: Status, to: Status) => demoTransitions[from].includes(to);
+export const canTransition = (from: Status, to: Status) => demoTransitions[from]?.includes(to) ?? false;

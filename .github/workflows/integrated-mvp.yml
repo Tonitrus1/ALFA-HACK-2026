@@ -1,10 +1,8 @@
-name: Integrated backend and ML MVP
+name: Integrated application acceptance
 on:
   push:
     branches: ['integration/**']
-    paths: ['backend/**', 'ml/**', 'frontend/**', 'deploy/**', 'compose.yaml', 'scripts/integration/**', '.github/workflows/integrated-mvp.yml']
   pull_request:
-    paths: ['backend/**', 'ml/**', 'frontend/**', 'deploy/**', 'compose.yaml', 'scripts/integration/**', '.github/workflows/integrated-mvp.yml']
   workflow_dispatch:
 concurrency:
   group: integrated-mvp-${{ github.head_ref || github.ref_name }}
@@ -12,22 +10,34 @@ concurrency:
 permissions:
   contents: read
 jobs:
-  backend:
+  tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
+    services:
+      qdrant:
+        image: qdrant/qdrant:v1.15.5
+        ports: ['6333:6333']
     steps:
       - uses: actions/checkout@v4
-        with: {fetch-depth: 0}
       - uses: actions/setup-java@v4
         with: {distribution: temurin, java-version: '21', cache: maven}
       - run: ./backend/mvnw -B -ntp -f backend/pom.xml verify
         env: {LC_ALL: C, LANG: C}
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
-      - run: npm ci --no-audit --no-fund
+      - run: npm ci --no-audit --no-fund && npm run build && npm test
         working-directory: frontend
-      - run: npm run build && npm test
-        working-directory: frontend
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Install AI contract test dependencies, without CPU/GPU model libraries
+        run: |
+          pip install './ml/assistant[test]'
+          python -c "import tomllib; p=tomllib.load(open('ml/ocr/pyproject.toml','rb')); print('\n'.join(d for d in p['project']['dependencies'] if not d.startswith(('paddleocr','paddlepaddle','paddlex'))))" > /tmp/ocr-req.txt
+          pip install -r /tmp/ocr-req.txt
+      - run: python -m pytest -q
+        working-directory: ml/assistant
+        env: {TEST_QDRANT_URL: 'http://localhost:6333'}
+      - run: PYTHONPATH=ml/ocr/src python -m pytest ml/ocr/tests -q
       - uses: actions/upload-artifact@v4
         if: always()
         with: {name: backend-test-results, path: 'backend/**/target/surefire-reports/TEST-*.xml'}
@@ -40,25 +50,27 @@ jobs:
       - run: python3 -m pip install jsonschema==4.25.1
       - run: python3 scripts/integration/configure.py
       - run: docker compose config --quiet
-      - run: docker compose build
+      - name: Build all service images
+        run: docker compose build
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
       - run: npm ci --no-audit --no-fund && npx playwright install --with-deps chromium
         working-directory: frontend
-      - name: Baseline, new releases, browser, failure, persistence and rollback acceptance
-        run: bash scripts/integration/linux_acceptance.sh
+      - name: Clean start, real inference, UI, outage and persistent restart
+        run: bash scripts/integration/all_branches_acceptance.sh
       - name: Collect evidence
         if: always()
         run: |
-          mkdir -p reports/integration-linux
-          docker compose logs --no-color > reports/integration-linux/compose.log
-          docker compose images --format json > reports/integration-linux/images.json
+          mkdir -p reports/all-branches
+          docker compose logs --no-color > reports/all-branches/compose.log
+          docker compose ps -a --format json > reports/all-branches/containers.json
+          docker compose images --format json > reports/all-branches/images.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: integrated-linux-evidence
           path: |
-            reports/integration-linux
+            reports/all-branches
             reports/ui-feed-antifraud/browser.json
             .local/browser-results
       - run: docker compose down

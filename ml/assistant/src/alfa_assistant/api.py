@@ -215,11 +215,12 @@ def create_app(settings=None, *, knowledge=None, llm=None, web_search=None, read
     @app.post("/v1/sessions", status_code=201)
     async def new_session(body: CreateSession, x_admin_key: str | None = Header(None)):
         await cleanup()
-        if (body.demo_user_id is not None or body.system_prompt is not None) and not is_admin(
+        if (body.demo_user_id is not None or body.system_prompt is not None or body.identity is not None) and not is_admin(
             x_admin_key
         ):
             raise ServiceError("ADMIN_REQUIRED_FOR_OVERRIDES", 403)
-        user = bank.user(body.demo_user_id or "demo-user-1")
+        user = ({"id": body.identity.actor_id, "company_id": body.identity.company_id}
+                if body.identity else bank.user(body.demo_user_id or "demo-user-1"))
         prompt = body.system_prompt or await run_sync(
             lambda: cfg.system_prompt_path.read_text(encoding="utf-8")
         )
@@ -233,6 +234,7 @@ def create_app(settings=None, *, knowledge=None, llm=None, web_search=None, read
                 "max_tokens": cfg.llm_max_tokens,
             },
         )
+        s.trusted_identity = body.identity is not None
         return {
             "session_id": s.id,
             "session_token": token,
@@ -264,9 +266,17 @@ def create_app(settings=None, *, knowledge=None, llm=None, web_search=None, read
 
     @app.post("/v1/sessions/{sid}/messages", response_model=ChatResponse)
     async def chat(
-        sid: str, body: NewMessage, request: Request, authorization: str | None = Header(None)
+        sid: str, body: NewMessage, request: Request, authorization: str | None = Header(None),
+        x_admin_key: str | None = Header(None)
     ):
         s, _ = session_auth(sid, authorization)
+        if s.trusted_identity and body.bank_context is None:
+            raise ServiceError("BACKEND_CONTEXT_REQUIRED", 403)
+        if body.bank_context is not None:
+            if not is_admin(x_admin_key):
+                raise ServiceError("ADMIN_REQUIRED_FOR_CONTEXT", 403)
+            if body.bank_context.company_id != s.company_id:
+                raise ServiceError("CONTEXT_COMPANY_MISMATCH", 403)
         previous = s.completed.get(body.client_message_id)
         if previous:
             if previous["text"] != body.message:
@@ -277,6 +287,7 @@ def create_app(settings=None, *, knowledge=None, llm=None, web_search=None, read
         if s.busy:
             raise ServiceError("SESSION_BUSY", 409)
         kb()
+        s.bank_context = body.bank_context.model_dump() if body.bank_context else None
         s.busy = True
         try:
             result = await app.state.agent.run(s, body.message, request.state.request_id)
