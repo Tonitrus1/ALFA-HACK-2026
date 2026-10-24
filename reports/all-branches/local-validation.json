@@ -1,0 +1,39 @@
+{
+  "codeCommit": "b2e6f528f62c5b615b198f0a1e4736897437114b",
+  "date": "2026-10-25",
+  "timezone": "Asia/Yekaterinburg",
+  "backend": {
+    "tests": 133,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 4,
+    "storage": "real embedded PostgreSQL"
+  },
+  "frontend": {
+    "testsPassed": 46,
+    "productionBuild": "PASS",
+    "eslint": "PASS"
+  },
+  "assistant": {
+    "passed": 68,
+    "skipped": 2,
+    "ruff": "PASS",
+    "scope": "unit/contracts; real Qdrant/E5 checked separately in Linux",
+    "seedLifecycle": "PASS: first seed, repeated seed, preserve revocation"
+  },
+  "ocr": {
+    "passed": 36,
+    "ruff": "PASS",
+    "scope": "unit/contracts; actual Tesseract checked separately in Linux"
+  },
+  "riskAndBridge": {
+    "passed": 38,
+    "storage": "dedicated real PostgreSQL",
+    "model": "real CatBoost baseline",
+    "http": "real loopback Risk API; bridge unit transport doubles"
+  },
+  "localDocker": "UNAVAILABLE; Linux container checks run in GitHub Actions",
+  "externalLlm": "BLOCKED_LLM_API_KEY_MISSING; user accepted this limitation",
+  "unchangedSourceHeads": true,
+  "evidenceLocal": "../output/all-branches-integration-20261025/"
+}

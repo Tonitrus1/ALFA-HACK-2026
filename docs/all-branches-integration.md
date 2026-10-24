@@ -44,11 +44,24 @@ Backend p03–p25 уже входят в ancestry основы. OCR и assistant
 
 - frontend TypeScript + Vite production build — PASS;
 - frontend 46 unit-тестов — PASS; старые mock-тесты приведены к действующим статусам APPROVED/NEEDS_INFO/REVIEW;
-- OCR 36 unit/contract/adapter тестов — PASS, без утверждения о вызове модели;
-- assistant 65 unit/contract тестов — PASS, 2 требующих внешнего Qdrant/E5 пропущены; после дополнительных проверок авторизации число обновляется итоговым CI;
-- Java Maven verify с реальным embedded PostgreSQL — PASS, 132 теста, 4 прежних skipped; добавлена отдельная проверка backend↔assistant adapter isolation;
-- Linux чистая Docker-сборка и smoke — текущие результаты GitHub Actions и загружаемый artifact `integrated-linux-evidence`; итоговый статус будет записан после завершения.
+- OCR 36 unit/contract/adapter тестов и Ruff — PASS, без утверждения о вызове LLM;
+- assistant 68 unit/contract тестов и Ruff — PASS, 2 требующих внешнего Qdrant/E5 пропущены локально;
+- Java Maven verify с реальным embedded PostgreSQL — PASS, 133 теста, 4 opt-in RealMlFlowTest skipped (требуют integration.realMl); изоляция backend↔assistant проверяется отдельным HTTP adapter тестом;
+- Отдельные 38 ML/bridge-проверок — PASS с новым временным PostgreSQL и настоящим CatBoost HTTP Risk API; экземпляры БД/сервера остановлены после теста, прежние окружения не затронуты.
+- **Linux Docker-приёмка — PASS:** [успешный run 40142680963](https://github.com/Tonitrus1/ALFA-HACK-2026/actions/runs/40142680963), код `b2e6f528f62c5b615b198f0a1e4736897437114b`. Оба jobs (`tests`, `compose`) завершились success; [машинный итог](../reports/all-branches/linux-validation.json). Четыре браузерных сценария прошли без retries/skips, Risk/bridge — 38 passed / 1 opt-in skipped; assistant на настоящем Qdrant — 69 passed / 1 E5 opt-in skipped, OCR — 36 passed. Локальные и Linux результаты разделены.
 
 На локальном macOS Docker Engine отсутствует. Это не подменено native-проверкой: контейнерная приёмка запускается на Linux GitHub Actions. Workflow проверяет реальные модели E5/CatBoost, UI→backend→ML→DB, ClamAV, file download/tenant isolation, failures и restart/recreate с теми же volumes. Все сервисы AI собираются/стартуют отдельно, actual Tesseract проверяется на синтетическом изображении. В CI ключ LLM не предоставлен: генерация assistant и OCR→LLM extraction остаются **BLOCKED_LLM_API_KEY_MISSING**, в отчётах readiness это явно отделено от локального RAG/OCR engine.
 
 Команда запуска и настройки: [README](../README.md). Результаты синтетических моделей не являются банковской PD, antifraud-вердиктом или подтверждением кредитного качества.
+
+Пропущенные Java RealMlFlowTest не выдаются за выполненные. Их основные сценарии дополнительно проверяются через настоящий публичный HTTP/backend/ML в контейнерной приёмке. Проверенная платформа контейнеров — Linux amd64; ARM64 и Paddle override в этой интеграционной приёмке не проверены. Отсутствие внешнего LLM-доступа подтверждено пользователем как допустимый документируемый блокер.
+
+## Итог Linux-приёмки
+
+Все образы собраны из чистой GitHub Actions копии; модели подготовлены в пустых volumes автоматически. Подтверждены публичные API/OpenAPI, UI до принятия оферты и демооформления, RFI, реальный Risk/E5, ClamAV и точное скачивание, company isolation, restart/recreate и повторяемость feedback/cursor. Проверены отказ Feed → RULES и отказ Risk → MANUAL. После пересоздания AI-контейнеров реальные знания/Qdrant и OCR-движок восстановились; проверен SEARCH_ONLY через backend, история и чтение цитируемого материала.
+
+Feed v2 подготовлен отдельно с 500 синтетическими пользователями. Запущены обе версии — E5 и CatBoost — в одном сервисе; synthetic antifraud прошёл сценарии APPROVED, отсутствие независимого reference → MANUAL и знаковые копейки. **Гейты продвижения CatBoost-ленты не выполнены** (relativeNDCG6/cluster CI/semantic/human review false), поэтому основной вариант остаётся E5. Функциональный запуск CatBoost не подменяет доказательство качества: [отчёт gate](../reports/all-branches/feed-v2-quality-gates.json).
+
+Сырые журналы, образы/контейнерные IDs, полный benchmark и training evidence сохранены в Actions artifact `integrated-linux-evidence` и локально в `../output/all-branches-integration-20261025/linux-final/`. Малые публичные acceptance JSON включены в `reports/all-branches/`; токены и `.env` туда не включены. Финальный коммит с документацией и evidence не меняет проверенные runtime trees: их Git-хеши записаны в `linux-validation.json`.
+
+Полная генеративная цепочка остаётся BLOCKED_LLM_API_KEY_MISSING, как согласовано с пользователем. Проверенный search-only получает настоящие E5/BM25 источники; OCR-only использует настоящий Tesseract. Ни один из этих результатов не объявлен успешным внешним LLM inference.
