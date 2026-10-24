@@ -1,0 +1,63 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { ConfigProvider, App as AntApp } from 'antd';
+import ruRU from 'antd/locale/ru_RU';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Router } from './app/Router';
+import { ApiError } from './shared/api/http';
+import './styles/app.css';
+const query = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: (count, error) =>
+        !(
+          error instanceof ApiError &&
+          [401, 403, 404, 409, 412, 422, 429, 503].includes(error.status)
+        ) && count < 1,
+      staleTime: 15000,
+      refetchOnWindowFocus: false,
+    },
+    mutations: { retry: false },
+  },
+});
+async function start() {
+  const mode = import.meta.env.VITE_API_MODE ?? 'mock';
+  if (mode === 'mock') {
+    const { worker } = await import('./mocks/browser');
+    await worker.start({ onUnhandledRequest: 'bypass', quiet: true });
+  } else if (mode !== 'integrated') throw new Error('Неизвестный VITE_API_MODE');
+  else if (import.meta.env.VITE_CONTRACT_ACK !== 'provisional-v1')
+    throw new Error(
+      'Integrated-режим заблокирован: требуется согласовать временный API-контракт и установить VITE_CONTRACT_ACK=provisional-v1.',
+    );
+  ReactDOM.createRoot(document.getElementById('root')!).render(
+    <React.StrictMode>
+      <ConfigProvider
+        locale={ruRU}
+        theme={{
+          token: {
+            colorPrimary: '#d82e28',
+            colorInfo: '#496c9f',
+            colorSuccess: '#378264',
+            borderRadius: 10,
+            fontFamily: '"Segoe UI", Arial, sans-serif',
+            fontSize: 14,
+            controlHeight: 42,
+          },
+          components: { Button: { primaryShadow: 'none' }, Checkbox: { colorPrimary: '#d82e28' } },
+        }}
+      >
+        <AntApp>
+          <QueryClientProvider client={query}>
+            <Router />
+          </QueryClientProvider>
+        </AntApp>
+      </ConfigProvider>
+    </React.StrictMode>,
+  );
+}
+void start().catch((error) => {
+  const root = document.getElementById('root')!;
+  root.textContent = error instanceof Error ? error.message : 'Не удалось запустить приложение';
+  root.setAttribute('role', 'alert');
+});

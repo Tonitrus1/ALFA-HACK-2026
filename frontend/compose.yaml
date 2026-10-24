@@ -1,0 +1,23 @@
+name: potok
+services:
+  frontend:
+    image: potok-frontend:local
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_MODE: ${VITE_API_MODE:-mock}
+        VITE_DEMO_SCENARIO: ${VITE_DEMO_SCENARIO:-success}
+        VITE_CONTRACT_ACK: ${VITE_CONTRACT_ACK:-}
+    ports:
+      - '127.0.0.1:${FRONTEND_PORT:-8080}:80'
+    environment:
+      BACKEND_ORIGIN: ${BACKEND_ORIGIN:-http://127.0.0.1:8081}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
