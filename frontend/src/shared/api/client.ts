@@ -87,8 +87,8 @@ async function saveInformation(r:InformationRequest) {
   const original=await request<Statement>(url);
   const input={...original.statement,values:{...original.statement.values}};
   for(const k of r.editableFields) input.values[financeMap[k]]=minor(r.finance[k],signedFields.includes(k));
-  let s=await stable<Statement>(url,'PUT',input,r.draftVersion);
-  if(r.confirmed)s=await stable<Statement>(url+'/confirm','POST',{expectedStatementVersion:s.statementVersion,confirmedFieldNames:Object.values(financeMap),documentReferences:input.sourceDocumentReferences},s.containerVersion);
+  const s=await stable<Statement>(url,'PUT',input,r.draftVersion);
+  if(r.confirmed)await stable<Statement>(url+'/confirm','POST',{expectedStatementVersion:s.statementVersion,confirmedFieldNames:Object.values(financeMap),documentReferences:input.sourceDocumentReferences},s.containerVersion);
   return information(r.applicationId,r.id);
 }
 type WireOffer={offerId:string;applicationId:string;version:number;status:Offer['status'];amount:{amountMinor:number};termMonths:number;termsDisclosure:string;validUntil:string};
@@ -114,6 +114,7 @@ export const api={
     if(item.ocrStatus==='READY'){
       const e=await request<{extractionId:string;documentVersion:number;objectVersion:string;fields:{name:string;value:string}[]}>('/api/v1/documents/'+enc(d.documentId)+'/extraction');
       item.extractionId=e.extractionId;
+      item.extractedPeriod=e.fields.find(f=>f.name==='period')?.value;
       item.values=Object.fromEntries(Object.keys(financeFields).map(k=>[k,e.fields.find(f=>f.name===k)?.value??''])) as Finance;
     }
     return item;
@@ -123,6 +124,7 @@ export const api={
   confirmOcr:async(id:string,doc:DocumentItem,f:Draft['finance'],c:Draft['confirmed'],v:number)=>{
     const [fresh,extraction]=await Promise.all([application(id),request<{extractionId:string;documentVersion:number;objectVersion:string}>('/api/v1/documents/'+enc(doc.id)+'/extraction')]);
     if(fresh.financialVersion!==v || extraction.extractionId!==doc.extractionId || extraction.objectVersion!==doc.objectVersion)throw new ApiError(409,'Документ или финансовые данные изменились. Откройте сверку заново.');
+    if(doc.extractedPeriod && doc.extractedPeriod!==fresh.draft.period && doc.extractedPeriod!==`${fresh.draft.period}-01-01/${fresh.draft.period}-12-31`)throw new ApiError(422,'Период документа отличается от отчётного года заявки. Сначала исправьте год на шаге финансов.');
     return save(id,{...fresh.draft,finance:f,confirmed:c},fresh.version);
   },
   information,saveInformation,

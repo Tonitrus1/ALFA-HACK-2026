@@ -2,7 +2,9 @@ name: Integrated application acceptance
 on:
   push:
     branches: ['integration/**']
+    paths: ['backend/**', 'ml/**', 'frontend/**', 'deploy/**', 'compose.yaml', '.env.example', 'scripts/**', 'docs/architecture/contracts/**', '.github/workflows/integrated-mvp.yml']
   pull_request:
+    paths: ['backend/**', 'ml/**', 'frontend/**', 'deploy/**', 'compose.yaml', '.env.example', 'scripts/**', 'docs/architecture/contracts/**', '.github/workflows/integrated-mvp.yml']
   workflow_dispatch:
 concurrency:
   group: integrated-mvp-${{ github.head_ref || github.ref_name }}
@@ -25,7 +27,7 @@ jobs:
         env: {LC_ALL: C, LANG: C}
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
-      - run: npm ci --no-audit --no-fund && npm run build && npm test
+      - run: npm ci --no-audit --no-fund && npm run build && npm test && npm run lint
         working-directory: frontend
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}

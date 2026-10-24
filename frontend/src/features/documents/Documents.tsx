@@ -201,7 +201,7 @@ function OcrForm({ document, close }: { document: DocumentItem; close: () => voi
   return (
     <form onSubmit={submit}>
       <p>
-        Источник: {document.name}. Сверьте период, единицы и значения с оригиналом. Поля без надёжного результата заполните вручную. Любое изменение
+        Источник: {document.name}. Период OCR: {document.extractedPeriod ?? 'не определён'}. Сверьте период, единицы и значения с оригиналом. Поля без надёжного результата заполните вручную. Любое изменение
         сбрасывает подтверждение.
       </p>
       <div className="financial-grid">

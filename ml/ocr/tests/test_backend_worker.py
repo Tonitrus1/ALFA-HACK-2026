@@ -6,10 +6,15 @@ def field(value, status="extracted"):
 
 
 def test_does_not_invent_missing_fields_or_map_debt_to_liabilities():
-    finance = {"revenue": field("123.45"), "total_debt": field("50"),
-               "equity": field(None, "conflict"), "currency": field("RUB")}
+    finance = {
+        "revenue": field("123.45"),
+        "total_debt": field("50"),
+        "equity": field(None, "conflict"),
+        "currency": field("RUB"),
+    }
     assert financial_fields({"financial": finance}) == [
-        {"name": "revenue", "value": "123.45", "confidence": 0.9, "page": 2}]
+        {"name": "revenue", "value": "123.45", "confidence": 0.9, "page": 2}
+    ]
 
 
 def test_foreign_or_unknown_currency_does_not_become_rubles():

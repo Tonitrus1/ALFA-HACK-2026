@@ -117,6 +117,7 @@ export interface DocumentItem {
   status: 'QUARANTINE' | 'SCANNING' | 'CLEAN' | 'FAILED';
   ocrStatus: 'PENDING' | 'READY' | 'FAILED';
   extractionId?: string;
+  extractedPeriod?: string;
   values?: Finance;
   canDownload: boolean;
 }
