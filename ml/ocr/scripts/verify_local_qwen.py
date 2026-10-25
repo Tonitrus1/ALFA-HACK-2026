@@ -25,12 +25,12 @@ def main():
     assert settings.ocr_engine == 'tesseract'
     image = Image.new('RGB', (1800, 420), 'white')
     draw = ImageDraw.Draw(image)
-    font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 42)
+    font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf', 42)
     for i, line in enumerate((
         'СИНТЕТИЧЕСКИЙ ПРИМЕР - НЕ ДОКУМЕНТ',
         'СВИДЕТЕЛЬСТВО ИНН',
         'ФИО: ИВАНОВ ИВАН ИВАНОВИЧ',
-        'ИНН физического лица: 000000000001',
+        'ИНН физического лица: 000123456789',
     )):
         draw.text((50, 40 + i * 80), line, fill='black', font=font)
     buffer = io.BytesIO()
@@ -61,8 +61,9 @@ def main():
             result = response.json()
             evidence = client.get('/v1/jobs/' + identifier + '/ocr').json()
             Contract.read(settings).validate(result['extraction'], [Page(**p) for p in evidence['pages']])
+            assert any('000123456789' in block['text'] for page in evidence['pages'] for block in page['blocks']), 'Synthetic INN was not read correctly by Tesseract'
             field = result['extraction']['person']['inn']
-            assert field['status'] == 'extracted' and field['value'] == '000000000001', field
+            assert field['status'] == 'extracted' and field['value'] == '000123456789', field
             assert field['sources']
             assert result['requires_confirmation'] is True
             print(json.dumps({
