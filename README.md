@@ -2,6 +2,8 @@
 
 Интеграционная ветка объединяет React UI, Java backend, Risk/Feed, OCR и RAG-ассистента. [Карта всех веток](docs/all-branches-integration.md). Используются синтетические компании, документы и модели; банковские операции не выполняются.
 
+**Selectel, одна VM:** [полная инструкция серверного развёртывания](deploy/selectel/README.md), ветка `deploy/selectel-vm`. Сервер использует отдельный `.env.selectel`, HTTPS и собственные постоянные тома; локальные команды ниже остаются доступны.
+
 ## Требования и первый запуск
 
 Основной способ запуска описан в [инструкции деплоя](docs/deployment.md). Нужны Docker с Linux containers, Compose v2.20+ и Python 3.10+. Node, Java и ML-библиотеки на хосте не нужны. Windows: `python`; Linux/macOS: обычно `python3`.

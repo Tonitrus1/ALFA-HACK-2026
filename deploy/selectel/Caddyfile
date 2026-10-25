@@ -1,0 +1,19 @@
+{
+	email {$ACME_EMAIL}
+}
+
+{$PUBLIC_DOMAIN} {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+	# Credentials, cookies, request bodies and chat text are not written to access logs.
+	reverse_proxy gateway:8080 {
+		transport http {
+			response_header_timeout 75s
+		}
+	}
+}

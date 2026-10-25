@@ -1,0 +1,36 @@
+name: ${COMPOSE_PROJECT_NAME:-credit-selectel}
+services:
+  backend:
+    environment:
+      SPRING_PROFILES_ACTIVE: selectel
+      PUBLIC_ORIGIN: https://${PUBLIC_DOMAIN:?Set PUBLIC_DOMAIN in .env.selectel}
+  gateway:
+    # Only the TLS proxy is published. Compose >=2.24.4 is required.
+    ports: !reset []
+    volumes:
+      - ./deploy/selectel/nginx.conf:/etc/nginx/nginx.conf:ro
+  edge:
+    # Official Caddy v2.11.7, pinned to the tested multi-platform manifest.
+    image: caddy:2-alpine@sha256:eb4d35b7452d1ab6171fbdbe8d9275b2301dad6dad92115d91e19fb9b24d510f
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options: {max-size: '10m', max-file: '3'}
+    environment:
+      PUBLIC_DOMAIN: ${PUBLIC_DOMAIN:?Set PUBLIC_DOMAIN in .env.selectel}
+      ACME_EMAIL: ${ACME_EMAIL:?Set ACME_EMAIL in .env.selectel}
+    ports: ['80:80', '443:443']
+    volumes:
+      - ./deploy/selectel/Caddyfile:/etc/caddy/Caddyfile:ro
+      - edge-data:/data
+      - edge-config:/config
+    networks: [ingress]
+    depends_on: {gateway: {condition: service_healthy}}
+    healthcheck:
+      test: [CMD, wget, -q, -O, /dev/null, 'http://127.0.0.1:2019/config/']
+      interval: 10s
+      timeout: 3s
+      retries: 12
+volumes:
+  edge-data:
+  edge-config:

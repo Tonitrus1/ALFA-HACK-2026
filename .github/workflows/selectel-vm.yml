@@ -1,0 +1,27 @@
+name: Selectel VM deployment validation
+on:
+  push:
+    branches: [deploy/selectel-vm]
+  pull_request:
+    paths: ['deploy/selectel/**', 'scripts/selectel.py', 'scripts/test_selectel.py', 'backend/app/src/main/resources/application-selectel.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  configuration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python3 -m unittest discover -s scripts -p 'test_*.py'
+      - name: Validate the TLS proxy without obtaining a certificate
+        run: |
+          python3 scripts/selectel.py init --domain cabinet.example.com --email admin@example.com
+          python3 scripts/selectel.py config
+          docker compose --env-file .env.selectel -f compose.yaml -f deploy/selectel/compose.yaml run --rm --no-deps edge caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21', cache: maven}
+      - run: ./backend/mvnw -B -ntp -f backend/pom.xml verify
+        env: {LC_ALL: C, LANG: C}

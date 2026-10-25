@@ -1,0 +1,61 @@
+{
+  "branch": "deploy/selectel-vm",
+  "checkedAt": "2026-10-25T22:02:18.521578+00:00",
+  "fullServiceImageBuild": "PASS",
+  "composeAndDeploymentUnitTests": {
+    "passed": 17,
+    "failed": 0
+  },
+  "backendTests": {
+    "tests": 139,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 4
+  },
+  "tlsBrowserSmoke": {
+    "status": "PASS",
+    "scope": "Local TLS edge + gateway + Selectel backend profile + fresh PostgreSQL; self-signed test certificate only",
+    "checks": [
+      {
+        "company": "company-a",
+        "login": "PASS",
+        "secureCookie": true,
+        "foreignAccess": "DENIED",
+        "emptyCabinet": true
+      },
+      {
+        "company": "company-b",
+        "login": "PASS",
+        "secureCookie": true,
+        "foreignAccess": "DENIED",
+        "emptyCabinet": true
+      }
+    ]
+  },
+  "foreignOriginThroughTls": {
+    "httpStatus": 403,
+    "code": "ORIGIN_NOT_ALLOWED"
+  },
+  "backupRestore": {
+    "status": "PASS",
+    "coldBackup": "PASS",
+    "restoredDatabaseCredentialCount": 2,
+    "scope": "isolated test projects; all configured volumes archived; ML model volumes empty in this test"
+  },
+  "caddy": {
+    "version": "2.11.7",
+    "image": "caddy:2-alpine@sha256:eb4d35b7452d1ab6171fbdbe8d9275b2301dad6dad92115d91e19fb9b24d510f",
+    "configValidation": "PASS"
+  },
+  "limits": {
+    "selectelVmDeployment": "NOT_RUN: no VM or domain supplied",
+    "publicAcmeCertificate": "NOT_RUN: local self-signed TLS test only",
+    "liveLlmInference": "NOT_RUN: no server provider key supplied",
+    "localTestPlatform": "Docker Linux aarch64; target VM documented as Linux x86_64"
+  },
+  "sourceChangesInclude": [
+    "password login",
+    "synthetic assistant source exclusion",
+    "whole-service Selectel Compose overlay"
+  ]
+}
