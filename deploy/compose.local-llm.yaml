@@ -42,6 +42,7 @@ services:
       LLM_API_KEY: ollama
       LLM_MODEL: ${LOCAL_LLM_MODEL:-qwen2.5:3b}
       LLM_REASONING_OPTIONS: 'false'
+      LLM_JSON_WITH_TOOLS: 'false'
       LLM_MAX_TOKENS: '384'
       LLM_TIMEOUT_SECONDS: '120'
       TURN_DEADLINE_SECONDS: '180'

@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     llm_max_tokens: int = Field(1000, ge=1, le=1000)
     llm_reasoning: bool = False
     llm_reasoning_options: bool = True
+    llm_json_with_tools: bool = True
     llm_timeout_seconds: float = Field(45, gt=0, le=300)
     llm_input_rub_per_million: float | None = None
     llm_output_rub_per_million: float | None = None
