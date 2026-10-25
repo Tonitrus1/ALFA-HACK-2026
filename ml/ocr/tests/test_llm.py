@@ -65,7 +65,7 @@ def test_context_limit_is_explicit():
         )
 
 
-def test_local_qwen_uses_schema_without_provider_extensions(monkeypatch):
+def test_local_qwen_uses_json_without_provider_extensions(monkeypatch):
     import json
 
     payloads = []
@@ -83,11 +83,12 @@ def test_local_qwen_uses_schema_without_provider_extensions(monkeypatch):
     ))
     settings = Settings(llm_api_key="ollama", llm_base_url="http://ollama:11434/v1",
                         llm_model="qwen2.5:3b", llm_reasoning_options=False,
-                        llm_response_format="json_schema")
+                        llm_response_format="json_object")
     schema = {"type": "object", "properties": {"public": {"type": "boolean"}}}
     value, metadata = complete(settings, Contract("test", schema), [])
     assert value == {"public": True} and metadata["model"] == "qwen2.5:3b"
-    assert payloads[0]["response_format"]["json_schema"]["schema"] == schema
+    assert payloads[0]["response_format"] == {"type": "json_object"}
+    assert json.dumps(schema, ensure_ascii=False) in payloads[0]["messages"][0]["content"]
     assert "reasoning" not in payloads[0] and "chat_template_kwargs" not in payloads[0]
 
 

@@ -35,7 +35,7 @@ class LocalLLMTests(unittest.TestCase):
         original = json.loads(baseline.stdout)['services']['ocr']['environment']
         self.assertEqual(ocr['OCR_ENGINE'], original['OCR_ENGINE'])
         self.assertEqual(ocr['CPU_THREADS'], original['CPU_THREADS'])
-        self.assertEqual(ocr['LLM_RESPONSE_FORMAT'], 'json_schema')
+        self.assertEqual(ocr['LLM_RESPONSE_FORMAT'], 'json_object')
         self.assertGreater(int(ocr['MAX_CONTEXT_CHARS']), 10000)
         self.assertEqual(services['ocr-worker'], json.loads(baseline.stdout)['services']['ocr-worker'])
         for name in ('assistant', 'ocr'):
