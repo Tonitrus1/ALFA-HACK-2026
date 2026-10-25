@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-test('полный путь: вход → заявка → предложение → демооформление', async ({ page }, info) => {
+test('полный путь: вход → заявка → предложение → оформление', async ({ page }, info) => {
   const errors: string[] = [];
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/login');
@@ -44,10 +44,10 @@ test('полный путь: вход → заявка → предложени�
   await page.getByRole('button', { name: 'Подтвердить', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Остался последний шаг' })).toBeVisible();
   await page.getByRole('checkbox', { name: /Я ознакомился/ }).check();
-  await page.getByRole('button', { name: 'Завершить демооформление' }).click();
+  await page.getByRole('button', { name: 'Завершить оформление' }).click();
   await page.getByRole('button', { name: 'Подтвердить', exact: true }).click();
   await expect(
-    page.getByRole('heading', { name: 'Демонстрация, деньги не перечисляются' }),
+    page.getByRole('heading', { name: 'Оформление завершено' }),
   ).toBeVisible();
   await page.screenshot({
     path: `test-results/completed-${info.project.name}.png`,

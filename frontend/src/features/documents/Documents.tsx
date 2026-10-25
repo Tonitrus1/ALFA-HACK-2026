@@ -72,7 +72,7 @@ export function DocumentUploader({ applicationId }: { applicationId: string }) {
       </label>
       {progress !== undefined && <Progress percent={progress} />}
       <p className="muted small">
-        Проверка безопасности выполняется сервером. Распознавание начинается после проверки файла. Используйте синтетические документы.
+        Проверка безопасности выполняется сервером. Распознавание начинается после проверки файла.
       </p>
       {!!error && <ErrorState error={error} />}
       <div className="file-list">

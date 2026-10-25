@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import { Alert, Button } from 'antd';
-import { ArrowRight, Building2, Check, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Building2, Check } from 'lucide-react';
 import { api } from '../../shared/api/client';
 import { useSession } from '../../app/session';
 import { Disclosure, ErrorState, Field, PageTitle } from '../../shared/ui/common';
@@ -11,7 +11,7 @@ export function Login() {
   const { setSession } = useSession(),
     navigate = useNavigate(),
     form = useForm({ defaultValues: { name: '' } }),
-    accounts = useQuery({ queryKey: ['demo-accounts'], queryFn: api.accounts });
+    accounts = useQuery({ queryKey: ['accounts'], queryFn: api.accounts });
   const login = useMutation({
     mutationFn: ({ name }: { name: string }) => api.login(name),
     onSuccess: (s) => {
@@ -44,13 +44,13 @@ export function Login() {
       </section>
       <section className="login-form">
         <div>
-          <span className="demo-tag">Демонстрационный вход</span>
+          <span className="access-tag">Бизнес-кабинет</span>
           <h2>Рады вас видеть</h2>
           <p className="muted">Войдите, чтобы продолжить путь вашего бизнеса.</p>
           <form onSubmit={form.handleSubmit((v) => login.mutate(v))}>
             <Field
               id="name"
-              label="Демонстрационный представитель"
+              label="Представитель компании"
               error={form.formState.errors.name?.message}
             >
               <select id="name" {...form.register('name', { required: 'Выберите представителя' })}>
@@ -61,8 +61,8 @@ export function Login() {
             </Field>
             <Alert
               type="info"
-              message="Только искусственные данные"
-              description="Пароль, телефон и банковские реквизиты не нужны. Заявки и результаты сохраняются на сервере."
+              message="Выберите представителя компании"
+              description="После входа выберите компанию, чтобы перейти к её заявкам и предложениям."
             />
             <Button
               type="primary"
@@ -76,9 +76,6 @@ export function Login() {
             </Button>
             {login.error && <ErrorState error={login.error} />}
           </form>
-          <p className="login-safety">
-            <ShieldCheck size={17} /> Без реальных банковских операций
-          </p>
           <Disclosure />
         </div>
       </section>
@@ -121,7 +118,7 @@ export function Companies() {
               <Building2 />
             </span>
             <h2>{c.name}</h2>
-            <p className="muted">ИНН {c.inn} · Искусственные данные</p>
+            <p className="muted">ИНН {c.inn}</p>
             <p>{c.industry}</p>
             <span className="company-choice">
               {busy === c.id ? (

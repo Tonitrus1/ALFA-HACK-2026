@@ -47,7 +47,7 @@ export function CompanyStep() {
                 {...form.register('companyName', { required: 'Укажите название', maxLength: 200 })}
               />
             </Field>
-            <Field id="inn" label="ИНН" hint="Искусственный идентификатор компании">
+            <Field id="inn" label="ИНН" hint="Идентификационный номер налогоплательщика">
               <input id="inn" readOnly {...form.register('inn')} />
             </Field>
             <Field
@@ -224,15 +224,14 @@ export function DocumentsStep() {
 
       <Panel className="mt">
         <h2>
-          <ShieldCheck size={21} /> Подтверждение демонстрации
+          <ShieldCheck size={21} /> Подтверждение сведений
         </h2>
         <Checkbox
           checked={consents}
           onChange={(e) => form.setValue('consents', e.target.checked, { shouldDirty: true })}
         >
-          Подтверждаю использование искусственных данных. Это отметка в этой вкладке, а не серверная запись юридического согласия.
+          Подтверждаю корректность сведений в заявке.
         </Checkbox>
-        <p className="muted">Настоящие персональные и банковские данные использовать нельзя.</p>
         <div className="form-actions">
           <Link className="button white" to={`/applications/${application.id}/company`}>
             Назад
@@ -323,11 +322,11 @@ export function ReviewStep() {
               </div>
             ))}
           </dl>
-          <h3>Подтверждение демонстрации</h3>
+          <h3>Подтверждение сведений</h3>
           <p>
             {values.consents
-              ? '✓ Демонстрационная отметка в этой вкладке'
-              : 'Не подтверждены — вернитесь к документам'}
+              ? '✓ Сведения проверены'
+              : 'Сведения не подтверждены — вернитесь к документам'}
           </p>
           <Link to={`/applications/${application.id}/documents`}>Документы и согласия →</Link>
           <ReviewDocuments id={application.id} />
@@ -340,7 +339,7 @@ export function ReviewStep() {
           </p>
           <hr />
           <Checkbox checked={verified} onChange={(e) => setVerified(e.target.checked)}>
-            Я проверил сведения в заявке. Все данные искусственные.
+            Я проверил сведения в заявке и подтверждаю их корректность.
           </Checkbox>
           <Button
             type="primary"
@@ -383,7 +382,7 @@ function ReviewDocuments({ id }: { id: string }) {
         ))
       ) : (
         <p className="muted small">
-          Документы не прикреплены. Для первичной демозаявки они необязательны.
+          Документы не прикреплены. Для первичной заявки они необязательны.
         </p>
       )}
       {documents.error && <ErrorState error={documents.error} />}

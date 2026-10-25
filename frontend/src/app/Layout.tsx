@@ -108,11 +108,6 @@ export function Layout() {
             <LogOut size={17} />
             Выйти
           </button>
-          <p>
-            Хакатон · 2026
-            <br />
-            Демонстрационный прототип
-          </p>
         </div>
       </aside>
       <div className="main-shell">
@@ -136,7 +131,6 @@ export function Layout() {
             <ChevronDown size={15} />
           </Link>
           <div className="header-right">
-            <span className="demo-tag">Учебный прототип</span>
             <Link to="/inbox" className="icon-button" aria-label="Сообщения">
               <Bell size={21} />
             </Link>
@@ -179,9 +173,6 @@ export function Layout() {
         </main>
         <footer className="footer">
           <span>Поток · Финансирование вашего дела</span>
-          <span>
-            <ShieldCheck size={13} /> Демонстрационные данные
-          </span>
         </footer>
       </div>
     </div>

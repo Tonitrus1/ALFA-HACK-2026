@@ -425,7 +425,7 @@ hr {
   color: #9b6b4e;
   font-weight: 650;
 }
-.demo-tag {
+.access-tag {
   font-size: 10px;
   background: #f6f7f9;
   border: 1px solid #e9ebee;
@@ -1866,7 +1866,7 @@ pre {
   .header-right {
     gap: 10px;
   }
-  .demo-tag {
+  .access-tag {
     font-size: 8px;
   }
   .two-column {
@@ -1972,7 +1972,7 @@ pre {
   .company-switch small {
     font-size: 9px;
   }
-  .header-right .demo-tag {
+  .header-right .access-tag {
     display: none;
   }
   .header-right {

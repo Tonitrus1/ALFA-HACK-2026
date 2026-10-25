@@ -9,18 +9,18 @@ async function create(page:Page,preliminary?:string){
  await page.locator('#activity').fill('Торговля');await page.locator('#businessAgeMonths').fill('40');if(preliminary)await page.locator('#preliminaryRevenue').fill(preliminary);
  await page.getByRole('button',{name:/К документам/}).click();
  await expect(page.getByRole('heading',{name:'Документы для заполнения анкеты'})).toBeVisible();
- await page.getByRole('checkbox',{name:/Подтверждаю использование/}).check();
+ await page.getByRole('checkbox',{name:/Подтверждаю корректность/}).check();
  await page.getByRole('button',{name:/К финансовым данным/}).click();
  for(const [key,value] of Object.entries(finance))await page.locator('#'+key).fill(value);
  for(const box of await page.getByRole('checkbox',{name:/Подтвердить:/}).all())await box.check();
  await page.getByRole('button',{name:/Проверить заявку/}).click();
  await page.getByRole('checkbox',{name:/Я проверил сведения/}).check();await page.getByRole('button',{name:/Отправить на рассмотрение/}).click();await expect(page).toHaveURL(new RegExp(`/applications/${id}/status`));return id;
 }
-test('existing UI → real backend → real Risk → offer acceptance and demo completion',async({page})=>{
+test('existing UI → real backend → real Risk → offer acceptance and completion',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await login(page);const id=await create(page);
  await expect(page.getByRole('heading',{name:'Предложение готово'})).toBeVisible({timeout:30000});await page.getByRole('link',{name:'Посмотреть предложение'}).click();
  await page.getByRole('checkbox',{name:/Я ознакомился/}).check();await page.getByRole('button',{name:/Принять предложение/}).click();await page.getByRole('button',{name:'Подтвердить',exact:true}).click();await expect(page.getByText('Условия уже приняты.')).toBeVisible();
- await page.getByRole('checkbox',{name:/Я ознакомился/}).check();await page.getByRole('button',{name:/Завершить демооформление/}).click();await page.getByRole('button',{name:'Подтвердить',exact:true}).click();await expect(page.getByRole('heading',{name:'Демонстрация, деньги не перечисляются'})).toBeVisible();await page.goto(`/applications/${id}/status`);await page.reload();await expect(page.getByRole('heading',{name:'Оформление завершено'})).toBeVisible();expect(errors).toEqual([]);
+ await page.getByRole('checkbox',{name:/Я ознакомился/}).check();await page.getByRole('button',{name:/Завершить оформление/}).click();await page.getByRole('button',{name:'Подтвердить',exact:true}).click();await expect(page.getByRole('heading',{name:'Оформление завершено'})).toBeVisible();await page.goto(`/applications/${id}/status`);await page.reload();await expect(page.getByRole('heading',{name:'Оформление завершено'})).toBeVisible();expect(errors).toEqual([]);
  await page.getByRole('link',{name:'Посмотреть результат',exact:true}).click();
  await expect(page).toHaveURL(new RegExp(`/applications/${id}/result$`));
  await expect(page.getByRole('heading',{name:'Результат заявки'})).toBeVisible();
@@ -63,7 +63,7 @@ test('business autosave and manual finances work after a document was uploaded',
  await page.goto(`/applications/${app}/company`);
  await page.locator('#activity').fill('Продажи');await page.locator('#businessAgeMonths').fill('36');await page.locator('#preliminaryRevenue').fill('5000000');
  await page.getByRole('button',{name:/К документам/}).click();
- await page.getByRole('checkbox',{name:/Подтверждаю использование/}).check();
+ await page.getByRole('checkbox',{name:/Подтверждаю корректность/}).check();
  await page.getByRole('button',{name:/К финансовым данным/}).click();
  await expect(page.locator('#totalAssets')).toBeVisible();
  const stored=await (await page.request.get(`/api/v1/applications/${app}`,{headers})).json();
@@ -107,7 +107,7 @@ test('document page exposes OCR review and leaves missing values for manual inpu
  await expect(page.getByRole('dialog',{name:'Сверка финансовых показателей'})).toBeHidden();
  expect(partial!.statement.values).toEqual({revenueMinor:300000000});
  expect(partial!.confirmed).toBe(false);
- await page.getByRole('checkbox',{name:/Подтверждаю использование/}).check();
+ await page.getByRole('checkbox',{name:/Подтверждаю корректность/}).check();
  await page.getByRole('button',{name:/К финансовым данным/}).click();
  await expect(page.locator('#revenue')).toHaveValue(/^3000000(?:,00)?$/);
  await expect(page.locator('#totalLiabilities')).toHaveValue('');
@@ -116,7 +116,7 @@ test('document page exposes OCR review and leaves missing values for manual inpu
 test('financial warnings explain the problem without internal field names',async({page})=>{
  await login(page);
  await page.goto('/needs');await page.getByRole('button',{name:'Продолжить',exact:true}).click();await page.locator('#amount').fill('500000');await page.getByRole('button',{name:'Подобрать варианты'}).click();await page.getByRole('link',{name:'Подробнее'}).first().click();await page.getByRole('button',{name:/Перейти к заявке/}).click();
- await page.locator('#activity').fill('Продажи');await page.locator('#businessAgeMonths').fill('36');await page.getByRole('button',{name:/К документам/}).click();await page.getByRole('checkbox',{name:/Подтверждаю использование/}).check();await page.getByRole('button',{name:/К финансовым данным/}).click();
+ await page.locator('#activity').fill('Продажи');await page.locator('#businessAgeMonths').fill('36');await page.getByRole('button',{name:/К документам/}).click();await page.getByRole('checkbox',{name:/Подтверждаю корректность/}).check();await page.getByRole('button',{name:/К финансовым данным/}).click();
  for(const [key,value] of Object.entries({...finance,totalAssets:'0'}))await page.locator('#'+key).fill(value);
  for(const box of await page.getByRole('checkbox',{name:/Подтвердить:/}).all())await box.check();
  await page.getByRole('button',{name:/Проверить заявку/}).click();

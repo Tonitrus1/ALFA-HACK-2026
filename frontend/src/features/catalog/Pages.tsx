@@ -243,7 +243,7 @@ export function ProductDetails() {
       <Link className="back-link" to="/products">
         ← Все варианты
       </Link>
-      <PageTitle eyebrow="СИНТЕТИЧЕСКИЙ ПРОДУКТ" title={p.title} description={p.description} />
+      <PageTitle eyebrow="ФИНАНСИРОВАНИЕ ДЛЯ БИЗНЕСА" title={p.title} description={p.description} />
       <div className="two-column">
         <Panel>
           <h2>Ваш следующий шаг — ближе</h2>

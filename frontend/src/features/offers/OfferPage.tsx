@@ -33,7 +33,7 @@ function OfferView({ offer: o }: { offer: Offer }) {
       const result = await command.send();
       void message.success(
         result.status === 'COMPLETED'
-          ? 'Демонстрационное оформление завершено'
+          ? 'Оформление завершено'
           : 'Условия предложения приняты',
       );
       query.setQueriesData<Offer>({queryKey:['offer']}, existing => existing?.id===result.id ? result : existing);
@@ -55,8 +55,8 @@ function OfferView({ offer: o }: { offer: Offer }) {
       {o.status === 'COMPLETED' ? (
         <Panel className="success-panel">
           <CheckCircle2 size={60} />
-          <h2>Демонстрация, деньги не перечисляются</h2>
-          <p>Вы прошли весь путь: от потребности до демонстрационного оформления.</p>
+          <h2>Оформление завершено</h2>
+          <p>Оформление предложения завершено. Подробности доступны в истории заявки.</p>
           <Link className="button red" to={`/applications/${o.applicationId}/status`}>
             К истории заявки
           </Link>
@@ -67,7 +67,7 @@ function OfferView({ offer: o }: { offer: Offer }) {
             <div className="offer-symbol">
               <FileCheck2 size={35} />
             </div>
-            <h2>Ваши демонстрационные условия</h2>
+            <h2>Ваши условия финансирования</h2>
             <strong className="hero-amount">{money(o.amount)}</strong>
             <div className="offer-terms">
               <div>
@@ -95,11 +95,11 @@ function OfferView({ offer: o }: { offer: Offer }) {
             </h2>
             <p className="muted">
               {o.status === 'ACCEPTED'
-                ? 'Условия уже приняты. Завершите демонстрационное оформление.'
-                : 'Принятие фиксирует версию предложения. Это не перевод денежных средств.'}
+                ? 'Условия уже приняты. Завершите оформление.'
+                : 'Подтвердите, что ознакомились с условиями предложения.'}
             </p>
             <Checkbox checked={checked} onChange={(e) => setChecked(e.target.checked)}>
-              Я ознакомился с демонстрационными условиями и понимаю, что деньги не перечисляются.
+              Я ознакомился с условиями предложения.
             </Checkbox>
             {expired && (
               <Alert className="mt" type="warning" message="Срок действия предложения истёк" />
@@ -112,7 +112,7 @@ function OfferView({ offer: o }: { offer: Offer }) {
               disabled={!checked || expired || !['AVAILABLE','ACCEPTED'].includes(o.status)}
               onClick={() => setConfirm(true)}
             >
-              {o.status === 'ACCEPTED' ? 'Завершить демооформление' : 'Принять предложение'}
+              {o.status === 'ACCEPTED' ? 'Завершить оформление' : 'Принять предложение'}
               <ArrowRight size={16} />
             </Button>
             {!!error && (
@@ -130,7 +130,7 @@ function OfferView({ offer: o }: { offer: Offer }) {
         </div>
       )}
       <Modal
-        title={o.status === 'ACCEPTED' ? 'Завершить демонстрацию?' : 'Принять условия предложения?'}
+        title={o.status === 'ACCEPTED' ? 'Завершить оформление?' : 'Принять условия предложения?'}
         open={confirm}
         onCancel={() => setConfirm(false)}
         onOk={() => void run()}
@@ -141,7 +141,7 @@ function OfferView({ offer: o }: { offer: Offer }) {
         <p>
           {money(o.amount)} · {o.months} мес. · версия {o.version}
         </p>
-        <p>Демонстрация, деньги не перечисляются.</p>
+        <p>Подтвердите выбранные условия предложения.</p>
         {!!error && <ErrorState error={error} />}
       </Modal>
     </>

@@ -29,7 +29,7 @@ export function ResultPage(){
           <p>Запрошенная сумма: {money(app.need.amount)}</p>
           <p>{offer.data.termsDisclosure}</p>
         </>}
-        <Alert type="success" showIcon message="Демонстрационное оформление завершено" description="Условия приняты и сохранены. Деньги не перечислялись."/>
+        <Alert type="success" showIcon message="Оформление завершено" description="Условия предложения приняты и сохранены."/>
       </>:<>
         <h2>{app.status==='DECLINED'?'В финансировании отказано':app.status==='CANCELLED'?'Заявка отменена':app.status==='EXPIRED'?'Срок действия заявки истёк':'Рассмотрение ещё не завершено'}</h2>
         <p>Запрошенная сумма: {money(app.need.amount)}</p>

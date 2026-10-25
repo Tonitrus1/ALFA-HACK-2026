@@ -2,6 +2,7 @@
 import type { Application, AssistantMessage, Company, DocumentItem, Draft, Finance, FinanceKey, InformationRequest, Need, Notice, Offer, Product, Session, Status } from '../types/domain';
 import { financeFields, signedFields } from '../types/domain';
 import { fromKopecks, toKopecks } from '../lib/money';
+import { referenceText } from '../lib/referenceText';
 import { ApiError, context, request } from './http';
 import type { Card, Feed, Preferences, SavedFeed } from '../../../integration/api';
 export type { Card, Feed, Preferences, SavedFeed };
@@ -33,7 +34,7 @@ async function list<T>(url: string): Promise<T[]> {
   do { const page = await request<{items:T[];nextCursor?:string}>(url+(cursor ? (url.includes('?')?'&':'?')+'cursor='+enc(cursor):'')); all.push(...page.items); cursor=page.nextCursor; } while(cursor);
   return all;
 }
-async function companies(): Promise<Company[]> { return (await list<{companyId:string;displayName:string;taxId:string}>('/api/v1/companies')).map(c=>({id:c.companyId,name:c.displayName,inn:c.taxId,industry:'',address:''})); }
+async function companies(): Promise<Company[]> { return (await list<{companyId:string;displayName:string;taxId:string}>('/api/v1/companies')).map(c=>({id:c.companyId,name:referenceText(c.displayName),inn:c.taxId,industry:'',address:''})); }
 async function session(s?: WireSession): Promise<Session> {
   const wire=s ?? await request<WireSession>('/api/v1/session');
   const mapped:Session={actor:wire.userId,companyId:wire.companyId??null,contextVersion:wire.contextVersion,csrfToken:wire.csrfToken,expiresAt:wire.expiresAt,companies:[]};
@@ -59,7 +60,7 @@ async function application(id:string):Promise<Application> {
   return {id,companyId:wire.companyId,productId:wire.productId,version:wire.version,status:state.status,
     financialVersion:s?.statementVersion??0,createdAt:wire.updatedAt,need:{purpose:wire.terms.purpose,amount:String(wire.terms.amount.amountMinor),months:wire.terms.termMonths},
     draft:{companyName:c?.name??'',inn:c?.inn??'',address:'',activity:wire.terms.business?.activityDescription??'',businessAgeMonths:wire.terms.business?.businessAgeMonths?.toString()??'',preliminaryRevenue:wire.terms.business?.annualRevenue ? fromKopecks(String(wire.terms.business.annualRevenue.amountMinor)):'',period:s?.statement.periodStart.slice(0,4)??'2025',currency:'RUB',unit:'RUB',finance:finance(s),confirmed:Object.fromEntries(Object.keys(financeFields).map(k=>[k,!!s?.confirmed])) as Draft['confirmed'],consents:false},
-    history:state.history.map(h=>({id:h.eventId,title:h.label,at:h.occurredAt})),nextAction:action.type==='WAIT'?null:{label:action.label,href}};
+    history:state.history.map(h=>({id:h.eventId,title:referenceText(h.label),at:h.occurredAt})),nextAction:action.type==='WAIT'?null:{label:referenceText(action.label),href}};
 }
 function references(documents:DocumentItem[]) { if(documents.some(d=>['QUARANTINE','SCANNING'].includes(d.status)))throw new Error('Дождитесь проверки документов'); return documents.filter(d=>d.status==='CLEAN').map(d=>({documentId:d.id,documentVersion:d.documentVersion!,objectVersion:String(d.objectVersion)})); }
 async function save(id:string,draft:Draft,version:number,sourceDocument?:DocumentItem):Promise<Application> {
@@ -93,7 +94,7 @@ async function save(id:string,draft:Draft,version:number,sourceDocument?:Documen
   const result=await application(id); result.draft={...draft};return result;
 }
 type WireProduct={productId:string;version:number;name:string;purpose:string;minAmount:{amountMinor:number};maxAmount:{amountMinor:number};maxMonths:number;preliminaryDisclosure:string};
-async function products(_need?:Need):Promise<Product[]> { return (await list<WireProduct>('/api/v1/products?'+companyQuery())).map(p=>({id:p.productId,version:p.version,title:p.name,description:p.purpose,minAmount:String(p.minAmount.amountMinor),maxAmount:String(p.maxAmount.amountMinor),maxMonths:p.maxMonths,rate:'Ставка не определена',eligible:true,restriction:p.preliminaryDisclosure,benefits:[]})); }
+async function products(_need?:Need):Promise<Product[]> { return (await list<WireProduct>('/api/v1/products?'+companyQuery())).map(p=>({id:p.productId,version:p.version,title:referenceText(p.name),description:p.purpose,minAmount:String(p.minAmount.amountMinor),maxAmount:String(p.maxAmount.amountMinor),maxMonths:p.maxMonths,rate:'Ставка не определена',eligible:true,restriction:referenceText(p.preliminaryDisclosure),benefits:[]})); }
 let pendingNeed:{company:string;need:Need}|undefined;
 async function information(id:string,requestId:string):Promise<InformationRequest> {
   const rows=await request<{items:{requestId:string;version:number;items:{fieldPath?:string;label:string;kind:string}[];deadline:string;status:string}[]}>(path(id)+'/information-requests');
@@ -112,12 +113,12 @@ async function saveInformation(r:InformationRequest) {
   return information(r.applicationId,r.id);
 }
 type WireOffer={offerId:string;applicationId:string;version:number;status:Offer['status'];amount:{amountMinor:number};termMonths:number;termsDisclosure:string;validUntil:string};
-async function offer(id:string):Promise<Offer>{const w=await request<WireOffer>('/api/v1/offers/'+enc(id));return {id:w.offerId,applicationId:w.applicationId,version:w.version,status:w.status,amount:String(w.amount.amountMinor),months:w.termMonths,rate:'См. условия',termsDisclosure:w.termsDisclosure,expiresAt:w.validUntil};}
+async function offer(id:string):Promise<Offer>{const w=await request<WireOffer>('/api/v1/offers/'+enc(id));return {id:w.offerId,applicationId:w.applicationId,version:w.version,status:w.status,amount:String(w.amount.amountMinor),months:w.termMonths,rate:'См. условия',termsDisclosure:referenceText(w.termsDisclosure),expiresAt:w.validUntil};}
 type AssistantResponse={message_id:string;status:AssistantMessage['state'];answer:string;citations:{title:string;type:string;document_id?:string;version?:number;url?:string;metadata?:{source_url?:string}}[]};
 function assistantMessage(r:AssistantResponse,conversationId:string):AssistantMessage{return {id:r.message_id,role:'assistant',text:r.answer,state:r.status,sources:r.citations.map(c=>({title:c.title,href:c.type==='KNOWLEDGE'?`/assistant/${enc(conversationId)}/sources/${enc(c.document_id!)}/${c.version}`:c.url!}))};}
 async function stableAssistant(id:string,text:string,signal:AbortSignal){return request<AssistantResponse>('/api/v1/assistant/conversations/'+enc(id)+'/messages',{method:'POST',signal,body:json({clientMessageId:crypto.randomUUID(),text})});}
 export const api={
-  accounts:()=>request<{items:{accountId:string;displayName:string}[]}>('/demo/api/v1/accounts').then(p=>p.items),
+  accounts:()=>request<{items:{accountId:string;displayName:string}[]}>('/demo/api/v1/accounts').then(p=>p.items.map(a=>({...a,displayName:referenceText(a.displayName)}))),
   session,companies,
   login:async(accountId:string)=>session(await request<WireSession>('/demo/api/v1/session',{method:'POST',body:json({accountId})})),
   logout:()=>request<void>('/api/v1/session/logout',{method:'POST'}),
