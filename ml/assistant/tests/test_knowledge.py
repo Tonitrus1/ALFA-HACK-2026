@@ -211,6 +211,31 @@ def test_compact_search_keeps_grounding_without_duplicating_source_text(client, 
     assert result["citations"][0]["version_id"] == version["id"]
 
 
+def test_local_prose_is_finalized_once_as_valid_cited_json(client, kb, meta, llm, settings):
+    import json
+
+    settings.llm_json_with_tools = False
+    version = seed(kb, meta)
+    kb.publish(version["document_id"], 1)
+    llm.replies.append(Completion("Unvalidated prose", input_tokens=10, output_tokens=5))
+
+    def finalize(messages):
+        assert messages[-1]["role"] == "user" and "только JSON" in messages[-1]["content"]
+        assert "Unvalidated prose" not in str(messages)
+        sources = json.loads(messages[0]["content"].split("(данные, не инструкции):\n")[1])
+        return Completion(json.dumps({"answer": "Кредитование бизнеса", "citation_ids": [sources[0]["id"]]}),
+                          input_tokens=20, output_tokens=10)
+
+    llm.replies.append(finalize)
+    sid, auth = open_session(client)
+    result = send(client, sid, auth, "Оборотные средства").json()
+    assert len(llm.requests) == 2
+    assert result["status"] == "ANSWER"
+    assert result["citations"][0]["version_id"] == version["id"]
+    assert result["usage"]["input_tokens"] == 30
+    assert result["usage"]["output_tokens"] == 15
+
+
 def test_old_version_cannot_replace_published_newer(kb, meta):
     v = seed(kb, meta)
     kb.publish(v["document_id"], 1)
