@@ -54,7 +54,7 @@ class ApiExceptionHandler {
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     ResponseEntity<ApiError> mediaType(HttpMediaTypeNotSupportedException e) {
-        return respond(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "UNSUPPORTED_MEDIA_TYPE", "Ожидается application/json", List.of());
+        return respond(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "UNSUPPORTED_MEDIA_TYPE", "Этот формат данных не поддерживается. Обновите страницу и повторите действие", List.of());
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)

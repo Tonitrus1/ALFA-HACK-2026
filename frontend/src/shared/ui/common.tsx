@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import type { Application, Status } from '../types/domain';
 import { money } from '../lib/money';
 import { ApiError } from '../api/http';
-import { financeFields } from '../types/domain';
+import { fieldLabel, userMessage } from '../lib/userMessage';
 export const statusLabels: Record<Status, string> = {
   DRAFT: 'Черновик',
   SUBMITTED: 'Отправлена',
@@ -85,7 +85,7 @@ export function Field({
       {hint && <small>{hint}</small>}
       {!!error && (
         <span className="field-error" role="alert" id={id + '-error'}>
-          {error}
+          {userMessage(error,'Проверьте значение этого поля')}
         </span>
       )}
     </div>
@@ -99,24 +99,12 @@ export function ErrorState({ error, retry }: { error: unknown; retry?: () => voi
       message="Не удалось выполнить действие"
       description={
         <>
-          <span>{error instanceof Error ? error.message : 'Сервис недоступен'}</span>
+          <span>{userMessage(error instanceof Error ? error.message : undefined)}</span>
           {error instanceof ApiError && Object.keys(error.fields).length > 0 && (
             <ul>
               {Object.entries(error.fields).map(([field, message]) => (
                 <li key={field}>
-                  {financeFields[field.replace('finance.', '') as keyof typeof financeFields] ??
-                    (
-                      {
-                        companyName: 'Название компании',
-                        address: 'Адрес',
-                        activity: 'Деятельность',
-                        period: 'Период',
-                        consents: 'Согласие',
-                        confirmed: 'Подтверждение',
-                      } as Record<string, string>
-                    )[field] ??
-                    'Поле заявки'}
-                  : {message}
+                  {fieldLabel(field)}: {userMessage(message,'Проверьте значение этого поля')}
                 </li>
               ))}
             </ul>
@@ -217,8 +205,8 @@ export function AssistantWidget() {
 export function Stepper({ id, step }: { id: string; step: string }) {
   const steps = [
     ['company', 'Компания'],
-    ['business', 'Финансы'],
     ['documents', 'Документы'],
+    ['business', 'Финансы'],
     ['review', 'Проверка'],
   ];
   const active = steps.findIndex(([key]) => key === step);

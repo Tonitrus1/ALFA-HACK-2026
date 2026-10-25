@@ -15,7 +15,7 @@ PYWAIT
 alembic upgrade head
 # One process owns this data volume. Seed only once; explicit reindex remains available.
 if [ ! -f /app/data/.seeded-v1 ]; then
-    alfa-assistant seed
+    python -c 'from alfa_assistant.cli import main; main()' seed
     touch /app/data/.seeded-v1
 fi
 exec uvicorn alfa_assistant.main:app --host 0.0.0.0 --port 8000 --workers 1 --no-access-log

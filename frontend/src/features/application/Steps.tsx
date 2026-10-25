@@ -11,7 +11,7 @@ import type { Application, FinanceKey } from '../../shared/types/domain';
 import { financeErrors } from '../../shared/lib/validation';
 import { money, toKopecks } from '../../shared/lib/money';
 import { Disclosure, ErrorState, Field, PageTitle, Panel } from '../../shared/ui/common';
-import { DocumentUploader } from '../documents/Documents';
+import { DocumentUploader, OcrReview } from '../documents/Documents';
 export function CompanyStep() {
   const { form, flush, application } = useDraft(),
     navigate = useNavigate(),
@@ -21,7 +21,7 @@ export function CompanyStep() {
     setPending(true);
     try {
       await flush();
-      navigate(`/applications/${application.id}/business`);
+      navigate(`/applications/${application.id}/documents`);
     } catch (e) {
       setError(e);
     } finally {
@@ -72,7 +72,7 @@ export function CompanyStep() {
               В кабинет
             </Link>
             <Button type="primary" htmlType="submit" loading={pending}>
-              К финансовым данным <ArrowRight size={16} />
+              К документам <ArrowRight size={16} />
             </Button>
           </div>
           {!!error && <ErrorState error={error} />}
@@ -105,7 +105,7 @@ export function BusinessStep() {
     setBusy(true);
     try {
       await flush();
-      navigate(`/applications/${application.id}/documents`);
+      navigate(`/applications/${application.id}/review`);
     } catch (e) {
       setError(e);
     } finally {
@@ -116,12 +116,12 @@ export function BusinessStep() {
     <>
       <PageTitle
         title="Цифры, за которыми стоит ваш бизнес"
-        description="Все значения в рублях. Проверьте искусственные данные и подтвердите каждый показатель."
+        description="Проверьте показатели, перенесённые из документов, и заполните недостающие. Можно ввести все значения вручную."
       />
       <Alert
         className="mb"
         type="info"
-        message="DEMO Financial v1 · полные 12 месяцев"
+        message="Финансовые показатели за полный календарный год"
         description="Все обязательства включают долг и прочие обязательства. Прибыль, EBIT и капитал могут быть отрицательными. Пустое значение отличается от нуля."
       />
       <Panel>
@@ -195,11 +195,11 @@ export function BusinessStep() {
           ))}
         </div>
         <div className="form-actions">
-          <Link className="button white" to={`/applications/${application.id}/company`}>
+          <Link className="button white" to={`/applications/${application.id}/documents`}>
             Назад
           </Link>
           <Button type="primary" loading={busy} onClick={() => void next()}>
-            К документам <ArrowRight size={16} />
+            Проверить заявку <ArrowRight size={16} />
           </Button>
         </div>
         {!!error && <ErrorState error={error} />}
@@ -208,15 +208,19 @@ export function BusinessStep() {
   );
 }
 export function DocumentsStep() {
-  const { application, form } = useDraft(),
+  const { application, form, flush } = useDraft(),
     consents = useWatch({ control: form.control, name: 'consents' });
+  const navigate=useNavigate(),[error,setError]=useState<unknown>(),[busy,setBusy]=useState(false);
+  const next=async()=>{setBusy(true);setError(undefined);try{await flush();navigate(`/applications/${application.id}/business`);}catch(e){setError(e);}finally{setBusy(false);}};
   return (
     <>
       <PageTitle
-        title="Документы и согласия"
-        description="Файлы проверяет серверный сканер. OCR недоступен; финансовые данные вводятся вручную."
+        title="Документы для заполнения анкеты"
+        description="Загрузите отчётность, дождитесь распознавания и сверьте найденные показатели. В анкету попадут только проверенные вами значения."
       />
+      <Panel className="mb"><Field id="document-period" label="Отчётный год документов"><select id="document-period" {...form.register('period',{onChange:()=>{for(const k of Object.keys(financeFields) as FinanceKey[])form.setValue(`confirmed.${k}`,false);}})}><option value="2025">2025 год</option><option value="2024">2024 год</option></select></Field><p className="muted">Прикрепите баланс и отчёт о финансовых результатах за один год. Документы необязательны: можно сразу перейти к ручному вводу.</p></Panel>
       <DocumentUploader applicationId={application.id} />
+      <OcrReview />
 
       <Panel className="mt">
         <h2>
@@ -230,13 +234,12 @@ export function DocumentsStep() {
         </Checkbox>
         <p className="muted">Настоящие персональные и банковские данные использовать нельзя.</p>
         <div className="form-actions">
-          <Link className="button white" to={`/applications/${application.id}/business`}>
+          <Link className="button white" to={`/applications/${application.id}/company`}>
             Назад
           </Link>
-          <Link className="button red" to={`/applications/${application.id}/review`}>
-            Проверить заявку <ArrowRight size={16} />
-          </Link>
+          <Button type="primary" disabled={!consents} loading={busy} onClick={()=>void next()}>К финансовым данным <ArrowRight size={16}/></Button>
         </div>
+        {!!error && <ErrorState error={error}/>}
       </Panel>
     </>
   );

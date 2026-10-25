@@ -11,6 +11,11 @@ import type { SaveState } from '../../shared/lib/autosave';
 import type { Application, Draft } from '../../shared/types/domain';
 import { ErrorState, LoadingState, Stepper } from '../../shared/ui/common';
 import { context } from '../../shared/api/http';
+import { financeFields } from '../../shared/types/domain';
+function DraftSummary({draft}:{draft?:Draft}){
+  if(!draft)return <p>Загружаем сохранённые данные…</p>;
+  return <dl className="details">{Object.entries({Компания:draft.companyName,Деятельность:draft.activity,'Срок работы, месяцев':draft.businessAgeMonths,'Предварительная выручка, ₽':draft.preliminaryRevenue,'Отчётный год':draft.period,...Object.fromEntries(Object.entries(financeFields).map(([key,label])=>[label+', ₽',draft.finance[key as keyof typeof financeFields]]))}).map(([label,value])=><div className="detail-row" key={label}><dt>{label}</dt><dd>{value?.trim()||'Не заполнено'}</dd></div>)}</dl>;
+}
 interface DraftContext {
   application: Application;
   form: UseFormReturn<Draft>;
@@ -166,11 +171,11 @@ function DraftEditor({ application, children }: { application: Application; chil
           <div className="compare-grid">
             <div>
               <h3>Ваш ввод</h3>
-              <pre>{JSON.stringify(form.getValues(), null, 2)}</pre>
+              <DraftSummary draft={form.getValues()}/>
             </div>
             <div>
               <h3>Сервер · версия {comparison?.version}</h3>
-              <pre>{JSON.stringify(comparison?.draft, null, 2)}</pre>
+              <DraftSummary draft={comparison?.draft}/>
             </div>
           </div>
           <div className="form-actions">

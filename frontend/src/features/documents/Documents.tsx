@@ -6,8 +6,8 @@ import { App, Alert, Button, Modal, Progress, Tag } from 'antd';
 import { Download, FileText, UploadCloud } from 'lucide-react';
 import { api } from '../../shared/api/client';
 import type { DocumentItem, Finance, FinanceKey } from '../../shared/types/domain';
-import { financeFields } from '../../shared/types/domain';
-import { financeErrors } from '../../shared/lib/validation';
+import { financeFields, signedFields } from '../../shared/types/domain';
+import { toKopecks } from '../../shared/lib/money';
 import { useDraft } from '../application/DraftProvider';
 import {
   EmptyState,
@@ -51,6 +51,7 @@ export function DocumentUploader({ applicationId }: { applicationId: string }) {
   return (
     <Panel>
       <h2>Документы заявки</h2>
+      <p className="muted">Распознавание помогает заполнить финансовую анкету. Проверьте найденные значения и подтвердите их, чтобы использовать при рассмотрении заявки. Загрузка файла сама по себе не меняет сумму кредита и не гарантирует одобрения. Данные можно ввести вручную.</p>
       <label className={'upload-zone ' + (progress !== undefined ? 'uploading' : '')}>
         <input
           type="file"
@@ -81,7 +82,7 @@ export function DocumentUploader({ applicationId }: { applicationId: string }) {
             <div>
               <strong>{d.name}</strong>
               <small>
-                Версия {d.objectVersion} · {Math.ceil(d.size / 1024)} КБ · OCR:{' '}
+                {Math.ceil(d.size / 1024)} КБ · Распознавание:{' '}
                 {d.ocrStatus === 'READY'
                   ? 'готово'
                   : d.ocrStatus === 'FAILED'
@@ -115,7 +116,7 @@ export function OcrReview() {
             <div>
               <h3>Распознавание готово</h3>
               <p className="muted">
-                {d.name} · страница 1 · версия {d.objectVersion}. Предложенные значения требуют
+                {d.name}. Предложенные значения требуют
                 вашей проверки.
               </p>
             </div>
@@ -156,6 +157,7 @@ export function OcrReview() {
   );
 }
 function OcrForm({ document, close }: { document: DocumentItem; close: () => void }) {
+  const available=(Object.keys(financeFields) as FinanceKey[]).filter(k=>document.values?.[k]?.trim());
   const { application, form: main, flush, replace, version } = useDraft(),
     form = useForm<{ finance: Finance; confirmed: Record<FinanceKey, boolean> }>({
       defaultValues: {
@@ -170,12 +172,14 @@ function OcrForm({ document, close }: { document: DocumentItem; close: () => voi
     [error, setError] = useState<unknown>();
   const submit = form.handleSubmit(async (values) => {
     setError(undefined);
-    if (
-      !Object.values(values.confirmed).every(Boolean) ||
-      Object.keys(financeErrors(values.finance)).length
-    ) {
-      setError(new Error('Проверьте и подтвердите каждое из восьми значений'));
+    const selected=available.filter(k=>values.confirmed[k]);
+    if(!selected.length){
+      setError(new Error('Отметьте показатели, которые хотите перенести в анкету'));
       return;
+    }
+    for(const key of selected){
+      try{toKopecks(values.finance[key],signedFields.includes(key));}
+      catch{setError(new Error('Проверьте значение поля «'+financeFields[key]+'»'));return;}
     }
     setBusy(true);
     try {
@@ -190,7 +194,7 @@ function OcrForm({ document, close }: { document: DocumentItem; close: () => voi
         values.confirmed,
         fresh.financialVersion,
       );
-      replace(result);
+      replace({...result,draft:{...result.draft,consents:main.getValues('consents')}});
       close();
     } catch (e) {
       setError(e);
@@ -201,16 +205,16 @@ function OcrForm({ document, close }: { document: DocumentItem; close: () => voi
   return (
     <form onSubmit={submit}>
       <p>
-        Источник: {document.name}. Период OCR: {document.extractedPeriod ?? 'не определён'}. Сверьте период, единицы и значения с оригиналом. Поля без надёжного результата заполните вручную. Любое изменение
-        сбрасывает подтверждение.
+        Источник: {document.name}. Отчётный период: {document.extractedPeriod ?? 'не определён'}. Сверьте значения с оригиналом и отметьте те, которые хотите перенести. Остальные данные анкеты сохранятся.
       </p>
+      <p className="muted">Найдено показателей: {available.length} из 8. Недостающие можно добавить из другого документа или заполнить на следующем шаге «Финансы».</p>
       <div className="financial-grid">
-        {(Object.entries(financeFields) as [FinanceKey, string][]).map(([k, label]) => (
+        {available.map(k => (
           <div key={k}>
             <Field
               id={'ocr-' + k}
-              label={label}
-              hint={'Ваш ввод: ' + main.getValues(`finance.${k}`) + ' ₽'}
+              label={financeFields[k]}
+              hint={main.getValues(`finance.${k}`)?.trim()?'В анкете: ' + main.getValues(`finance.${k}`) + ' ₽':'В анкете пока не заполнено'}
             >
               <input
                 id={'ocr-' + k}
@@ -223,7 +227,7 @@ function OcrForm({ document, close }: { document: DocumentItem; close: () => voi
             <label className="native-check">
               <input
                 type="checkbox"
-                aria-label={'Проверено по документу: ' + label}
+                aria-label={'Проверено по документу: ' + financeFields[k]}
                 {...form.register(`confirmed.${k}`)}
               />
               Проверено по документу
@@ -233,7 +237,7 @@ function OcrForm({ document, close }: { document: DocumentItem; close: () => voi
       </div>
       {!!error && <ErrorState error={error} />}
       <Button className="mt" type="primary" htmlType="submit" loading={busy}>
-        Подтвердить проверенные значения
+        Применить выбранные показатели
       </Button>
     </form>
   );
@@ -259,7 +263,7 @@ export function FilesPage() {
     <>
       <PageTitle
         title="Документы заявки"
-        description="Скачивание доступно только после проверки безопасности и разрешения API."
+        description="Файл можно скачать после завершения проверки безопасности, если у вас есть доступ к документу."
       />
       {docs.isPending ? (
         <LoadingState />

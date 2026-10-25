@@ -21,7 +21,7 @@ public final class ETags {
     public static long parseIfMatch(String ifMatch) {
         Matcher matcher = ifMatch == null ? null : VERSION.matcher(ifMatch.trim());
         if (matcher == null || !matcher.matches()) {
-            throw new ApplicationException(ErrorKind.INVALID_REQUEST, "INVALID_IF_MATCH", "Некорректный If-Match");
+            throw new ApplicationException(ErrorKind.INVALID_REQUEST, "INVALID_IF_MATCH", "Не удалось определить сохранённую версию данных. Обновите страницу и повторите действие");
         }
         return Long.parseLong(matcher.group(1));
     }

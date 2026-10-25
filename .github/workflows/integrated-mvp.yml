@@ -51,9 +51,10 @@ jobs:
         with: {fetch-depth: 0}
       - run: python3 -m pip install jsonschema==4.25.1
       - run: python3 scripts/integration/configure.py
+      - run: python3 -m unittest discover -s scripts -p test_deploy.py
       - run: docker compose config --quiet
       - name: Build all service images
-        run: docker compose build
+        run: python3 scripts/deploy.py build
       - uses: actions/setup-node@v4
         with: {node-version: '22'}
       - run: npm ci --no-audit --no-fund && npx playwright install --with-deps chromium

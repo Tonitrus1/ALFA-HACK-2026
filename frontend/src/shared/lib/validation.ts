@@ -11,7 +11,7 @@ export const needSchema = z.object({
       return false;
     }
   }, 'От 100 000 до 50 000 000 ₽'),
-  months: z.coerce.number().int().min(1).max(36),
+  months: z.coerce.number({error:'Укажите срок в месяцах'}).int('Укажите целое число месяцев').min(1,'Минимальный срок — 1 месяц').max(36,'Максимальный срок — 36 месяцев'),
 });
 export function financeErrors(finance: Record<string, string>): Record<string, string> {
   const errors: Record<string, string> = {};

@@ -1,7 +1,7 @@
 FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /src/backend
 COPY backend .
-RUN mvn -B -ntp package -DskipTests
+RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp package -DskipTests
 FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 COPY --from=build /src/backend/app/target/credit-app-0.1.0-SNAPSHOT.jar app.jar

@@ -14,6 +14,7 @@ import {
 import { StatusPage } from '../features/journey/StatusPage';
 import { InformationPage } from '../features/journey/InformationPage';
 import { OfferPage } from '../features/offers/OfferPage';
+import { ResultPage } from '../features/journey/ResultPage';
 import { Assistant, AssistantSource } from '../features/assistant/Assistant';
 import { FilesPage } from '../features/documents/Documents';
 import { Disclosure, PageTitle, Panel } from '../shared/ui/common';
@@ -41,7 +42,7 @@ function Help() {
         <p>
           {topic === 'finance'
             ? 'После распознавания сверьте значения с документом; недостающие поля заполните вручную. Отметьте каждый показатель только после проверки. Изменение суммы или периода сбрасывает подтверждение. '
-            : 'Финансы → документы и согласия → проверка. Дождитесь сохранения перед отправкой. Если потребуется уточнение, откройте запрос в той же заявке. Ручная проверка не означает отказ.'}
+            : 'Компания → документы → финансы → проверка. Можно перенести проверенные показатели из документов или ввести всё вручную. Дождитесь сохранения перед отправкой.'}
         </p>
         <h2>Ограничения демонстрации</h2>
         <p>
@@ -74,6 +75,7 @@ export function Router() {
               <Route path="review" element={<ReviewStep />} />
             </Route>
             <Route path="applications/:id/status" element={<StatusPage />} />
+            <Route path="applications/:id/result" element={<ResultPage />} />
             <Route path="applications/:id/information" element={<InformationPage />} />
             <Route path="applications/:id/offer" element={<OfferPage />} />
             <Route path="applications/:id/information/:requestId" element={<InformationPage />} />

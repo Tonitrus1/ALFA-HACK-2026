@@ -12,7 +12,7 @@ const companyQuery = () => { const id = context.get()?.companyId; if (!id) throw
 const unsupported = async <T>(): Promise<T> => { throw new ApiError(503, 'Функция скоро появится. Сейчас используйте ручной ввод и историю заявки.'); };
 export function minor(value: string, signed = false): number {
   const result = BigInt(toKopecks(value, signed));
-  if (result > BigInt(Number.MAX_SAFE_INTEGER) || result < -BigInt(Number.MAX_SAFE_INTEGER)) throw new Error('Сумма превышает точность публичного API');
+  if (result > BigInt(Number.MAX_SAFE_INTEGER) || result < -BigInt(Number.MAX_SAFE_INTEGER)) throw new Error('Указана слишком большая сумма. Уменьшите её и попробуйте снова.');
   return Number(result);
 }
 const financeMap: Record<FinanceKey, string> = { revenue:'revenueMinor', netProfit:'netProfitMinor', ebit:'ebitMinor', equity:'equityMinor', totalAssets:'totalAssetsMinor', currentAssets:'currentAssetsMinor', currentLiabilities:'currentLiabilitiesMinor', totalLiabilities:'totalLiabilitiesMinor' };
@@ -54,6 +54,7 @@ async function application(id:string):Promise<Application> {
   const action=state.nextAction;
   let href=action.targetPath;
   if(action.type==='CONTINUE')href=path(id).replace('/api/v1','')+'/company';
+  else if(action.type==='VIEW_RESULT')href=`/applications/${id}/result`;
   else if(!['PROVIDE_INFORMATION','VIEW_OFFER'].includes(action.type))href=`/applications/${id}/status`;
   return {id,companyId:wire.companyId,productId:wire.productId,version:wire.version,status:state.status,
     financialVersion:s?.statementVersion??0,createdAt:wire.updatedAt,need:{purpose:wire.terms.purpose,amount:String(wire.terms.amount.amountMinor),months:wire.terms.termMonths},
@@ -61,16 +62,35 @@ async function application(id:string):Promise<Application> {
     history:state.history.map(h=>({id:h.eventId,title:h.label,at:h.occurredAt})),nextAction:action.type==='WAIT'?null:{label:action.label,href}};
 }
 function references(documents:DocumentItem[]) { if(documents.some(d=>['QUARANTINE','SCANNING'].includes(d.status)))throw new Error('Дождитесь проверки документов'); return documents.filter(d=>d.status==='CLEAN').map(d=>({documentId:d.id,documentVersion:d.documentVersion!,objectVersion:String(d.objectVersion)})); }
-async function save(id:string,draft:Draft,version:number):Promise<Application> {
+async function save(id:string,draft:Draft,version:number,sourceDocument?:DocumentItem):Promise<Application> {
   const age=draft.businessAgeMonths?.trim(); if(age && (!/^\d+$/.test(age)||!Number.isSafeInteger(Number(age))))throw new Error('Срок работы — целое число месяцев');
   const business={activityDescription:draft.activity,...(age ? {businessAgeMonths:Number(age)}:{}),...(draft.preliminaryRevenue?.trim()?{annualRevenue:{amountMinor:minor(draft.preliminaryRevenue),currency:'RUB'}}:{})};
   const clearFields=[...(!age?['business.businessAgeMonths']:[]),...(!draft.preliminaryRevenue?.trim()?['business.annualRevenue']:[])];
-  const docs=await api.documents(id),url=path(id)+'/financial-statement';
-  const input=statementInput(draft,references(docs));
+  const url=path(id)+'/financial-statement';
+  const original=await optionalStatement(url);
+  const input=statementInput(draft,original?.statement.sourceDocumentReferences??[]);
+  const financialChanged=sourceDocument!==undefined || (original
+    ? input.periodStart!==original.statement.periodStart || input.periodEnd!==original.statement.periodEnd || Object.values(financeMap).some(k=>input.values[k]!==original.statement.values[k])
+    : Object.keys(input.values).length>0 || draft.period!=='2025');
+  const shouldConfirm=Object.values(draft.confirmed).every(Boolean) && Object.values(draft.finance).every(v=>v.trim()!=='');
+  if(financialChanged){
+    // A manual edit is not evidence that every uploaded file supplied these values.
+    // Only explicitly selected OCR sources and existing provenance belong in the statement.
+    const sources=sourceDocument ? [...input.sourceDocumentReferences.filter(ref=>ref.documentId!==sourceDocument.id),...references([sourceDocument])] : input.sourceDocumentReferences;
+    if(sources.length){
+      const docs=await api.documents(id);
+      input.sourceDocumentReferences=sources.map(ref=>{
+        const current=docs.find(d=>d.id===ref.documentId && d.objectVersion===ref.objectVersion && d.status==='CLEAN');
+        if(!current)throw new ApiError(409,'Документ изменился. Откройте сверку заново.');
+        return references([current])[0];
+      });
+    }
+  }
   const updated=await request<WireApp>(path(id),{method:'PATCH',headers:{'If-Match':`"v${version}"`},body:json({business,...(clearFields.length?{clearFields}:{})})});
-  let s=await stable<Statement>(url,'PUT',input,updated.version);
-  if(Object.values(draft.confirmed).every(Boolean) && Object.values(draft.finance).every(v=>v.trim()!==''))s=await stable<Statement>(url+'/confirm','POST',{expectedStatementVersion:s.statementVersion,confirmedFieldNames:Object.values(financeMap),documentReferences:references(docs)},s.containerVersion);
-  const result=await application(id); result.draft={...draft};result.version=s.containerVersion;result.financialVersion=s.statementVersion;return result;
+  let s=original;
+  if(financialChanged)s=await stable<Statement>(url,'PUT',input,updated.version);
+  if(s && shouldConfirm && !s.confirmed)s=await stable<Statement>(url+'/confirm','POST',{expectedStatementVersion:s.statementVersion,confirmedFieldNames:Object.values(financeMap),documentReferences:s.statement.sourceDocumentReferences},financialChanged?s.containerVersion:updated.version);
+  const result=await application(id); result.draft={...draft};return result;
 }
 type WireProduct={productId:string;version:number;name:string;purpose:string;minAmount:{amountMinor:number};maxAmount:{amountMinor:number};maxMonths:number;preliminaryDisclosure:string};
 async function products(_need?:Need):Promise<Product[]> { return (await list<WireProduct>('/api/v1/products?'+companyQuery())).map(p=>({id:p.productId,version:p.version,title:p.name,description:p.purpose,minAmount:String(p.minAmount.amountMinor),maxAmount:String(p.maxAmount.amountMinor),maxMonths:p.maxMonths,rate:'Ставка не определена',eligible:true,restriction:p.preliminaryDisclosure,benefits:[]})); }
@@ -125,7 +145,14 @@ export const api={
     const [fresh,extraction]=await Promise.all([application(id),request<{extractionId:string;documentVersion:number;objectVersion:string}>('/api/v1/documents/'+enc(doc.id)+'/extraction')]);
     if(fresh.financialVersion!==v || extraction.extractionId!==doc.extractionId || extraction.objectVersion!==doc.objectVersion)throw new ApiError(409,'Документ или финансовые данные изменились. Откройте сверку заново.');
     if(doc.extractedPeriod && doc.extractedPeriod!==fresh.draft.period && doc.extractedPeriod!==`${fresh.draft.period}-01-01/${fresh.draft.period}-12-31`)throw new ApiError(422,'Период документа отличается от отчётного года заявки. Сначала исправьте год на шаге финансов.');
-    return save(id,{...fresh.draft,finance:f,confirmed:c},fresh.version);
+    const selected=(Object.keys(financeFields) as FinanceKey[]).filter(k=>c[k]);
+    if(!selected.length)throw new Error('Отметьте показатели, которые хотите перенести в анкету');
+    const merged={...fresh.draft,finance:{...fresh.draft.finance},confirmed:{...fresh.draft.confirmed}};
+    for(const key of selected){
+      minor(f[key],signedFields.includes(key));
+      merged.finance[key]=f[key];merged.confirmed[key]=true;
+    }
+    return save(id,merged,fresh.version,doc);
   },
   information,saveInformation,
   respond:(r:InformationRequest,_docs:DocumentItem[]=[])=>command(async()=>{const s=await request<Statement>(path(r.applicationId)+`/information-requests/${enc(r.id)}/draft/financial-statement`);if(!s.confirmed)throw new Error('Подтвердите уточнения');await stable(path(r.applicationId)+`/information-requests/${enc(r.id)}/responses`,'POST',{requestVersion:r.requestVersion,requirementsVersion:r.requirementsVersion,draftVersion:r.draftVersion,financialStatementVersion:s.statementVersion,documentIds:[],documentReferences:[]});return application(r.applicationId);}),

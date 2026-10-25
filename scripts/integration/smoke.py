@@ -48,7 +48,7 @@ def main():
     else:raise RuntimeError('Backend did not become ready')
     c.login();statefile=ROOT/'.local/smoke-state.json';report={'status':'PASS','checks':[]}
     def checked(name):report['checks'].append(name)
-    state=json.loads(statefile.read_text()) if statefile.exists() else {}
+    state=json.loads(statefile.read_text(encoding='utf-8')) if statefile.exists() else {}
     if a.replay:
         assert state,'Initial smoke state required'
         assert c.call('/api/v1/applications/'+state['applicationId']+'/decision')['outcome']=='APPROVED'
@@ -75,7 +75,7 @@ def main():
             # Schema checks cover public FEED wire shape, including required explicit null reactions.
             try:
                 from jsonschema import Draft202012Validator
-                spec=json.loads((ROOT/'docs/architecture/contracts/public.openapi.json').read_text())
+                spec=json.loads((ROOT/'docs/architecture/contracts/public.openapi.json').read_text(encoding='utf-8'))
                 for schema,value in [('Feed',page),('Feed',next_page),('SavedFeed',saved),('MLReceipt',receipt)]:
                     Draft202012Validator({'$ref':'#/components/schemas/'+schema,'components':spec['components']}).validate(value)
                 checked('public_openapi_schemas')
@@ -106,8 +106,8 @@ def main():
         b=Client(a.base);b.login('representative-b','company-b')
         assert b.call(path,expected=404)=={'expectedHttpStatus':404}
         checked('company_isolation')
-        statefile.parent.mkdir(parents=True,exist_ok=True);statefile.write_text(json.dumps(state,ensure_ascii=False));statefile.chmod(0o600)
-    a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+        statefile.parent.mkdir(parents=True,exist_ok=True);statefile.write_text(json.dumps(state,ensure_ascii=False),encoding='utf-8');statefile.chmod(0o600)
+    a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(report,ensure_ascii=False))
 
 if __name__=='__main__':main()

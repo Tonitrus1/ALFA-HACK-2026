@@ -1,0 +1,7 @@
+FROM postgres:17.11-bookworm
+COPY deploy/ml-init.sh /docker-entrypoint-initdb.d/01-ml.sh
+COPY deploy/ml-apply.sh /apply.sh
+COPY ml/migrations /migrations
+# Scripts are baked into the image, independent of host permissions and CRLF.
+# Canonical SQL bytes keep checksums stable across Windows/Linux checkouts.
+RUN sed -i 's/\r$//' /docker-entrypoint-initdb.d/01-ml.sh /apply.sh /migrations/*.sql && chmod 755 /docker-entrypoint-initdb.d/01-ml.sh /apply.sh

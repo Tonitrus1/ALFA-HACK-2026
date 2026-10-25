@@ -39,7 +39,7 @@ class SessionInterceptor implements HandlerInterceptor {
 
         if (!SAFE_METHODS.contains(request.getMethod())
                 && !sessions.csrfMatches(session, request.getHeader(CSRF_HEADER))) {
-            throw new ApplicationException(ErrorKind.FORBIDDEN, "CSRF_TOKEN_INVALID", "Недействительный CSRF-токен");
+            throw new ApplicationException(ErrorKind.FORBIDDEN, "CSRF_TOKEN_INVALID", "Не удалось подтвердить безопасность действия. Обновите страницу и повторите попытку");
         }
 
         String companyContext = request.getHeader(COMPANY_CONTEXT_HEADER);

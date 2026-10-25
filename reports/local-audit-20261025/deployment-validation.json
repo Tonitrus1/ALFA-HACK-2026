@@ -1,0 +1,25 @@
+{
+  "runtimeStatus": "PASS",
+  "finalBuildStatus": "IN_PROGRESS",
+  "platform": {
+    "host": "Windows",
+    "containers": "Linux amd64",
+    "dockerMemoryBytes": 8290877440,
+    "cpus": 12
+  },
+  "checks": {
+    "deploymentUnitTests": 6,
+    "localLlmSdkWireContract": "PASS (mock HTTP transport; no real model)",
+    "canonicalComposeStartup": "PASS, existing volumes retained, no temporary override",
+    "freshMlDatabaseAndRisk": "PASS",
+    "legacyCrlfMigrationChecksumUpgrade": "PASS",
+    "changedMigrationChecksumRejected": "PASS",
+    "applicationSmoke": "PASS"
+  },
+  "applicationEvidence": "deployment-smoke.json",
+  "limitations": [
+    "Full ARM64 acceptance not run",
+    "Real Ollama inference not run; local model was not downloaded",
+    "First build/model preparation requires network; Debian TLS timed out both on host and Docker during this run"
+  ]
+}

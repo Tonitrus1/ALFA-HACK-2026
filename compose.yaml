@@ -4,8 +4,12 @@ x-python-health: &python-health
   timeout: 5s
   retries: 12
   start_period: 120s
+x-logging: &logging
+  driver: json-file
+  options: {max-size: "10m", max-file: "3"}
 services:
   feed-init:
+    logging: *logging
     image: credit-mvp-feed:local
     build: {context: ., dockerfile: deploy/Dockerfile.feed, target: runtime}
     environment: {HF_HUB_OFFLINE: '0', TRANSFORMERS_OFFLINE: '0'}
@@ -13,6 +17,8 @@ services:
     volumes: ["${FEED_BUNDLE_PATH:-feed-bundle}:/bundle"]
     networks: [outbound]
   backend-db:
+    logging: *logging
+    restart: unless-stopped
     image: postgres:17.11-bookworm
     environment:
       POSTGRES_DB: credit
@@ -26,7 +32,10 @@ services:
       timeout: 3s
       retries: 20
   ml-db:
-    image: postgres:17.11-bookworm
+    logging: *logging
+    restart: unless-stopped
+    image: credit-mvp-postgres:local
+    build: {context: ., dockerfile: deploy/Dockerfile.postgres}
     environment:
       POSTGRES_DB: credit_ml
       POSTGRES_USER: ml_admin
@@ -34,8 +43,6 @@ services:
       ML_DB_PASSWORD: ${ML_DB_PASSWORD:?Run configure first}
     volumes:
       - ml-db:/var/lib/postgresql/data
-      - ./deploy/ml-init.sh:/docker-entrypoint-initdb.d/01-ml.sh:ro
-      - ./ml/migrations:/migrations:ro
     networks: [internal]
     healthcheck:
       test: [CMD-SHELL, 'pg_isready -U ml_admin -d credit_ml']
@@ -43,16 +50,17 @@ services:
       timeout: 3s
       retries: 20
   ml-migrate:
-    image: postgres:17.11-bookworm
+    logging: *logging
+    image: credit-mvp-postgres:local
+    build: {context: ., dockerfile: deploy/Dockerfile.postgres}
     environment:
       ML_ADMIN_PASSWORD: ${ML_ADMIN_PASSWORD}
-    volumes:
-      - ./deploy/ml-apply.sh:/apply.sh:ro
-      - ./ml/migrations:/migrations:ro
     command: [sh, /apply.sh]
     networks: [internal]
     depends_on: {ml-db: {condition: service_healthy}}
   risk:
+    logging: *logging
+    restart: unless-stopped
     build: {context: ., dockerfile: deploy/Dockerfile.risk, target: runtime}
     environment:
       ML_DATABASE_URL: postgresql://ml_runtime:${ML_DB_PASSWORD}@ml-db:5432/credit_ml
@@ -65,6 +73,8 @@ services:
       <<: *python-health
       test: [CMD, python, -c, "import os,urllib.request; urllib.request.urlopen(urllib.request.Request('http://localhost:8001/health',headers={'Authorization':'Bearer '+os.environ['ML_INTERNAL_TOKEN']}),timeout=3)"]
   feed:
+    logging: *logging
+    restart: unless-stopped
     depends_on: {feed-init: {condition: service_completed_successfully}}
     image: credit-mvp-feed:local
     build: {context: ., dockerfile: deploy/Dockerfile.feed, target: runtime}
@@ -79,6 +89,8 @@ services:
       <<: *python-health
       test: [CMD, python, -c, "import os,urllib.request; urllib.request.urlopen(urllib.request.Request('http://localhost:8002/health',headers={'X-Service-Token':os.environ['ML_INTERNAL_TOKEN']}),timeout=3)"]
   ml-bridge:
+    logging: *logging
+    restart: unless-stopped
     build: {context: ., dockerfile: deploy/Dockerfile.bridge}
     environment:
       ML_DATABASE_URL: postgresql://ml_runtime:${ML_DB_PASSWORD}@ml-db:5432/credit_ml
@@ -94,6 +106,8 @@ services:
       <<: *python-health
       test: [CMD, python, -c, "import os,urllib.request; urllib.request.urlopen(urllib.request.Request('http://localhost:8000/health',headers={'X-Service-Token':os.environ['ML_SERVICE_TOKEN']}),timeout=3)"]
   scanner:
+    logging: *logging
+    restart: unless-stopped
     image: clamav/clamav:1.4
     environment:
       CLAMAV_NO_FRESHCLAMD: 'true'
@@ -105,8 +119,11 @@ services:
       start_period: 60s
     networks: [internal]
   backend:
+    logging: *logging
+    restart: unless-stopped
     build: {context: ., dockerfile: deploy/Dockerfile.backend}
     environment:
+      JAVA_TOOL_OPTIONS: ${JAVA_TOOL_OPTIONS:--Xms64m -Xmx512m -XX:ActiveProcessorCount=2}
       SPRING_PROFILES_ACTIVE: demo
       DB_URL: jdbc:postgresql://backend-db:5432/credit
       DB_USER: credit
@@ -129,17 +146,20 @@ services:
     volumes: [objects:/objects]
     networks: [internal]
   qdrant:
+    logging: *logging
     image: qdrant/qdrant:v1.15.5@sha256:0fb8897412abc81d1c0430a899b9a81eb8328aa634e7242d1bc804c1fe8fe863
     volumes: [qdrant-data:/qdrant/storage]
     networks: [internal]
     restart: unless-stopped
   searxng:
+    logging: *logging
     image: searxng/searxng:2026.10.19-81371861f@sha256:5ed0323b5f5f8701264ef65e239a2bd83cb57098f2b971fa30bf79c06eeae271
     volumes: [./ml/assistant/searxng/settings.yml:/etc/searxng/settings.yml:ro]
     environment: {SEARXNG_SECRET: '${SEARXNG_SECRET:?Run configure first}'}
     networks: [internal, outbound]
     restart: unless-stopped
   assistant-init:
+    logging: *logging
     image: credit-integrated-assistant:local
     build: {context: ., dockerfile: deploy/Dockerfile.assistant}
     environment: {HF_HUB_OFFLINE: '0', TRANSFORMERS_OFFLINE: '0', MODEL_DIR: /app/model-cache}
@@ -147,6 +167,7 @@ services:
     volumes: [assistant-models:/app/model-cache]
     networks: [outbound]
   assistant:
+    logging: *logging
     image: credit-integrated-assistant:local
     build: {context: ., dockerfile: deploy/Dockerfile.assistant}
     environment:
@@ -171,6 +192,7 @@ services:
       test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/health/ready',timeout=4)"]
     restart: unless-stopped
   ocr:
+    logging: *logging
     image: credit-integrated-ocr:local
     build: {context: ., dockerfile: deploy/Dockerfile.ocr}
     environment:
@@ -180,7 +202,7 @@ services:
       LLM_API_KEY: ${LLM_API_KEY:-}
       LLM_BASE_URL: ${LLM_BASE_URL:-https://api.aitunnel.ru/v1}
       LLM_MODEL: ${OCR_LLM_MODEL:-deepseek-v4.1-flash-1017}
-      CPU_THREADS: '2'
+      CPU_THREADS: ${OCR_CPU_THREADS:-2}
     volumes: [ocr-data:/app/data]
     networks: [internal, outbound]
     healthcheck:
@@ -188,6 +210,7 @@ services:
       test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8001/health/ready',timeout=4)"]
     restart: unless-stopped
   ocr-worker:
+    logging: *logging
     image: credit-integrated-ocr:local
     build: {context: ., dockerfile: deploy/Dockerfile.ocr}
     command: [python, -m, alfa_ocr.backend_worker]
@@ -206,6 +229,8 @@ services:
       start_period: 30s
     restart: unless-stopped
   gateway:
+    logging: *logging
+    restart: unless-stopped
     build: {context: ., dockerfile: deploy/Dockerfile.gateway}
     ports: ['127.0.0.1:8080:8080']
     healthcheck:

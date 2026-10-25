@@ -147,7 +147,7 @@ public class FinancialStatementService {
         List<String> violations = statement.values().invariantViolations();
         if (!violations.isEmpty()) {
             throw new ApplicationException(ErrorKind.UNPROCESSABLE, "FINANCIAL_INVARIANT_VIOLATED",
-                    "Показатели не согласованы: " + String.join(", ", violations));
+                    "Проверьте финансовые показатели. " + String.join(". ", violations) + ".");
         }
         if (!new HashSet<>(command.documentReferences()).equals(new HashSet<>(statement.sourceDocumentReferences()))
                 || command.documentReferences().size() != statement.sourceDocumentReferences().size()) {
@@ -256,11 +256,13 @@ public class FinancialStatementService {
 
     static ApplicationException incomplete(List<String> missing) {
         return new ApplicationException(ErrorKind.UNPROCESSABLE, "FINANCIAL_VALUES_INCOMPLETE",
-                "Не заполнены показатели: " + String.join(", ", missing));
+                "Заполните финансовые показатели: " + String.join(", ", missing.stream()
+                        .map(name -> FinancialField.fromWire(name).map(FinancialField::displayName)
+                                .orElse("Финансовый показатель")).toList()));
     }
 
     static ApplicationException documentReferencesMismatch() {
         return new ApplicationException(
-                ErrorKind.UNPROCESSABLE, "DOCUMENT_REFERENCES_MISMATCH", "Ссылки на документы не совпадают");
+                ErrorKind.UNPROCESSABLE, "DOCUMENT_REFERENCES_MISMATCH", "Документы изменились после сохранения. Откройте их заново и подтвердите актуальные данные");
     }
 }

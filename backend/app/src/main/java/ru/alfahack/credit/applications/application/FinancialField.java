@@ -25,6 +25,19 @@ public enum FinancialField {
         return wireName;
     }
 
+    public String displayName() {
+        return switch (this) {
+            case TOTAL_ASSETS -> "Все активы";
+            case TOTAL_LIABILITIES -> "Все обязательства";
+            case CURRENT_ASSETS -> "Оборотные активы";
+            case CURRENT_LIABILITIES -> "Краткосрочные обязательства";
+            case EQUITY -> "Собственный капитал";
+            case REVENUE -> "Выручка";
+            case NET_PROFIT -> "Чистая прибыль";
+            case EBIT -> "Прибыль до уплаты процентов и налогов";
+        };
+    }
+
     public static Optional<FinancialField> fromWire(String name) {
         return Arrays.stream(values()).filter(field -> field.wireName.equals(name)).findFirst();
     }

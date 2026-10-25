@@ -1,0 +1,6 @@
+# Shared, tested CPU numerical stack; compatible with Risk and E5.
+numpy==2.2.6
+scipy==1.15.3
+scikit-learn==1.6.1
+joblib==1.6.0
+safetensors==0.5.3

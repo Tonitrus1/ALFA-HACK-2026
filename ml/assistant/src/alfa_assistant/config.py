@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     llm_temperature: float = Field(0.2, ge=0, le=2)
     llm_max_tokens: int = Field(1000, ge=1, le=1000)
     llm_reasoning: bool = False
+    llm_reasoning_options: bool = True
     llm_input_rub_per_million: float | None = None
     llm_output_rub_per_million: float | None = None
     system_prompt_path: Path = Path("prompts/system.txt")

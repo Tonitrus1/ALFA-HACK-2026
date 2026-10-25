@@ -41,17 +41,17 @@ public record FinancialValues(
      */
     public List<String> invariantViolations() {
         if (!missing().isEmpty()) {
-            return List.of("incomplete");
+            return List.of("Заполните все финансовые показатели");
         }
         ArrayList<String> violations = new ArrayList<>();
         if (totalAssetsMinor <= 0) {
-            violations.add("totalAssetsMinor>0");
+            violations.add("Сумма активов должна быть больше нуля");
         }
         if (currentAssetsMinor > totalAssetsMinor) {
-            violations.add("currentAssetsMinor<=totalAssetsMinor");
+            violations.add("Оборотные активы не могут превышать сумму всех активов");
         }
         if (currentLiabilitiesMinor > totalLiabilitiesMinor) {
-            violations.add("currentLiabilitiesMinor<=totalLiabilitiesMinor");
+            violations.add("Краткосрочные обязательства не могут превышать сумму всех обязательств");
         }
         BigDecimal assets = BigDecimal.valueOf(totalAssetsMinor);
         BigDecimal difference = assets
@@ -62,7 +62,7 @@ public record FinancialValues(
                 .setScale(0, RoundingMode.HALF_UP)
                 .max(BigDecimal.valueOf(100));
         if (difference.compareTo(tolerance) > 0) {
-            violations.add("totalAssetsMinor=totalLiabilitiesMinor+equityMinor");
+            violations.add("Сумма активов должна совпадать с суммой всех обязательств и собственного капитала. Проверьте эти три показателя");
         }
         return List.copyOf(violations);
     }

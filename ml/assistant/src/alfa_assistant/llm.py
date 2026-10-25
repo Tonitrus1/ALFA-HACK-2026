@@ -45,7 +45,7 @@ class OpenAICompatibleLLM:
                 extra_body={
                     "reasoning": {"enabled": self.settings.llm_reasoning, "exclude": True},
                     "chat_template_kwargs": {"enable_thinking": self.settings.llm_reasoning},
-                },
+                } if self.settings.llm_reasoning_options else {},
             )
         except APIStatusError as exc:
             code = {

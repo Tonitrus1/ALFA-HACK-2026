@@ -86,7 +86,7 @@ export function Assistant() {
             {history.data?.map((m) => (
               <article className={'chat-message ' + m.role} key={m.id}>
                 <span className="eyebrow">{m.role === 'user' ? 'ВЫ' : 'ПОМОЩНИК'}</span>
-                <p>{m.revoked ? 'Ответ скрыт: источник больше недоступен.' : m.text}</p>
+                <p style={{whiteSpace:'pre-wrap'}}>{m.revoked ? 'Ответ скрыт: источник больше недоступен.' : m.text}</p>
                 {!m.revoked && m.state === 'SEARCH_ONLY' && (
                   <p className="muted">Доступен только поиск по источникам.</p>
                 )}
@@ -122,6 +122,12 @@ export function Assistant() {
               rows={2}
               maxLength={2000}
               {...form.register('text', { required: true, maxLength: 2000 })}
+              onKeyDown={event=>{
+                if(event.key==='Enter' && !event.shiftKey && !event.nativeEvent.isComposing){
+                  event.preventDefault();
+                  if(!pending && !event.repeat)event.currentTarget.form?.requestSubmit();
+                }
+              }}
             />
             {pending ? (
               <Button
@@ -139,7 +145,7 @@ export function Assistant() {
             )}
           </form>
           <small className="muted">
-            Ответ может содержать ошибки. Проверяйте источники. Лимит ожидания — 65 секунд.
+            Enter — отправить, Shift + Enter — новая строка. Ответ может содержать ошибки. Проверяйте источники.
           </small>
         </Panel>
         <Panel className="assistant-rules">

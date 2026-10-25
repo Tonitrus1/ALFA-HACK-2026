@@ -1,4 +1,5 @@
 import type { Session } from '../types/domain';
+import { userMessage } from '../lib/userMessage';
 export class ApiError extends Error {
   constructor(
     public status: number,
@@ -49,20 +50,23 @@ export function retryDelay(value: string | null): number {
   return /^\d+$/.test(value) ? Number(value) * 1000 : Math.max(0, Date.parse(value) - Date.now());
 }
 export async function responseError(response: Response, file = false): Promise<ApiError> {
-  let detail: { message?: string; fields?: Record<string, string> } = {};
+  let detail: { message?: string; fields?: Record<string, string>; fieldErrors?: {field:string;message:string}[] } = {};
   if (!file && response.headers.get('content-type')?.includes('json')) {
     try {
-      detail = await response.json();
+      const parsed:unknown=await response.json();
+      if(parsed && typeof parsed==='object' && !Array.isArray(parsed))detail=parsed as typeof detail;
     } catch {
       /* Безопасное стандартное сообщение */
     }
   }
+  const fields=detail.fields && typeof detail.fields==='object' && !Array.isArray(detail.fields)?{...detail.fields}:{};
+  if(Array.isArray(detail.fieldErrors))for(const error of detail.fieldErrors){
+    if(error && typeof error.field==='string')fields[error.field]=error.message;
+  }
   return new ApiError(
     response.status,
-    detail.message ??
-      messages[response.status] ??
-      (file ? 'Не удалось получить файл' : 'Не удалось выполнить запрос'),
-    detail.fields,
+    userMessage(detail.message,messages[response.status]??(file ? 'Не удалось получить файл' : 'Не удалось выполнить запрос')),
+    Object.fromEntries(Object.entries(fields).map(([key,message])=>[key,userMessage(message,'Проверьте значение этого поля')])),
     retryDelay(response.headers.get('Retry-After')),
   );
 }

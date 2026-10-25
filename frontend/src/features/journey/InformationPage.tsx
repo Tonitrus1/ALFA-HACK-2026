@@ -7,6 +7,7 @@ import { ApiError, context } from '../../shared/api/http';
 import { api } from '../../shared/api/client';
 import type { Finance, FinanceKey, InformationRequest } from '../../shared/types/domain';
 import { financeFields } from '../../shared/types/domain';
+import { userMessage } from '../../shared/lib/userMessage';
 import { RetainedResource } from '../../shared/lib/retainedResource';
 import type { SaveState } from '../../shared/lib/autosave';
 import { DocumentUploader } from '../documents/Documents';
@@ -115,7 +116,7 @@ function InformationForm({ request: r }: { request: InformationRequest }) {
         title="Один ответ — и движемся дальше"
         description={`Ответьте до ${new Date(r.dueAt).toLocaleDateString('ru-RU')}. Новая заявка не создаётся.`}
       />
-      <Alert type="info" className="mb" message="Что нужно уточнить" description={r.message} />
+      <Alert type="info" className="mb" message="Что нужно уточнить" description={userMessage(r.message,'Проверьте данные, отмеченные в запросе, и отправьте уточнения.')} />
       <Panel>
         <form onSubmit={send}>
           <div className="spread">
@@ -166,7 +167,7 @@ function InformationForm({ request: r }: { request: InformationRequest }) {
             Подтверждаю уточнённые сведения
           </label>
           {form.formState.errors.confirmed && (
-            <p className="field-error">{form.formState.errors.confirmed.message}</p>
+            <p className="field-error">Подтвердите проверенные финансовые показатели</p>
           )}
           {!!error && (
             <div className="mt">

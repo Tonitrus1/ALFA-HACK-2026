@@ -13,7 +13,15 @@ SELECT sha256 FROM public.ml_deployment_migration WHERE name=:'name';
 SQL
 )
   if [ -n "$previous" ]; then
-    [ "$previous" = "$checksum" ] || { echo "Applied ML migration checksum changed: $name" >&2; exit 1; }
+    if [ "$previous" != "$checksum" ]; then
+      # Older Windows installations recorded CRLF bytes. Accept only the exact
+      # CRLF rendering of this same LF migration, never arbitrary edited SQL.
+      legacy_checksum=$(sed 's/$/\r/' "$migration" | sha256sum | cut -d ' ' -f 1)
+      [ "$previous" = "$legacy_checksum" ] || { echo "Applied ML migration checksum changed: $name" >&2; exit 1; }
+      psql -h ml-db -U ml_admin -d credit_ml -v ON_ERROR_STOP=1 -v name="$name" -v checksum="$checksum" <<'SQL'
+UPDATE public.ml_deployment_migration SET sha256=:'checksum' WHERE name=:'name';
+SQL
+    fi
   else
     { echo BEGIN\;; cat "$migration"; printf "\nINSERT INTO public.ml_deployment_migration VALUES ('%s','%s');\nCOMMIT;\n" "$name" "$checksum"; } |
       psql -h ml-db -U ml_admin -d credit_ml -v ON_ERROR_STOP=1

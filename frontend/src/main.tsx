@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Router } from './app/Router';
 import { ApiError } from './shared/api/http';
 import './styles/app.css';
+import { userMessage } from './shared/lib/userMessage';
 const query = new QueryClient({
   defaultOptions: {
     queries: {
@@ -50,6 +51,6 @@ async function start() {
 }
 void start().catch((error) => {
   const root = document.getElementById('root')!;
-  root.textContent = error instanceof Error ? error.message : 'Не удалось запустить приложение';
+  root.textContent = userMessage(error instanceof Error ? error.message : undefined,'Не удалось открыть кабинет. Обновите страницу или попробуйте позже.');
   root.setAttribute('role', 'alert');
 });
