@@ -2,14 +2,13 @@
 
 import json
 
-from .llm import complete
+from .llm import complete, system_prompt
 from .models import ServiceError
 
 
-def context_size(contract, pages):
+def context_size(settings, contract, pages):
     return (
-        len(contract.prompt)
-        + len(json.dumps(contract.schema, ensure_ascii=False))
+        len(system_prompt(settings, contract, pages))
         + len(json.dumps([p.model_dump() for p in pages], ensure_ascii=False))
     )
 
@@ -34,18 +33,18 @@ def chunks(settings, contract, pages):
                 ]
             else:
                 candidate = [*batch, page.model_copy(update={"blocks": [block]})]
-            if context_size(contract, candidate) > limit:
+            if context_size(settings, contract, candidate) > limit:
                 if not batch:
                     raise ServiceError("LLM_CONTEXT_LIMIT", 413)
                 yield batch
                 batch = [page.model_copy(update={"blocks": [block]})]
-                if context_size(contract, batch) > limit:
+                if context_size(settings, contract, batch) > limit:
                     raise ServiceError("LLM_CONTEXT_LIMIT", 413)
             else:
                 batch = candidate
         if not page.blocks:
             candidate = [*batch, page]
-            if context_size(contract, candidate) > limit:
+            if context_size(settings, contract, candidate) > limit:
                 if batch:
                     yield batch
                 batch = [page]

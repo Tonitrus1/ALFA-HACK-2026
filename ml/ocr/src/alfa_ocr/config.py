@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     llm_base_url: str = "https://api.aitunnel.ru/v1"
     llm_model: str = "deepseek-v4.1-flash-1017"
     llm_response_format: Literal["json_object", "json_schema"] = "json_object"
+    llm_compact_schema: bool = False
     llm_reasoning: bool = False
     llm_reasoning_options: bool = True
     llm_timeout_seconds: float = Field(120, gt=0, le=300)

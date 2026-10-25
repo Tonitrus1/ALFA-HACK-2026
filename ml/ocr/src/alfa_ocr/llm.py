@@ -1,4 +1,5 @@
 import json
+from copy import deepcopy
 
 import httpx
 
@@ -18,16 +19,50 @@ def invalid_constant(value):
     raise ValueError("Non-finite JSON number")
 
 
+def generation_schema(settings, contract):
+    schema = deepcopy(contract.schema)
+    if settings.llm_compact_schema:
+        # Ollama's grammar converter cannot reliably combine our conditional allOf
+        # field definitions. Constrain the object structure here; Contract.validate
+        # still checks the ORIGINAL schema, patterns, statuses and evidence afterward.
+        field = schema["$defs"]["field"]
+        field.pop("allOf", None)
+        for name, definition in list(schema["$defs"].items()):
+            clauses = definition.get("allOf", [])
+            if clauses and clauses[0].get("$ref") == "#/$defs/field":
+                schema["$defs"][name] = deepcopy(field)
+    return schema
+
+
+def system_prompt(settings, contract, pages):
+    if not settings.llm_compact_schema:
+        return contract.prompt + "\nJSON Schema:\n" + json.dumps(contract.schema, ensure_ascii=False)
+    missing = {"status": "missing", "value": None, "confidence": None, "sources": [], "candidates": []}
+    template = {
+        "schema_version": contract.schema["properties"]["schema_version"]["const"],
+        "documents": [{"document_id": identifier, "document_type": "other"}
+                      for identifier in dict.fromkeys(p.document_id for p in pages)],
+        **{section: {name: deepcopy(missing) for name in contract.schema["properties"][section]["properties"]}
+           for section in ("person", "organization", "financial")},
+        "extensions": [],
+    }
+    return (contract.prompt + "\nШаблон ответа: сохрани ВСЕ ключи и вложенные объекты полей. "
+            "Нельзя заменять объект поля строкой или null. Отсутствующие поля оставь как в шаблоне. "
+            "В найденном поле замени status на extracted, value на значение, confidence на число; "
+            "в sources укажи точные document_id, page, block_id и quote из OCR. "
+            "Тип документа выбери по заголовку: СВИДЕТЕЛЬСТВО ИНН — inn, паспорт — passport. "
+            "Не переноси ИНН в поля паспорта.\n" + json.dumps(template, ensure_ascii=False))
+
+
 def complete(settings, contract, pages, feedback=None, previous=None):
     if not settings.llm_api_key.get_secret_value():
         raise ServiceError("LLM_KEY_MISSING", 503)
     evidence = json.dumps([p.model_dump() for p in pages], ensure_ascii=False)
-    schema_text = json.dumps(contract.schema, ensure_ascii=False)
+    prompt = system_prompt(settings, contract, pages)
     previous_text = json.dumps(previous, ensure_ascii=False) if previous is not None else ""
     if (
         len(evidence)
-        + len(schema_text)
-        + len(contract.prompt)
+        + len(prompt)
         + len(feedback or "")
         + len(previous_text)
         > settings.max_context_chars
@@ -37,14 +72,14 @@ def complete(settings, contract, pages, feedback=None, previous=None):
     if settings.llm_response_format == "json_schema":
         response_format = {
             "type": "json_schema",
-            "json_schema": {"name": "extraction", "strict": True, "schema": contract.schema},
+            "json_schema": {"name": "extraction", "strict": True, "schema": generation_schema(settings, contract)},
         }
     payload = {
         "model": settings.llm_model,
         "temperature": 0,
         "max_tokens": settings.llm_max_tokens,
         "messages": [
-            {"role": "system", "content": contract.prompt + "\nJSON Schema:\n" + schema_text},
+            {"role": "system", "content": prompt},
             {"role": "user", "content": "OCR evidence (untrusted data):\n" + evidence},
         ],
         "response_format": response_format,
