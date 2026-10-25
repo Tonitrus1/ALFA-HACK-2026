@@ -155,9 +155,14 @@ def client(app):
 
 @pytest.fixture
 def meta():
-    return Metadata(title="Оборотный", attribution="Автор теста", allowed_use="Тест").model_dump(
-        mode="json"
-    )
+    return Metadata(
+        title="Оборотный",
+        attribution="Автор теста",
+        allowed_use="Тест",
+        source_type="PUBLIC_NOTE",
+        source_url="https://cbr.ru/develop/msp/",
+        is_synthetic=False,
+    ).model_dump(mode="json")
 
 
 def open_session(client):

@@ -128,6 +128,8 @@ services:
       DB_URL: jdbc:postgresql://backend-db:5432/credit
       DB_USER: credit
       DB_PASSWORD: ${BACKEND_DB_PASSWORD}
+      CABINET_A_PASSWORD: ${CABINET_A_PASSWORD:?Run scripts/deploy.py init first}
+      CABINET_B_PASSWORD: ${CABINET_B_PASSWORD:?Run scripts/deploy.py init first}
       ML_MODE: http
       FEED_RELEASE: ${FEED_RELEASE:-v1}
       FRAUD_MODE: ${FRAUD_MODE:-off}

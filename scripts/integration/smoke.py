@@ -3,6 +3,7 @@
 import argparse
 import http.cookiejar
 import json
+import os
 from pathlib import Path
 import time
 import urllib.error
@@ -32,10 +33,14 @@ class Client:
             raise AssertionError(f'{method} {path}: unexpected HTTP {e.code}') from None
     def login(self,account='representative-a',company='company-a'):
         for _ in range(90):
-            try:self.call('/demo/api/v1/accounts');break
+            try:self.call('/api/v1/session',expected=401);break
             except (OSError,AssertionError):time.sleep(1)
         else:raise RuntimeError('Public gateway/backend readiness timeout')
-        self.session=self.call('/demo/api/v1/session','POST',{'accountId':account})
+        settings = dict(line.split('=',1) for line in (ROOT/'.env').read_text().splitlines()
+                        if '=' in line and not line.lstrip().startswith('#'))
+        key = 'CABINET_B_PASSWORD' if account == 'representative-b' else 'CABINET_A_PASSWORD'
+        self.session=self.call('/api/v1/auth/login','POST',{'login':'company-b' if account == 'representative-b' else 'company-a',
+                                                         'password':os.environ.get(key,settings[key])})
         self.session=self.call('/api/v1/session/company','POST',{'companyId':company})
 
 def main():
@@ -43,7 +48,7 @@ def main():
     p.add_argument('--replay',action='store_true');p.add_argument('--expect-feed',choices=['MODEL','RULES'],default='MODEL');p.add_argument('--risk-outage',action='store_true')
     a=p.parse_args();c=Client(a.base)
     for _ in range(90):
-        try:c.call('/demo/api/v1/accounts');break
+        try:c.call('/api/v1/session',expected=401);break
         except (OSError,AssertionError):time.sleep(1)
     else:raise RuntimeError('Backend did not become ready')
     c.login();statefile=ROOT/'.local/smoke-state.json';report={'status':'PASS','checks':[]}

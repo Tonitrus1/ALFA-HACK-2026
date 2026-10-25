@@ -1,7 +1,14 @@
 import { test, expect, type Page } from '@playwright/test';
+import { readFileSync } from 'node:fs';
+const installation = Object.fromEntries(readFileSync(new URL('../../.env', import.meta.url), 'utf8')
+ .split(/\r?\n/).filter(line=>line.includes('=') && !line.trimStart().startsWith('#'))
+ .map(line=>[line.slice(0,line.indexOf('=')),line.slice(line.indexOf('=')+1)]));
 const finance={totalAssets:'1000000',totalLiabilities:'400000',currentAssets:'500000',currentLiabilities:'200000',equity:'600000',revenue:'3000000',netProfit:'100000',ebit:'150000'};
 async function login(page:Page,account='representative-a'){
- await page.goto('/login');await page.locator('#name').selectOption(account);await page.getByRole('button',{name:'Войти в кабинет'}).click();await expect(page.getByRole('heading',{name:'От имени какой компании работаем?'})).toBeVisible();await page.getByRole('button',{name:/Перейти в кабинет|Активная компания/}).first().click();await expect(page.getByRole('heading',{name:/Добрый день/})).toBeVisible();
+ const b=account==='representative-b';
+ await page.goto('/login');await page.getByLabel('Логин',{exact:true}).fill(b?'company-b':'company-a');
+ await page.getByLabel('Пароль',{exact:true}).fill(process.env[b?'CABINET_B_PASSWORD':'CABINET_A_PASSWORD']??installation[b?'CABINET_B_PASSWORD':'CABINET_A_PASSWORD']);
+ await page.getByRole('button',{name:'Войти в кабинет'}).click();await expect(page.getByRole('heading',{name:/Добрый день/})).toBeVisible();
 }
 async function create(page:Page,preliminary?:string){
  await page.goto('/needs');await page.getByRole('button',{name:'Продолжить',exact:true}).click();await page.locator('#amount').fill('500000');await page.getByRole('button',{name:'Подобрать варианты'}).click();await page.getByRole('link',{name:'Подробнее'}).first().click();await page.getByRole('button',{name:/Перейти к заявке/}).click();await expect(page.locator('#businessAgeMonths')).toBeVisible();
@@ -16,6 +23,20 @@ async function create(page:Page,preliminary?:string){
  await page.getByRole('button',{name:/Проверить заявку/}).click();
  await page.getByRole('checkbox',{name:/Я проверил сведения/}).check();await page.getByRole('button',{name:/Отправить на рассмотрение/}).click();await expect(page).toHaveURL(new RegExp(`/applications/${id}/status`));return id;
 }
+test('password login rejects incorrect credentials and opens only the account company',async({page})=>{
+ await page.goto('/login');
+ await expect(page.getByRole('combobox')).toHaveCount(0);
+ await page.getByLabel('Логин',{exact:true}).fill('company-a');
+ await page.getByLabel('Пароль',{exact:true}).fill('incorrect-password');
+ await page.getByRole('button',{name:'Войти в кабинет'}).click();
+ await expect(page.getByText(/Неверный логин или пароль/)).toBeVisible();
+ await expect(page).toHaveURL(/\/login$/);
+ await login(page);
+ await expect(page.getByRole('heading',{name:/Добрый день/})).toBeVisible();
+ const foreign=await page.request.get('/api/v1/companies/company-b');expect(foreign.status()).toBe(404);
+ await page.reload();await expect(page.getByRole('heading',{name:/Добрый день/})).toBeVisible();
+ await expect(page.getByText('Здесь появится ваша первая заявка',{exact:true})).toBeVisible();
+});
 test('existing UI → real backend → real Risk → offer acceptance and completion',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await login(page);const id=await create(page);
  await expect(page.getByRole('heading',{name:'Предложение готово'})).toBeVisible({timeout:30000});await page.getByRole('link',{name:'Посмотреть предложение'}).click();

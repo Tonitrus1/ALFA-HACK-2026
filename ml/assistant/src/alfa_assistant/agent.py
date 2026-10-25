@@ -71,7 +71,7 @@ class Agent:
         try:
             async with asyncio.timeout(self.settings.turn_deadline_seconds):
                 active = await self.run_sync(
-                    lambda: {v["id"] for v in self.kb.repo.active_versions()}
+                    lambda: {v["id"] for v in self.kb.answer_versions()}
                 )
                 kept_turns, kept_versions = [], []
                 for i, old_turn in enumerate(session.turns):
@@ -173,7 +173,7 @@ class Agent:
         valid = await self.run_sync(lambda: self.kb.filter_sources(list(state["sources"].values())))
         by_id = {s["id"]: s for s in valid}
         active_versions = await self.run_sync(
-            lambda: {v["id"] for v in self.kb.repo.active_versions()}
+            lambda: {v["id"] for v in self.kb.answer_versions()}
         )
         if len(valid) != len(state["sources"]) or not state["versions_seen"].issubset(
             active_versions

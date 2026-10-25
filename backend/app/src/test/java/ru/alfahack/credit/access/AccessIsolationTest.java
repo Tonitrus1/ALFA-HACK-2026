@@ -36,10 +36,10 @@ class AccessIsolationTest {
     }
 
     Login login(String accountId) throws Exception {
-        MvcResult result = mvc.perform(post("/demo/api/v1/session")
+        MvcResult result = mvc.perform(post("/api/v1/auth/login")
                         .header("Origin", ORIGIN)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"accountId\":\"" + accountId + "\"}"))
+                        .content(ru.alfahack.credit.support.DemoClient.credentials(accountId)))
                 .andExpect(status().isOk())
                 .andExpect(header().string("Cache-Control", "no-store"))
                 .andReturn();
@@ -53,32 +53,72 @@ class AccessIsolationTest {
     }
 
     @Test
-    void demoAccountsListRepresentativesOnly() throws Exception {
+    void profileSelectionEndpointsAreRemoved() throws Exception {
         mvc.perform(get("/demo/api/v1/accounts"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.items[*].accountId").value(
-                        org.hamcrest.Matchers.containsInAnyOrder("representative-a", "representative-b")));
-    }
-
-    @Test
-    void operatorCannotLoginAsRepresentative() throws Exception {
-        mvc.perform(post("/demo/api/v1/session")
-                        .header("Origin", ORIGIN)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"accountId\":\"operator-demo\"}"))
+                .andExpect(status().isNotFound());
+        mvc.perform(post("/demo/api/v1/session").header("Origin", ORIGIN)
+                .contentType(MediaType.APPLICATION_JSON).content("{\"accountId\":\"representative-a\"}"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
+    void operatorCannotLoginAsRepresentative() throws Exception {
+        mvc.perform(post("/api/v1/auth/login")
+                        .header("Origin", ORIGIN)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"login\":\"operator-demo\",\"password\":\"unknown\"}"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void wrongPasswordAndUnknownLoginDoNotIssueSessions() throws Exception {
+        for (String name : new String[]{"company-a", "missing-account"}) {
+            mvc.perform(post("/api/v1/auth/login").header("Origin", ORIGIN)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"login\":\"" + name + "\",\"password\":\"incorrect\"}"))
+                    .andExpect(status().isUnauthorized())
+                    .andExpect(jsonPath("$.code").value("INVALID_CREDENTIALS"))
+                    .andExpect(header().doesNotExist("Set-Cookie"));
+        }
+        login("representative-a");
+        String hash = jdbc.sql("SELECT password_hash FROM access.credential WHERE login='company-a'")
+                .query(String.class).single();
+        assertThat(hash).startsWith("pbkdf2-sha256$").doesNotContain("TestCabinet-A-2026!");
+    }
+
+    @Test
+    void repeatedFailuresTemporarilyBlockPasswordLogin() throws Exception {
+        jdbc.sql("UPDATE access.credential SET failed_attempts=0,locked_until=NULL WHERE login='company-b'").update();
+        try {
+            for (int i = 0; i < 5; i++) {
+                mvc.perform(post("/api/v1/auth/login").header("Origin", ORIGIN)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"login\":\"company-b\",\"password\":\"incorrect\"}"))
+                        .andExpect(status().isUnauthorized());
+            }
+            mvc.perform(post("/api/v1/auth/login").header("Origin", ORIGIN)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(ru.alfahack.credit.support.DemoClient.credentials("representative-b")))
+                    .andExpect(status().isUnauthorized());
+            jdbc.sql("UPDATE access.credential SET locked_until=now()-interval '1 minute' WHERE login='company-b'").update();
+            login("representative-b");
+            assertThat(jdbc.sql("SELECT failed_attempts FROM access.credential WHERE login='company-b'")
+                    .query(Integer.class).single()).isZero();
+        } finally {
+            jdbc.sql("UPDATE access.credential SET failed_attempts=0,locked_until=NULL WHERE login='company-b'").update();
+        }
+    }
+
+    @Test
     void loginRequiresExactOrigin() throws Exception {
-        mvc.perform(post("/demo/api/v1/session")
+        mvc.perform(post("/api/v1/auth/login")
                         .header("Origin", "http://evil.example")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"accountId\":\"representative-a\"}"))
+                        .content(ru.alfahack.credit.support.DemoClient.credentials("representative-a")))
                 .andExpect(status().isForbidden());
-        mvc.perform(post("/demo/api/v1/session")
+        mvc.perform(post("/api/v1/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"accountId\":\"representative-a\"}"))
+                        .content(ru.alfahack.credit.support.DemoClient.credentials("representative-a")))
                 .andExpect(status().isForbidden());
     }
 
@@ -185,11 +225,11 @@ class AccessIsolationTest {
     @Test
     void reloginRevokesPreviousBrowserSession() throws Exception {
         Login first = login("representative-a");
-        MvcResult second = mvc.perform(post("/demo/api/v1/session")
+        MvcResult second = mvc.perform(post("/api/v1/auth/login")
                         .cookie(first.cookie())
                         .header("Origin", ORIGIN)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"accountId\":\"representative-a\"}"))
+                        .content(ru.alfahack.credit.support.DemoClient.credentials("representative-a")))
                 .andExpect(status().isOk())
                 .andReturn();
 

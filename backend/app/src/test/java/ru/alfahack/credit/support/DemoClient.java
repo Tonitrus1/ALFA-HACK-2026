@@ -16,10 +16,10 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 public record DemoClient(Cookie cookie, String csrf, long contextVersion, String companyId) {
 
     public static DemoClient login(MockMvc mvc, String accountId) throws Exception {
-        MvcResult result = mvc.perform(post("/demo/api/v1/session")
+        MvcResult result = mvc.perform(post("/api/v1/auth/login")
                         .header("Origin", "http://localhost:5173")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"accountId\":\"" + accountId + "\"}"))
+                        .content(credentials(accountId)))
                 .andExpect(status().isOk())
                 .andReturn();
         String body = result.getResponse().getContentAsString();
@@ -28,6 +28,12 @@ public record DemoClient(Cookie cookie, String csrf, long contextVersion, String
                 JsonPath.read(body, "$.csrfToken"),
                 ((Number) JsonPath.read(body, "$.contextVersion")).longValue(),
                 JsonPath.read(body, "$.companyId"));
+    }
+
+    public static String credentials(String accountId) {
+        boolean b = accountId.equals("representative-b");
+        return "{\"login\":\"company-" + (b ? "b" : "a") + "\",\"password\":\"TestCabinet-"
+                + (b ? "B" : "A") + "-2026!\"}";
     }
 
     /** Cookie, CSRF и X-Company-Context. */

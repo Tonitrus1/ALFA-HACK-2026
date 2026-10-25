@@ -27,6 +27,8 @@ class CompositionRootTest {
         // Аргументы командной строки, а не default properties: они перекрывают application.yml.
         String[] base = {
                 "--spring.datasource.password=unused",
+                "--credit.auth.company-a-password=TestCabinet-A-2026!",
+                "--credit.auth.company-b-password=TestCabinet-B-2026!",
                 "--credit.scheduling.enabled=false",
                 "--credit.objects.root=" + System.getProperty("java.io.tmpdir") + "/credit-test-objects"};
         String[] properties = new String[base.length + extra.length];

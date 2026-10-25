@@ -114,13 +114,24 @@ async function saveInformation(r:InformationRequest) {
 }
 type WireOffer={offerId:string;applicationId:string;version:number;status:Offer['status'];amount:{amountMinor:number};termMonths:number;termsDisclosure:string;validUntil:string};
 async function offer(id:string):Promise<Offer>{const w=await request<WireOffer>('/api/v1/offers/'+enc(id));return {id:w.offerId,applicationId:w.applicationId,version:w.version,status:w.status,amount:String(w.amount.amountMinor),months:w.termMonths,rate:'См. условия',termsDisclosure:referenceText(w.termsDisclosure),expiresAt:w.validUntil};}
-type AssistantResponse={message_id:string;status:AssistantMessage['state'];answer:string;citations:{title:string;type:string;document_id?:string;version?:number;url?:string;metadata?:{source_url?:string}}[]};
-function assistantMessage(r:AssistantResponse,conversationId:string):AssistantMessage{return {id:r.message_id,role:'assistant',text:r.answer,state:r.status,sources:r.citations.map(c=>({title:c.title,href:c.type==='KNOWLEDGE'?`/assistant/${enc(conversationId)}/sources/${enc(c.document_id!)}/${c.version}`:c.url!}))};}
+type AssistantResponse={message_id:string;status:AssistantMessage['state'];answer:string;citations:{title:string;type:string;document_id?:string;version?:number;url?:string;metadata?:{source_url?:string;source_type?:string;is_synthetic?:boolean}}[]};
+function assistantMessage(r:AssistantResponse):AssistantMessage {
+  const hidden = r.citations.some(c => c.type === 'KNOWLEDGE' &&
+    (c.metadata?.is_synthetic !== false || !['PUBLIC_NOTE', 'WEB'].includes(c.metadata?.source_type ?? '')));
+  return {
+    id: r.message_id, role: 'assistant',
+    text: hidden ? 'Ответ скрыт: источник больше недоступен.' : r.answer,
+    state: hidden ? 'INSUFFICIENT_EVIDENCE' : r.status,
+    sources: hidden ? [] : r.citations.flatMap(c => {
+      const href = c.type === 'KNOWLEDGE' ? c.metadata?.source_url : c.url;
+      return href ? [{ title: c.title, href }] : [];
+    }),
+  };
+}
 async function stableAssistant(id:string,text:string,signal:AbortSignal){return request<AssistantResponse>('/api/v1/assistant/conversations/'+enc(id)+'/messages',{method:'POST',signal,body:json({clientMessageId:crypto.randomUUID(),text})});}
 export const api={
-  accounts:()=>request<{items:{accountId:string;displayName:string}[]}>('/demo/api/v1/accounts').then(p=>p.items.map(a=>({...a,displayName:referenceText(a.displayName)}))),
   session,companies,
-  login:async(accountId:string)=>session(await request<WireSession>('/demo/api/v1/session',{method:'POST',body:json({accountId})})),
+  login:async(login:string,password:string)=>session(await request<WireSession>('/api/v1/auth/login',{method:'POST',body:json({login:login.trim(),password})})),
   logout:()=>request<void>('/api/v1/session/logout',{method:'POST'}),
   selectCompany:async(companyId:string)=>session(await request<WireSession>('/api/v1/session/company',{method:'POST',body:json({companyId})})),
   needs:async(need:Need)=>{pendingNeed={company:context.get()?.companyId??'',need};return need;},
@@ -163,9 +174,9 @@ export const api={
   notices:()=>unsupported<Notice[]>(),readNotice:(_id:string)=>unsupported<void>(),
   conversation:async(id:string)=>{
     const h=await request<{messages:{client_message_id:string;message:string;response?:AssistantResponse}[]}>('/api/v1/assistant/conversations/'+enc(id)+'/messages');
-    return h.messages.flatMap(m=>[{id:m.client_message_id,role:'user' as const,text:m.message},...(m.response?[assistantMessage(m.response,id)]:[])]);
+    return h.messages.flatMap(m=>[{id:m.client_message_id,role:'user' as const,text:m.message},...(m.response?[assistantMessage(m.response)]:[])]);
   },
-  ask:async(id:string,text:string,signal:AbortSignal)=>assistantMessage(await stableAssistant(id,text,signal),id),
+  ask:async(id:string,text:string,signal:AbortSignal)=>assistantMessage(await stableAssistant(id,text,signal)),
   preferences:()=>request<Preferences>('/api/v1/feed/preferences?'+companyQuery()),
   savePreferences:(p:Preferences)=>request<Preferences>('/api/v1/feed/preferences?'+companyQuery(),{method:'PUT',body:json(p)}),
   feed:(cursor?:string)=>request<Feed>('/api/v1/feed?'+companyQuery()+(cursor?'&cursor='+enc(cursor):'')),

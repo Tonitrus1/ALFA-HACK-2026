@@ -243,12 +243,22 @@ class KnowledgeService:
 
     def filter_sources(self, sources):
         with self.lock:
-            active = {v["id"] for v in self.repo.active_versions()}
+            active = {v["id"] for v in self.answer_versions()}
             return [s for s in sources if s["type"] != "KNOWLEDGE" or s["version_id"] in active]
+
+    def answer_versions(self):
+        """Only public materials may ground user answers; demo fixtures stay administrative."""
+        return [
+            v
+            for v in self.repo.active_versions()
+            if v["metadata"].get("source_type") in {"PUBLIC_NOTE", "WEB"}
+            and v["metadata"].get("is_synthetic") is False
+        ]
 
     def search(self, query):
         with self.lock:
-            chunks = self.repo.active_chunks()
+            active = {v["id"] for v in self.answer_versions()}
+            chunks = [c for c in self.repo.active_chunks() if c["version_id"] in active]
             if not chunks:
                 return []
             by_id = {c["id"]: c for c in chunks}

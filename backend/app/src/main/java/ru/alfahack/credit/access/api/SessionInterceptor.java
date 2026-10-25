@@ -32,6 +32,7 @@ class SessionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        if (request.getMethod().equals("POST") && request.getRequestURI().equals("/api/v1/auth/login")) return true;
         AuthenticatedSession session = SessionCookies.read(request)
                 .flatMap(sessions::authenticate)
                 .orElseThrow(() -> new ApplicationException(

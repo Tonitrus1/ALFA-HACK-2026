@@ -107,7 +107,7 @@ export async function request<T>(path: string, init: RequestInit = {}, file = fa
     if (!response.ok) {
       const error = await responseError(response, file);
       if (error.retryAfter > 0) backoffs.set(path, Date.now() + error.retryAfter);
-      if (response.status === 401 && session) window.dispatchEvent(new Event('session-expired'));
+      if (response.status === 401 && session && path !== '/api/v1/auth/login') window.dispatchEvent(new Event('session-expired'));
       throw error;
     }
     if (ownGeneration !== generation) throw new DOMException('Контекст изменился', 'AbortError');

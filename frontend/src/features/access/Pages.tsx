@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
-import { Alert, Button } from 'antd';
+import { Button } from 'antd';
 import { ArrowRight, Building2, Check } from 'lucide-react';
 import { api } from '../../shared/api/client';
 import { useSession } from '../../app/session';
@@ -10,13 +10,13 @@ import { Disclosure, ErrorState, Field, PageTitle } from '../../shared/ui/common
 export function Login() {
   const { setSession } = useSession(),
     navigate = useNavigate(),
-    form = useForm({ defaultValues: { name: '' } }),
-    accounts = useQuery({ queryKey: ['accounts'], queryFn: api.accounts });
+    form = useForm({ defaultValues: { login: '', password: '' } });
   const login = useMutation({
-    mutationFn: ({ name }: { name: string }) => api.login(name),
-    onSuccess: (s) => {
-      setSession(s);
-      navigate('/companies');
+    mutationFn: ({ login, password }: { login: string; password: string }) => api.login(login, password),
+    onSuccess: async (s) => {
+      await setSession(s);
+      form.reset();
+      navigate(s.companyId ? '/workspace' : '/companies');
     },
   });
   return (
@@ -49,21 +49,17 @@ export function Login() {
           <p className="muted">Войдите, чтобы продолжить путь вашего бизнеса.</p>
           <form onSubmit={form.handleSubmit((v) => login.mutate(v))}>
             <Field
-              id="name"
-              label="Представитель компании"
-              error={form.formState.errors.name?.message}
+              id="login"
+              label="Логин"
+              error={form.formState.errors.login?.message}
             >
-              <select id="name" {...form.register('name', { required: 'Выберите представителя' })}>
-                <option value="">Выберите аккаунт</option>
-                {accounts.data?.map(a => <option key={a.accountId} value={a.accountId}>{a.displayName}</option>)}
-              </select>
-              {accounts.error && <ErrorState error={accounts.error} />}
+              <input id="login" autoComplete="username" autoCapitalize="none" spellCheck={false}
+                maxLength={128} {...form.register('login', { required: 'Введите логин', validate: v => !!v.trim() || 'Введите логин' })} />
             </Field>
-            <Alert
-              type="info"
-              message="Выберите представителя компании"
-              description="После входа выберите компанию, чтобы перейти к её заявкам и предложениям."
-            />
+            <Field id="password" label="Пароль" error={form.formState.errors.password?.message}>
+              <input id="password" type="password" autoComplete="current-password" maxLength={256}
+                {...form.register('password', { required: 'Введите пароль' })} />
+            </Field>
             <Button
               type="primary"
               size="large"

@@ -38,7 +38,7 @@ Java 21, Spring Boot 4.1.1, PostgreSQL 17.11, Maven (через `./mvnw`), Flywa
 - Все `/api/v1/**` требуют сессию (401). Изменяющие методы требуют `X-CSRF-Token` (403). `X-Company-Context` сверяется с `contextVersion` до эффекта (409 `COMPANY_CONTEXT_CHANGED`).
 - Чужая компания неотличима от несуществующей (404). Для ресурсов компании другие модули используют `CompanyAccessService.requireSelectedCompany` / `requireAction`, а сессию получают параметром контроллера `AuthenticatedSession`.
 - Повышение `access.actor.auth_epoch` мгновенно отзывает все сессии участника.
-- Demo-вход (`/demo/api/v1/accounts`, `/demo/api/v1/session`) существует только в профиле `demo`; там же Flyway подключает синтетический seed `db/seed/demo`: `representative-a` → `company-a`, `representative-b` → `company-b`, `operator-demo`.
+- Вход в кабинет: `POST /api/v1/auth/login` с логином и паролем; старые маршруты выбора демопрофиля удалены. В профиле `demo` Flyway подключает seed `db/seed/demo`, а сервер создаёт аккаунты `company-a` → `representative-a` → `company-a` и `company-b` → `representative-b` → `company-b` из `CABINET_A_PASSWORD` / `CABINET_B_PASSWORD`. Пароли хранятся как солёные PBKDF2-SHA256 хеши. [Доступ и очистка кабинетов](../docs/cabinet-access.md).
 
 ## Заявки, команды и симулятор (P05)
 

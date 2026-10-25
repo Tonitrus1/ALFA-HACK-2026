@@ -85,6 +85,21 @@ class ConfigurationTests(unittest.TestCase):
         self.assertNotIn('--volumes', command)
         self.assertNotIn('-v', command)
 
+    def test_cabinet_passwords_are_distinct_private_and_preserved(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / '.env.example').write_text('CABINET_A_PASSWORD=\nCABINET_B_PASSWORD=\n')
+            deployment.configure(root)
+            first = (root / '.env').read_bytes()
+            values = dict(line.split('=', 1) for line in first.decode().splitlines())
+            self.assertNotEqual(values['CABINET_A_PASSWORD'], values['CABINET_B_PASSWORD'])
+            self.assertGreaterEqual(len(values['CABINET_A_PASSWORD']), 32)
+            handoff = root / '.local/cabinet-access.md'
+            self.assertIn(values['CABINET_A_PASSWORD'], handoff.read_text())
+            self.assertEqual(handoff.stat().st_mode & 0o777, 0o600)
+            deployment.configure(root)
+            self.assertEqual((root / '.env').read_bytes(), first)
+
 
 if __name__ == '__main__':
     unittest.main()

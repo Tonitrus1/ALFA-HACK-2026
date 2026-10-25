@@ -251,25 +251,30 @@ def create_app(settings=None, *, knowledge=None, llm=None, web_search=None, read
             "model": cfg.llm_model,
         }
 
+    async def visible_response(response):
+        if response is None:
+            return None
+        active = await run_sync(lambda: {v["id"] for v in kb().answer_versions()})
+        if any(
+            c.get("type") == "KNOWLEDGE" and c.get("version_id") not in active
+            for c in response.get("citations", [])
+        ):
+            return {
+                **response,
+                "answer": "Ответ скрыт: источник больше недоступен.",
+                "citations": [],
+                "pending_actions": [],
+                "status": "INSUFFICIENT_EVIDENCE",
+            }
+        return response
+
     @app.get("/v1/sessions/{sid}/messages")
     async def history(sid: str, authorization: str | None = Header(None)):
         s, _ = session_auth(sid, authorization)
         # Return a transcript without internal tools; revoked knowledge cannot reappear on reload.
-        active = await run_sync(lambda: {v["id"] for v in kb().repo.active_versions()})
         messages = []
         for cid, item in s.completed.items():
-            response = item.get("response")
-            if response and any(
-                c.get("type") == "KNOWLEDGE" and c.get("version_id") not in active
-                for c in response.get("citations", [])
-            ):
-                response = {
-                    **response,
-                    "answer": "Ответ скрыт: источник больше недоступен.",
-                    "citations": [],
-                    "pending_actions": [],
-                    "status": "INSUFFICIENT_EVIDENCE",
-                }
+            response = await visible_response(item.get("response"))
             messages.append(
                 {
                     "client_message_id": cid,
@@ -293,7 +298,8 @@ def create_app(settings=None, *, knowledge=None, llm=None, web_search=None, read
         if not cited:
             raise ServiceError("SOURCE_NOT_FOUND", 404)
         source = await run_sync(lambda: kb().repo.version(document_id, version))
-        if source["state"] != "PUBLISHED":
+        active = await run_sync(lambda: {v["id"] for v in kb().answer_versions()})
+        if source["id"] not in active:
             raise ServiceError("SOURCE_REVOKED", 404)
         return {
             "title": source["metadata"]["title"],
@@ -323,7 +329,7 @@ def create_app(settings=None, *, knowledge=None, llm=None, web_search=None, read
                 raise ServiceError("IDEMPOTENCY_CONFLICT", 409)
             if "error" in previous:
                 raise ServiceError(*previous["error"])
-            return previous["response"]
+            return await visible_response(previous["response"])
         if s.busy:
             raise ServiceError("SESSION_BUSY", 409)
         kb()

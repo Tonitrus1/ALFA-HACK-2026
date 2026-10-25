@@ -8,7 +8,7 @@ interface Auth {
   session: Session | undefined;
   loading: boolean;
   expired: boolean;
-  setSession: (s: Session) => void;
+  setSession: (s: Session) => Promise<void>;
   changeCompany: (id: string) => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -29,10 +29,16 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     retry: false,
     staleTime: 60000,
   });
-  const setSession = (session: Session) => {
+  const setSession = async (session: Session) => {
+    setSwitching(true);
+    context.reset();
+    await query.cancelQueries();
+    query.removeQueries({ predicate: (q) => q.queryKey[0] !== 'session' });
     context.set(session);
     setExpired(false);
     query.setQueryData(['session'], session);
+    channel?.postMessage({ type: 'session-changed' });
+    setSwitching(false);
   };
   const changeCompany = async (id: string) => {
     const session = await api.selectCompany(id);
@@ -55,6 +61,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       context.reset();
       void query.cancelQueries().then(() => {
         query.removeQueries({ predicate: (q) => q.queryKey[0] !== 'session' });
+        query.setQueryData(['session'], null);
         void query.refetchQueries({ queryKey: ['session'] }).finally(() => setSwitching(false));
       });
     };
@@ -79,6 +86,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
           await query.cancelQueries();
           query.removeQueries({ predicate: (q) => q.queryKey[0] !== 'session' });
           query.setQueryData(['session'], null);
+          channel?.postMessage({ type: 'session-changed' });
         },
       }}
     >

@@ -1,15 +1,14 @@
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { Alert, Button } from 'antd';
 import { ArrowUp, BookOpen, Sparkles, Square } from 'lucide-react';
-import { request } from '../../shared/api/http';
 import { api } from '../../shared/api/client';
 import type { AssistantMessage } from '../../shared/types/domain';
 import { ErrorState, PageTitle, Panel } from '../../shared/ui/common';
 export function allowedSource(href: string) {
-  if (/^\/help\/(application|finance)$/.test(href) || /^\/assistant\/[a-zA-Z0-9_-]+\/sources\/[a-zA-Z0-9_-]+\/\d+$/.test(href)) return true;
+  if (/^\/help\/(application|finance)$/.test(href)) return true;
   try { const u=new URL(href); return u.protocol==='https:' && ['alfabank.ru','cbr.ru','fincult.info','nalog.gov.ru'].some(d=>u.hostname===d || u.hostname.endsWith('.'+d)); } catch { return false; }
 }
 export function Assistant() {
@@ -164,7 +163,6 @@ export function Assistant() {
 }
 
 export function AssistantSource() {
-  const {conversationId='',documentId='',version=''}=useParams();
-  const source=useQuery({queryKey:['assistant-source',conversationId,documentId,version],queryFn:()=>request<{title:string;text:string}>('/api/v1/assistant/conversations/'+encodeURIComponent(conversationId)+'/sources/'+encodeURIComponent(documentId)+'/'+encodeURIComponent(version))});
-  return <><PageTitle title={source.data?.title??'Источник ответа'} />{source.error?<ErrorState error={source.error}/>:<Panel><p style={{whiteSpace:'pre-wrap'}}>{source.data?.text??'Загружаем источник…'}</p></Panel>}<Link to={'/assistant/'+conversationId}>Вернуться к диалогу</Link></>;
+  const { conversationId = 'general' } = useParams();
+  return <Navigate to={'/assistant/' + encodeURIComponent(conversationId)} replace />;
 }

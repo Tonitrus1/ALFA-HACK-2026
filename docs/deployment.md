@@ -36,6 +36,8 @@ python scripts/deploy.py up --mode full
 
 ## Повторный запуск и данные
 
+Вход в интерфейс выполняется по логину и паролю. После `init` отдельный файл `.local/cabinet-access.md` содержит логины `company-a`, `company-b` и созданные для этой установки пароли. Передавайте его отдельно вместе с документацией. [Управление доступом и подготовка пустых кабинетов](cabinet-access.md).
+
 ```sh
 python scripts/deploy.py status
 python scripts/deploy.py logs

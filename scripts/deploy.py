@@ -11,7 +11,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 SECRET_KEYS = ('BACKEND_DB_PASSWORD', 'ML_ADMIN_PASSWORD', 'ML_DB_PASSWORD',
                'ML_SERVICE_TOKEN', 'ASSISTANT_SERVICE_TOKEN', 'OCR_API_KEY',
-               'DOCUMENT_OCR_TOKEN', 'SEARXNG_SECRET')
+               'DOCUMENT_OCR_TOKEN', 'SEARXNG_SECRET', 'CABINET_A_PASSWORD', 'CABINET_B_PASSWORD')
 
 
 def configure(root=ROOT):
@@ -28,6 +28,17 @@ def configure(root=ROOT):
         flags = os.O_WRONLY | os.O_APPEND | os.O_CREAT
         with os.fdopen(os.open(target, flags, 0o600), 'a', encoding='utf-8', newline='\n') as stream:
             stream.write(('\n' if existing else '') + ''.join(f'{k}={v}\n' for k, v in missing.items()))
+    values = dict(line.split('=', 1) for line in target.read_text(encoding='utf-8-sig').splitlines()
+                  if '=' in line and not line.lstrip().startswith('#'))
+    if all(values.get(key) for key in ('CABINET_A_PASSWORD', 'CABINET_B_PASSWORD')):
+        handoff = root / '.local' / 'cabinet-access.md'
+        handoff.parent.mkdir(parents=True, exist_ok=True)
+        with os.fdopen(os.open(handoff, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600), 'w', encoding='utf-8') as stream:
+            stream.write('# Доступ в кабинет\n\nАдрес: http://127.0.0.1:8080/login\n\n'
+                         '| Компания | Логин | Пароль |\n|---|---|---|\n'
+                         f'| А | company-a | {values["CABINET_A_PASSWORD"]} |\n'
+                         f'| Б | company-b | {values["CABINET_B_PASSWORD"]} |\n')
+        handoff.chmod(0o600)
     print('Configuration ready; existing credentials preserved. Secrets are not displayed.')
 
 
