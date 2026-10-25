@@ -79,7 +79,7 @@ def create_app(settings=None):
         title="ALFA standalone OCR",
         version="0.1.0",
         lifespan=lifespan,
-        description="CPU OCR → external OpenAI-compatible LLM → validated JSON. Internal service; all values require user confirmation.",
+        description="CPU OCR → local or external OpenAI-compatible LLM → validated JSON. Internal service; all values require user confirmation.",
     )
     app.add_middleware(BodyLimit)
     token = APIKeyHeader(name="X-API-Key", auto_error=False)
