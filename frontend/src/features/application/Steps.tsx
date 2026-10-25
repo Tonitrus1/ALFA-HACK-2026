@@ -9,9 +9,10 @@ import { api } from '../../shared/api/client';
 import { financeFields, signedFields } from '../../shared/types/domain';
 import type { Application, FinanceKey } from '../../shared/types/domain';
 import { financeErrors } from '../../shared/lib/validation';
-import { money, toKopecks } from '../../shared/lib/money';
+import { formatAmount, money, toKopecks } from '../../shared/lib/money';
 import { Disclosure, ErrorState, Field, PageTitle, Panel } from '../../shared/ui/common';
 import { DocumentUploader, OcrReview } from '../documents/Documents';
+import { MoneyInput } from '../../shared/ui/MoneyInput';
 export function CompanyStep() {
   const { form, flush, application } = useDraft(),
     navigate = useNavigate(),
@@ -64,7 +65,7 @@ export function CompanyStep() {
               <input id="businessAgeMonths" inputMode="numeric" {...form.register('businessAgeMonths', { required: 'Укажите срок', pattern: {value: /^\d+$/, message: 'Целое число месяцев'} })} />
             </Field>
             <Field id="preliminaryRevenue" label="Предварительная годовая выручка, ₽" hint="Необязательно. Это ваше заявление, не независимый источник.">
-              <input id="preliminaryRevenue" inputMode="decimal" {...form.register('preliminaryRevenue')} />
+              <MoneyInput id="preliminaryRevenue" control={form.control} name="preliminaryRevenue" />
             </Field>
           </div>
           <div className="form-actions">
@@ -158,17 +159,18 @@ export function BusinessStep() {
                 }
               >
                 <div className="money-input">
-                  <input
+                  <MoneyInput
                     id={key}
-                    inputMode="decimal"
+                    control={form.control}
+                    name={`finance.${key}`}
                     aria-describedby={
                       form.formState.errors.finance?.[key] ? key + '-error' : undefined
                     }
-                    {...form.register(`finance.${key}`, {
-                      onChange: () => {
-                        form.setValue(`confirmed.${key}`, false);
-                        form.clearErrors(`finance.${key}`);
-                      },
+                    onValueChange={() => {
+                      form.setValue(`confirmed.${key}`, false);
+                      form.clearErrors(`finance.${key}`);
+                    }}
+                    rules={{
                       validate: (v) => {
                         try {
                           toKopecks(v, signedFields.includes(key));
@@ -177,7 +179,7 @@ export function BusinessStep() {
                           return (e as Error).message;
                         }
                       },
-                    })}
+                    }}
                   />
                   <span>₽</span>
                 </div>
@@ -314,7 +316,7 @@ export function ReviewStep() {
               <div className="detail-row" key={k}>
                 <dt>{v}</dt>
                 <dd>
-                  {values.finance?.[k] || 'Не указано'} ₽{' '}
+                  {formatAmount(values.finance?.[k] ?? '') || 'Не указано'} ₽{' '}
                   <span className={values.confirmed?.[k] ? 'confirmed' : 'muted'}>
                     {values.confirmed?.[k] ? '✓' : 'не подтверждено'}
                   </span>

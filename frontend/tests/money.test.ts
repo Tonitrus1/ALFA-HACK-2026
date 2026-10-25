@@ -1,5 +1,23 @@
 import { describe, expect, it } from 'vitest';
-import { fromKopecks, money, toKopecks } from '../src/shared/lib/money';
+import { formatAmount, fromKopecks, money, toKopecks } from '../src/shared/lib/money';
+describe('разряды в денежных полях', () => {
+  it.each([
+    ['3000000', '3 000 000'],
+    ['3\u00a0000\u202f000,01', '3 000 000,01'],
+    ['-1234567.89', '-1 234 567.89'],
+    ['999999999999999999,99', '999 999 999 999 999 999,99'],
+    ['1234,', '1 234,'],
+    ['0,00', '0,00'],
+    ['', ''],
+    ['-', '-'],
+    ['1e6', '1e6'],
+    ['1,2,3', '1,2,3'],
+  ])('%j → %j', (input, formatted) => expect(formatAmount(input)).toBe(formatted));
+  it('сохраняет точное значение в копейках', () => {
+    for (const value of ['3000000', '-1234567,89', '999999999999999999,99'])
+      expect(toKopecks(formatAmount(value), true)).toBe(toKopecks(value, true));
+  });
+});
 describe('точные денежные преобразования', () => {
   it.each([
     ['0', '0'],

@@ -119,7 +119,7 @@ test('document page exposes OCR review and leaves missing values for manual inpu
  await expect(page.getByText('Распознавание готово',{exact:true})).toBeVisible();
  await page.getByRole('button',{name:'Сверить показатели'}).click();
  await expect(page.getByRole('dialog',{name:'Сверка финансовых показателей'})).toBeVisible();
- await expect(page.locator('#ocr-revenue')).toHaveValue('3000000');
+ await expect(page.locator('#ocr-revenue')).toHaveValue('3 000 000');
  await expect(page.locator('#ocr-totalLiabilities')).toHaveCount(0);
  await expect(page.getByText('Найдено показателей: 1 из 8.',{exact:false})).toBeVisible();
  await expect(page.getByRole('checkbox',{name:'Проверено по документу: Выручка'})).not.toBeChecked();
@@ -130,7 +130,7 @@ test('document page exposes OCR review and leaves missing values for manual inpu
  expect(partial!.confirmed).toBe(false);
  await page.getByRole('checkbox',{name:/Подтверждаю корректность/}).check();
  await page.getByRole('button',{name:/К финансовым данным/}).click();
- await expect(page.locator('#revenue')).toHaveValue(/^3000000(?:,00)?$/);
+ await expect(page.locator('#revenue')).toHaveValue(/^3 000 000(?:,00)?$/);
  await expect(page.locator('#totalLiabilities')).toHaveValue('');
 });
 
@@ -148,7 +148,7 @@ test('financial warnings explain the problem without internal field names',async
 });
 
 test('RFI correction follows server-requested field and re-evaluates the same application',async({page})=>{
- await login(page);const id=await create(page,'100000');await expect(page.getByRole('heading',{name:'Нужно уточнение'})).toBeVisible({timeout:30000});await page.getByRole('link',{name:'Дополнить сведения'}).click();await expect(page.locator('#rfi-revenue')).toBeEditable();await expect(page.locator('#rfi-totalAssets')).not.toBeEditable();await page.locator('#rfi-revenue').fill('3000000,01');await page.getByRole('checkbox',{name:'Подтверждаю уточнённые сведения'}).check();await page.getByRole('button',{name:'Отправить ответ'}).click();await expect(page).toHaveURL(new RegExp(`/applications/${id}/status`));await expect(page.getByRole('heading',{name:'Предложение готово'})).toBeVisible({timeout:30000});
+ await login(page);const id=await create(page,'100000');await expect(page.getByRole('heading',{name:'Нужно уточнение'})).toBeVisible({timeout:30000});await page.getByRole('link',{name:'Дополнить сведения'}).click();await expect(page.locator('#rfi-revenue')).toBeEditable();await expect(page.locator('#rfi-totalAssets')).not.toBeEditable();await page.locator('#rfi-revenue').fill('3000000,01');await expect(page.locator('#rfi-revenue')).toHaveValue('3 000 000,01');await page.getByRole('checkbox',{name:'Подтверждаю уточнённые сведения'}).check();await page.getByRole('button',{name:'Отправить ответ'}).click();await expect(page).toHaveURL(new RegExp(`/applications/${id}/status`));await expect(page.getByRole('heading',{name:'Предложение готово'})).toBeVisible({timeout:30000});
 });
 test('feed preferences, stable feedback retry and saved materials use public operations',async({page})=>{
  await login(page);await page.getByText('Настроить подборку',{exact:true}).click();await page.getByLabel('task',{exact:true}).selectOption('EQUIPMENT');await page.getByRole('button',{name:'Сохранить предпочтения'}).click();await expect(page.getByTestId('feed-card').first()).toBeVisible();

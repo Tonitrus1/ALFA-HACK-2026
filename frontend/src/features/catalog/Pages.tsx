@@ -6,7 +6,7 @@ import { Button, Tag } from 'antd';
 import { ArrowRight, Check, Layers3, Package, Wallet } from 'lucide-react';
 import { api } from '../../shared/api/client';
 import type { Need, Product } from '../../shared/types/domain';
-import { fromKopecks, money, toKopecks } from '../../shared/lib/money';
+import { formatAmount, fromKopecks, money, toKopecks } from '../../shared/lib/money';
 import { needSchema } from '../../shared/lib/validation';
 import {
   Disclosure,
@@ -16,6 +16,7 @@ import {
   PageTitle,
   Panel,
 } from '../../shared/ui/common';
+import { MoneyInput } from '../../shared/ui/MoneyInput';
 export function Needs() {
   const navigate = useNavigate(),
     [error, setError] = useState<unknown>();
@@ -88,7 +89,7 @@ export function Needs() {
               <>
                 <h2>Сколько нужно для следующего шага?</h2>
                 <Field id="amount" label="Сумма, ₽" error={form.formState.errors.amount?.message}>
-                  <input id="amount" inputMode="decimal" {...form.register('amount')} />
+                  <MoneyInput id="amount" control={form.control} name="amount" />
                 </Field>
                 <Field
                   id="months"
@@ -268,7 +269,7 @@ export function ProductDetails() {
           <p>
             На {n.months} месяцев · {n.purpose}
           </p>
-          <p className="muted">Введено: {fromKopecks(n.amount)} ₽</p>
+          <p className="muted">Введено: {formatAmount(fromKopecks(n.amount))} ₽</p>
           {!eligible && (
             <p className="field-error">
               Сумма или срок выходят за параметры этого продукта. Измените потребность.

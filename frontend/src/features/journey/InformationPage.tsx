@@ -12,6 +12,8 @@ import { RetainedResource } from '../../shared/lib/retainedResource';
 import type { SaveState } from '../../shared/lib/autosave';
 import { DocumentUploader } from '../documents/Documents';
 import { ErrorState, Field, LoadingState, PageTitle, Panel } from '../../shared/ui/common';
+import { MoneyInput } from '../../shared/ui/MoneyInput';
+import { formatAmount } from '../../shared/lib/money';
 type ResponseForm = { finance: Finance; confirmed: boolean };
 const retained = new Map<string, RetainedResource<ResponseForm, InformationRequest>>();
 export function InformationPage() {
@@ -147,14 +149,13 @@ function InformationForm({ request: r }: { request: InformationRequest }) {
                 }
                 error={form.formState.errors.finance?.[k]?.message}
               >
-                <input
+                <MoneyInput
                   id={'rfi-' + k}
-                  inputMode="decimal"
+                  control={form.control}
+                  name={`finance.${k}`}
                   readOnly={!resource.snapshot.editableFields.includes(k)}
-                  {...form.register(`finance.${k}`, {
-                    required: 'Укажите значение',
-                    onChange: () => form.setValue('confirmed', false),
-                  })}
+                  rules={{ required: 'Укажите значение' }}
+                  onValueChange={() => form.setValue('confirmed', false)}
                 />
               </Field>
             ))}
@@ -213,9 +214,9 @@ function InformationForm({ request: r }: { request: InformationRequest }) {
         footer={null}
       >
         <h3>Ваш ввод</h3>
-        <pre>{JSON.stringify(form.getValues().finance, null, 2)}</pre>
+        <FinanceSummary finance={form.getValues().finance} />
         <h3>Серверная версия</h3>
-        <pre>{JSON.stringify(conflict?.finance, null, 2)}</pre>
+        <FinanceSummary finance={conflict?.finance} />
         <p>Обновление требований требует повторной проверки запрошенных полей.</p>
         <Button
           onClick={() => {
@@ -232,5 +233,18 @@ function InformationForm({ request: r }: { request: InformationRequest }) {
         </Button>
       </Modal>
     </>
+  );
+}
+
+function FinanceSummary({ finance }: { finance?: Finance }) {
+  return (
+    <dl className="details">
+      {(Object.entries(financeFields) as [FinanceKey, string][]).map(([key, label]) => (
+        <div className="detail-row" key={key}>
+          <dt>{label}, ₽</dt>
+          <dd>{formatAmount(finance?.[key] ?? '') || 'Не заполнено'}</dd>
+        </div>
+      ))}
+    </dl>
   );
 }

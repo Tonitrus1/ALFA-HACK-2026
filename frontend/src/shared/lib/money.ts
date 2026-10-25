@@ -21,3 +21,13 @@ export function money(value: string): string {
     '\u00a0₽'
   );
 }
+// Keep the original decimal separator and unfinished input while grouping rubles.
+// Work with strings so even large amounts retain every digit.
+export function formatAmount(input: string): string {
+  const value = input.replace(/\s/g, '');
+  if (!/^-?\d*(?:[.,]\d*)?$/.test(value)) return input;
+  return value.replace(
+    /^(-?)(\d+)/,
+    (_, sign: string, whole: string) => sign + whole.replace(/\B(?=(\d{3})+(?!\d))/g, ' '),
+  );
+}
