@@ -92,6 +92,31 @@ def test_local_qwen_uses_json_without_provider_extensions(monkeypatch):
     assert "reasoning" not in payloads[0] and "chat_template_kwargs" not in payloads[0]
 
 
+def test_compact_template_keeps_full_server_contract_and_context_accounting():
+    import json
+    from pathlib import Path
+
+    from alfa_ocr.extraction import context_size
+    from alfa_ocr.llm import generation_schema, system_prompt
+    from alfa_ocr.models import Block, Page
+
+    root = Path(__file__).resolve().parents[1]
+    settings = Settings(llm_compact_schema=True, prompt_path=root / "prompts/extract.txt",
+                        schema_path=root / "schemas/extraction.schema.json")
+    contract = Contract.read(settings)
+    original_hash = contract.fingerprint()
+    pages = [Page(document_id="doc", page=1, width=10, height=10,
+                  blocks=[Block(block_id="b1", text="ИНН 000000000001", confidence=1, bbox=[0, 0, 10, 10])])]
+    schema = generation_schema(settings, contract)
+    assert "allOf" not in schema["$defs"]["field"]
+    assert schema["$defs"]["inn12"]["type"] == "object"
+    assert contract.fingerprint() == original_hash
+    assert "allOf" in contract.schema["$defs"]["inn12"]
+    prompt = system_prompt(settings, contract, pages)
+    assert '"document_id": "doc"' in prompt and '"status": "missing"' in prompt
+    assert context_size(settings, contract, pages) == len(prompt) + len(json.dumps([p.model_dump() for p in pages], ensure_ascii=False))
+
+
 def test_reasoning_not_retained(monkeypatch):
     original = httpx.Client
     monkeypatch.setattr(
