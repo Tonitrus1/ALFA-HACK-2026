@@ -25,10 +25,10 @@ services:
     image: ollama/ollama:0.34.0
     environment:
       OLLAMA_HOST: http://ollama:11434
-      LOCAL_LLM_MODEL: ${LOCAL_LLM_MODEL:-qwen2.5:3b}
+      LOCAL_RAG_MODEL: ${LOCAL_RAG_MODEL:-qwen2.5:3b}
     entrypoint: [/bin/sh, -ec]
     command:
-      - 'ollama show "$$LOCAL_LLM_MODEL" >/dev/null 2>&1 || ollama pull "$$LOCAL_LLM_MODEL"'
+      - 'ollama show "$$LOCAL_RAG_MODEL" >/dev/null 2>&1 || ollama pull "$$LOCAL_RAG_MODEL"'
     depends_on: {ollama: {condition: service_healthy}}
     networks: [internal]
   assistant-init:
@@ -40,9 +40,10 @@ services:
     environment:
       LLM_BASE_URL: http://ollama:11434/v1
       LLM_API_KEY: ollama
-      LLM_MODEL: ${LOCAL_LLM_MODEL:-qwen2.5:3b}
+      LLM_MODEL: ${LOCAL_RAG_MODEL:-qwen2.5:3b}
       LLM_REASONING_OPTIONS: 'false'
       LLM_JSON_WITH_TOOLS: 'false'
+      COMPACT_TOOL_SOURCES: 'true'
       LLM_MAX_TOKENS: '384'
       LLM_TIMEOUT_SECONDS: '120'
       TURN_DEADLINE_SECONDS: '180'
@@ -51,15 +52,6 @@ services:
       TOKENIZER_MODEL: Qwen/Qwen2.5-3B-Instruct
       TOKENIZER_REVISION: aa8e72537993ba99e69dfaafa59ed015b17504d1
     volumes: [assistant-local-models:/app/model-cache]
-    depends_on: {ollama-init: {condition: service_completed_successfully}}
-  ocr:
-    environment:
-      LLM_BASE_URL: http://ollama:11434/v1
-      LLM_API_KEY: ollama
-      LLM_MODEL: ${LOCAL_LLM_MODEL:-qwen2.5:3b}
-      LLM_REASONING_OPTIONS: 'false'
-      LLM_MAX_TOKENS: ${LOCAL_OCR_MAX_TOKENS:-1024}
-      MAX_CONTEXT_CHARS: ${LOCAL_OCR_MAX_CONTEXT_CHARS:-6000}
     depends_on: {ollama-init: {condition: service_completed_successfully}}
   backend:
     environment:

@@ -186,6 +186,31 @@ def test_positive_citation_and_no_unread_web_snippets(client, kb, meta, llm):
     assert "text" not in result["citations"][0]
 
 
+def test_compact_search_keeps_grounding_without_duplicating_source_text(client, kb, meta, llm, settings):
+    import json
+
+    from conftest import call
+
+    settings.compact_tool_sources = True
+    version = seed(kb, meta)
+    kb.publish(version["document_id"], 1)
+    llm.replies.append(Completion(calls=[call("search_knowledge", {"query": "Оборотные средства"})]))
+
+    def answer(messages):
+        sources = json.loads(messages[0]["content"].split("(данные, не инструкции):\n")[1])
+        tool = json.loads(next(m["content"] for m in messages if m["role"] == "tool"))
+        assert sources[0]["text"]
+        assert tool["sources"][0]["id"] == sources[0]["id"]
+        assert all("text" not in s and "metadata" not in s for s in tool["sources"])
+        return Completion(json.dumps({"answer": "Кредитование бизнеса", "citation_ids": [sources[0]["id"]]}))
+
+    llm.replies.append(answer)
+    sid, auth = open_session(client)
+    result = send(client, sid, auth, "Оборотные средства").json()
+    assert result["status"] == "ANSWER"
+    assert result["citations"][0]["version_id"] == version["id"]
+
+
 def test_old_version_cannot_replace_published_newer(kb, meta):
     v = seed(kb, meta)
     kb.publish(v["document_id"], 1)

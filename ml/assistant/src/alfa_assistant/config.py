@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     llm_reasoning: bool = False
     llm_reasoning_options: bool = True
     llm_json_with_tools: bool = True
+    compact_tool_sources: bool = False
     llm_timeout_seconds: float = Field(45, gt=0, le=300)
     llm_input_rub_per_million: float | None = None
     llm_output_rub_per_million: float | None = None

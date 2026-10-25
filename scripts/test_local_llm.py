@@ -19,15 +19,21 @@ class LocalLLMTests(unittest.TestCase):
                 for line in (ROOT / '.env.example').read_text().splitlines()
             ))
             environment = {k: v for k, v in os.environ.items()
-                           if k not in {'LOCAL_LLM_MODEL', 'COMPOSE_PROJECT_NAME', 'FEED_BUNDLE_PATH'}}
+                           if k not in {'LOCAL_RAG_MODEL', 'COMPOSE_PROJECT_NAME', 'FEED_BUNDLE_PATH'}}
             result = subprocess.run(['docker', 'compose', '--env-file', str(env_file),
                                      '-f', str(ROOT / 'compose.yaml'),
                                      '-f', str(ROOT / 'deploy/compose.local-llm.yaml'),
                                      'config', '--format', 'json'],
                                     check=True, capture_output=True, text=True, env=environment)
+            baseline = subprocess.run(['docker', 'compose', '--env-file', str(env_file),
+                                       '-f', str(ROOT / 'compose.yaml'), 'config', '--format', 'json'],
+                                      check=True, capture_output=True, text=True, env=environment)
         model = json.loads(result.stdout)
         services = model['services']
-        for name in ('assistant', 'ocr'):
+        # Applying the RAG profile must preserve every OCR setting and dependency.
+        self.assertEqual(services['ocr'], json.loads(baseline.stdout)['services']['ocr'])
+        self.assertEqual(services['ocr-worker'], json.loads(baseline.stdout)['services']['ocr-worker'])
+        for name in ('assistant',):
             settings = services[name]['environment']
             self.assertEqual(settings['LLM_BASE_URL'], 'http://ollama:11434/v1')
             self.assertEqual(settings['LLM_MODEL'], 'qwen2.5:3b')
