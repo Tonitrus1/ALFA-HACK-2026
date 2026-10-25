@@ -49,9 +49,19 @@ class SelectelTests(unittest.TestCase):
 
     def test_full_launch_requires_llm_but_configuration_does_not(self):
         values = server.read_env(self.env_file)
+        values['LLM_MODE'] = 'external'
         server.validate(values, require_llm=False)
         with self.assertRaisesRegex(ValueError, 'LLM_API_KEY'):
             server.validate(values)
+
+    def test_local_launch_accepts_no_provider_and_rejects_unbudgeted_models(self):
+        values = server.read_env(self.env_file)
+        self.assertEqual(values['LLM_MODE'], 'local')
+        self.assertEqual(values['LLM_API_KEY'], '')
+        server.validate(values)
+        for updates in ({'LLM_MODE': 'typo'}, {'LOCAL_LLM_MODEL': 'qwen2.5:7b'}):
+            with self.assertRaises(ValueError):
+                server.validate(values | updates)
 
     def test_init_fills_blank_template_secrets_without_rotating_existing_passwords(self):
         original = server.read_env(self.env_file)['CABINET_A_PASSWORD']
@@ -86,6 +96,10 @@ class SelectelTests(unittest.TestCase):
         self.assertEqual(backend['PUBLIC_ORIGIN'], 'https://cabinet.example.com')
         self.assertTrue(all(v['name'].startswith('credit-selectel_') for v in model['volumes'].values()))
         self.assertEqual(model['services']['feed']['volumes'][0]['source'], 'feed-bundle')
+        self.assertTrue({'ollama', 'ollama-init'} <= set(model['services']))
+        self.assertEqual(model['services']['assistant']['environment']['LLM_MODEL'], 'qwen2.5:3b')
+        self.assertEqual(model['services']['assistant']['environment']['LLM_BASE_URL'], 'http://ollama:11434/v1')
+        self.assertEqual(model['services']['ocr']['environment']['LLM_BASE_URL'], 'http://ollama:11434/v1')
 
     def test_restore_refuses_existing_volumes_before_any_write(self):
         deployment = self.deployment()
@@ -119,7 +133,7 @@ class SelectelTests(unittest.TestCase):
         extract.assert_called_once()
 
     def test_literal_dollar_in_provider_key_survives_reinitialization_and_compose(self):
-        content = self.env_file.read_text().replace('LLM_API_KEY=\n', "LLM_API_KEY='provider-$literal#token'\n")
+        content = self.env_file.read_text().replace('LLM_API_KEY=\n', "LLM_API_KEY='provider-$literal#token'\n").replace('LLM_MODE=local', 'LLM_MODE=external')
         self.env_file.write_text(content)
         with patch.object(server, 'ROOT', self.handoff_root):
             server.initialize(self.env_file)
@@ -131,6 +145,7 @@ class SelectelTests(unittest.TestCase):
         # `compose config` escapes dollars for safe reuse as a Compose input file.
         self.assertEqual(model['services']['assistant']['environment']['LLM_API_KEY'].replace('$$', '$'),
                          'provider-$literal#token')
+        self.assertNotIn('ollama', model['services'])
 
     def test_backup_restarts_services_if_archive_fails(self):
         deployment = self.deployment()

@@ -111,6 +111,13 @@ def validate(values, require_llm=True):
     for key in SECRET_KEYS:
         if len(values.get(key, '')) < 32:
             raise ValueError(f'Set a strong nonempty {key}; init generates it for new installations')
+    mode = values.get('LLM_MODE', 'external')
+    if mode not in ('local', 'external'):
+        raise ValueError('LLM_MODE must be local or external')
+    if mode == 'local':
+        if values.get('LOCAL_LLM_MODEL', 'qwen2.5:3b') != 'qwen2.5:3b':
+            raise ValueError('This CPU profile requires LOCAL_LLM_MODEL=qwen2.5:3b')
+        return
     if require_llm and not values.get('LLM_API_KEY', '').strip():
         raise ValueError('Set LLM_API_KEY in the server environment; full deployment includes Assistant and OCR')
     if require_llm and not values.get('LLM_BASE_URL', '').startswith('https://'):
@@ -126,7 +133,10 @@ class Deployment:
         self.docker = ['docker'] + (['--context', context] if context else [])
         self.compose = self.docker + ['compose', '--env-file', str(self.env_file),
                        '--project-name', self.values['COMPOSE_PROJECT_NAME'],
-                       '-f', str(ROOT / 'compose.yaml'), '-f', str(ROOT / 'deploy/selectel/compose.yaml')]
+                       '-f', str(ROOT / 'compose.yaml')]
+        if self.values.get('LLM_MODE', 'external') == 'local':
+            self.compose += ['-f', str(ROOT / 'deploy/compose.local-llm.yaml')]
+        self.compose += ['-f', str(ROOT / 'deploy/selectel/compose.yaml')]
         # Compose shell variables override --env-file. Remove all installation keys so a
         # caller's local/project credentials cannot silently replace the server settings.
         self.environment = {k: v for k, v in os.environ.items() if k not in self.values}
@@ -251,7 +261,8 @@ def main():
         if info['OSType'] != 'linux' or info['Architecture'] not in ('amd64', 'x86_64'):
             raise ValueError('Use a Linux x86_64 VM for this deployment')
         deployment.run(deployment.compose + ['config', '--quiet'])
-        print(f'Docker ready; RAM {info["MemTotal"] / 1024**3:.1f} GiB. Project estimate: 16 GiB RAM and 100 GB disk.')
+        print(f'Docker ready; RAM {info["MemTotal"] / 1024**3:.1f} GiB. LLM mode: {deployment.values.get("LLM_MODE", "external")}.')
+        print('For CPU Qwen 3B: start with 8 vCPU / 16 GB RAM / 160 GB disk; measure whole-stack memory and latency.')
     elif args.command in ('build', 'up'):
         if args.command == 'build' or not args.no_build:
             deployment.build()
