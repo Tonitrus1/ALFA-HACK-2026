@@ -1,0 +1,57 @@
+{
+  "checked_at": "2026-10-26T03:31:27.218475+05:00",
+  "model": "qwen2.5:3b",
+  "rag_probe": {
+    "passed": true,
+    "model": "qwen2.5:3b",
+    "checks": [
+      "real_local_generation",
+      "real_tool_call",
+      "local_e5_retrieval",
+      "http_answer_with_citation"
+    ],
+    "answer": "ФНС публикует описание открытых данных реестра получателей поддержки МСП, но не содержит персональные данные в демонстрацию.",
+    "citations": 1,
+    "usage": {
+      "input_tokens": 4446,
+      "output_tokens": 297,
+      "known_input_tokens": 4446,
+      "known_output_tokens": 297,
+      "complete": true,
+      "estimated_cost_rub": null,
+      "error_code": null
+    },
+    "latency_ms": 27652,
+    "runtime": "Docker RAG with native-host Ollama; full CPU Docker/Selectel runtime not verified"
+  },
+  "tests": {
+    "assistant_unit": {
+      "passed": 73,
+      "qdrant_integration_excluded": 2
+    },
+    "frontend": {
+      "passed": 66
+    },
+    "local_deployment": {
+      "passed": 8
+    },
+    "selectel_deployment": {
+      "passed": 19
+    },
+    "llm_sdk_contract": {
+      "passed": 2
+    },
+    "lint": "PASS",
+    "compose_ocr_unchanged": "PASS"
+  },
+  "images_built": [
+    "assistant",
+    "backend",
+    "gateway"
+  ],
+  "limits": [
+    "Functional inference used Docker RAG with native-host Ollama; it is not a CPU benchmark for Selectel.",
+    "Full self-contained Qwen Docker stack and live Selectel deployment were not exercised on the target 8-vCPU/16-GB VM.",
+    "Current desktop Docker has about 4 GB RAM; OCR configuration and running OCR were preserved."
+  ]
+}
