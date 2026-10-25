@@ -54,12 +54,15 @@ class SelectelTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'LLM_API_KEY'):
             server.validate(values)
 
-    def test_local_launch_accepts_no_provider_and_rejects_unbudgeted_models(self):
+    def test_local_rag_preserves_ocr_key_requirement_and_rejects_unbudgeted_models(self):
         values = server.read_env(self.env_file)
         self.assertEqual(values['LLM_MODE'], 'local')
         self.assertEqual(values['LLM_API_KEY'], '')
-        server.validate(values)
-        for updates in ({'LLM_MODE': 'typo'}, {'LOCAL_LLM_MODEL': 'qwen2.5:7b'}):
+        server.validate(values, require_llm=False)
+        with self.assertRaisesRegex(ValueError, 'OCR'):
+            server.validate(values)
+        server.validate(values | {'LLM_API_KEY': 'ocr-provider-key'})
+        for updates in ({'LLM_MODE': 'typo'}, {'LOCAL_RAG_MODEL': 'qwen2.5:7b'}):
             with self.assertRaises(ValueError):
                 server.validate(values | updates)
 
@@ -99,7 +102,9 @@ class SelectelTests(unittest.TestCase):
         self.assertTrue({'ollama', 'ollama-init'} <= set(model['services']))
         self.assertEqual(model['services']['assistant']['environment']['LLM_MODEL'], 'qwen2.5:3b')
         self.assertEqual(model['services']['assistant']['environment']['LLM_BASE_URL'], 'http://ollama:11434/v1')
-        self.assertEqual(model['services']['ocr']['environment']['LLM_BASE_URL'], 'http://ollama:11434/v1')
+        self.assertEqual(model['services']['ocr']['environment']['LLM_BASE_URL'], 'https://api.aitunnel.ru/v1')
+        self.assertEqual(model['services']['ocr']['environment']['LLM_MODEL'], 'deepseek-v4.1-flash-1017')
+        self.assertNotIn('ollama-init', model['services']['ocr'].get('depends_on', {}))
 
     def test_restore_refuses_existing_volumes_before_any_write(self):
         deployment = self.deployment()

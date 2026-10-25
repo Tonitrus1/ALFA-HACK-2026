@@ -115,14 +115,14 @@ def validate(values, require_llm=True):
     if mode not in ('local', 'external'):
         raise ValueError('LLM_MODE must be local or external')
     if mode == 'local':
-        if values.get('LOCAL_LLM_MODEL', 'qwen2.5:3b') != 'qwen2.5:3b':
-            raise ValueError('This CPU profile requires LOCAL_LLM_MODEL=qwen2.5:3b')
-        return
+        if values.get('LOCAL_RAG_MODEL', 'qwen2.5:3b') != 'qwen2.5:3b':
+            raise ValueError('This CPU profile requires LOCAL_RAG_MODEL=qwen2.5:3b')
     if require_llm and not values.get('LLM_API_KEY', '').strip():
-        raise ValueError('Set LLM_API_KEY in the server environment; full deployment includes Assistant and OCR')
+        raise ValueError('Set LLM_API_KEY for the unchanged OCR configuration; local RAG does not require it')
     if require_llm and not values.get('LLM_BASE_URL', '').startswith('https://'):
         raise ValueError('Use an HTTPS LLM_BASE_URL')
-    if require_llm and any(not values.get(key, '').strip() for key in ('ASSISTANT_LLM_MODEL', 'OCR_LLM_MODEL')):
+    required_models = ('OCR_LLM_MODEL',) if mode == 'local' else ('ASSISTANT_LLM_MODEL', 'OCR_LLM_MODEL')
+    if require_llm and any(not values.get(key, '').strip() for key in required_models):
         raise ValueError('Set the model IDs available from your LLM provider')
 
 
