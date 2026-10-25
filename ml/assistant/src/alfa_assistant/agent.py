@@ -130,19 +130,34 @@ class Agent:
                             "output_tokens": completion.output_tokens,
                         },
                     )
-                    if completion.input_tokens is None or completion.output_tokens is None:
-                        state["usage_complete"] = False
-                    state["input"] += completion.input_tokens or 0
-                    state["output"] += completion.output_tokens or 0
-                    session.usage["input_tokens"] += completion.input_tokens or 0
-                    session.usage["output_tokens"] += completion.output_tokens or 0
+                    self.record_completion(session, state, completion)
                     if not completion.calls:
                         try:
                             answer = ModelAnswer.model_validate_json(
                                 public_content(completion.content)
                             )
                         except (ValidationError, ValueError):
-                            raise ServiceError("LLM_INVALID_RESPONSE", 502) from None
+                            if self.settings.llm_json_with_tools:
+                                raise ServiceError("LLM_INVALID_RESPONSE", 502) from None
+                            # Ollama needs unconstrained output for native tool calls.
+                            # If its final answer is prose, request JSON once without
+                            # tools; never expose or silently accept the invalid draft.
+                            final_messages = candidate + [{"role": "user", "content":
+                                'Инструменты уже выполнены. Сформируй окончательный ответ '
+                                'только JSON: {"status":"ANSWER" или "INSUFFICIENT_EVIDENCE",'
+                                '"answer":"краткий ответ по-русски без URL",'
+                                '"citation_ids":["id подтверждающего источника из текущего хода"]}.'}]
+                            size = await self.run_sync(
+                                lambda final_messages=final_messages: self.kb.encoder.count_messages(final_messages, [])
+                            )
+                            if size > self.settings.context_tokens:
+                                raise ServiceError("CONTEXT_LIMIT", 422) from None
+                            final = await self.llm.complete(final_messages, [], session.parameters)
+                            self.record_completion(session, state, final)
+                            try:
+                                answer = ModelAnswer.model_validate_json(public_content(final.content))
+                            except (ValidationError, ValueError):
+                                raise ServiceError("LLM_INVALID_RESPONSE", 502) from None
                         break
                     if state["tools"] + len(completion.calls) > 6 or step == 3:
                         raise ServiceError("AGENT_STEP_LIMIT", 422)
@@ -313,6 +328,15 @@ class Agent:
             accepted.append(source)
             budget += size
         return accepted
+
+    @staticmethod
+    def record_completion(session, state, completion):
+        if completion.input_tokens is None or completion.output_tokens is None:
+            state["usage_complete"] = False
+        state["input"] += completion.input_tokens or 0
+        state["output"] += completion.output_tokens or 0
+        session.usage["input_tokens"] += completion.input_tokens or 0
+        session.usage["output_tokens"] += completion.output_tokens or 0
 
     def model_sources(self, sources):
         if self.settings.compact_tool_sources:

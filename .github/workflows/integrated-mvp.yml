@@ -39,6 +39,7 @@ jobs:
       - run: python -m pytest -q
         working-directory: ml/assistant
         env: {TEST_QDRANT_URL: 'http://localhost:6333'}
+      - run: PYTHONPATH=ml/assistant/src python scripts/integration/local_llm_contract.py
       - run: PYTHONPATH=ml/ocr/src python -m pytest ml/ocr/tests -q
       - uses: actions/upload-artifact@v4
         if: always()
@@ -51,7 +52,7 @@ jobs:
         with: {fetch-depth: 0}
       - run: python3 -m pip install jsonschema==4.25.1
       - run: python3 scripts/integration/configure.py
-      - run: python3 -m unittest discover -s scripts -p test_deploy.py
+      - run: python3 -m unittest discover -s scripts -p 'test_*.py'
       - run: docker compose config --quiet
       - name: Build all service images
         run: python3 scripts/deploy.py build
