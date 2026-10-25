@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     llm_max_tokens: int = Field(1000, ge=1, le=1000)
     llm_reasoning: bool = False
     llm_reasoning_options: bool = True
+    llm_timeout_seconds: float = Field(45, gt=0, le=300)
     llm_input_rub_per_million: float | None = None
     llm_output_rub_per_million: float | None = None
     system_prompt_path: Path = Path("prompts/system.txt")
@@ -33,7 +34,7 @@ class Settings(BaseSettings):
     max_sessions: int = Field(100, ge=1, le=100)
     context_tokens: int = Field(12000, ge=100, le=12000)
     rag_tokens: int = Field(2500, ge=100, le=2500)
-    turn_deadline_seconds: float = Field(60, gt=0, le=60)
+    turn_deadline_seconds: float = Field(60, gt=0, le=300)
     thread_workers: int = Field(4, ge=1, le=16)
 
     @field_validator("llm_input_rub_per_million", "llm_output_rub_per_million")

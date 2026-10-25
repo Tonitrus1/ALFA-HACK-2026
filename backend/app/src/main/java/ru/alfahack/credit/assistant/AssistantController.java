@@ -42,10 +42,11 @@ public class AssistantController {
     public AssistantController(JdbcClient jdbc, CompanyAccessService access,
             ApplicationService applications, CatalogService catalog,
             @Value("${credit.assistant.base-url:}") String url,
-            @Value("${credit.assistant.service-token:}") String key) {
+            @Value("${credit.assistant.service-token:}") String key,
+            @Value("${credit.assistant.read-timeout:PT65S}") Duration readTimeout) {
         this.jdbc=jdbc; this.access=access; this.applications=applications; this.catalog=catalog; this.key=key;
         var factory=new JdkClientHttpRequestFactory(HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(3)).build());
-        factory.setReadTimeout(Duration.ofSeconds(65));
+        factory.setReadTimeout(readTimeout);
         this.remote=RestClient.builder().baseUrl(url.isBlank()?"http://127.0.0.1:1":url).requestFactory(factory).build();
     }
 
