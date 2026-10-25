@@ -87,7 +87,7 @@ export async function request<T>(path: string, init: RequestInit = {}, file = fa
   if (init.signal?.aborted) abort();
   const timeout = setTimeout(
     () => controller.abort(new DOMException('Время ожидания истекло', 'TimeoutError')),
-    65000,
+    path.startsWith('/api/v1/assistant/') && init.method === 'POST' ? 195000 : 65000,
   );
   const headers = new Headers(init.headers);
   if (!(init.body instanceof FormData) && !(init.body instanceof Blob) && init.body && !headers.has('Content-Type'))
