@@ -1,0 +1,56 @@
+{
+  "checked_at": "2026-10-26T03:53:23.593073+05:00",
+  "passed": true,
+  "probe": {
+    "passed": true,
+    "model": "qwen2.5:3b",
+    "base_url": "http://host.docker.internal:11435/v1",
+    "checks": [
+      "real_tesseract",
+      "real_qwen_extraction",
+      "schema_and_source_validation",
+      "leading_zero_inn",
+      "user_confirmation_required"
+    ],
+    "provenance": {
+      "prompt_sha256": "0f1617657ce7a2e515c1d3a99d247b4c1fa157a5b3070ae56c33e301b913c462",
+      "schema_sha256": "91885150edd002ef18ef03795913d8b338d01977fb1889a9ba9870c27c5ef785",
+      "ocr_engine": "tesseract",
+      "ocr_version": "5.3.0",
+      "llm": {
+        "model": "qwen2.5:3b",
+        "calls": 1,
+        "validation_repairs": 0,
+        "usage": {
+          "prompt_tokens": 1960,
+          "completion_tokens": 1189,
+          "total_tokens": 3149
+        },
+        "merge": "conservative lexical equality; differing candidates become conflicts"
+      },
+      "seconds": 70.426
+    }
+  },
+  "tests": {
+    "ocr_unit": 38,
+    "assistant_unit": 73,
+    "local_deployment": 8,
+    "selectel_deployment": 19,
+    "lint": "PASS"
+  },
+  "image_built": "credit-integrated-ocr:local",
+  "configuration": {
+    "local_rag_model": "qwen2.5:3b",
+    "local_ocr_model": "qwen2.5:3b",
+    "ollama_context_tokens": 8192,
+    "ocr_engine": "tesseract",
+    "external_llm_key_required": false,
+    "one_loaded_model": true,
+    "parallel_inference": 1
+  },
+  "limits": [
+    "End-to-end probe used Docker Tesseract and a native-host local Ollama.",
+    "Full CPU-only Docker inference and live Selectel deployment were not benchmarked on the target 8-vCPU/16-GB VM.",
+    "This is one synthetic INN case, not a general financial extraction accuracy benchmark."
+  ]
+}
