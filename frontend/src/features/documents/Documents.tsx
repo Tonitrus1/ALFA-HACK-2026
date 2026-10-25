@@ -7,8 +7,9 @@ import { Download, FileText, UploadCloud } from 'lucide-react';
 import { api } from '../../shared/api/client';
 import type { DocumentItem, Finance, FinanceKey } from '../../shared/types/domain';
 import { financeFields, signedFields } from '../../shared/types/domain';
-import { toKopecks } from '../../shared/lib/money';
+import { formatAmount, toKopecks } from '../../shared/lib/money';
 import { useDraft } from '../application/DraftProvider';
+import { MoneyInput } from '../../shared/ui/MoneyInput';
 import {
   EmptyState,
   ErrorState,
@@ -214,14 +215,13 @@ function OcrForm({ document, close }: { document: DocumentItem; close: () => voi
             <Field
               id={'ocr-' + k}
               label={financeFields[k]}
-              hint={main.getValues(`finance.${k}`)?.trim()?'В анкете: ' + main.getValues(`finance.${k}`) + ' ₽':'В анкете пока не заполнено'}
+              hint={main.getValues(`finance.${k}`)?.trim()?'В анкете: ' + formatAmount(main.getValues(`finance.${k}`)) + ' ₽':'В анкете пока не заполнено'}
             >
-              <input
+              <MoneyInput
                 id={'ocr-' + k}
-                inputMode="decimal"
-                {...form.register(`finance.${k}`, {
-                  onChange: () => form.setValue(`confirmed.${k}`, false),
-                })}
+                control={form.control}
+                name={`finance.${k}`}
+                onValueChange={() => form.setValue(`confirmed.${k}`, false)}
               />
             </Field>
             <label className="native-check">
