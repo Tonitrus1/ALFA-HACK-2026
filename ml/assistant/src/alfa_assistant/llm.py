@@ -2,7 +2,7 @@ import json
 import re
 from dataclasses import dataclass, field
 
-from openai import APIConnectionError, APIStatusError, APITimeoutError, AsyncOpenAI
+from openai import NOT_GIVEN, APIConnectionError, APIStatusError, APITimeoutError, AsyncOpenAI
 
 from .errors import ServiceError
 
@@ -41,7 +41,10 @@ class OpenAICompatibleLLM:
                 **parameters,
                 messages=messages,
                 tools=tools or None,
-                response_format={"type": "json_object"},
+                # Ollama's JSON grammar prevents its native tool-call parser from running.
+                # With tools, the system prompt requests JSON and ModelAnswer validates it.
+                response_format={"type": "json_object"}
+                if not tools or self.settings.llm_json_with_tools else NOT_GIVEN,
                 extra_body={
                     "reasoning": {"enabled": self.settings.llm_reasoning, "exclude": True},
                     "chat_template_kwargs": {"enable_thinking": self.settings.llm_reasoning},
