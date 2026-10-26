@@ -1,10 +1,144 @@
 """Backend context is a trusted, read-only per-company snapshot, never a client override."""
 
 import pytest
+from pydantic import ValidationError
 
 from alfa_assistant.bank import BackendContextGateway
 from alfa_assistant.errors import ServiceError
 from alfa_assistant.schemas import DocumentsArgs
+
+
+def test_document_overview_preserves_product_names_and_separate_requirements():
+    bank = BackendContextGateway(
+        {
+            "company_id": "company-a",
+            "products": [
+                {
+                    "id": "working-capital",
+                    "name": "Оборотный кредит",
+                    "documents": [{"title": "Отчётность"}],
+                },
+                {
+                    "id": "equipment",
+                    "name": "Кредит на оборудование",
+                    "documents": [{"title": "Договор поставки"}],
+                },
+            ],
+            "applications": [],
+        }
+    )
+    overview = bank.documents(DocumentsArgs(), "company-a")
+    assert overview["provenance"]["type"] == "BACKEND_SNAPSHOT"
+    assert overview["products"] == bank.data["products"]
+    assert "documents" not in overview  # Requirements must not become one mandatory list.
+    selected = bank.documents(DocumentsArgs(product_id="equipment"), "company-a")
+    assert selected["documents"] == [{"title": "Договор поставки"}]
+
+
+@pytest.mark.parametrize(
+    "args",
+    [
+        {"product_id": "credit", "application_id": "app"},
+        {"product_id": " "},
+        {"application_id": ""},
+    ],
+)
+def test_document_lookup_rejects_ambiguous_or_blank_selectors(args):
+    with pytest.raises(ValidationError):
+        DocumentsArgs(**args)
+
+
+def test_generic_application_question_can_use_backend_documents_without_an_id(client, llm, settings):
+    import json
+
+    from conftest import call
+
+    from alfa_assistant.llm import Completion
+
+    settings.context_tokens = 4096
+    settings.rag_tokens = 768
+    settings.compact_tool_sources = True
+    settings.llm_json_with_tools = False
+    created = client.post(
+        "/v1/sessions",
+        headers={"X-Admin-Key": "test-admin"},
+        json={
+            "identity": {"actor_id": "real-user", "company_id": "company-a"},
+        },
+    ).json()
+    llm.replies.append(Completion(calls=[call("get_required_documents")]))
+
+    def answer(messages):
+        system = messages[0]["content"]
+        assert '"id": "working-capital"' in system
+        assert "Оборотный кредит" in system
+        assert "не проси их" in system
+        assert "demo-app" not in system
+        documents = json.loads(next(m["content"] for m in messages if m["role"] == "tool"))
+        assert documents["provenance"]["type"] == "BACKEND_SNAPSHOT"
+        assert documents["products"][0]["documents"] == [{"title": "Отчётность"}]
+        assert len(documents["products"]) == 1
+        return Completion(
+            json.dumps(
+                {
+                    "status": "ANSWER",
+                    "answer": "Для оборотного кредита подготовьте отчётность.",
+                    "citation_ids": [],
+                }
+            )
+        )
+
+    llm.replies.append(answer)
+    response = client.post(
+        f"/v1/sessions/{created['session_id']}/messages",
+        headers={
+            "X-Admin-Key": "test-admin",
+            "Authorization": "Bearer " + created["session_token"],
+        },
+        json={
+            "client_message_id": "application-checklist",
+            "message": "Что нужно для подачи заявки?",
+            "bank_context": {
+                "company_id": "company-a",
+                "applications": [],
+                "products": [
+                    {
+                        "id": "working-capital",
+                        "name": "Оборотный кредит",
+                        "documents": [{"title": "Отчётность"}],
+                    }
+                ],
+            },
+        },
+    )
+    assert response.status_code == 200, response.text
+    assert response.json()["status"] == "ANSWER"
+    assert "отчётность" in response.json()["answer"]
+
+
+async def test_product_catalogue_context_is_bounded_and_uses_only_the_backend(settings, kb):
+    import json
+
+    from alfa_assistant.agent import Agent
+    from alfa_assistant.sessions import MemorySessionStore
+
+    async def run_sync(fn):
+        return fn()
+
+    session, _ = MemorySessionStore().create("user", "company-a", "prompt", {})
+    session.bank_context = {
+        "company_id": "company-a",
+        "applications": [],
+        "products": [
+            {"id": f"real-{i}", "name": "Реальный продукт " + str(i)} for i in range(1000)
+        ],
+    }
+    agent = Agent(settings, None, kb, None, None, None, run_sync)
+    text = await agent.catalogue_context(session)
+    products = json.loads(text.splitlines()[2])
+    assert 0 < len(products) < 1000
+    assert kb.encoder.count(json.dumps(products, ensure_ascii=False)) <= 256
+    assert all(p["id"].startswith("real-") for p in products)
 
 
 def test_backend_snapshot_has_no_synthetic_applications():

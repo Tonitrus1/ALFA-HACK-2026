@@ -85,9 +85,13 @@ class DocumentsArgs(StrictModel):
     application_id: str | None = None
 
     @model_validator(mode="after")
-    def require_one(self):
-        if bool(self.product_id) == bool(self.application_id):
-            raise ValueError("Supply exactly one of product_id or application_id")
+    def at_most_one(self):
+        if self.product_id is not None and not self.product_id.strip():
+            raise ValueError("product_id must not be empty")
+        if self.application_id is not None and not self.application_id.strip():
+            raise ValueError("application_id must not be empty")
+        if self.product_id and self.application_id:
+            raise ValueError("Supply at most one of product_id or application_id")
         return self
 
 
