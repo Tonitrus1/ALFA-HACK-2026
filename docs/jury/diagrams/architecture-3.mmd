@@ -1,0 +1,15 @@
+stateDiagram-v2
+  [*] --> DRAFT
+  DRAFT --> SUBMITTED: подтверждённые финансы / submit
+  SUBMITTED --> REVIEW: обработка outbox
+  REVIEW --> NEEDS_INFO: запрос уточнения
+  NEEDS_INFO --> REVIEW: подтверждённый ответ
+  REVIEW --> MANUAL: дополнительные проверки / отказ Risk
+  REVIEW --> DECLINED: demo-policy
+  REVIEW --> APPROVED: demo-policy
+  REVIEW --> ALTERNATIVE: другие условия
+  APPROVED --> ACCEPTED: принять оферту
+  ALTERNATIVE --> ACCEPTED: принять оферту
+  ACCEPTED --> COMPLETED: демооформление
+  DECLINED --> [*]
+  COMPLETED --> [*]

@@ -1,0 +1,23 @@
+sequenceDiagram
+  actor U as Предприниматель
+  participant UI as React
+  participant B as Backend
+  participant DB as PostgreSQL
+  participant W as Review worker
+  participant ML as Bridge / Risk
+  U->>UI: Выбор продукта и ввод сведений
+  UI->>B: Создать / сохранить черновик
+  B->>DB: Версия заявки и финансовой формы
+  U->>UI: Подтвердить 8 показателей и отправить
+  UI->>B: submit + Idempotency-Key + версии
+  B->>DB: Snapshot + command operation + outbox
+  B-->>UI: 202 и operationId
+  W->>DB: Забрать событие, создать / обновить case
+  W->>ML: Снимок и digest
+  ML-->>W: Оценка риска или недоступность
+  W->>DB: DemoPolicyV1, решение / RFI / оферта
+  UI->>B: GET status / operation / decision
+  B-->>UI: Состояние и следующее действие
+  U->>UI: Принять предложение и демооформить
+  UI->>B: accept, затем complete
+  B->>DB: ACCEPTED, затем COMPLETED

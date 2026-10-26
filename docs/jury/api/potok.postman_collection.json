@@ -1,0 +1,1173 @@
+{
+  "info": {
+    "name": "Поток · проверка MVP",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Сначала выбрать local/server environment. Основная папка создаёт синтетическую заявку. Статус опрашивается автоматически в Runner; рекомендуемый delay 1000 ms. Дополнительные папки запускать отдельно. Сначала см. ../api.md."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8080"
+    },
+    {
+      "key": "login",
+      "value": "company-a"
+    },
+    {
+      "key": "password",
+      "value": ""
+    },
+    {
+      "key": "companyId",
+      "value": "company-a"
+    },
+    {
+      "key": "contextVersion",
+      "value": "1"
+    },
+    {
+      "key": "csrfToken",
+      "value": ""
+    },
+    {
+      "key": "applicationId",
+      "value": ""
+    },
+    {
+      "key": "applicationVersion",
+      "value": "1"
+    },
+    {
+      "key": "statementVersion",
+      "value": "1"
+    },
+    {
+      "key": "operationId",
+      "value": ""
+    },
+    {
+      "key": "offerId",
+      "value": ""
+    },
+    {
+      "key": "offerVersion",
+      "value": "1"
+    },
+    {
+      "key": "conversationId",
+      "value": "jury-demo"
+    },
+    {
+      "key": "itemId",
+      "value": ""
+    },
+    {
+      "key": "exposureId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Основной сценарий · создаёт синтетическую заявку",
+      "item": [
+        {
+          "name": "01 Вход",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"{{login}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 Текущая сессия",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/session"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 Продукты",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/products?companyId={{companyId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 Создать заявку",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/applications",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"companyId\": \"{{companyId}}\",\n  \"productId\": \"working-capital\",\n  \"productVersion\": 1,\n  \"need\": {\n    \"purpose\": \"Закупка товара\",\n    \"amount\": {\n      \"amountMinor\": 50000000,\n      \"currency\": \"RUB\"\n    },\n    \"termMonths\": 12\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 Сведения о компании",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              },
+              {
+                "key": "If-Match",
+                "value": "\"v{{applicationVersion}}\""
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"business\": {\n    \"businessAgeMonths\": 40\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 Сохранить финансы",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              },
+              {
+                "key": "If-Match",
+                "value": "\"v{{applicationVersion}}\""
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/financial-statement",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"periodStart\": \"2025-01-01\",\n  \"periodEnd\": \"2025-12-31\",\n  \"reportingStandard\": \"DEMO\",\n  \"currency\": \"RUB\",\n  \"values\": {\n    \"totalAssetsMinor\": 100000000,\n    \"totalLiabilitiesMinor\": 40000000,\n    \"currentAssetsMinor\": 50000000,\n    \"currentLiabilitiesMinor\": 20000000,\n    \"equityMinor\": 60000000,\n    \"revenueMinor\": 300000000,\n    \"netProfitMinor\": 10000000,\n    \"ebitMinor\": 15000000\n  },\n  \"sourceDocumentReferences\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "07 Подтвердить финансы",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              },
+              {
+                "key": "If-Match",
+                "value": "\"v{{applicationVersion}}\""
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/financial-statement/confirm",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"expectedStatementVersion\":{{statementVersion}},\"confirmedFieldNames\":[\"totalAssetsMinor\", \"totalLiabilitiesMinor\", \"currentAssetsMinor\", \"currentLiabilitiesMinor\", \"equityMinor\", \"revenueMinor\", \"netProfitMinor\", \"ebitMinor\"],\"documentReferences\":[]}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "08 Отправить",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/submit",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"expectedVersion\":{{applicationVersion}},\"consentRecordIds\":[],\"documentIds\":[],\"documentReferences\":[],\"requirementsVersion\":1,\"financialStatementVersion\":{{statementVersion}}}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "09 Статус",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/status"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}",
+                  "if(['SUBMITTED','REVIEW'].includes(b.status)){let n=Number(pm.collectionVariables.get('pollCount')||0)+1;pm.collectionVariables.set('pollCount',n);if(n<60)pm.execution.setNextRequest('09 Статус');else {pm.test('Рассмотрение завершилось',()=>{throw new Error('Повторите чтение статуса после диагностики worker');});pm.execution.setNextRequest(null);}}else{pm.collectionVariables.set('pollCount',0);if(!['APPROVED','ALTERNATIVE'].includes(b.status))pm.execution.setNextRequest(null);}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "10 Решение",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/decision"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "11 Предложение",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/offers/{{offerId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "12 Принять",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              },
+              {
+                "key": "If-Match",
+                "value": "\"v{{offerVersion}}\""
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/offers/{{offerId}}/accept",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"expectedVersion\":{{offerVersion}}}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "13 Демооформление",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              },
+              {
+                "key": "If-Match",
+                "value": "\"v{{offerVersion}}\""
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/offers/{{offerId}}/complete",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"expectedVersion\":{{offerVersion}}}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "14 Итоговый статус",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/status"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Лента · запускать отдельно",
+      "item": [
+        {
+          "name": "Профиль ленты",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/feed/preferences?companyId={{companyId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Изменить профиль",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/feed/preferences?companyId={{companyId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"task\": \"PURCHASE\",\n  \"help\": \"COST\",\n  \"depth\": \"EXPLAINED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Подборка",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/feed?companyId={{companyId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Сохранить материал",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/recommendation-feedback",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"clientEventId\":\"{{$guid}}\",\"exposureId\":\"{{exposureId}}\",\"itemId\":\"{{itemId}}\",\"action\":\"HELPFUL\",\"occurredAt\":\"{{$isoTimestamp}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Сохранённое",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/feed/saved?companyId={{companyId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Ассистент · запускать отдельно",
+      "item": [
+        {
+          "name": "Вопрос по документам",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/assistant/conversations/{{conversationId}}/messages",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clientMessageId\": \"{{$guid}}\",\n  \"text\": \"Какие документы нужны для заявки на оборотный кредит?\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "История",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Origin",
+                "value": "{{baseUrl}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "jury-demo"
+              },
+              {
+                "key": "X-Company-Context",
+                "value": "{{contextVersion}}"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrfToken}}"
+              }
+            ],
+            "url": "{{baseUrl}}/api/v1/assistant/conversations/{{conversationId}}/messages"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Ожидаемый успешный HTTP-статус', () => pm.expect(pm.response.code).to.be.within(200, 299));",
+                  "let b; try { b=pm.response.json(); } catch(e) { b={}; }",
+                  "if (b.csrfToken) {pm.collectionVariables.set('csrfToken',b.csrfToken);pm.collectionVariables.set('contextVersion',b.contextVersion);if(b.companyId)pm.collectionVariables.set('companyId',b.companyId);}",
+                  "if(b.applicationId && b.version && !b.offerId) {pm.collectionVariables.set('applicationId',b.applicationId);pm.collectionVariables.set('applicationVersion',b.version);}",
+                  "if(b.containerVersion)pm.collectionVariables.set('applicationVersion',b.containerVersion);if(b.statementVersion)pm.collectionVariables.set('statementVersion',b.statementVersion);",
+                  "if(b.operationId)pm.collectionVariables.set('operationId',b.operationId);if(b.offerIds && b.offerIds.length)pm.collectionVariables.set('offerId',b.offerIds[0]);",
+                  "if(b.offerId){pm.collectionVariables.set('offerId',b.offerId);pm.collectionVariables.set('offerVersion',b.version);}",
+                  "if(b.cards && b.cards.length){pm.collectionVariables.set('itemId',b.cards[0].contentId);if(b.rankingMetadata)pm.collectionVariables.set('exposureId',b.rankingMetadata.exposureId);}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

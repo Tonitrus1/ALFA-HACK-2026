@@ -1,0 +1,8 @@
+{
+  "purpose": "Public access to synthetic hackathon demonstration, explicitly approved by the project owner",
+  "baseUrl": "https://president-diameter-endearing.ngrok-free.dev",
+  "accounts": [
+    {"login": "company-a", "companyId": "company-a", "password": "xc-fWfKQYhasOO_xpEB4h3VFXHHA9HAv8YlunS2YM8VLvqJ4"},
+    {"login": "company-b", "companyId": "company-b", "password": "5ykMqYlqwkXTGc8cqGKYDz8hwBeHT89LzPpDQL3l-ecI5MrJ"}
+  ]
+}

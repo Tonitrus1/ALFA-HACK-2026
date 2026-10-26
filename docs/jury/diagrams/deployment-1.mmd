@@ -1,0 +1,6 @@
+flowchart LR
+  B[Браузер жюри] -->|HTTPS| N[Публичный ngrok URL]
+  N --> T[ngrok agent · внешний сервер]
+  T --> G[Gateway Nginx]
+  G --> A[Backend и внутренние сервисы]
+  A --> V[(Постоянные volumes)]

@@ -1,0 +1,31 @@
+{
+  "checkedAt": "2026-10-26T11:22:17.649920+00:00",
+  "runtimeSourceCommit": "4e17d358fb593213ee39f959355b61bcf9c807ff",
+  "platform": "macOS aarch64",
+  "backend": {
+    "tests": 139,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 4
+  },
+  "backendConditions": "Java 21.0.13; Maven wrapper; LC_ALL=C LANG=C; embedded PostgreSQL",
+  "frontend": {
+    "productionBuild": "PASS",
+    "unitPassed": 77,
+    "unitFiles": 13,
+    "eslint": "PASS"
+  },
+  "deploymentUnit": {
+    "passed": 19
+  },
+  "ocr": {
+    "passed": 38,
+    "scope": "unit/contract tests, explicit inference doubles"
+  },
+  "assistant": {
+    "passed": 79,
+    "skipped": 2,
+    "scope": "unit/contract; opt-in Qdrant/E5 integrations not run"
+  },
+  "logs": "Private .local/jury; not published because environment output may contain service configuration."
+}

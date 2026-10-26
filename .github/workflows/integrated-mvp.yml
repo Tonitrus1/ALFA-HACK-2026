@@ -1,7 +1,7 @@
 name: Integrated application acceptance
 on:
   push:
-    branches: ['integration/**']
+    branches: ['main', 'integration/**', 'docs/jury-submission-20261026']
     paths: ['backend/**', 'ml/**', 'frontend/**', 'deploy/**', 'compose.yaml', '.dockerignore', '.env.example', 'scripts/**', 'docs/architecture/contracts/**', '.github/workflows/integrated-mvp.yml']
   pull_request:
     paths: ['backend/**', 'ml/**', 'frontend/**', 'deploy/**', 'compose.yaml', '.dockerignore', '.env.example', 'scripts/**', 'docs/architecture/contracts/**', '.github/workflows/integrated-mvp.yml']
