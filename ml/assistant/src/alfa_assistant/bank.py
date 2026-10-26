@@ -32,6 +32,16 @@ class SyntheticBankGateway:
         raise ServiceError("APPLICATION_NOT_FOUND", 404)
 
     def documents(self, args, company_id):
+        if args.product_id is None and args.application_id is None:
+            return {
+                "provenance": {"type": "SYNTHETIC_BANK", "fixture_version": "1"},
+                "products": [
+                    {key: product[key] for key in ("id", "name", "documents")}
+                    for product in self.data["products"]
+                ],
+                "notice": "Перечни относятся к отдельным продуктам. Не объединяйте их в обязательный список. "
+                "Если продукт не выбран, уточните его название, а не внутренний идентификатор.",
+            }
         product_id = args.product_id
         if args.application_id:
             app = self.application(args.application_id, company_id)["application"]
