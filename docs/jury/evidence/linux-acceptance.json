@@ -1,0 +1,172 @@
+{
+  "status": "PASS_WITH_EXPLICIT_LLM_LIMIT",
+  "recordedAt": "2026-10-26T13:10:07.958698+00:00",
+  "runUrl": "https://github.com/Tonitrus1/ALFA-HACK-2026/actions/runs/40324670248",
+  "testedCodeCommit": "73babfbfec3e7df1fe55e6ac6013ca8f2c0eb557",
+  "platform": "Clean GitHub-hosted Linux amd64 runner",
+  "jobs": {
+    "tests": "success",
+    "compose": "success"
+  },
+  "browser": {
+    "startTime": "2026-10-26T12:59:36.010Z",
+    "duration": 57601.903999999995,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "riskBridge": {
+    "passed": 38,
+    "skipped": 1,
+    "realHttpRisk": true
+  },
+  "realTesseractCpu": "PASS",
+  "checks": {
+    "public-flow": {
+      "status": "PASS",
+      "checks": [
+        "real_E5_ranking",
+        "feed_cursor_feedback_saved_and_idempotency",
+        "public_openapi_schemas",
+        "application_real_risk_approved",
+        "company_isolation"
+      ]
+    },
+    "documents": {
+      "status": "PASS",
+      "checks": [
+        "public upload",
+        "real ClamAV CLEAN",
+        "exact-byte clean download",
+        "cross-company 404"
+      ]
+    },
+    "restart": {
+      "status": "PASS",
+      "checks": [
+        "restart_preserves_decision_page_and_feedback_replay"
+      ]
+    },
+    "feed-outage": {
+      "status": "PASS",
+      "checks": [
+        "feed_outage_rules_fallback",
+        "feed_cursor_feedback_saved_and_idempotency",
+        "public_openapi_schemas",
+        "application_real_risk_approved",
+        "company_isolation"
+      ]
+    },
+    "risk-outage": {
+      "status": "PASS",
+      "checks": [
+        "risk_outage_manual",
+        "company_isolation"
+      ]
+    },
+    "recreate": {
+      "status": "PASS",
+      "checks": [
+        "restart_preserves_decision_page_and_feedback_replay"
+      ]
+    },
+    "feed-v2-e5": {
+      "status": "PASS",
+      "checks": [
+        "real_E5_ranking",
+        "feed_cursor_feedback_saved_and_idempotency",
+        "public_openapi_schemas",
+        "application_real_risk_approved",
+        "company_isolation"
+      ]
+    },
+    "feed-v2-catboost": {
+      "status": "PASS",
+      "checks": [
+        "real_E5_ranking",
+        "feed_cursor_feedback_saved_and_idempotency",
+        "public_openapi_schemas",
+        "application_real_risk_approved",
+        "company_isolation"
+      ]
+    },
+    "dual-model-review": {
+      "status": "PASS",
+      "checks": [
+        "real_dual_model_approved",
+        "missing_independent_reference_manual",
+        "signed_kopeck_roundtrip_no_public_scores"
+      ]
+    }
+  },
+  "aiReadiness": {
+    "assistant": {
+      "httpStatus": 503,
+      "body": {
+        "status": "not_ready",
+        "dependencies": {
+          "knowledge": true,
+          "llm_key_configured": false,
+          "searxng": true,
+          "qdrant": true
+        },
+        "startup_error": null
+      },
+      "externalLlmInference": "BLOCKED_LLM_API_KEY_MISSING"
+    },
+    "ocr": {
+      "httpStatus": 503,
+      "body": {
+        "ready": false,
+        "ocr_ready": true,
+        "llm_configured": false,
+        "error_code": null
+      },
+      "externalLlmInference": "BLOCKED_LLM_API_KEY_MISSING"
+    },
+    "publicAssistant": {
+      "status": "PASS",
+      "checks": [
+        "cookie/CSRF backend adapter",
+        "real E5/BM25 search-only",
+        "cited source content",
+        "history",
+        "company isolation"
+      ],
+      "generatedLlmAnswer": "NOT_VERIFIED"
+    }
+  },
+  "feedV2Promotion": {
+    "defaultRanker": "e5",
+    "gates": {
+      "relativeNDCG6": false,
+      "positiveClusterCI": false,
+      "semanticScenarios": false,
+      "humanReview": false
+    },
+    "isSynthetic": true,
+    "learnedBundle": "/releases/feed-v2/catboost",
+    "e5Bundle": "/releases/feed-v2/e5",
+    "humanReviewPending": true
+  },
+  "runtimeTrees": {
+    "backend": "787932477f3062cb0c4bffd1a6ba4d0b6f4d9398",
+    "frontend": "eb859dcfda3308fb78cf995a38b8f82983987287",
+    "ml": "33459a96b639ed69a7167834ed7488f20297669f",
+    "deploy": "8aa95a22efc0d365de45f0aa4e2e0bf822ea544f",
+    "scripts/integration": "52c2531282a9891cfeb3ad24cc291ecca9350477",
+    "scripts/deploy.py": "7ee7750e4cdc312189f4145f7d615a0081e37200",
+    "compose.yaml": "a195586d63787dfa8800403c3ceac511e9704a1e",
+    ".dockerignore": "1e00c14817e0b4514c5d41804e27c36597afb19c",
+    ".env.example": "6995160f4ed5bca7aa083bd9dcfd68a2d2da8fdc",
+    ".github/workflows/integrated-mvp.yml": "0442a2d97689f7866b5726554718ac17a8e515c7"
+  },
+  "relationToSubmission": "Final submission adds jury documentation, presentation, handoff bundle and jury helper scripts. The runtime paths and acceptance scripts listed above are identical to this tested commit.",
+  "limitations": [
+    "No external LLM key in this clean CI profile; generated assistant answers and OCR LLM field extraction NOT_VERIFIED by this run.",
+    "Qwen/Tesseract local generation probes are separately dated historical evidence.",
+    "Feed v2 synthetic promotion gates are false; E5 remains default.",
+    "The external ngrok server is a separate deployment; this Linux run does not prove its resource configuration."
+  ]
+}

@@ -17,3 +17,8 @@ ml/artifacts/**/*.md text eol=lf
 ml/migrations/*.sql text eol=lf
 *.joblib -text -diff
 *.npy -text -diff
+
+# Submission artifacts are byte-exact binary files.
+*.pdf binary
+*.pptx binary
+*.zip binary

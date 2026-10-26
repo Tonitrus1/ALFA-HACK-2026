@@ -27,5 +27,20 @@
     "skipped": 2,
     "scope": "unit/contract; opt-in Qdrant/E5 integrations not run"
   },
-  "logs": "Private .local/jury; not published because environment output may contain service configuration."
+  "logs": "Private .local/jury; not published because environment output may contain service configuration.",
+  "submissionChecks": {
+    "sourceCommit": "73babfbfec3e7df1fe55e6ac6013ca8f2c0eb557",
+    "loginBrowser": {
+      "passed": 1,
+      "platform": "macOS Chrome / local Docker",
+      "condition": "Pre-existing persisted applications are permitted; authenticated company, reload, invalid password and foreign-company denial checked."
+    },
+    "cleanClone": {
+      "copy": "separate clone, no shared worktree or env",
+      "documentationValidator": "PASS: 45 runtime routes, 68 schemas, 143 links, PDF/PPTX",
+      "init": "PASS: new random credentials generated in clone only",
+      "doctor": "PASS: configuration valid; local ARM64 / 3.8 GiB Docker resource warnings recorded, full deployment not claimed"
+    },
+    "independentLinuxRun": "https://github.com/Tonitrus1/ALFA-HACK-2026/actions/runs/40324670248"
+  }
 }

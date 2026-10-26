@@ -1,12 +1,29 @@
 {
   "slides": 12,
-  "pdfBytes": 2613343,
+  "pdfBytes": 2892932,
+  "zipBytes": 2461567,
   "below18MB": true,
   "copyableDemoPasswords": true,
+  "copyableScenarioTables": true,
   "pdfUriAnnotations": 5,
+  "qrDecodedFromFinalPdf": [
+    "https://president-diameter-endearing.ngrok-free.dev",
+    "https://github.com/Tonitrus1/ALFA-HACK-2026/tree/submission-2026-10-26"
+  ],
   "pptxIntegrity": "pass",
   "pptxLayoutFindings": 0,
   "pptxFontPolicyPassed": true,
   "pptxImportPassed": true,
-  "visualReview": "All 12 slides individually inspected, repaired connector direction; affected slides 4/5/8/9 re-inspected. PDF uses the same reviewed renders."
+  "editableNativeTables": 2,
+  "visualReview": "All 12 redesigned slides individually reviewed. Slide 6 has four branches; 7 has exact input values; 11 has concrete bank technology candidates. Separate checks/limits slide removed by owner request.",
+  "archive": {
+    "crc": "PASS",
+    "embeddedPdfAndPptxExactMatch": true,
+    "contents": [
+      "README.md",
+      "README.html",
+      "potok-gambit-yvaga.pdf",
+      "potok-gambit-yvaga.pptx"
+    ]
+  }
 }

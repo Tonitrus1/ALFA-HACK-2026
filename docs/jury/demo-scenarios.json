@@ -1,0 +1,9 @@
+{
+  "productId":"working-capital","productVersion":1,"requestedAmountRub":500000,"termMonths":12,"businessAgeMonths":40,"periodStart":"2025-01-01","periodEnd":"2025-12-31","currency":"RUB",
+  "scenarios":[
+    {"name":"Одобрение","expected":"APPROVED","preliminaryRevenueRub":3000000,"valuesRub":{"totalAssets":1000000,"totalLiabilities":400000,"currentAssets":500000,"currentLiabilities":200000,"equity":600000,"revenue":3000000,"netProfit":100000,"ebit":150000},"expectedOfferRub":500000},
+    {"name":"Отказ","expected":"DECLINED","preliminaryRevenueRub":3000000,"valuesRub":{"totalAssets":1000000,"totalLiabilities":920000,"currentAssets":500000,"currentLiabilities":300000,"equity":80000,"revenue":3000000,"netProfit":10000,"ebit":20000},"expectedOfferRub":null},
+    {"name":"Ручная проверка","expected":"MANUAL","preliminaryRevenueRub":0,"valuesRub":{"totalAssets":1000000,"totalLiabilities":400000,"currentAssets":500000,"currentLiabilities":200000,"equity":600000,"revenue":0,"netProfit":0,"ebit":0},"expectedOfferRub":null},
+    {"name":"Другие условия","expected":"ALTERNATIVE","preliminaryRevenueRub":1000000,"valuesRub":{"totalAssets":1000000,"totalLiabilities":400000,"currentAssets":500000,"currentLiabilities":200000,"equity":600000,"revenue":1000000,"netProfit":100000,"ebit":150000},"expectedOfferRub":250000}
+  ]
+}

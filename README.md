@@ -6,7 +6,7 @@
 
 Потребность в финансировании, заявка, документы, рассмотрение и результат — в одном веб-кабинете. Предприниматель видит сохранённые данные, текущий статус и следующий шаг. Банк получает связанный демонстрационный конвейер с отдельными скорингом и кредитной политикой.
 
-**[Открыть демо](https://president-diameter-endearing.ngrok-free.dev)** · **[Документация для жюри](docs/jury/README.md)** · **[PDF](docs/jury/presentation/potok-gambit-yvaga.pdf)** · **[PPTX](docs/jury/presentation/potok-gambit-yvaga.pptx)** · **[Версия сдачи](https://github.com/Tonitrus1/ALFA-HACK-2026/tree/submission-2026-10-26)**
+**[Открыть демо](https://president-diameter-endearing.ngrok-free.dev)** · **[Документация для жюри](docs/jury/README.md)** · **[Архив для жюри](docs/jury/presentation/potok-gambit-yvaga-submission.zip)** · **[PDF](docs/jury/presentation/potok-gambit-yvaga.pdf)** · **[PPTX](docs/jury/presentation/potok-gambit-yvaga.pptx)** · **[Версия сдачи](https://github.com/Tonitrus1/ALFA-HACK-2026/tree/submission-2026-10-26)**
 
 ![Работающий кабинет предпринимателя](docs/jury/assets/workspace.png)
 
@@ -88,6 +88,8 @@ python3 scripts/deploy.py up --mode core
 5. Отправить заявку и дождаться результата. Для контрольного набора при доступном baseline Risk ожидается предварительное одобрение.
 6. Открыть предложение, принять условия и завершить **демооформление**. Обновить страницу и проверить сохранение результата.
 7. Настроить ленту, открыть статью, сохранить полезный материал. Задать ассистенту вопрос по документам и проверить источники.
+
+**[Таблица значений для всех четырёх развилок](docs/jury/demo.md#четыре-проверяемые-развилки)**: одобрение, отказ, ручная проверка и другие условия. Все четыре набора прошли на локальном Docker-демо с настоящим Risk.
 
 **[Полный сценарий проверки](docs/jury/demo.md)** включает NEEDS_INFO, ALTERNATIVE, DECLINED, MANUAL, изоляцию и повторы. Отказы сервисов проверяются только на отдельном стенде.
 

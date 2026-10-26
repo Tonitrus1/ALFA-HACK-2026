@@ -1,0 +1,43 @@
+{
+  "checkedAt": "2026-10-26T12:58:21.003174+00:00",
+  "baseUrl": "http://127.0.0.1:8080",
+  "scope": "Four new labelled synthetic applications on the local Docker demo. No external-server mutations. No offers accepted.",
+  "source": "docs/jury/demo-scenarios.json",
+  "checks": [
+    {
+      "scenario": "Одобрение",
+      "applicationId": "c627683e-a961-46f9-93ec-bd3d095098ab",
+      "expected": "APPROVED",
+      "actual": "APPROVED",
+      "status": "PASS",
+      "explanation": "Предварительное предложение готово",
+      "offerAmountRub": 500000.0
+    },
+    {
+      "scenario": "Отказ",
+      "applicationId": "8e92dcaa-f2a7-4b78-9e1e-c66305c2fa6a",
+      "expected": "DECLINED",
+      "actual": "DECLINED",
+      "status": "PASS",
+      "explanation": "Долговая нагрузка выше допустимой для продукта"
+    },
+    {
+      "scenario": "Ручная проверка",
+      "applicationId": "ddfe688d-9d1f-4904-b069-886a33ffbb17",
+      "expected": "MANUAL",
+      "actual": "MANUAL",
+      "status": "PASS",
+      "explanation": null
+    },
+    {
+      "scenario": "Другие условия",
+      "applicationId": "ac859254-9697-417e-87e4-e925bceca8aa",
+      "expected": "ALTERNATIVE",
+      "actual": "ALTERNATIVE",
+      "status": "PASS",
+      "explanation": "Можем предложить меньшую сумму: не более 25% годовой выручки",
+      "offerAmountRub": 250000.0
+    }
+  ],
+  "status": "PASS"
+}

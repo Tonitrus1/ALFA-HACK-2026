@@ -79,6 +79,12 @@ for number in range(1,13):
             value=''.join(n.text or '' for n in paragraph.findall('.//a:t',ns))
             cursor.textLine(value)
         pdf.drawText(cursor)
+    # Native tables also receive copyable/searchable Unicode text.
+    for table in doc.findall('.//a:tbl',ns):
+        cursor=pdf.beginText();cursor.setTextRenderMode(3);cursor.setFont('JurySearch',11);cursor.setLeading(15);cursor.setTextOrigin(42,440)
+        for row in table.findall('a:tr',ns):
+            cursor.textLine(' / '.join(''.join(n.text or '' for n in cell.findall('.//a:t',ns)) for cell in row.findall('a:tc',ns)))
+        pdf.drawText(cursor)
     if number==12:
         for url,(x,y,w,h) in [(demo,(64,164,164,164)),(demo,(268,234,922,70)),(tag,(64,360,164,164)),(repo,(268,425,922,44)),(tag,(268,478,922,38))]:
             pdf.linkURL(url,(x*.75,540-(y+h)*.75,(x+w)*.75,540-y*.75),relative=0,thickness=0)
