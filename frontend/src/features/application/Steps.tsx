@@ -87,7 +87,6 @@ export function BusinessStep() {
     navigate = useNavigate(),
     [error, setError] = useState<unknown>(),
     [busy, setBusy] = useState(false);
-  const values = useWatch({ control: form.control });
   const next = async () => {
     setError(undefined);
     const errors = financeErrors(form.getValues('finance'));
@@ -99,10 +98,15 @@ export function BusinessStep() {
       );
       return;
     }
-    if (!Object.values(form.getValues('confirmed')).every(Boolean)) {
-      setError(new Error('Проверьте и подтвердите каждый из восьми показателей'));
-      return;
-    }
+    // Reviewing the completed form confirms all values in one action.
+    form.setValue(
+      'confirmed',
+      Object.fromEntries(Object.keys(financeFields).map((key) => [key, true])) as Record<
+        FinanceKey,
+        boolean
+      >,
+      { shouldDirty: true },
+    );
     setBusy(true);
     try {
       await flush();
@@ -152,11 +156,6 @@ export function BusinessStep() {
                 id={key}
                 label={label}
                 error={form.formState.errors.finance?.[key]?.message}
-                hint={
-                  signedFields.includes(key)
-                    ? 'Допустимо отрицательное значение'
-                    : 'Неотрицательная сумма'
-                }
               >
                 <div className="money-input">
                   <MoneyInput
@@ -184,15 +183,6 @@ export function BusinessStep() {
                   <span>₽</span>
                 </div>
               </Field>
-              <Checkbox
-                aria-label={'Подтвердить: ' + label}
-                checked={values.confirmed?.[key] ?? false}
-                onChange={(e) =>
-                  form.setValue(`confirmed.${key}`, e.target.checked, { shouldDirty: true })
-                }
-              >
-                Значение проверено
-              </Checkbox>
             </div>
           ))}
         </div>
@@ -267,7 +257,7 @@ export function ReviewStep() {
         !form.getValues('consents')
       )
         throw new Error(
-          'Проверьте финансовые показатели, восемь подтверждений и согласия. Вернитесь на соответствующий шаг.',
+          'Проверьте финансовые показатели и согласия. Вернитесь на соответствующий шаг.',
         );
       const fresh = await api.application(application.id);
       if (fresh.version !== version())

@@ -162,9 +162,15 @@ function FeedbackCard({
         data-testid="feed-card"
         data-content-id={card.contentId}
       >
-        <div className="feed-card-art" aria-hidden="true">
+        <button
+          type="button"
+          className="feed-card-art"
+          aria-label={'Читать: ' + card.title}
+          disabled={busy}
+          onClick={() => void send('CLICK').catch(() => {})}
+        >
           <img src={card.illustration} alt="" width="224" height="168" loading="lazy" />
-        </div>
+        </button>
         <div className="feed-card-body">
           <div className="feed-card-meta">
             <span className="feed-card-topic">{topic.label}</span>
