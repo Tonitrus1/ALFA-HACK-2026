@@ -1,0 +1,878 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Кредитный кабинет - аудит и спецификация</title><style>body{font:16px/1.65 system-ui,sans-serif;color:#182b3b;background:#f1f5f5;margin:0}header{background:#17394b;color:white;padding:40px max(5vw,24px)}main{max-width:1080px;margin:auto;padding:28px}nav{display:flex;gap:14px;flex-wrap:wrap}a{color:#0d7b78}header a{color:#b0e4dd}section,figure{background:white;padding:32px;margin:24px 0;border-radius:14px}section h1{font-size:28px}h2{margin-top:34px}table{border-collapse:collapse;width:100%;font-size:14px}td,th{border:1px solid #dce6e8;padding:10px;text-align:left;vertical-align:top}th{background:#edf6f5}img{width:100%;height:auto}.tag{color:#0d7b78;font-size:12px;font-weight:700}code{overflow-wrap:anywhere}figcaption{color:#5a6b7b}p{overflow-wrap:anywhere}</style><header><h1>Кредитный кабинет</h1><p>Аудит · согласованная архитектура · разработка · защита</p><nav><a href="technology-adapters.pdf">Адаптеры и полный стек</a><a href="architecture-audit.pdf">Аудит</a><a href="git-and-jury-guide.pdf">Git и защита</a><a href="development-plan.pdf">План разработки</a><a href="packages/general/general-guide.pdf">General</a><a href="packages/backend/backend-guide.pdf">Backend</a><a href="packages/frontend/frontend-guide.pdf">Frontend</a><a href="packages/ml/ml-guide.pdf">Ml</a><a href="architecture-atlas.pdf">Атлас схем</a></nav></header><main><p>Самодостаточная спецификация. Приложение не реализовано; статические проверки отдельно от runtime.</p><figure><img src="diagrams/01-local-runtime.svg" alt="MVP: обычный ПК, реальные ML-функции"/><figcaption>MVP: обычный ПК, реальные ML-функции</figcaption></figure><figure><img src="diagrams/02-bank-target.svg" alt="Целевой банковский контур"/><figcaption>Целевой банковский контур</figcaption></figure><figure><img src="diagrams/03-client-journey.svg" alt="Путь клиента и состояния заявки"/><figcaption>Путь клиента и состояния заявки</figcaption></figure><figure><img src="diagrams/04-command-safety.svg" alt="Одна команда: фиксация, доставка, результат"/><figcaption>Одна команда: фиксация, доставка, результат</figcaption></figure><figure><img src="diagrams/05-ml-data.svg" alt="ML: данные, оценка и разрешённый ответ"/><figcaption>ML: данные, оценка и разрешённый ответ</figcaption></figure><figure><img src="diagrams/06-data-model.svg" alt="Модель данных: неизменяемые связи"/><figcaption>Модель данных: неизменяемые связи</figcaption></figure><figure><img src="diagrams/07-technology-adapters.svg" alt="Полный стек: границы и локальные адаптеры"/><figcaption>Полный стек: границы и локальные адаптеры</figcaption></figure><section id="0"><span class="tag">HACKATHON-1.5</span><h1>Полный технологический стек через адаптеры</h1>
+<p>Редакция HACKATHON-1.5. Qdrant, Redis, Feast, MLflow, Airflow, Evidently, vLLM, Kafka, S3, Prometheus, Grafana и Kubernetes сохранены как именованные архитектурные компоненты с назначением, владельцем и способом подключения. Java/Spring, React/TypeScript, PostgreSQL и Python ML остаются основой.</p>
+<p>Это спецификация будущей реализации. Порты, адаптеры и Docker-профили ниже спроектированы; исполняемых адаптеров, контейнеров приложения и результатов их испытаний в этой поставке нет. Все записи каталога имеют статус SPECIFIED_NOT_IMPLEMENTED.</p>
+<h2>1. Как это устроено</h2>
+<p>Бизнес-модуль вызывает небольшой интерфейс способности: поиск, получение признаков, работа с сессией или чтение файла. В точке сборки Java/Python-приложения выбирается ровно одна реализация интерфейса. Для обычного ПК выбирается локальный адаптер; для интеграционного стенда - адаптер настоящего сервиса. SDK не импортируется из доменной логики. Общие JSON DTO описывают семантику на межпроцессных границах; интерфейс Python не превращается в Java-библиотеку.</p>
+<p>Такой подход сохраняет технологии в структуре будущего проекта: backend/ports и backend/adapters/{local,redis,kafka,s3}; ml/ports и ml/adapters/{local,qdrant,feast,mlflow,airflow,evidently,vllm}; deploy/profiles; tests/adapter-contracts. Каталоги настоящих SDK-адаптеров на старте могут содержать интерфейс, README, план подключения и явно отключённый каркас. Каркас выбрасывает ProviderNotImplemented при попытке выбора; он не возвращает успешный фиктивный результат.</p>
+<p>Локальный адаптер выполняет полезную работу: ищет embeddings, читает реальные снимки признаков, сохраняет сессии или считает DQ. Контрактная заглушка отдаёт подготовленный ответ для независимой разработки и тестов. Эти два режима различаются в конфигурации и отчёте защиты. Четыре согласованные ML-функции в итоговом MVP требуют настоящих моделей и вычислений.</p>
+<h2>2. Профили запуска</h2>
+<table>
+<thead>
+<tr>
+<th>Профиль</th>
+<th>Привязка способностей</th>
+<th>Условие готовности</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>local-mvp</td>
+<td>6 контейнеров; локальные адаптеры всех компонентов; реальные risk, рекомендации, OCR, RAG</td>
+<td>Обязательный CPU-профиль; общий путь, данные и безопасность проверены</td>
+</tr>
+<tr>
+<td>local-integrations</td>
+<td>Пример: настоящий Redis для кеша, Qdrant для индекса, MLflow для registry; прочие привязки локальные</td>
+<td>Дополнительная задача P27; проверены SDK, серверы, ресурсы и общий контракт. Сессии остаются JDBC</td>
+</tr>
+<tr>
+<td>bank-target</td>
+<td>Настоящие сервисы полного стека и банковские системы</td>
+<td>Отдельные платформенные, модельные и банковские gates; схема не означает промышленный допуск</td>
+</tr>
+</tbody>
+</table>
+<p>Примеры конфигурации: contracts/examples/profiles/*.json. Это не исполняемый Compose. Схема выбора: contracts/adapter-bindings.schema.json; полный каталог: contracts/technology-adapters.json. Профиль local-integrations допускает проверенные варианты с одним сервисом; каждый выбранный провайдер и его зависимость должны совпадать. Сам факт запуска контейнера не означает интеграцию приложения.</p>
+<p>Неизвестный провайдер, отсутствующая способность, неподдержанный SDK или отсутствующий реализованный адаптер останавливают запуск соответствующего профиля. Смена провайдера выполняется при управляемом перезапуске. Автоматического переключения источника сессий, финансов, KB или безопасных файлов при отказе нет. Восстанавливаемый кеш может дать miss с чтением разрешённого первоисточника.</p>
+<h2>3. Что заменяет каждую технологию</h2>
+<table>
+<thead>
+<tr>
+<th>Технология и граница</th>
+<th>Локальная реализация MVP</th>
+<th>Настоящее подключение и предел замены</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Qdrant / VectorIndexPort</td>
+<td>NumPy: точный cosine search, metadata, allowlist точных версий</td>
+<td>QdrantVectorIndexAdapter; отсутствуют ANN-масштабирование и распределённый индекс</td>
+</tr>
+<tr>
+<td>Redis / SessionStorePort</td>
+<td>PostgreSQL/JDBC: TTL, версия, отзыв сессии</td>
+<td>RedisSessionAdapter; миграция с инвалидированием старых сессий, без fallback</td>
+</tr>
+<tr>
+<td>Redis / CachePort</td>
+<td>Ограниченный локальный TTL-кеш производных данных</td>
+<td>RedisCacheAdapter; локальный кеш не общий между репликами</td>
+</tr>
+<tr>
+<td>Feast / FeatureRepositoryPort и HistoricalFeatureReader</td>
+<td>Общий transform, неизменяемые снимки в ML-схеме PostgreSQL</td>
+<td>FeastFeatureRepositoryAdapter; registry/materialization/online store не эмулируются</td>
+</tr>
+<tr>
+<td>MLflow / ModelRegistryPort</td>
+<td>Content-addressed manifests, реальные evaluation reports и approval</td>
+<td>MlflowModelRegistryAdapter; UI и распределённый tracking отсутствуют</td>
+</tr>
+<tr>
+<td>Airflow / BatchJobRunnerPort</td>
+<td>Явные offline-команды и журнал заданий с lease/idempotency</td>
+<td>AirflowBatchJobRunnerAdapter; нет календарного scheduler/backfill</td>
+</tr>
+<tr>
+<td>Evidently / QualityReportPort</td>
+<td>Вычисленный DQ/метрики baseline, размер выборки и provenance</td>
+<td>EvidentlyQualityReportAdapter; нет доказанного production drift на синтетике</td>
+</tr>
+<tr>
+<td>vLLM / TextGenerationPort</td>
+<td>Настоящий llama-server + Qwen GGUF на CPU</td>
+<td>VllmGenerationAdapter; отдельная проверка модели/формата/GPU, без обещания битового паритета</td>
+</tr>
+<tr>
+<td>Kafka / EventTransportPort</td>
+<td>PostgreSQL outbox/dispatcher/inbox, доставка с повторами</td>
+<td>KafkaEventTransportAdapter; outbox/inbox сохраняются, Kafka-протокол не эмулируется</td>
+</tr>
+<tr>
+<td>S3 / ObjectStorePort</td>
+<td>Версионные файлы quarantine/clean и metadata/hash в БД</td>
+<td>S3ObjectStoreAdapter; локальный volume не обеспечивает multi-node durability</td>
+</tr>
+<tr>
+<td>Prometheus / instrumentation</td>
+<td>Реальный OpenMetrics endpoint и структурированные logs</td>
+<td>Scrape/retention binding; exporter не заменяет хранилище и alerting Prometheus</td>
+</tr>
+<tr>
+<td>Grafana / представление измерений</td>
+<td>Локальный read-only отчёт с датой и evidence</td>
+<td>Dashboard binding с настоящим datasource; отчёт не эмулирует Grafana</td>
+</tr>
+<tr>
+<td>Kubernetes / развёртывание</td>
+<td>Docker Compose для одного ПК</td>
+<td>Манифесты, PV/secrets/probes/network policies; Compose не обеспечивает HA/multi-AZ</td>
+</tr>
+</tbody>
+</table>
+<p>Порты вводятся для поведения приложения. Для Grafana/Kubernetes достаточно границы эксплуатации и конфигурации поставки: искусственные бизнес-интерфейсы ради названия технологии не нужны. Ограничения локального адаптера являются частью контракта, а не скрытой технической задолженностью.</p>
+<h2>4. Общие правила интерфейсов</h2>
+<p>Каталог содержит signatures, DTO, ownerRole/dataOwner, ограничения, правила переключения, contractCases и задачи. Существующие public/internal OpenAPI и строгие события остаются wire-источниками истины версии 1.4.0-design; документационная версия 1.5 не меняет API. Изменение DTO требует контрактного PR с примерами, а не локального исправления SDK-адаптера.</p>
+<p>Для внешнего вызова задаются deadline, traceId и техническая identity; tenantScope вычисляет сервер. Классы ошибок порта: InvalidInput, NotFound, Forbidden, VersionConflict, Unavailable, DeadlineExceeded, ProviderNotImplemented. Адаптер переводит SDK-ошибки в этот набор; наружу не выходят connection string, query text и секреты. Бизнес API сохраняет ранее согласованные HTTP-ошибки; временный отказ ML ведёт к согласованному fallback.</p>
+<p>Каждый порт получает одну общую группу проверок инвариантов и отдельные проверки конкретного сервиса. Общая группа проверяет допустимый результат, безопасность, версии и отказ, а не полную совместимость чужого протокола. Для настоящего провайдера дополнительно проверяются timeout/retry/connection pool/ресурсы и выбранные SDK/server версии. Неподключённый сервис имеет NOT_EXECUTED, а не PASS по локальной реализации.</p>
+<h2>5. Qdrant: реальный поиск в локальной обёртке</h2>
+<p>VectorIndexPort.search принимает нормализованный finite float32[384], indexDigest, список разрешённых chunkRef и topK от 1 до 10. ChunkRef связывает documentId, documentVersion и chunkId. Backend выдаёт ограниченный allowlist опубликованных источников и аудитории; пустой allowlist возвращает пустой результат. Фильтр применяется до ранжирования, затем проверяются citations и актуальный kbEpoch перед публикацией.</p>
+<p>NumPy-адаптер действительно вычисляет cosine similarity на небольшом immutable корпусе. Qdrant-адаптер переносит те же ограничения в payload/ID-фильтр коллекции, но индекс не становится владельцем полномочий. Для SDK/API фильтров закрепить версию при P02/P27. Нельзя сначала искать по всем клиентам, а затем надеяться скрыть чужой ответ после генерации.</p>
+<p>Переключение: подготовить коллекцию с теми же embedding/model/corpus digests, проверить количество и версии, фильтрацию и recall на фиксированном наборе, затем выбрать provider. ANN не обязан вернуть бит-в-бит тот же порядок; threshold recall@k объявляется до проверки и измеряется. На малом проверочном наборе можно использовать exact-режим; это не доказательство промышленной скорости. Отозванные знания запрещаются authority независимо от версии индекса.</p>
+<h2>6. Redis: раздельно сессии и кеш</h2>
+<p>SessionStorePort.resolve проверяет sessionHash, expiry и authEpoch; revoke использует ожидаемую версию. Локальные сессии сохраняются в JDBC, отзыв переживает restart. Redis-провайдер обязан сохранять смысл TTL/отзыва и отказывать при недоступном authority. При потере Redis нельзя автоматически читать старые JDBC-сессии: так вернулась бы уже отозванная сессия. Плановый переход инвалидирует активные сессии и требует повторного входа.</p>
+<p>CachePort хранит только восстанавливаемые производные значения. Ключ учитывает namespace, sourceVersion, authEpoch и companyId, если данные компании участвуют в значении. TTL и максимальный размер обязательны. Cache miss/отказ Redis разрешает чтение того же разрешённого снимка из первоисточника; права, решения и idempotency records не переносятся в кеш. В дополнительном профиле сначала подключаем именно Redis-кеш, оставляя сессии JDBC.</p>
+<h2>7. Feast: признаки и исторические данные</h2>
+<p>FeatureRepositoryPort.create получает неизменяемый финансовый снимок и transformDigest, возвращает существующий FeatureSnapshot. get читает точный snapshotId/digest. Источник финансов и кредитное решение остаются на стороне банка; ML владеет схемой и преобразованием признаков. Повтор одного submissionSnapshotId/codeDigest не создаёт новый смысловой снимок.</p>
+<p>HistoricalFeatureReader принимает entities с asOf и схему признаков; каждый источник должен быть доступен на момент среза: availableAt &lt;= asOf. Локальный адаптер читает persisted provenance, использует общий batch/online transform и проверяется на утечки будущего. Для UCI нет надёжных календарных availableAt: это ограничение baseline, а не повод выдумать временную валидацию.</p>
+<p>Feast различает historical retrieval и online retrieval. Online latest не заменяет point-in-time join и не меняет признаки уже отправленной заявки. Target-адаптер закрепляет feature definitions/registry, источник, правила materialization и отдельный online store. Даже с Feast результат, использованный в скоринге, сохраняется как immutable snapshot с digest.</p>
+<h2>8. MLflow, Airflow, Evidently и vLLM</h2>
+<p>MLflow-порт локально читает approved content-addressed bundle и записывает реальные evaluation reports. Registry alias разрешается в неизменяемую версию до активации; controller отдельно проверяет approval и включает релиз. Переименование alias не должно менять уже работающую модель. Инференс не зависит от доступности UI registry.</p>
+<p>Airflow-порт принимает только allowlisted offline jobType и inputDigest/requestKey. Журнал хранит QUEUED/RUNNING/SUCCEEDED/FAILED, attempt, lease и hashes результатов. Подготовка признаков, обучение baseline, построение индекса и оценка запускаются явно вне клиентского запроса. Успех задания не даёт права автоматически опубликовать модель.</p>
+<p>Evidently-порт локально считает missingness, объём данных и доступные метрики baseline. При отсутствии зрелых labels или достаточной выборки возвращает INSUFFICIENT_DATA. На синтетическом показе не объявляем доказанное качество или drift. Для настоящего Evidently закрепляются версии отчёта, окна и thresholds; общие численные показатели сравниваются отдельно от UI.</p>
+<p>vLLM-порт сохраняет интерфейс генерации с approved context, bundleDigest, promptDigest, deadline и maxTokens. CPU llama.cpp выполняет реальный inference. vLLM требует отдельного проверенного формата артефактов, tokenizer/revision/precision и подходящего GPU; GGUF bundle не обещается загрузить тем же бинарным файлом. При смене engine повторяются golden/injection/citation проверки. Timeout означает SEARCH_ONLY, а подготовленный текст допустим только в обозначенном test double.</p>
+<h2>9. Переключение и параллельная разработка</h2>
+<p>P01 фиксирует порты, DTO и synthetic fixtures. Backend реализует локальные session/cache/event/object адаптеры в P25; ML реализует feature/vector/generation в P11/P14; интегратор собирает manifest/job/quality/metrics bindings в P26 с review ML. Frontend работает через прежний клиентский API и MSW: названия инфраструктуры не появляются в клиентском пути.</p>
+<p>Минимальный каркас настоящего адаптера: зависимость SDK выключена в local-mvp, интерфейс реализован явно отключённым классом, README с mapping и ограничениями, общая группа тестов помечена NOT_EXECUTED до подключения сервиса. Проверка выбора такого каркаса должна завершаться ProviderNotImplemented. Подключение работающего SDK и сервиса - отдельный проверяемый PR, а не переименование локального класса.</p>
+<p>Порядок для любого реального сервиса: закрепить версии/лицензии → реализовать adapter → поднять сервис → прогнать общие и специальные проверки → перенести/проверить данные → выбрать binding → провести smoke/restart/failure → записать доказательство в release. Рискованный dual-write в authority запрещён; shadow-read допустим на синтетике без второго бизнес-эффекта. Rollback возвращает согласованный полный bundle и проверенный provider; отзыв прав/KB не откатывается.</p>
+<p>Оценка обязательного объёма увеличена на 9 человеко-часов локальных адаптеров и их проверки. P27 добавляет ещё 8 часов для настоящих Redis-cache/Qdrant/MLflow и не входит в обязательную сумму; это оптимистичная оценка при знакомых SDK. Feast/Airflow и другие сервисы сохраняются в архитектуре и каркасах, их полноценное внедрение не скрывается под этими 8 часами.</p>
+<h2>10. Как представить жюри</h2>
+<p>На схеме показать три колонки: именованный компонент стека → порт/граница → выбранный локальный или настоящий адаптер. Затем продемонстрировать один сквозной вызов, например RAG: KB allowlist → VectorIndexPort → NumPy cosine → Qwen → проверка источников. Для Redis показать сессию после restart и cache miss; для Feast - immutable feature snapshot и provenance. Так видны и архитектура, и фактическое поведение.</p>
+<p>Для каждого компонента release-отчёт содержит capability, intendedTechnology, selectedProvider, implementationStatus, testStatus, commit, artifact/config digest и evidence path/hash. Метки: ARCHITECTURAL_SLOT, LOCAL_SUBSTITUTE, REAL_CONNECTED, TEST_DOUBLE. REAL_CONNECTED допускается только после реального интеграционного прогона и доказательства; отсутствие результата явно обозначается NOT_EXECUTED. Сам provider manifest не доказывает работоспособность.</p>
+<p>Рекомендуемая формулировка: «Архитектура предусматривает Qdrant, Redis и Feast через стабильные границы. На этом стенде векторный поиск выполняет NumPy-адаптер, сессии сохраняются в PostgreSQL, признаки - в версионированных снимках. Вот действующий путь и проверки; вот конкретный mapping подключения сервисов». Успешную демонстрацию установленного Qdrant можно назвать реальной интеграцией только если приложение действительно выбрало его адаптер.</p>
+<h2>Источники и комплект</h2>
+<p>Различия historical/online: <a href="https://docs.feast.dev/getting-started/concepts/feature-retrieval">Feast feature retrieval</a>. Фильтрация индекса: <a href="https://qdrant.tech/documentation/search/filtering/">Qdrant filtering</a>. Java SDK: <a href="https://redis.io/docs/latest/develop/clients/lettuce/">Redis Lettuce</a>. Неизменяемая привязка registry: <a href="https://mlflow.org/docs/latest/ml/model-registry/workflow/">MLflow workflows</a>. Проверено 20.10.2026; проектный mapping и выбор адаптеров являются нашими архитектурными решениями. Точная совместимость SDK/server версий закрывается при реализации.</p>
+<p><a href="contracts/technology-adapters.json">Машинный каталог</a>, <a href="contracts/adapter-bindings.schema.json">схема конфигурации</a>, <a href="contracts/examples/profiles/local-mvp.json">примеры профилей</a>, <a href="docs/development-plan.md">план</a>, <a href="docs/git-and-jury-guide.md">Git и защита</a>, <a href="architecture.drawio">редактируемый атлас</a>.</p>
+<p><a href="technology-adapters.pdf">Открыть PDF</a></p></section><section id="1"><span class="tag">HACKATHON-1.5</span><h1>Архитектурный аудит: решение для хакатона</h1>
+<p>HACKATHON-1.5. 20 октября 2026 года. Общая архитектура, backend, frontend и ML проверены как единая спецификация.</p>
+<h2>Вердикт</h2>
+<p>Архитектурная основа разумна: модульный Java backend, отдельный Python ML, неизменяемая отправка, версии документов, outbox/inbox и банковский владелец решения. Но исходные четыре пакета не составляли единый готовый план разработки: ML-расширение оставалось preview, обязательный runtime был перегружен, отсутствовали отдельные внутренние границы.</p>
+<p>Выявлено <strong>20 новых замечаний</strong>: 13 P1 и 7 P2. Исправления внесены в новый самодостаточный комплект, не поверх исторических отчётов. Предыдущие 30 замечаний пересмотрены отдельно в evidence/prior-audit-recheck.json и не посчитаны повторно. Исходные 302 файлов сохранены в evidence/originals.zip с покомпонентными SHA-256.</p>
+<p>Спецификация допускает параллельную реализацию после P01/P02. Работающий MVP пока не существует. Статическая корректность API не доказывает транзакции, безопасность runtime, производительность или качество моделей. Банковский production не допущен.</p>
+<h2>Продуктовая оценка</h2>
+<p>Центр решения - предприниматель, который понимает подходящий продукт, сохраняет введённое и получает следующий шаг без обязательного звонка. Правильные элементы: предзаполнение, понятный статус, адресованный RFI, несколько исходов, обязательное действие выше рекомендованного контента. Устраняем противоречие «один продукт» против трёх и добавляем финансовый/RAG путь к web-спецификации.</p>
+<p>Проверяем завершение заявки/RFI, время до отправки, сохранность ввода и понимание статуса. У проекта нет проведённого CustDev/usability baseline; заявления о подтверждённой конверсии, ROI или сокращении потерь были бы необоснованными. На следующем этапе провести 3-5 наблюдаемых проходов разных ролей, фиксируя ошибки и вопросы; этот малый smoke не является репрезентативным исследованием.</p>
+<h2>Безопасность и бизнес-логика</h2>
+<p>Самые значимые границы: company/actor/role, серверные подтверждения финансов, неизменяемые снимки, CLEAN bytes, разные версии draft/RFI/offer, peer approval модельного bundle и финальная проверка отозванного источника RAG. Proxy риска не является PD; score не является решением, принятие предложения не является выдачей.</p>
+<p>Уточнены потеря ответа и повтор ключа, изменение содержимого с тем же ключом, конкурентный draft, смена компании между вкладками, RFI-only финансовое изменение, lease/generation OCR, истечение/принятие/отзыв offer и restart. Условия production G01-G08 не подменены локальной синтетикой.</p>
+<h2>Технологии и масштабирование</h2>
+<p>Оставлены Java/Spring, React/TypeScript, PostgreSQL и Python. Документально подтверждены Java21/Boot4.1.1; неподтверждённая пара Modulith2.1/Boot4.1 больше не обязательна для MVP. Версии платформы/весов/OCI фиксируются до runtime в P02: существующей сборки приложения нет.</p>
+<p>Обязательный local-mvp работает по проекту на обычном CPU-ПК, GPU - ускорение. Именованный полный стек сохранён через обязательные порты и локальные адаптеры: Qdrant/Redis/Feast и остальные компоненты имеют mapping, владельца, ограничения и контракт подключения. Настоящие сервисы выбираются в дополнительном профиле; реальные risk/OCR/RAG/semantic recommendations обязательны на CPU. Сначала масштабируем пулы/очереди/DB/file storage и измеряем bottleneck; microservices не являются первым исправлением.</p>
+<p>Цели target 99,95%, p95 300/500 мс,1k/5kRPS и RPO5 мин/RTO30 мин сохранены как гипотезы/требования, а не результаты. Для малого CPU RAG введён отдельный budget60 с; latency основной команды не включает длительную генерацию. Документальные источники: docs/sources.md и evidence/technical-evidence.json.</p>
+<h2>Сроки и риск</h2>
+<p>Базовая оценка - <strong>112 человеко-часа</strong>, с 25% резервом - <strong>140.0</strong>. Критический путь зависимостей: P01 → P03 → P05 → P08 → P15 → P17 → P18 → P20 → P23, нижняя оценка 35 активных часов при неограниченных ресурсах. Один ML-специалист имеет 30 часов модельных задач, которые нельзя считать параллельными.</p>
+<p>Для 5 участников/72 ч объём реалистичен при готовых навыках и доступных артефактах, запас ограничен.3 участника/48 ч не обеспечивают согласованный объём; при 3/72 и 5/48 риск высок. К 12 ч нужен вертикальный срез, далее общая интеграция каждые 4-6 ч. Fallback сохраняет доступность продукта, но не заменяет успешный прогон 4 реальных ML-функций в критерии готовности.</p>
+<h2>Корректировка сохранения технологий</h2>
+<p>Редакция 1.4 чрезмерно отделяла Redis/Qdrant/Feast и остальной стек как target-only. По уточнению пользователя 1.5 сохраняет их уже в архитектуре MVP через заменяемые адаптеры. Удаление обязательных тяжёлых сервисов из CPU-развёртывания не должно удалять интерфейсы, задачи и доказуемый путь интеграции. Полная спецификация: docs/technology-adapters.md; wire API остаётся 1.4.0-design. Ранее собранная версия 1.4 сохранена отдельно с SHA-256.</p>
+<h2>Оценка по направлениям</h2>
+<table>
+<thead>
+<tr>
+<th>Направление</th>
+<th>Оценка</th>
+<th>Что ограничивает вывод</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Бизнес-ценность</td>
+<td>Логично связаны сохранение, уточнения и следующий шаг</td>
+<td>Нет подтверждённого CustDev/ROI baseline</td>
+</tr>
+<tr>
+<td>Бизнес-логика</td>
+<td>Владельцы, версии и небинарные исходы согласованы</td>
+<td>Нужны транзакционные испытания приложения</td>
+</tr>
+<tr>
+<td>Клиентский путь</td>
+<td>Финансы/OCR/RFI/RAG связаны с основным сценарием</td>
+<td>Нужны наблюдаемые проходы пользователей</td>
+</tr>
+<tr>
+<td>Безопасность</td>
+<td>Границы доступа и отказные режимы специфицированы</td>
+<td>Нет security-тестов runtime и production-допуска</td>
+</tr>
+<tr>
+<td>Масштабирование</td>
+<td>Модульность и ограниченные очереди дают путь роста</td>
+<td>Нет замеров 5kRPS/HA/DR; локальный профиль не HA</td>
+</tr>
+<tr>
+<td>Технологии и сроки</td>
+<td>Компактный runtime с 4 ML-функциями оправдан</td>
+<td>Supply chain/CPU smoke ещё предстоят; сроки рискованны</td>
+</tr>
+</tbody>
+</table>
+<p>Допустимые упрощения: synthetic customers, bank simulator, одна OCR-форма, небольшой KB, pretrained semantic ranking и отсутствие распределённого MLOps runtime. Они не считаются дефектами. Отдельные будущие улучшения: поведенческий ranker, банковская PD, multi-AZ, автоматизированный lifecycle обучения. Отсутствие этих улучшений не маскирует обязательные 4 ML-функции MVP.</p>
+<h2>Реестр новых замечаний</h2>
+<h3>H01 [P1] ML-расширение не применено к базовым пакетам</h3>
+<p>Источник: <code>output/credit-workspace-ml-architecture/api/integration-preview-metadata.json:2</code>; фрагмент «REVIEW_ONLY_NOT_APPLIED». SHA-256 и исходник - в evidence/. Класс: несогласованность.</p>
+<p>Сценарий/последствия: Frontend и backend начинают разработку по 49 операциям, ML ожидает 60 и новую финансовую форму.</p>
+<p>Исправление: Принят единый публичный OpenAPI 1.4.0-design, 60 операций; все четыре пакета получают точные генерируемые копии.</p>
+<p>Проверка: public-count, copies-identical, public-openapi. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H02 [P1] Финансовый снимок не входит в банковский пакет</h3>
+<p>Источник: <code>output/credit-workspace-backend-architecture/api/internal-openapi.json:6041</code>; фрагмент «&quot;SubmissionPackage&quot;». SHA-256 и исходник - в evidence/. Класс: несогласованность.</p>
+<p>Сценарий/последствия: Новый submit подтверждает финансовую версию, но банковский адаптер получает пакет без ссылки на неё.</p>
+<p>Исправление: SubmissionPackage и AmendmentPackage требуют financialStatementVersion и серверный financialSnapshotId.</p>
+<p>Проверка: financial-package-fields, immutable-financial-reference. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H03 [P1] Две несовместимые активные границы скоринга</h3>
+<p>Источник: <code>output/credit-workspace-backend-architecture/api/internal-openapi.json:799</code>; фрагмент «/internal/v1/risk/evaluations». SHA-256 и исходник - в evidence/. Класс: несогласованность.</p>
+<p>Сценарий/последствия: Адаптер отправляет старые бизнес-поля вместо восьми коэффициентов из неизменяемого снимка.</p>
+<p>Исправление: В согласованной версии активны risk v2 и rankings v2; старые пути исключены из нового контракта, миграция перечислена.</p>
+<p>Проверка: no-legacy-risk, internal-openapi. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H04 [P1] Для RAG не описан внутренний HTTP-контракт</h3>
+<p>Источник: <code>output/credit-workspace-ml-architecture/api/public-extensions.openapi.json:1667</code>; фрагмент «/api/v1/assistant/messages». SHA-256 и исходник - в evidence/. Класс: несогласованность.</p>
+<p>Сценарий/последствия: Публичный помощник есть, но backend и ML не могут независимо реализовать вызов с авторизованным контекстом.</p>
+<p>Исправление: Добавлен POST /internal/v2/assistant/answers с серверным company/subject, kbEpoch, allowlist источников и единым ответом.</p>
+<p>Проверка: rag-internal-route, rag-context-fixtures. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H05 [P1] Модель не имеет контрактного чтения feature snapshot</h3>
+<p>Источник: <code>output/credit-workspace-ml-architecture/api/internal.openapi.json:3850</code>; фрагмент «&quot;featureSnapshotId&quot;». SHA-256 и исходник - в evidence/. Класс: несогласованность.</p>
+<p>Сценарий/последствия: Risk API принимает ID снимка, но способ получить именно этот snapshot не описан; возникает чтение чужих таблиц или текущего черновика.</p>
+<p>Исправление: Добавлен GET /internal/v2/feature-snapshots/{featureSnapshotId}; авторизованный сервис получает неизменяемый снимок и проверяет digest.</p>
+<p>Проверка: snapshot-read-route, snapshot-digest-fixtures. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H06 [P1] Вход ранжирования не содержит текстов кандидатов</h3>
+<p>Источник: <code>output/credit-workspace-ml-architecture/api/internal.openapi.json:4210</code>; фрагмент «&quot;candidateIds&quot;». SHA-256 и исходник - в evidence/. Класс: несогласованность.</p>
+<p>Сценарий/последствия: Семантический ranker получает IDs и не может вычислить близость без неописанного доступа к каталогу.</p>
+<p>Исправление: Добавлены contextText и candidateTexts; backend проверяет точное совпадение IDs, возвращённая перестановка не расширяет eligibility.</p>
+<p>Проверка: ranking-text-inputs, ranking-permutation-fixtures. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H07 [P2] Exposure metadata необязательна в ответах</h3>
+<p>Источник: <code>output/credit-workspace-ml-architecture/api/integration-preview.openapi.json:16651</code>; фрагмент «&quot;rankingMetadata&quot;». SHA-256 и исходник - в evidence/. Класс: несогласованность.</p>
+<p>Сценарий/последствия: UI получает рекомендации без exposureId и не может связать реальные показы с обратной связью.</p>
+<p>Исправление: rankingMetadata обязательна в RecommendationList и Feed для MODEL и RULES; display itemId равен productId/cardId.</p>
+<p>Проверка: ranking-metadata-required, exposure-fixtures. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H08 [P1] Схема допускает неподдержанные стандарты отчётности</h3>
+<p>Источник: <code>output/credit-workspace-ml-architecture/api/public-extensions.openapi.json:3336</code>; фрагмент «&quot;RSBU&quot;». SHA-256 и исходник - в evidence/. Класс: несогласованность.</p>
+<p>Сценарий/последствия: MVP принимает RSBU/IFRS, хотя mapping восьми полей описан только для собственной синтетической формы.</p>
+<p>Исправление: В MVP разрешён только DEMO Financial v1; расширение стандартов требует новой версии mapping.</p>
+<p>Проверка: finance-standard-fixtures. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H09 [P1] Отсутствует обязательная финансовая версия для выбранного MVP</h3>
+<p>Источник: <code>output/credit-workspace-ml-architecture/api/integration-preview-metadata.json:9</code>; фрагмент «optional in global schema». SHA-256 и исходник - в evidence/. Класс: несогласованность.</p>
+<p>Сценарий/последствия: Три новых продукта могут быть отправлены без подтверждённых финансов, если реализация читает только OpenAPI.</p>
+<p>Исправление: Все три synthetic-продукта имеют единые финансовые требования; financialStatementVersion обязателен в submit и RFI response.</p>
+<p>Проверка: submit-financial-required, rfi-financial-required. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H10 [P1] MVP требует Linux/NVIDIA и распределённые ML-хранилища</h3>
+<p>Источник: <code>output/credit-workspace-ml-architecture/docs/07-operations.md:5</code>; фрагмент «MVP-NVIDIA». SHA-256 и исходник - в evidence/. Класс: несогласованность.</p>
+<p>Сценарий/последствия: Жюри не может проверить прототип на обычном ПК; инфраструктура поглощает время вместо сквозного сценария.</p>
+<p>Исправление: CPU Compose с локальными адаптерами для полного технологического стека; Qdrant/Redis/Feast/Airflow и другие компоненты закреплены через порты и selectable providers. Реальные сервисы подключаются отдельным профилем; NVIDIA optional. HACKATHON-1.5 отменяет трактовку target-only.</p>
+<p>Проверка: cpu-profile, target-separation. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H11 [P1] Модели генерации и embeddings не выбраны</h3>
+<p>Источник: <code>output/credit-workspace-ml-architecture/README.md:35</code>; фрагмент «пока не выбраны». SHA-256 и исходник - в evidence/. Класс: несогласованность.</p>
+<p>Сценарий/последствия: Нельзя оценить ресурсы, лицензии и обеспечить независимый локальный RAG.</p>
+<p>Исправление: Выбран CPU baseline Qwen2.5-0.5B-Instruct-GGUF Q4_K_M + multilingual-e5-small; hashes/OCI digest фиксирует P02 до реализации.</p>
+<p>Проверка: model-selection, supply-chain-gate. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H12 [P2] Неподтверждённый ranking deadline 150 мс</h3>
+<p>Источник: <code>output/credit-workspace-ml-architecture/docs/07-operations.md:16</code>; фрагмент «150 мс». SHA-256 и исходник - в evidence/. Класс: несогласованность.</p>
+<p>Сценарий/последствия: Холодный CPU embedding вызывает постоянный fallback, и работающий ML остаётся невидимым.</p>
+<p>Исправление: Разделены target SLO и MVP budgets: ranking 2 с с прогревом/кешем неизменяемых candidates; risk 3 с; RAG 60 с.</p>
+<p>Проверка: budget-consistency. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H13 [P1] Базовый UI ориентирован на один продукт и не включает ML-путь</h3>
+<p>Источник: <code>output/credit-workspace-frontend-architecture/README.md:15</code>; фрагмент «один продукт». SHA-256 и исходник - в evidence/. Класс: несогласованность.</p>
+<p>Сценарий/последствия: Нет согласованных экранов восьми финансовых полей, их подтверждения и RAG, frontend-задачи не покрывают ML API.</p>
+<p>Исправление: Добавлены финансовый блок в U08/U12, RAG-виджет и история U16; три продукта, единые типы и матрица операций.</p>
+<p>Проверка: screen-route-coverage, operation-task-coverage. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H14 [P2] Реестры не учитывают время и численность команды</h3>
+<p>Источник: <code>output/credit-workspace-ml-architecture/docs/09-workplan.md:3</code>; фрагмент «не численность команды». SHA-256 и исходник - в evidence/. Класс: несогласованность.</p>
+<p>Сценарий/последствия: Тридцать ML-задач и десятки web/backend-задач принимаются за выполнимый граф на 48 часов.</p>
+<p>Исправление: 27 задач: 25 MVP, 1 optional-integrations, 1 bank-target; часы обязательного и дополнительного объёма считаются отдельно; первые 12 часов - вертикальный срез.</p>
+<p>Проверка: task-dag, task-hours, critical-path. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H15 [P2] Полный canary требует недоступного объёма трафика</h3>
+<p>Источник: <code>output/credit-workspace-ml-architecture/policies/release-policy.json:34</code>; фрагмент «&quot;minCandidateRequests&quot;: 1000». SHA-256 и исходник - в evidence/. Класс: несогласованность.</p>
+<p>Сценарий/последствия: Хакатонный релиз не может завершить canary, либо команда выдаёт синтетику за реальную статистику.</p>
+<p>Исправление: В MVP ручное утверждение digest и offline smoke, без статистического canary; промышленные пороги сохранены только в bank-target.</p>
+<p>Проверка: release-profiles. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H16 [P1] Прежний общий валидатор не включает ML-пакет</h3>
+<p>Источник: <code>tools/validate_architecture_review.py:157</code>; фрагмент «for package in [B,F]». SHA-256 и исходник - в evidence/. Класс: несогласованность.</p>
+<p>Сценарий/последствия: Зелёный прежний отчёт не выявляет расхождения новых схем и маршрутов ML.</p>
+<p>Исправление: Новый общий валидатор проверяет четыре пакета, единые контракты, новые отрицательные примеры и граф задач.</p>
+<p>Проверка: all-four-packages, negative-fixtures. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H17 [P2] Повторная сборка требует соседний исторический пакет</h3>
+<p>Источник: <code>output/credit-workspace-backend-architecture/README.md:34</code>; фрагмент «соседний исходный». SHA-256 и исходник - в evidence/. Класс: воспроизводимость.</p>
+<p>Сценарий/последствия: Извлечённый отдельно пакет не воспроизводится без исходной структуры и контрольных сумм upstream.</p>
+<p>Исправление: Новая поставка самодостаточна; builder читает только вложенные docs/contracts/diagram sources. Исторические материалы остаются архивом.</p>
+<p>Проверка: self-contained, deterministic-build. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H18 [P2] Не определён единый регламент Git и фиксации сдачи</h3>
+<p>Источник: <code>output/credit-workspace-backend-architecture/docs/03-technology.md:38</code>; фрагмент «commit». SHA-256 и исходник - в evidence/. Класс: пробел поставки.</p>
+<p>Сценарий/последствия: Описание образов с commit не определяет PR, ветки, владельцев shared-файлов и заморозку версии.</p>
+<p>Исправление: Отдельный git-and-jury-guide с trunk workflow, владельцами, checkpoint, release tag, доступом жюри и checklist.</p>
+<p>Проверка: git-handbook, jury-traceability. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H19 [P2] Результаты статических проверок требуют новой области доказательств</h3>
+<p>Источник: <code>output/credit-workspace-ml-architecture/validation-report.json:4</code>; фрагмент «Static architecture package». SHA-256 и исходник - в evidence/. Класс: граница доказательств.</p>
+<p>Сценарий/последствия: Проверки одного ML-пакета ошибочно используются как доказательство готовности общей системы.</p>
+<p>Исправление: Два статуса: статические проверки поставки выполнены; все испытания приложения запланированы и не выполнены.</p>
+<p>Проверка: evidence-boundary, runtime-not-executed. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h3>H20 [P1] Три сохранённых примера прежнего аудита не соответствуют ожидаемой валидности</h3>
+<p>Источник: <code>tools/validate_architecture_review.py:35</code>; фрагмент «FIXTURES.append(dict(name=title,schema=name,expectedValid=valid,value=value))». SHA-256 и исходник - в evidence/. Класс: дефект доказательств.</p>
+<p>Сценарий/последствия: Объект value сохраняется по ссылке, затем меняется. Экспорт содержит положительные примеры с неправильным snapshot/package и отрицательный upload с уже добавленной версией; прежний PASS не подтверждает выданные fixtures.</p>
+<p>Исправление: В текущем валидаторе сохраняется deepcopy, три fixture восстановлены с явным журналом миграции; после записи каждый fixture перечитывается с диска и проверяется повторно.</p>
+<p>Проверка: serialized-fixtures-revalidated, fixture-migration-log. Статус: исправлено в спецификации; runtime не проверен.</p>
+<h2>Что поставлено и что проверено</h2>
+<p>Четыре актуальных руководства, канонические публичный/внутренний/demo контракты, строгие события и примеры, модель данных/состояний,7 редактируемых схем, каталог 13 технологических способностей, единый граф 27 задач,43 сценария будущей приёмки, Git/жюри-регламент, шаблоны поставки и самодостаточная пересборка.</p>
+<p>Фактические статические результаты сохраняются в validation-report.json; визуальный протокол - visual-review.json с hashes PDF. Исходная история сохранена отдельно. Наличие описанного сценария не означает, что он выполнялся против приложения.</p>
+<p>Далее: создать приложение по задачам, закрыть supply-chain/compatibility gate, измерить CPU и повторить чистый запуск. Публикация сайта, создание GitHub-репозитория, приглашение жюри и отправка материалов в эту архитектурную работу не входят и не выполнялись.</p>
+<p><a href="architecture-audit.pdf">Открыть PDF</a></p></section><section id="2"><span class="tag">HACKATHON-1.5</span><h1>Работа с Git и защита перед жюри</h1>
+<p>Практический регламент для команды 3-5 человек на 48-72 часа. Документ применяется к будущему репозиторию приложения. Этот комплект содержит спецификацию; ни репозиторий, ни PR, ни доступ жюри автоматически не создавались.</p>
+<h2>Часть I. Разработка</h2>
+<h3>1. Один репозиторий и владельцы</h3>
+<p>Единый monorepo: frontend/, backend/, ml/, contracts/, deploy/, demo/, tests/, docs/. Корневой README объясняет запуск, а не историю проектирования. Все API берутся из contracts/, generated-копии не редактируются. Большие веса и исходный исследовательский dataset не коммитятся: отдельный release bundle с hashes/licences, публичным бесплатным способом получения и offline-копией для показа.</p>
+<p>Роли: BACKEND владеет бизнес-переходами, таблицами и миграциями; FRONTEND - UX; ML - transforms/models/KB retrieval; INTEGRATION - контракты, Docker и общая поставка; QA_DEMO - независимая проверка и защита. Для 3 человек INTEGRATION/QA распределяются между backend/frontend, ML остаётся отдельным владельцем. Для 4 QA_DEMO совмещает frontend с peer-проверкой backend; для 5 роли разделяются. У автора нет права единолично принимать собственный критичный PR/модельный релиз.</p>
+<p>На старте записать реальные имена в CODEOWNERS и таблицу ролей. До этого <code>.example</code> не считается настроенной защитой. API, shared DTO, migration numbering, dependency locks и compose изменяются с review владельца; feature-ветка не «захватывает» все shared-файлы сразу.</p>
+<h3>2. Ветки и PR</h3>
+<p>Рабочая ветка main постоянно собирается. Короткие ветки feature/P08-financial-confirm, fix/P18-cross-company и docs/P21-readme. Долгоживущая develop и отдельные «frontend-ready/backend-ready» не используются. Ветка живёт обычно до 4-6 часов; незавершённая функция скрывается feature flag, не ломая основной сценарий.</p>
+<p>Коммит - одна осмысленная проверяемая правка. Формат <code>feat(applications): confirm saved financial version</code>, <code>fix(access): reject stale company context</code>, <code>docs(demo): add RFI walkthrough</code>. Не коммитить секреты, дампы, пользовательские документы, model caches, node_modules и virtualenv. .env.example содержит имена и безопасные описания, но не действующие значения. Если секрет попал в историю, сначала отозвать/перевыпустить его; удаление строки не устраняет компрометацию.</p>
+<p>Перед работой получить свежий main и создать feature-ветку. Rebase допустим только для собственной неразделяемой ветки. В общую ветку и main force-push запрещён. PR маленький и завершённый: проблема/новое поведение, затронутый контракт, проверка и ограничения. Скриншот - дополнение к воспроизводимому сценарию, не замена.</p>
+<p>Один независимый reviewer обязателен. Contracts/security/финансовые переходы проверяет назначенный владелец и второй доступный участник при существенном риске. Не ждать завершения всех направлений: frontend использует MSW, backend - ML doubles, ML - synthetic contract fixtures. Такие doubles явно помечаются и не выдаются за работу модели на защите.</p>
+<h3>3. Контракты и конфликты</h3>
+<p>Сначала PR контракта: изменение OpenAPI/schema + положительный/отрицательный пример + потребители и связанная задача. После merge потребители обновляют generated types и заглушки. В 1.4 нет live-клиентов, поэтому несовместимый design-change разрешён согласованно, но не тихим изменением wire-shape в одном направлении.</p>
+<p>Номер миграции назначает backend-владелец; уже применённая миграция неизменна, исправление - следующей миграцией. Общий контракт не разрешается конфликт-стратегией «взять моё»: владелец объединяет смысл и проверяет обе группы примеров. Сначала исправлять авторский источник, потом повторно генерировать types/PDF/diagram.</p>
+<p>Если конфликт в собственной ветке: получить main, обновить свою ветку, разрешить руками, проверить diff и прогнать профильные проверки. Не удалять чужие файлы, чтобы «прошла сборка». Неразделяемую переписанную feature-ветку при необходимости публиковать с force-with-lease; main и ветки других участников так не обновляются.</p>
+<h3>4. Автоматические проверки</h3>
+<p>На каждом PR: сборка и типы затронутого кода, проверка формата без исправлений, OpenAPI/JSON Schema/ref/совпадение generated-копий, поиск секретов и проверка изменённых зависимостей. Для backend-переходов - PostgreSQL-тесты CAS/outbox/idempotency; для frontend - профильный сценарий формы; для ML - transforms/parity/shape/digest и evaluation report. Документационный PR не обязан переобучать модели.</p>
+<p>На main и перед release: integrated Docker smoke, seed, основной путь, RFI, negative access, restart и проверка 4 реальных ML-функций. Dependency/OCI/model digests входят в SBOM/release manifest. Проверка внешней scanner DB и весов выполняется при подготовке образов, не во время пользовательской операции.</p>
+<p>Правила branch protection: PR required, минимум 1 approval, required CI checks, запрет force-push/delete main. Если выбранный тариф/visibility не поддерживает нужную защиту, это отмечается явно и вводится процедурный peer-check; не писать, что техническая защита включена без проверки настроек. В этой поставке настройки аккаунта не менялись.</p>
+<h3>5. Интеграционный ритм</h3>
+<p>0-2 ч: контракт/распределение ответственности и синтетические IDs. К 12 ч: один реальный путь web→backend→DB→симулятор→status, с сохранением после restart. На первом срезе допустим подготовленный seed подтверждённых финансов и явно обозначенные ML doubles; запреты версии/прав не обходятся «временным» endpoint.</p>
+<p>Каждые 4-6 часов - короткий общий прогон main и фиксация сломанного шага с владельцем. Ошибка интеграции важнее новой карточки/анимации. К 24 ч должны быть зафиксированы API финансов/RFI, CLEAN-путь файлов и выбранные/запускающиеся CPU-модели. К 36 ч - подключение реальных ML-функций; при отставании пересмотреть capacity и публично зафиксировать риск.</p>
+<p>Для окна 72 ч заморозка новых функций на 60 ч, следующие 8 ч - регрессия/README/чистый запуск/репетиция, последние 4 ч - версия/проверка доступа/резерв. Для окна 48 ч заморозка на 36 ч. Полный согласованный объём не объявляется готовым, если после заморозки реальные ML заменены заглушками.</p>
+<h3>6. Веса, лицензии и поставка</h3>
+<p>Артефакт модели имеет repository/revision/file, SHA-256, licence file, code/preprocessor/feature schema, evaluation digest и approved-by. «latest», имя папки или один номер modelVersion без содержимого недостаточны. Большой bundle хранится вне Git с публичным бесплатным источником и контрольной суммой; для offline-показа комплект готовится заранее. Git LFS разрешён только если жюри действительно может скачать содержимое без оплаты/корпоративного доступа.</p>
+<p>Исследовательский UCI-датасет описывается отдельно от synthetic demo seed. THIRD_PARTY_NOTICES содержит версии/лицензии фактически включённых компонентов, моделей, traineddata, datasets и перечень симулируемых IAM/БКИ/ФНС/банковского конвейера/оформления. Список названий без проверки фактических бинарников не закрывает лицензирование.</p>
+<h3>6a. Провайдеры и каркасы сервисов</h3>
+<p>Порты и contracts/technology-adapters.json фиксируются в P01; локальные backend-адаптеры - P25, ML feature/vector/generation - P11/P14, registry/job/quality/metrics bindings - P26. SDK-адаптеры хранятся отдельными модулями с явным статусом. Выбор неготового каркаса обязан остановить запуск с ProviderNotImplemented. PR нового провайдера включает binding, SDK/server locks, общий контрактный набор и provider-specific failure tests. Общие инварианты не ослабляются ради особенностей SDK.</p>
+<p>На сдачу сохраняются фактически выбранные providers, digest конфигурации и ссылки/hashes результатов. Статусы LOCAL_SUBSTITUTE, REAL_CONNECTED, TEST_DOUBLE и ARCHITECTURAL_SLOT отражают факты. Настоящий сервис без вызывающего его адаптера остаётся архитектурным слотом. Неподключённая интеграция получает NOT_EXECUTED; демонстрация её локального заменителя не становится PASS для сервиса.</p>
+<h2>Часть II. Подготовка к оценке</h2>
+<h3>7. Самостоятельный запуск экспертом</h3>
+<p>README должен содержать: назначение и границы; architecture/context diagram; требования к CPU/RAM/disk/OS/Docker; подготовку бесплатных артефактов и их hashes; один основной способ запуска; переменные окружения; healthchecks/порты; synthetic accounts; пошаговый happy/RFI/ML сценарий; сброс только demo data; ограничения; API/состояния/модель данных/тесты; версию сдачи.</p>
+<p>Целевой интерфейс будущего запуска: <code>docker compose -f deploy/compose.yaml up --build -d</code>. Установка models/bundle выполняется один раз по README до запуска. После подготовки модели и данные не скачиваются в runtime. Предусмотреть offline <code>docker load</code>/model bundle, проверяемый SHA-256, и отдельный безопасный reset-script с предупреждением об удалении только demo-volumes. Эти команды являются требованиями к будущему приложению: готового compose в архитектурном комплекте нет.</p>
+<p>Для проверки подготовить 2 synthetic компании A/B и представителя каждой, отдельную demo-operator identity, 3 продукта, 10 вариантов DemoFinancial v1, 15-30 KB статей. Не использовать действующие пароли/ИНН/документы людей. Демо-credentials могут быть открыты только в локальном профиле с синтетикой; для внешнего показа - отдельная конфигурация, HTTPS и ограниченный доступ.</p>
+<p>За два этапа до сдачи второй участник на чистой машине выполняет README без подсказок автора. Записываются OS/architecture/resources, hash релиза, команды и фактическое время startup/warmup/основного сценария. «У меня запускается» не заменяет этот протокол.</p>
+<h3>8. Пять минут защиты</h3>
+<table>
+<thead>
+<tr>
+<th>Время</th>
+<th>Показ</th>
+<th>Что доказываем</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0:00-0:30</td>
+<td>Предпринимателю нужны деньги; открыть synthetic компанию и выбор</td>
+<td>Понимание задачи и продукта</td>
+</tr>
+<tr>
+<td>0:30-1:15</td>
+<td>Диагностика, пригодные продукты, объяснение порядка</td>
+<td>Связь eligibility и реальных semantic-рекомендаций</td>
+</tr>
+<tr>
+<td>1:15-2:00</td>
+<td>Финансовая форма, OCR одного файла, исправление/подтверждение</td>
+<td>Снижение ввода при контроле значимых значений</td>
+</tr>
+<tr>
+<td>2:00-2:50</td>
+<td>Отправка, сохранённый статус, запрос одного уточнения и ответ</td>
+<td>Работающий конвейер и небинарная логика</td>
+</tr>
+<tr>
+<td>2:50-3:30</td>
+<td>Показать изменение ленты и pinned next action; RAG со ссылкой</td>
+<td>Персонализация по контексту без потери обязательного шага</td>
+</tr>
+<tr>
+<td>3:30-4:10</td>
+<td>Результат, альтернативные условия, принятие; demo-завершение</td>
+<td>Финансовая логика и честное моделирование операций</td>
+</tr>
+<tr>
+<td>4:10-5:00</td>
+<td>Отдельно 1 сбой/защита, схема Qdrant/Redis/Feast → порты → выбранные адаптеры</td>
+<td>Безопасность, надёжность, путь развития</td>
+</tr>
+</tbody>
+</table>
+<p>До показа прогреть модели и корпус, но не подменять RAG заранее заготовленным ответом. При медленном CPU начать вопрос раньше и продолжить показ заявки; если модель не ответила, честно показать SEARCH_ONLY. Основной live-сценарий управляется реальными действиями; подготовленные сценарные seed допустимы и обозначены. Видео - резервное доказательство, не замена доступному прототипу.</p>
+<h3>9. Матрица критериев жюри</h3>
+<table>
+<thead>
+<tr>
+<th>Критерий кейса</th>
+<th>Где демонстрируем</th>
+<th>Доказательство</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Целостность</td>
+<td>От выбора до результата/оформления</td>
+<td>A01/A02, один applicationId/caseId, persisted history</td>
+</tr>
+<tr>
+<td>UX</td>
+<td>Предзаполнение, сохранение, ясный статус/RFI</td>
+<td>A07/A16/A31, keyboard check и наблюдения тестера</td>
+</tr>
+<tr>
+<td>Согласованность модулей</td>
+<td>OCR→confirm→snapshot→risk→decision</td>
+<td>Contracts1.4, traceId и immutable refs, A05/A28</td>
+</tr>
+<tr>
+<td>Enterprise-подход</td>
+<td>Tenant isolation, CAS/outbox, fail-closed files</td>
+<td>A08-A15/A24/A25, результаты реальных проверок</td>
+</tr>
+<tr>
+<td>Потенциал развития</td>
+<td>Переход от local-mvp к bank-target</td>
+<td>Схема полного стека, provider manifest, A38-A43, gates G01-G08, ограничения локальных замен</td>
+</tr>
+<tr>
+<td>Готовность к проверке</td>
+<td>Чистый Docker-запуск и synthetic credentials</td>
+<td>P20/A30/A35, README и hash версии</td>
+</tr>
+</tbody>
+</table>
+<p>Не подменять результаты приложения статическими PASS этого архитектурного комплекта. После разработки runtime-протокол заполняется фактическими данными отдельно.</p>
+<h3>10. Типовые вопросы</h3>
+<p><strong>Почему модульный монолит?</strong> Одна транзакционная граница и меньше затрат на интеграцию для небольшой команды. Отдельные Python/LLM/worker процессы сохраняют возможность масштабировать тяжёлые задачи. Выделение остальных сервисов обосновывается измерениями.</p>
+<p><strong>Где настоящий ML?</strong> Logistic baseline на открытом исследовательском наборе; semantic ranking на pretrained E5; Tesseract над байтами загруженной формы; retrieval+generation локальной открытой LLM. Показать bundle/revision/evaluation. Правила банка и eligibility - отдельная логика.</p>
+<p><strong>Это настоящая вероятность дефолта?</strong> Нет: BANKRUPTCY_PROXY, переносимость на российский малый бизнес не подтверждена. Нельзя обещать предотвращённые потери или PD-калибровку.</p>
+<p><strong>Что при падении модели?</strong> Risk→MANUAL, ranking→RULES, OCR→ручной ввод, LLM→SEARCH_ONLY при доступных источниках. Потеря KB authority закрывает помощник. Fallback-показ не заменяет отдельную демонстрацию рабочих моделей.</p>
+<p><strong>Почему нет полного MLOps?</strong> Для статических bundle и малого набора запуск платформы не устраняет главный риск - отсутствие работающего пути. Target-платформа сохранена с условиями включения.</p>
+<p><strong>Как защищены деньги?</strong> Реального перевода нет. В target решение/предложение/подпись/выдача принадлежат банку; повтор бизнес-эффекта контролируется ключами, CAS и сверкой. Не заявлять exactly-once delivery.</p>
+<h3>11. Фиксация версии и сдача</h3>
+<p>До дедлайна: merged main, зелёная обязательная CI, clean startup, licenses/README/demo evidence, commit SHA в release manifest, аннотированный тег <code>hackathon-submission-v1.0.0</code> на этом SHA. Репозиторий не требуется публиковать в облако для соответствия обязательному local-launch; публичный стенд - дополнительный канал.</p>
+<p>Проверить, что тег доступен на remote и указывает на нужный commit, а команда запуска воспроизводится именно с него. Изменения после дедлайна не приписывать исходной сдаче. Не перемещать уже опубликованный submission tag; исправление - отдельный тег и явное описание с учётом правил организаторов.</p>
+<p>Для приватного репозитория кейс указывает аккаунт жюри <code>alfa-hack-2026</code>. Перед предоставлением доступа сверить имя с актуальными инструкциями организаторов; проверить доступность кода, release assets и всех LFS objects. Создание приглашения и отправка материалов выполняются владельцем/по отдельному поручению, здесь не выполнялись.</p>
+<p>Сохранить submission record: commit/tag, время дедлайна с timezone, ссылки на репозиторий/артефакты, licence inventory, hash bundle, протокол чистого запуска и список фактических ограничений. Критичные незакрытые проверки перечислить прямо. Не отправлять в жюри архивы исходных пользовательских документов/исследовательских материалов, если они не нужны для воспроизведения и нет права распространения.</p>
+<h3>12. Резервный сценарий</h3>
+<p>Подготовить тот же hash версии на локальном ноутбуке: заранее загруженные images/models, synthetic seed, проверенные offline fonts и PDF. При потере внешнего стенда открыть локальный integrated профиль. При недостатке GPU показать CPU без изменения модели. При сбое live runtime назвать сломанный шаг и показать ранее записанный прогон отдельно, затем оставить жюри инструкции воспроизведения. Не выдавать запись за текущую интерактивную работу.</p>
+<h2>Технологии на защите: проверяемый рассказ</h2>
+<p><a href="docs/technology-adapters.md">Отдельное руководство</a> показывает полный mapping. За 20 секунд объяснить: «Qdrant предусмотрен для векторного индекса; на этом CPU-стенде VectorIndexPort использует настоящий NumPy cosine search. Redis имеет отдельные порты сессий и кеша; локально они работают через JDBC и TTL-кеш. Feast-граница сохраняет immutable признаки и историческую доступность; полноценная materialization ещё не реализована». Затем показать один фактический вызов и его evidence. Это архитектурная готовность к подключению, не заявление об интеграции неработающего сервиса.</p>
+<p>Если P27 выполнен, показать selectedProvider, изменение метрики/результата настоящего сервиса и протокол отказа. Если времени нет, показать отключённый каркас, конкретный интерфейс и общий набор проверок со статусом NOT_EXECUTED для SDK. Ни UI-скриншот сервиса, ни пустой Docker-контейнер не подтверждают интеграцию.</p>
+<p><a href="git-and-jury-guide.pdf">Открыть PDF</a></p></section><section id="3"><span class="tag">HACKATHON-1.5</span><h1>План параллельной разработки</h1>
+<h2>1. Честная оценка объёма</h2>
+<p>27 задач:25 MVP, 1 дополнительная интеграционная задача и 1 отдельная задача bank-target. Оценки - человеко-часы активной работы, не календарное обещание. Текущий итог формируется из tasks.json в конце документа. Первоначальные подробные планы сохранены в архиве; новый граф группирует их по проверяемым результатам.</p>
+<p>Для расчёта capacity используем 10 эффективных рабочих часов на участника в день, включая локальную отладку и review. Три участника:48 ч→60 человеко-часов,72 ч→90; пять:48 ч→100,72 ч→150. Недостаток capacity не устраняется названием роли. Дополнительно нужен резерв 25% к базовой оценке. Ни один вариант не считается гарантией при неизвестной подготовке команды.</p>
+<p>Рекомендация:5 человек/72 часа и готовые навыки Java/React/Python. 3 человека/48 часов не соответствуют согласованному полному ML-объёму. Для 3/72 и 5/48 есть высокий риск. Не сокращать ML молча: на checkpoint оформить фактическое отставание и согласовать срок либо неполную готовность. Честный частичный показ не равен завершённому согласованному MVP.</p>
+<h2>2. Независимые направления</h2>
+<p>После P01 frontend работает по MSW/примеру контракта; ML - по synthetic fixtures; backend - с контрактными doubles ML; integration собирает profile и release bundle. Стабилизация порта не требует ждать реальных обученных весов. Общие данные/DTO/состояния не придумываются в feature-ветках.</p>
+<p>BACKEND: P03→P05→P08/P10→P15. FRONTEND: P04→P06→P09→P16. ML: P11/P12/P13/P14 после P02, порядок при одном специалисте: risk baseline, рекомендации, OCR, RAG. INTEGRATION: P01/P02, P07, ранние skeleton clients, P17/P21/P23 и P26; backend выполняет P25. P27 - отдельное необязательное подключение настоящих сервисов. QA_DEMO пишет сценарии с начала, формальная независимая приёмка P18-P20 после P17.</p>
+<p>Для 3 участников backend совмещает integration, frontend - QA_DEMO; эти роли увеличивают занятость, а не дают дополнительную параллельность. Риск перегрузки ML один и при 3, и при 5 участниках: функции последовательно требуют около 30 часов активной работы плюс интеграция. Помощь integration с model packaging/KB ускоряет без разделения бизнес-владельца.</p>
+<h2>3. Контрольные точки</h2>
+<ul>
+<li><strong>0-2 ч:</strong> P01; единые API/ID, состояния, роли/владельцы, synthetic наборы и стенд.</li>
+<li><strong>До 12 ч:</strong> вертикальный срез P07 с настоящей DB/сессией/сохранением и обозначенными model doubles. В seed уже подтверждённая demo-форма; новый обход confirm API не создаётся.</li>
+<li><strong>До 24 ч:</strong> financial/RFI API, подготовленные CPU images/models, безопасный файл/job pipeline, интерфейсы подключения моделей.</li>
+<li><strong>До 36 ч:</strong> стремиться к P17 и 4 реальным ML-функциям. Это целевая контрольная точка, не вывод из оценки, что все работы точно завершатся. При отставании - пересчитать остаток; прежде всего отложить P27 и дополнительную вёрстку, сохранив локальные адаптеры и весь именованный стек.</li>
+<li><strong>Для 48 ч:</strong> freeze36 ч; оставшиеся 12 ч на проверку/сдачу. Если 4 ML-функции не работают, фиксировать неполноту; не переименовывать mock в model.</li>
+<li><strong>Для 72 ч:</strong> freeze60 ч, регрессия/чистый запуск/репетиция до 68 ч, резерв на версию/доступ/непредвиденное до 72 ч.</li>
+</ul>
+<p>Критический путь зависимостей рассчитывается автоматически. Он является нижней оценкой при неограниченном числе участников. Дополнительная ресурсная нижняя оценка учитывает последовательную работу всех ML-задач одним ML-специалистом. Реальное расписание должно учитывать сон/смены/переключения и ролевые совмещения.</p>
+<h2>4. Порядок снижения риска</h2>
+<p>Первым отложить настоящее подключение сервисов P27, registry UI/canary dashboards, расширенные типы документов, дообучение LLM и поведенческий ranker. Feast/Airflow/Qdrant/Redis и остальные технологии сохраняются в архитектуре, интерфейсах, каркасах и конфигурации даже при локальных привязках. Их SDK-реализации не выдаются за выполненные. Затем сократить polish, dashboard и дополнительные сценарии beyond acceptance. Для RAG оставить небольшой corpus и малую выбранную модель; для OCR - только одну форму; для риска - один baseline без model zoo.</p>
+<p>Отказ отдельной модели обрабатывается безопасным fallback, но согласованный готовый MVP требует отдельного успешного прогона всех 4 ML-функций. Резервный SEARCH_ONLY не заменяет RAG-generation в критерии готовности. Корректность tenant isolation, persisted snapshot и защиты повторов не отключается ради показа.</p>
+<h2>5. Definition of Done</h2>
+<p>Задача закрыта только при наличии указанных deliverable и doneWhen из tasks.json, PR review и профильных проверок. Общий MVP закрыт после P23, всех обязательных acceptance кроме TARGET_ONLY и проверок отключённых реальных провайдеров (для них NOT_EXECUTED), чистого запуска вторым участником и реальных model manifests. Существование этих требований не означает их выполнения в архитектурной работе.</p>
+<h2>6. Дополнительная интеграция</h2>
+<p>P25/P26 добавляют 9 человеко-часов к обязательному MVP; P11/P14 реализуют ML-порты в рамках своих оценок. P27 оценивается отдельно в 8 часов и подключает настоящие Redis-cache/Qdrant/MLflow при наличии времени и ресурсов. Реализация остальных полноценных сервисов в эти 8 часов не входит. Это оптимистичная оценка при знакомом стеке; при недостатке capacity сохраняются локальные реализации и честный статус архитектурных каркасов.</p>
+<p><a href="docs/technology-adapters.md">Mapping, интерфейсы и критерии переключения</a>.</p>
+<h2>7. Реестр задач</h2>
+<h3>P01. Зафиксировать контракт и распределить модули</h3>
+<p>Владелец: INTEGRATION; оценка: 2 ч; зависимости: нет; профиль: mvp.</p>
+<p>Результат: contracts + task ownership; technology ports + provider DTO semantics.</p>
+<p>Готово, когда: 60 public ops typed; all schema refs resolve.</p>
+<h3>P02. Закрепить платформу, модели и лицензии</h3>
+<p>Владелец: INTEGRATION; оценка: 3 ч; зависимости: P01; профиль: mvp.</p>
+<p>Результат: dependency/model locks + notices.</p>
+<p>Готово, когда: exact versions/digests/licenses; CPU images boot; Java BOM smoke.</p>
+<h3>P03. Данные, миграции, сессия и права</h3>
+<p>Владелец: BACKEND; оценка: 3 ч; зависимости: P01; профиль: mvp.</p>
+<p>Результат: PostgreSQL migrations + seed accounts.</p>
+<p>Готово, когда: A/B tenant access denied; migrations twice safe.</p>
+<h3>P04. Основа web и контрактные заглушки</h3>
+<p>Владелец: FRONTEND; оценка: 3 ч; зависимости: P01; профиль: mvp.</p>
+<p>Результат: React routes + generated types + MSW.</p>
+<p>Готово, когда: build; 3 products; no secrets in browser.</p>
+<h3>P05. Вертикальный срез create/save/submit/status</h3>
+<p>Владелец: BACKEND; оценка: 3 ч; зависимости: P03; профиль: mvp.</p>
+<p>Результат: persistent core API + simulator event.</p>
+<p>Готово, когда: restart keeps draft; submit receipt dedup.</p>
+<h3>P06. Web-путь первой заявки</h3>
+<p>Владелец: FRONTEND; оценка: 3 ч; зависимости: P04; профиль: mvp.</p>
+<p>Результат: login/catalog/form/status.</p>
+<p>Готово, когда: same UI works mock and server; next action visible.</p>
+<h3>P07. Docker, healthchecks и первый общий smoke</h3>
+<p>Владелец: INTEGRATION; оценка: 1 ч; зависимости: P02, P05, P06; профиль: mvp.</p>
+<p>Результат: CPU Compose + health order + smoke.</p>
+<p>Готово, когда: fresh start end-to-end by hour 12 for 5-role team; six mandatory containers, explicit local bindings.</p>
+<h3>P08. Финансовая форма и неизменяемые снимки</h3>
+<p>Владелец: BACKEND; оценка: 5 ч; зависимости: P05; профиль: mvp.</p>
+<p>Результат: financial read/save/confirm + package refs.</p>
+<p>Готово, когда: all 8; CAS; modified values invalidate confirmation.</p>
+<h3>P09. Финансовый UI и запрос уточнений</h3>
+<p>Владелец: FRONTEND; оценка: 5 ч; зависимости: P06; профиль: mvp.</p>
+<p>Результат: U08/U12 financial + RFI screens.</p>
+<p>Готово, когда: no overwriting dirty input; unrequested values unchanged.</p>
+<h3>P10. Документы, quarantine, AV и аренда</h3>
+<p>Владелец: BACKEND; оценка: 6 ч; зависимости: P05; профиль: mvp.</p>
+<p>Результат: streamed upload + scanner + job lease.</p>
+<p>Готово, когда: infected/error not CLEAN; limit 10MiB/5 pages; stale lease rejected.</p>
+<h3>P11. Локальная risk-модель и feature transforms</h3>
+<p>Владелец: ML; оценка: 10 ч; зависимости: P02; профиль: mvp.</p>
+<p>Результат: trained logistic baseline + manifests; SnapshotFeatureRepositoryAdapter (Feast boundary).</p>
+<p>Готово, когда: 8 ratios; grouped split; score BANKRUPTCY_PROXY; no PD claim.</p>
+<h3>P12. Semantic recommendations на E5</h3>
+<p>Владелец: ML; оценка: 5 ч; зависимости: P02; профиль: mvp.</p>
+<p>Результат: CPU embeddings + catalog ranking.</p>
+<p>Готово, когда: PRODUCT/FEED eligible permutations; no trained click-model claim.</p>
+<h3>P13. OCR одной синтетической формы</h3>
+<p>Владелец: ML; оценка: 5 ч; зависимости: P02; профиль: mvp.</p>
+<p>Результат: Tesseract rus+eng + fixed-layout parser.</p>
+<p>Готово, когда: 8 fields with signs/units/pages; manual confirm; no silent repair.</p>
+<h3>P14. RAG на опубликованном корпусе</h3>
+<p>Владелец: ML; оценка: 10 ч; зависимости: P02; профиль: mvp.</p>
+<p>Результат: E5 retrieval + local Qwen generation; NumpyVectorIndexAdapter + LlamaCppGenerationAdapter (Qdrant/vLLM boundaries).</p>
+<p>Готово, когда: sources subset; no source =&gt; refusal; generation timeout =&gt; SEARCH_ONLY.</p>
+<h3>P15. Backend-адаптеры ML, RFI и решений</h3>
+<p>Владелец: BACKEND; оценка: 6 ч; зависимости: P08; профиль: mvp.</p>
+<p>Результат: risk/ranking/RAG clients + simulator policy.</p>
+<p>Готово, когда: contract doubles usable before models; finance-only RFI; model outage=&gt;MANUAL.</p>
+<h3>P16. Лента, RAG-виджет, документы и предложение</h3>
+<p>Владелец: FRONTEND; оценка: 6 ч; зависимости: P09; профиль: mvp.</p>
+<p>Результат: U03/U13/U15/U16 + feedback.</p>
+<p>Готово, когда: ranking metadata; pinned next action; source links authorized.</p>
+<h3>P17. Общая интеграция четырёх ML-функций</h3>
+<p>Владелец: INTEGRATION; оценка: 6 ч; зависимости: P10, P11, P12, P13, P14, P15, P16, P25, P26; профиль: mvp.</p>
+<p>Результат: real ML in integrated CPU profile.</p>
+<p>Готово, когда: no mock presented as model; GPU optional; health/degradation measured; all required bindings reported truthfully, no hidden double.</p>
+<h3>P18. Security и отказные сценарии</h3>
+<p>Владелец: QA_DEMO; оценка: 5 ч; зависимости: P17; профиль: mvp.</p>
+<p>Результат: negative E2E + failure evidence.</p>
+<p>Готово, когда: cross-company, CSRF, malicious files, prompt injection, stale versions fail safely.</p>
+<h3>P19. Восстановление, UX и ресурсы обычного ПК</h3>
+<p>Владелец: QA_DEMO; оценка: 4 ч; зависимости: P17; профиль: mvp.</p>
+<p>Результат: restart test + keyboard test + resource report.</p>
+<p>Готово, когда: draft/operation persistent; no mandatory external network; RAG measured CPU.</p>
+<h3>P20. Независимая проверка чистого запуска</h3>
+<p>Владелец: QA_DEMO; оценка: 3 ч; зависимости: P18, P19; профиль: mvp.</p>
+<p>Результат: launch report on clean machine.</p>
+<p>Готово, когда: second person follows README without author help.</p>
+<h3>P21. Документация, API collection и лицензии</h3>
+<p>Владелец: INTEGRATION; оценка: 4 ч; зависимости: P07; профиль: mvp.</p>
+<p>Результат: README + notices + request collection; provider manifest and jury technology evidence table.</p>
+<p>Готово, когда: all six jury criteria mapped to evidence.</p>
+<h3>P22. Репетиция защиты и резервный показ</h3>
+<p>Владелец: QA_DEMO; оценка: 3 ч; зависимости: P17, P21; профиль: mvp.</p>
+<p>Результат: 5-minute demo + local fallback + video.</p>
+<p>Готово, когда: interactive scenario replay; simulated steps explicitly labelled.</p>
+<h3>P23. Заморозка, регрессия и версия сдачи</h3>
+<p>Владелец: INTEGRATION; оценка: 2 ч; зависимости: P20, P22; профиль: mvp.</p>
+<p>Результат: release manifest + immutable tag/hash.</p>
+<p>Готово, когда: CI green; no edits after deadline version; private access checked; archive actual selected providers/evidence, not just architecture names.</p>
+<h3>P24. Промышленная платформа и допуск</h3>
+<p>Владелец: INTEGRATION; оценка: 0 ч; зависимости: P23; профиль: bank-target.</p>
+<p>Результат: bank-target roadmap, not hackathon implementation.</p>
+<p>Готово, когда: all external gates independently closed.</p>
+<h3>P25. Локальные адаптеры backend и выбор провайдеров</h3>
+<p>Владелец: BACKEND; оценка: 4 ч; зависимости: P03; профиль: mvp.</p>
+<p>Результат: SessionStore/Cache/EventTransport/ObjectStore ports and composition root.</p>
+<p>Готово, когда: durable sessions/outbox/files; bounded cache; unknown binding fails; no security fallback.</p>
+<h3>P26. ML-платформа через локальные адаптеры и общий протокол проверки</h3>
+<p>Владелец: INTEGRATION; оценка: 5 ч; зависимости: P02; профиль: mvp.</p>
+<p>Результат: manifest registry, offline job journal, quality report, metrics/evidence bindings; ML reviews interfaces.</p>
+<p>Готово, когда: P11/P14 own feature/vector/generation implementations; local common-contract tests; no synthetic metrics or canned model answers.</p>
+<h3>P27. Дополнительное подключение Redis, Qdrant и MLflow</h3>
+<p>Владелец: INTEGRATION; оценка: 8 ч; зависимости: P17; профиль: optional-integrations.</p>
+<p>Результат: real SDK adapters and optional service profile with locks.</p>
+<p>Готово, когда: same common tests + actual service failure tests + measured resource report; if omitted say SPECIFIED, not integrated.</p>
+<p>Базовая оценка: <strong>112 человеко-часа</strong>; с резервом 25% - <strong>140.0 человеко-часа</strong>. P27 - ещё 8 часов отдельной необязательной интеграции; не включена в обязательную сумму. P24 - отдельный неоценённый промышленный этап.</p>
+<p><a href="development-plan.pdf">Открыть PDF</a></p></section><section id="4"><span class="tag">HACKATHON-1.5</span><h1>Общая архитектура кредитного кабинета</h1>
+<p>Согласованная редакция HACKATHON-1.5, 20 октября 2026 года. Это спецификация для разработки. Исполняемого приложения и результатов его испытаний в комплекте нет.</p>
+<p>Уточнение объёма от 21.10.2026: реализован standalone ML-срез (risk, PostgreSQL snapshots/inference, сценарии и передача интеграторам). UI/backend-процесс и остальные ML-функции ниже сохраняют проектный статус. Команды запуска и контракты среза: docs/ml-integration.md корня приложения.</p>
+<h2>1. Продукт и критерии успеха</h2>
+<p>Пользователь - представитель малого бизнеса, оформляющий финансирование от имени компании. Кабинет должен уменьшать повторный ввод и неопределённость: что принято, чего не хватает, что происходит и что делать дальше. Банковская сторона получает сохранённые версии данных, управляемый запрос уточнений и объяснимую модель принятия решения.</p>
+<p>Обязательный путь: вход → диагностика потребности → пригодные продукты → заявка → подтверждение финансов → отправка → обработка → уточнение при необходимости → результат → принятие условий → моделируемое оформление. Самостоятельный web-путь не требует SMS, звонка или электронной почты.</p>
+<p>Демонстрируем три синтетических продукта: оборотный кредит, кредитная линия, овердрафт. Это не действующие условия Альфа-Банка. Предварительный расчёт не является офертой, рекомендация не является обещанием одобрения.</p>
+<p>Основные продуктовые метрики: завершение заявки, время до отправки, восстановление черновика, завершение RFI без новой заявки и понимание следующего действия. До пользовательского исследования численные цели - гипотезы. Считать funnel по событиям start/save/submit/RFI/response/offer/acceptance/completion; клики и скорость ответа ML не заменяют завершение процесса. Не заявлять рост конверсии или сокращение банковских потерь без baseline и эксперимента.</p>
+<h2>2. Единая архитектура и три профиля</h2>
+<p><strong>local-mvp:</strong> web + модульное Java-приложение + PostgreSQL + Python ML + локальный llama-server + scanner. Web reverse proxy и SPA находятся в одном контейнере. Банковский симулятор, файловые streaming-маршруты и dispatcher - изолированные модули Java-приложения, а не отдельные микросервисы. OCR worker - отдельный процесс того же ML-образа; задания арендуются через API. Named volumes хранят PostgreSQL, quarantine/clean и версии моделей.</p>
+<p><strong>bank-target:</strong> штатные IAM/WAF/gateway, управляемые PostgreSQL/Kafka/Redis/S3, Kubernetes, отдельный файловый gateway и банковский адаптер, наблюдаемость и управляемая ML-платформа. Выделение процессов выполняется по измеренной нагрузке и независимому масштабированию, а не по количеству таблиц.</p>
+<p>Все названные технологии остаются архитектурными компонентами уже в MVP. Каждый имеет порт или эксплуатационную границу, владельца и локальный заменитель. Qdrant заменяется реальным NumPy-поиском, Redis - JDBC-сессиями и локальным TTL-кешем, Feast - immutable feature repository. Airflow/MLflow/Evidently имеют offline-job/registry/quality адаптеры. Это не эмуляция полных сервисов. <strong>local-integrations</strong> дополнительно подключает выбранные настоящие Redis-cache/Qdrant/MLflow; готовность каждого подтверждается отдельно. Полный mapping и ограничения - в общем руководстве по адаптерам.</p>
+<h2>3. Владельцы и границы</h2>
+<table>
+<thead>
+<tr>
+<th>Область</th>
+<th>Владелец</th>
+<th>Запрещённая подмена</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Сессия и полномочия</td>
+<td>Access, в production IAM банка</td>
+<td>Клиент не назначает компанию и роль самостоятельно</td>
+</tr>
+<tr>
+<td>Каталог и eligibility</td>
+<td>Catalog + владелец продукта</td>
+<td>Ранжировщик не добавляет непригодный продукт</td>
+</tr>
+<tr>
+<td>Черновик и отправленные данные</td>
+<td>Applications</td>
+<td>Отправленный снимок не редактируется через PATCH</td>
+</tr>
+<tr>
+<td>Согласия</td>
+<td>Consents</td>
+<td>Доступ к компании не даёт права согласиться за любого субъекта</td>
+</tr>
+<tr>
+<td>Файлы и подтверждение OCR</td>
+<td>Documents + Applications</td>
+<td>Confidence не является подтверждением клиента</td>
+</tr>
+<tr>
+<td>Рассмотрение и решение</td>
+<td>Bank simulator; в target кредитный конвейер</td>
+<td>ML не пишет APPROVED/DECLINED в заявку</td>
+</tr>
+<tr>
+<td>Статус, next action, лента</td>
+<td>Workspace</td>
+<td>Статья не заменяет обязательное уточнение</td>
+</tr>
+<tr>
+<td>Предложение и оформление</td>
+<td>Bank simulator; в target банк</td>
+<td>UI не объявляет деньги выданными без события</td>
+</tr>
+<tr>
+<td>Источники RAG</td>
+<td>KB authority в backend</td>
+<td>Векторный индекс не определяет права публикации</td>
+</tr>
+<tr>
+<td>Артефакты и inference record</td>
+<td>ML, отдельная роль хранения</td>
+<td>Прогноз нельзя отвязать от версии и данных</td>
+</tr>
+</tbody>
+</table>
+<p>Монолит не отменяет границ: модули взаимодействуют через application interfaces и события, не импортируют чужие repositories. Общими бывают технические типы; общей изменяемой бизнес-сущности между модулями нет. Python не пишет напрямую в таблицы заявок/решений.</p>
+<h2>4. Данные и надёжность</h2>
+<p>Одновременно с командой сервер фиксирует idempotency record, новый бизнес-объект/снимок, operation и outbox. 202 выдаётся только после commit. Dispatcher доставляет сообщения хотя бы один раз; consumer фиксирует inbox и бизнес-эффект одной транзакцией. Это не обещание exactly-once доставки.</p>
+<p>Идемпотентный ключ ограничен actor/company/operation type, хранится 7 дней вместе с нормализованным hash тела и результатом. Правильный повтор возвращает исходный ответ до проверки нового состояния; то же имя ключа с другим телом - 409. По истечении срока повтор финансово значимого действия требует сверки, а не нового слепого вызова.</p>
+<p>Версии независимы: Application.version/ETag, RFI requestVersion, InformationDraft.draftVersion, financial statementVersion, requirementsVersion, objectVersion, caseVersion и viewVersion. Не использовать время обновления вместо CAS. Отправка и ответ на RFI закрепляют точные documentReferences и серверный финансовый снимок.</p>
+<p>Решения и переходы полностью перечислены в contracts/state-machine.json. Канонический публичный API содержит 60 операций; demo-входы изолированы в отдельном контракте. Проект не имеет действующих потребителей: переход с 1.2/1.3-design на 1.4-design выполняется одним согласованным изменением, а не имитацией поддержки legacy-клиентов.</p>
+<h2>5. Масштабирование и ограничения</h2>
+<p>Расчётная исходная гипотеза target: 10 тыс. активных клиентов × 0,1 запроса/с = 1 тыс. RPS; пик 50 тыс. = 5 тыс. RPS. SSE и загрузки считаются отдельно. Эта арифметика не доказывает достаточность оборудования: проверяются DB IOPS, размер записей/файлов, конкуренция, skew по компаниям и длительность запросов.</p>
+<p>Первый предел - PostgreSQL и конкуренция обработки, а не отсутствие микросервисов. Ввести индексы company/application/status/time, keyset pagination, bounded pools и очереди; измерять p95 и возраст outbox. Реплики HTTP требуют общих сессий, stream journal и object storage. Локальный filesystem не является общим томом для нескольких узлов.</p>
+<p>Для target сохраняются проектные цели: доступность 99,95%/месяц, p95 чтений ≤300 мс, локальных команд ≤500 мс, свежесть проекции p95 ≤5 с; RPO ≤5 мин/RTO ≤30 мин, три домена отказа. Для MVP нет заявления о достижении этих значений. Бюджеты CPU ML находятся отдельно в contracts/runtime-policy.json.</p>
+<p>Kafka/Redis/S3/Feast/Airflow закреплены через порты с начала разработки; локальная реализация сохраняет обязательные инварианты. Настоящие сервисы выбираются конфигурацией после проверки совместимости и поведения при сбое. Kafka сохраняет outbox/inbox; Redis разделяет сессии и кеш; S3 хранит точные версии; Feast разделяет online/historical retrieval; Airflow не обучает модель в клиентском запросе. Подключение контейнера без выбранного SDK-адаптера не считается завершённой интеграцией.</p>
+<h2>6. Безопасность и допуск</h2>
+<p>В local-mvp все данные искусственные; тестовый вход явно помечен. Cookie HttpOnly/SameSite, CSRF, серверная проверка tenant/role и запрет публичного доступа к внутренним портам обязательны. HTTPS обязателен для внешнего показа; localhost допускает development cookie без Secure. Режим production не разрешает этот override.</p>
+<p>Секреты не передаются в браузер и не лежат в Git. Внутренние сервисы используют отдельные ролевые токены в изолированной сети, target - workload identity/mTLS. AV работает fail closed; EICAR/ошибка scanner не становятся CLEAN. Модели и документы не отправляются в публичные API. Идентификаторы и hashes не являются достаточным обезличиванием.</p>
+<p>Перед банковским пилотом нужны G01-G08: протокол IAM/полномочий; банковские команды и исходы; право/политика обработки данных; хранение/ключи/retention; лицензии и supply chain; восстановление и полный журнал принятых внешних команд; измеренные SLO/ёмкость; валидация моделей и продуктовых правил. До завершения DR-сверки финансово значимые команды запрещены. Поиск только по сохранившимся локальным ключам не восстанавливает потерянные при RPO команды.</p>
+<p>Эти условия - инженерный план допуска, не юридическое заключение и не подтверждение соответствия нормативам.</p>
+<h2>Технологические адаптеры</h2>
+<p>Именованный стек и выбранный runtime отражаются раздельно: intended technology, selected adapter и evidence. Неизвестный provider останавливает запуск; автоматическая смена authority запрещена. Каталог интерфейсов обязателен для всех направлений.</p>
+<p><a href="docs/technology-adapters.md">Полная спецификация адаптеров</a>; машинный каталог - contracts/technology-adapters.json из корня комплекта.</p>
+<h2>Общие нормативные материалы</h2>
+<p><a href="docs/contract-decisions.md">Контрактные решения</a>, <a href="docs/sources.md">источники</a>, <a href="docs/assumptions-and-gates.md">условия допуска</a>, <a href="docs/development-plan.md">план разработки</a>, <a href="docs/acceptance.md">приёмка</a>.</p>
+<p><a href="packages/general/general-guide.pdf">Открыть PDF</a></p></section><section id="5"><span class="tag">HACKATHON-1.5</span><h1>Backend: контракты, данные и транзакции</h1>
+<p>HACKATHON-1.5. Java 21, Spring Boot 4.1.1, PostgreSQL 17.11 как проверенные документальные ориентиры. Приложение не собрано. Точные JDK/OCI digests и совместимость зависимостей закрывает P02. Spring Modulith исключён из обязательного MVP: модульные границы контролируются пакетами, code review и ArchUnit после проверки его версии. Логическая модульность сохраняется.</p>
+<h2>1. Модули и поток вызовов</h2>
+<p>Access → Catalog → Applications/Consents/Documents → Journey → Bank simulator → Workspace/Offers. ML вызывается через отдельные порты Feature, Risk, Ranking, OCR и Rag. Контроллеры вызывают application services, а не repositories. JPA entities не являются HTTP DTO. Open-in-view выключен; транзакция не удерживается во время HTTP, OCR, LLM или ожидания банка.</p>
+<p>Схемы PostgreSQL по владельцам: access, catalog, applications, consents, documents, journey, integration, workspace, ml, kb. В MVP один кластер; миграции принадлежат соответствующим модулям, порядок согласует backend-владелец. Python получает разрешённые API и минимальный доступ к своей ml-схеме, но не к чужим таблицам.</p>
+<p>Банковский симулятор сохраняет case/offer/command-result, ведёт caseVersion и применяет ту же семантику команд, что target-adapter. Это отдельный авторитет решения внутри процесса Java, а не фронтендовая кнопка изменения статуса. Нормальный happy path автоматический; demo-оператор нужен для ручной проверки и моделируемого завершения.</p>
+<h2>2. Транзакции и команды</h2>
+<p>Синхронный create возвращает 201 и тот же созданный ресурс при повторе; не придумывать operationId для каждого 201. Долговечная команда submit/response/accept/withdraw возвращает 202 и сохранённый receipt с operationId. До HTTP-ответа DB commit уже завершён.</p>
+<p>Порядок команды: проверить аутентификацию и принадлежность company context; найти сохранённый ключ; при совпадающем hash вернуть прежний результат; иначе проверить роль, актуальность версий и бизнес-предусловия; одним commit сохранить изменение, operation, idempotency и outbox. На новых командах полномочия проверяются повторно непосредственно перед commit. Отозванная identity не получает результат чужой операции даже по старому ключу.</p>
+<p>Дедуп обеспечивают уникальные ограничения, а не check-then-insert без блокировки. Consumer фиксирует eventId/inbox и результат атомарно. Dispatcher использует SKIP LOCKED, ограниченный batch, backoff и leases; poison message переводится в видимую ошибку, не исчезает. Истёкший worker token/generation не может завершить новое задание.</p>
+<p>В local-mvp outbox передаётся локальным transport тем же обработчикам. Kafka не обязательна. Case projection читает полный нормализованный поток и продвигает caseVersion для всех его типов; gap инициирует CaseSnapshot и сверку. Нельзя подписаться на часть событий и ожидать последовательные глобальные версии.</p>
+<p>Принятие/истечение/отзыв предложения разрешает единый банковский CAS. Результат зависит от банковского времени и исходного offerVersion, а не состояния кнопки в UI. Исходная заявка и предыдущие финансовые снимки остаются неизменными. Отзыв DRAFT выполняется локальным CAS без банковского дела; после отправки результат отмены подтверждает симулятор/банк.</p>
+<h2>3. Финансовые данные и RFI</h2>
+<p>Все три demo-продукта требуют восемь подтверждённых значений DEMO Financial v1. Неполный черновик разрешён. В MVP не просить повторно вводить Business.annualRevenue: UI показывает его как предварительную диагностику, а после подтверждения авторитетен FinancialStatement.revenueMinor. Policy cap и модель используют только подтверждённый финансовый снимок. annualExpenses/currentDebt не подменяют EBIT/totalLiabilities; возраст бизнеса остаётся отдельным eligibility-полем. В финансовой форме periodStart/periodEnd задают один полный календарный год; RUB, integer minor units. Equity, netProfit, EBIT могут быть отрицательными. totalAssets &gt;0, currentAssets ≤totalAssets, currentLiabilities ≤totalLiabilities. Пропуск и ноль различаются.</p>
+<p>Для синтетического скорингового среза баланс проверяется с точностью исходных данных и допуском 1 копейка. Допуск не является банковской нормой. Подтверждение требует всех восьми полей, по одной уникальной provenance на поле, совпадения statementVersion и точных source document versions. Внесённое изменение сбрасывает подтверждение; сервер формирует actor/time/source. Обычный PATCH не принимает confirmed/provenance/confirmedExtractionIds.</p>
+<p>При submit после flush UI сохраняет expectedVersion, requirementsVersion, financialStatementVersion, documentIds и documentReferences. Сервер сравнивает сохранённые версии, создаёт financialSnapshotId и immutable CreditPackage в одной транзакции. Клиент не может передать financialSnapshotId. Feature snapshot вычисляется после commit из этого финансового снимка и сохраняется неизменяемо до risk inference.</p>
+<p>RFI имеет requestVersion, OPEN/CLOSED и адресованные FIELD/DOCUMENT/EXPLANATION. Финансовый ответ начинается полной копией прежней формы; PUT может изменить только запрошенные значения. Даже если финансовый блок не менялся, response закрепляет текущую подтверждённую версию. Подтверждение полного блока не разрешает изменять незапрошенные поля. Response сравнивает draftVersion, requestVersion, requirementsVersion и сохранённое тело, затем создаёт новый amendment/financial snapshot. SUBMITTED исходная анкета не изменяется.</p>
+<p>При PATCH business merge выполняется по полям; отсутствие означает «не менять», разрешённый clearFields - «очистить». Присваивание и очистка одного пути одновременно даёт 422. Версии и целые числа ограничены безопасным диапазоном JSON 1..9007199254740991.</p>
+<h2>4. Файлы</h2>
+<p>Upload intent закрепляет company/application, размер, MIME, checksum, requirementId и парные requestId/requestVersion при RFI. Файл передаётся потоково с ограниченным буфером; лимит 10 MiB/5 страниц, PNG/JPEG/PDF. Сначала quarantine; проверяются сигнатура, MIME, структура и AV. Рендер страницы ограничен 40 млн пикселей; лимит декодированного изображения проверяется до выделения полного буфера. PDF с активным содержимым/вложениями/шифрованием не принимается в demo-форму; рендеринг идёт в изолированном worker с лимитом времени/памяти.</p>
+<p>CLEAN требует подтверждённого objectVersion, checksum и положительного scanner verdict. AV ERROR остаётся quarantine. Signature DB scanner включена в подготовленный bundle, в runtime сеть для обновления не нужна; отсутствующая база не превращается в успешную проверку. Для optional-формы пользователь может удалить файл и ввести данные вручную. В демонстрации OCR используется настоящий CLEAN-файл.</p>
+<p>Cancel upload и finalization используют один CAS upload-state. Проигравший объект удаляется сборщиком мусора; он не становится доступным. Completion повторно проверяет grant/context/размер/checksum/срок. Grant короткоживущий, связан с сессией и действием, не публикуется в логах. Download проверяет права и точную версию; никакого произвольного filesystem/S3 URL из браузера.</p>
+<p>OCR lease содержит workerId, leaseToken, generation, job type, expiry и objectVersion. READY не меняет подтверждённые данные автоматически. Обновлённый файл или истёкшая аренда делают старый результат недействительным.</p>
+<h2>5. ML и банковское решение</h2>
+<p>Риск: POST /internal/v2/risk/evaluations получает ссылку и digest feature snapshot. GET /internal/v2/feature-snapshots/{featureSnapshotId} возвращает именно неизменяемый снимок, доступный роли ml-risk в ML-сервисе. FeatureSnapshotInput содержит financialSnapshotId/digest и точные financialStatement, скопированные адаптером из CreditPackage. Python не читает «последнюю анкету компании». Запрос с несовпадающим digest отклоняется. Inference record фиксируется до успешного ответа.</p>
+<p>Рекомендации: backend отбирает eligibility/publication, передаёт IDs, тексты и разрешённый coarse context. Ответ проверяется как полная перестановка множества. Метаданные exposure сохраняются для MODEL и RULES. PRODUCT требует eligibilityVersion. Для feedback itemId равен productId или FeedCard.cardId; чужой exposure запрещён, clientEventId уникален в контексте пользователя.</p>
+<p>RAG: BFF создаёт контекст companyId/subjectRef, allowedSources, kbEpoch и requestId. Внутренний API доступен только роли bff. Backend ещё раз проверяет источники после генерации и при чтении истории/ссылок. Никакие поля браузера не могут расширить allowlist.</p>
+<p>Для synthetic-demo-policy-3 исходная DQ проверяется до submit. Расхождение выручки &gt;20% с reference → NEEDS_INFO; после eligibility отрицательный equity или liabilities/assets≥0,9 → DECLINED; нулевая выручка и ML error → MANUAL. Затем score≥T_manual → MANUAL до расчёта альтернатив. Закреплённый порог validation: 0.03504223273828764. При допустимом риске cap=min(product.maxAmount,revenueMinor//4); cap ниже минимума → MANUAL, превышение cap → ALTERNATIVE, иначе APPROVED. Пороги искусственные, score не PD. Реализованный ML API и эталон policy: docs/ml-integration.md корня проекта; backend/UI создают интеграторы.</p>
+<p>Каталог: оборотный 100 тыс.-5 млн RUB/3-24 мес.; линия 300 тыс.-10 млн/6-36 мес.; овердрафт 50 тыс.-2 млн/1-12 мес. Все synthetic; возраст бизнеса минимум 6/12/12 месяцев соответственно. Диагностика со сведениями UNKNOWN просит уточнить вход, а не угадывает eligibility. Предложение содержит полную сумму, срок, disclosure, version, validUntil (+24 часа demo clock). Принятие актуальной версии отличается от «подписания/выдачи».</p>
+<h2>6. Эксплуатация и проверки</h2>
+<p>Бюджеты: обычный API 2 с, risk 3 с, ranking 2 с, RAG 60 с, OCR 120 с; внешние вызовы используют отдельные ограниченные executors. Под общий web pool не ставить генерацию LLM. Метрики: latency/errors, DB pool, outbox age, jobs by state, stale projections, denied access и degraded ML modes. Logs содержат trace/opaque IDs, но не токены, файлы и полные финансовые/чат-тела.</p>
+<p>Приёмка: docs/acceptance.md. H2 не заменяет PostgreSQL; статические проверки не заменяют runtime-нагрузку и DR.</p>
+<h2>Технологические адаптеры</h2>
+<p>SessionStorePort/CachePort разделяют Redis-сессии и восстанавливаемый кеш; EventTransportPort сохраняет PostgreSQL outbox/inbox при подключении Kafka; ObjectStorePort связывает filesystem/S3 с exact objectVersion и CLEAN. P25 реализует локальные адаптеры и composition root. Идемпотентность, CAS, полномочия и quarantine не заменяются заглушками; отказ authority закрывает действие.</p>
+<p><a href="docs/technology-adapters.md">Полная спецификация адаптеров</a>; машинный каталог - contracts/technology-adapters.json из корня комплекта.</p>
+<h2>Общие нормативные материалы</h2>
+<p><a href="docs/contract-decisions.md">Контрактные решения</a>, <a href="docs/sources.md">источники</a>, <a href="docs/assumptions-and-gates.md">условия допуска</a>, <a href="docs/development-plan.md">план разработки</a>, <a href="docs/acceptance.md">приёмка</a>.</p>
+<p><a href="packages/backend/backend-guide.pdf">Открыть PDF</a></p></section><section id="6"><span class="tag">HACKATHON-1.5</span><h1>Frontend: путь клиента и интеграция</h1>
+<p>HACKATHON-1.5. React 19/TypeScript, React Router 7, TanStack Query 5, React Hook Form 7, Zod 4 и MSW 2 - выбранные семейства. React 19.3.0 и Node 24 LTS подтверждены официальными страницами; точные версии остальных средств фиксируются package-lock после совместной сборки P02. Не считать ориентиры готовым lock-файлом приложения.</p>
+<h2>1. Экраны и ответственность</h2>
+<p>Одна SPA, один origin, один источник server state. Feature-модули access/company/catalog/application/documents/journey/feed/assistant; общий API layer генерируется из contracts/public.openapi.json. Использовать существующую библиотеку Ant Design после совместимости её выбранной версии; её Form не становится вторым владельцем формы React Hook Form.</p>
+<table>
+<thead>
+<tr>
+<th>Экран</th>
+<th>Маршрут и результат</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>U01</td>
+<td>/login - явно демонстрационный вход</td>
+</tr>
+<tr>
+<td>U02</td>
+<td>/companies - выбор разрешённой компании</td>
+</tr>
+<tr>
+<td>U03</td>
+<td>/workspace - заявки, pinned next action, персональная лента</td>
+</tr>
+<tr>
+<td>U04</td>
+<td>/needs - цель/сумма/срок и диагностика</td>
+</tr>
+<tr>
+<td>U05</td>
+<td>/products - пригодные варианты и различия</td>
+</tr>
+<tr>
+<td>U06</td>
+<td>/products/:productId - synthetic условия и disclosure</td>
+</tr>
+<tr>
+<td>U07</td>
+<td>/applications/:id/company - предзаполненные данные компании</td>
+</tr>
+<tr>
+<td>U08</td>
+<td>/applications/:id/business - бизнес-поля и восемь финансовых значений</td>
+</tr>
+<tr>
+<td>U09</td>
+<td>/applications/:id/documents - необязательная demo-форма, OCR и согласия</td>
+</tr>
+<tr>
+<td>U10</td>
+<td>/applications/:id/review - итог, подтверждения и отправка</td>
+</tr>
+<tr>
+<td>U11</td>
+<td>/applications/:id/status - статус/история/следующий шаг</td>
+</tr>
+<tr>
+<td>U12</td>
+<td>/applications/:id/information/:requestId - адресованный ответ RFI</td>
+</tr>
+<tr>
+<td>U13</td>
+<td>/offers/:offerId - версия/срок/условия и принятие</td>
+</tr>
+<tr>
+<td>U14</td>
+<td>/inbox - сообщения внутри продукта</td>
+</tr>
+<tr>
+<td>U15</td>
+<td>/applications/:id/files - доступные CLEAN-документы</td>
+</tr>
+<tr>
+<td>U16</td>
+<td>/assistant/:conversationId? - RAG, история и проверяемые ссылки</td>
+</tr>
+</tbody>
+</table>
+<p>RAG также открывается виджетом в U03/U11; он не становится обязательным шагом заявки. Для отрицательного исхода объяснить итог и доступные действия, не обещая обход решения. MANUAL означает проверку, не отказ. COMPLETED содержит явную надпись «демонстрация, деньги не перечисляются».</p>
+<h2>2. Сохранение и команды</h2>
+<p>React Hook Form владеет несохранённым вводом. TanStack Query владеет серверными чтениями. На черновик - последовательная очередь автосохранения; предыдущий ответ не может затереть новый ввод. Перед submit/response дождаться flush и получить свежие версии; ошибка сохранения останавливает отправку, оставляя введённый текст.</p>
+<p>Каждая мутация передаёт If-Match там, где он определён контрактом. Результат 409/412 показывает конфликт и предлагает перечитать/сопоставить данные; автоматического overwrite нет. Network retry изменяющей операции использует тот же Idempotency-Key и неизменённое тело. Новый ключ при timeout не создаётся. Закрытая кнопка не заменяет серверную идемпотентность.</p>
+<p>Key команды создаётся до отправки и сохраняется в sessionStorage вместе с company/resource/type, но без financial/body/token. После reload UI ищет operation по ключу и читает список активных и завершённых операций за dedup window. Публичный DTO не содержит банковский externalRequestId.</p>
+<p>При 401 приостановить фоновые запросы и предложить вход с восстановлением сохранённого черновика; 403 не повторять; 404 не раскрывает чужой объект; 409/412 требует актуализации; 422 показывает field errors; 429 учитывает Retry-After; 503 показывает задержку и безопасное повторение. Обрывы не-JSON на файловом маршруте обрабатываются отдельным безопасным текстом.</p>
+<h2>3. Компания и поток событий</h2>
+<p>Активная компания - общий контекст cookie-сессии, а не независимое значение во вкладке. Session.contextVersion и X-Company-Context защищают мутации. BroadcastChannel сообщает другим вкладкам о смене: отменить запросы, очистить Query cache, закрыть stream, сохранить несохранённый ввод отдельно и получить новую session. Локальное поколение запросов препятствует применению устаревших ответов.</p>
+<p>SSE реализуется fetch-клиентом, который может передать Last-Event-ID и проверяет HTTP-ответ. Heartbeat/повтор ограничены. При gap/истёкшем cursor получить barrier snapshot, затем перечитать затронутые ресурсы и все страницы списков. complete=false не означает, что первые 100 заявок составляют полный контекст. Финансовый блок, RFI, документы и offer обновляются отдельно; события не перезаписывают dirty-form.</p>
+<p>Потеря stream показывает «Данные на …, обновление задерживается» и кнопку ограниченного refresh. Не рисовать DECLINED из timeout. Next action определяется серверным состоянием и остаётся выше статей при любой ML-деградации.</p>
+<h2>4. Финансы и OCR</h2>
+<p>Показать период, валюту/единицы и все восемь полей. Хранить денежный ввод строкой; точное преобразование в копейки, без float. Отрицательные капитал/прибыль/EBIT допустимы, пустое поле не равно нулю. Визуальная проверка формата не заменяет server-side DQ.</p>
+<p>OCR - предложение значений с источником/страницей, а не автоматическое изменение отправленной заявки. Клиент сравнивает, редактирует и подтверждает каждое финансовое значение; одна кнопка финального confirm может объединять восемь явных подтверждений. Результат привязан к objectVersion и extractionId. Любое последующее изменение сбрасывает confirmed-state. При OCR failure доступен ручной ввод.</p>
+<p>В RFI изменяемыми являются только запрошенные поля. Полная форма показывается с заблокированными остальными значениями; подтверждение не снимает эту блокировку. Финансовая версия и draftVersion ответа передаются вместе с requestVersion/requirementsVersion.</p>
+<p>Для файлов использовать upload intent и bounded binary upload; прогресс может идти через XHR, JSON через generated API client. QUARANTINE/SCANNING/CLEAN/FAILED различаются в UI; CLEAN не означает OCR READY. Заблокированная кнопка имеет текстовую причину.</p>
+<h2>5. Персонализация и помощник</h2>
+<p>Показы продуктов/материалов подтверждаются после видимости ≥50% карточки ≥1 с как проектная договорённость. Отправлять clientEventId/exposureId/itemId/VIEW либо CLICK; не отправлять от имени клиента SUBMITTED/FULFILLED. Backend проверяет атрибуцию. Полученный порядок не может убрать next action.</p>
+<p>RAG имеет states loading/ANSWER/SEARCH_ONLY/INSUFFICIENT_EVIDENCE/error. В CPU-профиле таймаут браузера 65 с; интерфейс позволяет отменить запрос и продолжить основной путь. SEARCH_ONLY показывает только ссылки с пояснением, что генерация недоступна. При ANSWER источники кликабельны, но цитата сама по себе не доказывает правильность каждого утверждения.</p>
+<p>Assistant не объясняет персональную риск-оценку, не обещает ставку/одобрение, не подписывает документы. HTML/Markdown от модели отображается с escaping и запретом активных ссылок вне разрешённых внутренних источников. История может скрыть отозванный ответ: объяснить, что источник больше не доступен.</p>
+<h2>6. Демонстрационные режимы и доступность</h2>
+<p>Два режима для разработки: MSW с общей контрактной моделью и integrated с настоящим backend. В компонентах нет if-demo; выбирается API implementation в entry point. Mock mode сбрасывается и не считается доказательством долговечности. Приёмка и показ жюри используют integrated CPU profile.</p>
+<p>Demo-operator работает в отдельной сессии; его UI/API не включаются во внешнюю public-сборку. Переключение операторской панели не даёт клиентскому браузеру административную роль.</p>
+<p>Основной путь проходит клавиатурой, focus переносится на ошибку/заголовок нового шага; labels, textual errors, contrast и reduced motion поддерживаются. Не блокировать всю страницу из-за фоновой загрузки RAG. Срок сессии предупреждает о выходе без потери сохранённых данных. Проверить минимум узкий web viewport и обычный desktop, без отдельного mobile app.</p>
+<h2>Технологические адаптеры</h2>
+<p>Frontend использует прежний public API и MSW, независимо от выбора NumPy/Qdrant, JDBC/Redis или local/Feast. В клиентских экранах показываются понятные статусы и следующий шаг. Технический provider manifest нужен в закрытом инженерном отчёте для защиты, без секретов и персональных данных; клиенту не предлагается выбирать инфраструктуру.</p>
+<p><a href="docs/technology-adapters.md">Полная спецификация адаптеров</a>; машинный каталог - contracts/technology-adapters.json из корня комплекта.</p>
+<h2>Общие нормативные материалы</h2>
+<p><a href="docs/contract-decisions.md">Контрактные решения</a>, <a href="docs/sources.md">источники</a>, <a href="docs/assumptions-and-gates.md">условия допуска</a>, <a href="docs/development-plan.md">план разработки</a>, <a href="docs/acceptance.md">приёмка</a>.</p>
+<p><a href="packages/frontend/frontend-guide.pdf">Открыть PDF</a></p></section><section id="7"><span class="tag">HACKATHON-1.5</span><h1>ML: реальные функции в компактном MVP</h1>
+<p>HACKATHON-1.5. ML обязателен в согласованном объёме: риск, semantic-рекомендации, OCR и RAG. Наличие этой спецификации не означает, что веса скачаны, модели обучены или качество измерено. Промышленные правила прежнего ML-пакета сохранены в contracts/bank-target-release-policy.json и архиве, но не являются условиями локального canary на синтетическом трафике.</p>
+<h2>1. Минимальный runtime</h2>
+<p>Python 3.12 + FastAPI/Pydantic 2, NumPy/scikit-learn для риска, multilingual-e5-small для embeddings, Tesseract 5.x/tessdata_fast rus+eng для OCR, Qwen2.5-0.5B-Instruct-GGUF Q4_K_M в llama-server. Конкретные версии Python-зависимостей, revision моделей, traineddata и OCI digests фиксируются P02/P11-P14. Пока manifest не содержит реальные SHA-256, релиз не допускается; фиктивных hashes здесь нет.</p>
+<p>Qwen выбран как малый открытый CPU baseline, а не как доказанно качественная банковская модель. E5 используется и для текстовой близости продуктов, и для поиска знаний с отдельными индексами/версиями. Для малого корпуса достаточно нормализованной матрицы NumPy и metadata. Runtime не запускает training и не скачивает модели. Точный NVIDIA GPU/VRAM неизвестен; GPU ускоряет тот же bundle и не меняет модель автоматически.</p>
+<p>Проектный ориентир CPU-стенда: 8 logical cores, 16 GiB RAM, 20 GiB свободного диска. Это начальная конфигурация для измерения, не подтверждённый минимальный размер. Проверяется поддерживаемый CPU ISA и архитектура OCI; arm64/amd64 - отдельные smoke. GPU-profile только после проверки driver/CUDA и паритета результатов.</p>
+<h2>2. Риск: смысл, данные, обучение</h2>
+<p>Актуальный первый скоринговый срез от 21.10.2026 использует полностью вымышленные компании, финансовые суммы и target_12m из training_simulation.parquet. Настоящие реквизиты гибридной таблицы не используются. Прежние UCI 5year.arff и grouped split 60/20/20 для этого релиза заменены готовым company-disjoint split поставки: train 7016/352 событий, validation 1494/80, test 1490/80. Проверяются опубликованные SHA-256; разбиение не пересоздаётся.</p>
+<p>Реализован CatBoostClassifier с подбором гиперпараметров Optuna. Общий batch/online builder рассчитывает X1=netProfit/assets, X2=liabilities/assets, X3=(currentAssets-currentLiabilities)/assets, X4=currentAssets/currentLiabilities, X7=EBIT/assets, X8=equity/liabilities, X9=revenue/assets, X10=equity/assets. Деньги поступают как целые копейки, Decimal-конвертация из Parquet исключает промежуточный float. Баланс проверяется с допуском 1 копейка. При assets≤0 оценка невозможна; нулевые знаменатели дают missing. Пропуски CatBoost обрабатывает через nan_mode=Min, без imputer/scaler.</p>
+<p>Optuna TPE(seed=42) выполняет 30 trials с трёхкратной CV на train и MedianPruner. Подбираются глубина/деревья/learning rate/регуляризация/случайность/выборка признаков/границы/веса классов. Пять лучших trials оцениваются на validation; версия выбирается по validation AP. Модель и policy фиксируются до открытия test. Сценарии выбираются только из train. Target, IDs, split, даты, технические флаги и simulation_truth не являются признаками. История подбора сохранена в optuna-study.json.</p>
+<p>T_manual выбран на validation как верхние 20% score пригодных наблюдений. Зафиксировано 0.03504223273828764; пригодных 1205, manual 241; 26 искусственных событий в manual. Это демонстрационный бюджет проверки. На test ROC-AUC 0.90449, AP 0.40560; полные prevalence/Brier/log loss/confusion/distribution и hashes лежат в reports. Все метрики относятся только к искусственной симуляции.</p>
+<p>Срез включает ML API, S01–S06 и эталон backend policy. Команды и интеграция описаны в docs/ml-integration.md корня проекта. UI/backend и прочие ML-функции ниже сохраняют проектный статус.</p>
+<h2>3. Неизменяемые признаки и inference</h2>
+<p>Java фиксирует финансовый снимок; feature-builder читает его, вычисляет отношения и сохраняет FeatureSnapshot в ml-схеме с featureSchemaVersion=2, code digest, asOf, source availability и digest. Владелец feature snapshot API - ML; вычисления выполняет общий Python-transform. Bank adapter передаёт финансовые значения из неизменяемого CreditPackage в createFeatureSnapshot, не давая Python доступ к текущему черновику. Повтор одного submissionSnapshotId/codeDigest возвращает тот же снимок.</p>
+<p>Risk API получает snapshotId/digest и читает разрешённый snapshot через GET /internal/v2/feature-snapshots/{featureSnapshotId}. Не пересчитывать из текущего черновика. Время availableAt каждого входа не позже asOf; исторические исправления не переносятся в прошлое. Hash считается от канонического JSON с фиксированными именами/порядком сериализации; версии формата входят в manifest.</p>
+<p>Ответ BANKRUPTCY_PROXY/DEMONSTRATION связывается с requestId, inferenceId, featureSnapshotDigest, modelVersion и bundleDigest. Inference record должен быть долговечным до успешного ответа; недоступный внешний сборщик метрик не равен отказу локального журнала. Score и internalReasonCodes видит банковский симулятор, но не клиентское API.</p>
+<p>Бюджет risk 3 с; повтор с тем же requestId возможен только для того же snapshot/bundle. Ошибка, несовместимая схема или невозможность сохранить inference record → MANUAL. Риск не изменяет решение или offer самостоятельно. PD/VALIDATED и purpose=CREDIT_RISK закрыты в local-mvp независимо от того, что общая schema описывает target-возможность.</p>
+<h2>4. Рекомендации как содержательная модель</h2>
+<p>Пользовательские поведенческие метки пока отсутствуют. Поэтому реальная ML-функция MVP - pretrained semantic ranking E5, без заявления об обученной по кликам персонализации. Для PRODUCT контекст - назначение финансирования и coarse business category; для FEED - стадия и утверждённый текст полезного следующего шага. Персональные финансы/причины риска/документы не передаются ranker.</p>
+<p>Backend формирует пригодные candidateIds/candidateTexts, catalogVersion и eligibilityVersion. Python применяет документированные E5 префиксы query:/passage:, mean pooling с attention mask и L2 normalization; считает cosine similarity. Tie-break по исходному стабильному порядку. Ответ содержит ровно перестановку кандидатов. Модель не принимает решение о пригодности и не генерирует условия продукта.</p>
+<p>PRODUCT и FEED имеют отдельные artifact manifests и кеши; source model может быть общим. Изменение catalog/text/model revision требует нового digest. Embeddings кандидатов готовятся до показа; прогрев query encoder входит в readiness. Бюджет ranking 2 с. При ошибке → RULES с тем же допустимым набором; pinned next action не входит в перестановку.</p>
+<p>Exposure записывает сервер. Frontend сообщает реальные VIEW/CLICK с дедупликацией; completion/submit приходят из бизнес-событий. Без закрытых окон атрибуции и достаточных меток не запускать CatBoostRanker и не оптимизировать выдачу кредита по CTR.</p>
+<h2>5. OCR одной формы</h2>
+<p>Поддерживается собственная DemoFinancial v1: одна страница, восемь полей, явные подписи, год, RUB и масштаб «рубли с копейками». Исходные synthetic PNG/PDF и варианты печати включаются в будущий seed. Это не универсальное распознавание отчётности РСБУ/МСФО.</p>
+<p>Tesseract rus+eng извлекает текст и координаты; fixed-layout parser нормализует пробелы, знак, десятичный разделитель и minor units. Нечитаемое значение остаётся missing; знак/баланс не «чинится» догадкой. Confidence нормализуется в [0,1] из engine score и помечается как техническая величина, а не вероятность достоверности поля.</p>
+<p>Worker получает только CLEAN objectVersion и действующую lease; результат содержит generation, worker/token, engineVersion, поля/страницы. Парсер-версия и traineddata hashes входят в bundle. Любой результат требует подтверждения пользователя; correction сохраняется рядом с исходным OCR и точной версией файла. При отказе OCR ручной ввод сохраняет основной путь.</p>
+<p>Проверка MVP: минимум 10 synthetic вариантов, включая отрицательную прибыль, нулевой долг, знак минус, запятую/пробелы и низкое качество. Измерять exact match восьми полей после нормализации и ошибки знака/масштаба. Эти примеры не доказывают промышленную точность. Target-набор 200 проверенных документов и canary оставлен следующим этапом.</p>
+<h2>6. RAG и публикация знаний</h2>
+<p>Начальный корпус - 15-30 коротких утверждённых synthetic статей о процессе и demo-продуктах. Компания/полномочия/consent сохраняются в backend. Статусы знаний DRAFT/PUBLISHED/REVOKED, documentVersion, effectiveUntil и audience задаёт KB authority. Локальная публикация через служебный API требует отдельной роли content-owner; клиент не загружает документы в KB через OCR.</p>
+<p>Ingestion ограничивает размер, очищает активное содержимое, разбивает текст примерно по 300 токенов с overlap40 и сохраняет IDs/chunk hashes. Авторизованный corpus manifest задаёт версии. E5 retrieval top3, точные права/публикация проверяются до помещения в prompt. Threshold подбирается на сохранённом QA-наборе P14: точное значение и evaluation digest обязательны в bundle, универсального similarity threshold нет.</p>
+<p>Генерация: Qwen GGUF Q4_K_M, context2048 tokens, output≤192 tokens, concurrency1, temperature0.1. Бюджет генерации 45 с внутри общего 60 с; max очередь 4, 1 запрос/сессию и 5 запросов/мин. Превышение очереди →429. Перед вызовом исключить sensitive финансовые данные и внутренние причины решения. Модель не имеет tools, сетевого доступа и прав записи в заявку.</p>
+<p>Ответ ANSWER содержит внутренние ссылки на использованные document/version. Backend проверяет, что все citations входят в retrieval allowlist и всё ещё PUBLISHED. Не обещать математической проверки истинности каждого предложения малой LLM: нужен QA и консервативные отказы. Неподтверждённый ответ подавляется. Нет источников/слабый retrieval → INSUFFICIENT_EVIDENCE; LLM timeout при пригодных источниках → SEARCH_ONLY с пустым answer и ссылками. Поисковый fallback не выдаётся за генерацию.</p>
+<p>Отзыв: DB-транзакция ставит REVOKED и увеличивает kbEpoch. Перед фактической выдачей ответа BFF под короткой блокировкой публикации повторно проверяет epoch/права; при изменении отбрасывает ответ и перечитывает источники. Если revoke завершился раньше этого commit выдачи, новые ответы/история/ссылки источник не раскрывают. Уже доставленные пользователю байты отозвать невозможно; не обещать обратного. В local-mvp один backend держит publication fence: final response/history/source read используют read-permit; revoke закрывает новые permits, фиксирует epoch, дожидается завершения или отменяет начатые публикации и только затем объявляет ENFORCED. 202 receipt сам по себе не означает ENFORCED. Долгая генерация permit не удерживает. Уже отправленные в сеть байты могут прийти позже; это не новая серверная публикация. После commit индекс чистится асинхронно. Rollback bundle не откатывает deny-реестр. Недоступный authority закрывает RAG, а не весь кредитный путь.</p>
+<p>MVP QA: 20 golden вопросов и 10 атак с ручной проверкой каждого ответа; отдельно source recall, корректность ссылок/отказов и injection. Это smoke, не statistically validated benchmark. В target сохраняются более крупные golden/adversarial наборы, независимая оценка и lifecycle.</p>
+<h2>7. Выпуск, наблюдаемость и развитие</h2>
+<p>Локальный release bundle объединяет weights, preprocessors, feature schema, corpus/index manifest, prompt, engine versions, licences и hashes. Автор не утверждает собственный bundle: один peer проверяет evaluation digest и фиксирует approval. Перезапуск с прошлым полным bundle - rollback; файл модели отдельно от preprocessing не подменяется.</p>
+<p>В MVP JSON logs/health/metrics endpoints и сохранённый evaluation report достаточны; запуск Grafana не является обязательной частью демо. Считать latency/errors/fallback mode, input DQ, queue age, source denials и invalid citations. Drift на малой синтетике не запускает автоматическое переобучение.</p>
+<p>Feast, MLflow, Airflow, Evidently, Qdrant и vLLM присутствуют в логической архитектуре MVP через именованные границы и локальные реализации. Дополнительный профиль может выбирать настоящие сервисы; bank-target переводит весь стек на полноценные реализации после проверок. Их ограничения и критерии переключения описаны в общем каталоге. Training/serving пулы изолируются. Retraining требует созревших labels и data access approval; release - независимого допуска, canary и rollback. Исторические strict events меняются только новой версией схемы/темы.</p>
+<h2>Технологические адаптеры</h2>
+<p>FeatureRepositoryPort/HistoricalFeatureReader сохраняют Feast-границу; VectorIndexPort связывает NumPy/Qdrant; TextGenerationPort связывает CPU llama.cpp/vLLM. ModelRegistryPort, BatchJobRunnerPort и QualityReportPort имеют локальные рабочие реализации и будущие MLflow/Airflow/Evidently adapters. Python composition root выбирает provider; роли и immutable данные не меняются. SDK-каркас без реализации явно отклоняет вызов, а не отдаёт успешный фиктивный ответ.</p>
+<p><a href="docs/technology-adapters.md">Полная спецификация адаптеров</a>; машинный каталог - contracts/technology-adapters.json из корня комплекта.</p>
+<h2>Общие нормативные материалы</h2>
+<p><a href="docs/contract-decisions.md">Контрактные решения</a>, <a href="docs/sources.md">источники</a>, <a href="docs/assumptions-and-gates.md">условия допуска</a>, <a href="docs/development-plan.md">план разработки</a>, <a href="docs/acceptance.md">приёмка</a>.</p>
+<p><a href="packages/ml/ml-guide.pdf">Открыть PDF</a></p></section></main></html>

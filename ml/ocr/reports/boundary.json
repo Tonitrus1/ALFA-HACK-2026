@@ -1,0 +1,27 @@
+{
+  "job_id": "185bb5b7-df94-44c4-91bf-8eb3ba69ac26",
+  "real_ocr": true,
+  "real_llm": true,
+  "files": 10,
+  "pages": 50,
+  "inn_correct": true,
+  "requires_confirmation": true,
+  "provenance": {
+    "prompt_sha256": "0f1617657ce7a2e515c1d3a99d247b4c1fa157a5b3070ae56c33e301b913c462",
+    "schema_sha256": "91885150edd002ef18ef03795913d8b338d01977fb1889a9ba9870c27c5ef785",
+    "ocr_engine": "tesseract",
+    "ocr_version": "5.3.0",
+    "llm": {
+      "model": "deepseek-v4.1-flash-1017",
+      "calls": 10,
+      "validation_repairs": 0,
+      "usage": {
+        "prompt_tokens": 44673,
+        "completion_tokens": 7766,
+        "total_tokens": 52439
+      },
+      "merge": "conservative lexical equality; differing candidates become conflicts"
+    },
+    "seconds": 78.666
+  }
+}

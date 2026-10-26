@@ -1,0 +1,26 @@
+{
+  "seed": 2026102105,
+  "rows": 20000,
+  "beforeEvaluation": true,
+  "candidateModelHash": "0917c74937bf94b32753e26e862084e7e4a28076eadc2c5d77689dd1e496cf6c",
+  "baselineModelHash": "2cd91c344d5d62c7c7f0065ef21fb34aec065551f5ec8041cd1a61d5fb1e7fba",
+  "generatorSourceHash": "22948c56106202986b597426ed19502339a6af6712049f6d6893e41778a3565a",
+  "financialSampler": "original generated_finances function, unchanged; new independent RNG streams and fictional IDs",
+  "categorySampler": "empirical real-registry category proportions; identities not reused",
+  "targetLaw": "original probability_score and sigmoid; original fixed intercept, no holdout recalibration",
+  "intercept": -2.5747647590132132,
+  "primary": "eligible Recall@5% (rank budget); AP secondary, ordinary Logloss guard",
+  "promotionCriteria": {
+    "recallDifferenceLower95Above": 0.0,
+    "APDifferenceAtLeast": 0.0,
+    "LoglossDifferenceAtMost": 0.002
+  },
+  "bootstrap": {
+    "replicates": 1000,
+    "seed": 20261021,
+    "pairedCompanyResampling": true
+  },
+  "scope": "independent synthetic covariates/outcomes only; no evidence about actual credit default",
+  "fixedThresholdCoverage": "reported separately; rank budget does not guarantee static-threshold capacity",
+  "noFurtherSelection": true
+}

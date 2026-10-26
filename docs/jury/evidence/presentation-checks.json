@@ -1,0 +1,30 @@
+{
+  "slides": 12,
+  "pdfBytes": 2904836,
+  "zipBytes": 2472026,
+  "below18MB": true,
+  "copyableDemoPasswords": true,
+  "copyableScenarioTables": true,
+  "pdfUriAnnotations": 5,
+  "qrDecodedFromFinalPdf": [
+    "https://president-diameter-endearing.ngrok-free.dev",
+    "https://github.com/Tonitrus1/ALFA-HACK-2026/tree/submission-2026-10-26-r2"
+  ],
+  "pptxIntegrity": "pass",
+  "pptxLayoutFindings": 0,
+  "pptxFontPolicyPassed": true,
+  "pptxImportPassed": true,
+  "editableNativeTables": 2,
+  "visualReview": "All 12 redesigned slides reviewed in previous revision; changed slide 12 reviewed again for r2 tag, QR and demo-login notice. Native layout/integrity/font/import validations repeated with no findings.",
+  "archive": {
+    "crc": "PASS",
+    "embeddedPdfAndPptxExactMatch": true,
+    "contents": [
+      "README.md",
+      "README.html",
+      "potok-gambit-yvaga.pdf",
+      "potok-gambit-yvaga.pptx"
+    ]
+  },
+  "version": "submission-2026-10-26-r2"
+}

@@ -1,0 +1,28 @@
+{
+  "scope": "Standalone ML API + PostgreSQL only",
+  "passed": true,
+  "checks": [
+    {
+      "name": "restart_preserves_immutable_snapshot_and_exact_inference",
+      "passed": true
+    },
+    {
+      "name": "runtime_does_not_train_or_change_bundle",
+      "passed": true
+    },
+    {
+      "name": "persistence_failure_is_error_and_reference_policy_manual",
+      "passed": true,
+      "seconds": 2.008351708005648
+    },
+    {
+      "name": "external_tcp_denied_by_os_profile",
+      "passed": true,
+      "target": "1.1.1.1:443",
+      "errno": 1
+    }
+  ],
+  "networkMode": "all ML and PostgreSQL processes launched under scripts/offline.sb (loopback and Unix sockets only)",
+  "profileDigest": "c2b5527ce5f14e100fec5ca1ccee427e3227888517bec6c13908e34e653ac6fa",
+  "bundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e"
+}

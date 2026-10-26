@@ -1,0 +1,3637 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Кредитный кабинет: согласованный проект интерфейсов: только демонстрация",
+    "version": "1.4.0-design",
+    "description": "Только локальный демонстрационный профиль; отдельная operator-сессия. Внешняя публикация demo-панели запрещена по умолчанию."
+  },
+  "servers": [
+    {
+      "url": "https://credit.bank.example",
+      "description": "Условный origin; зарезервированное .example имя"
+    }
+  ],
+  "security": [
+    {
+      "DemoOperatorCookie": []
+    }
+  ],
+  "paths": {
+    "/demo/api/v1/operator/session": {
+      "post": {
+        "operationId": "proposed_post_demo_api_v1_operator_session",
+        "summary": "Вход тестовым оператором имитатора",
+        "description": "Согласованное расширение G07. Спецификация для реализации; см. главу интерфейсов. Сервер принимает только фиксированный operator-demo при включённом demo-профиле, проверяет Origin и JSON Content-Type; csrfToken возвращается в отдельном операторском контексте. Маршрут существует только в demo-профиле на loopback/изолированном стенде с синтетикой. Вне профиля 404. Проверять точный Origin и JSON Content-Type для login; для операторских изменений — отдельные cookie и CSRF. Представитель не является оператором.",
+        "tags": [
+          "demo"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Проектный успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DemoOperatorSession"
+                }
+              }
+            },
+            "headers": {
+              "Set-Cookie": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "credit_session для представителя; credit_demo_operator для оператора. HttpOnly, SameSite; только локальная demo-конфигурация. Пароль/учётка реальные не используются."
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "400": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "401": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "403": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "404": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "409": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "422": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "428": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "429": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "503": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "500": {
+            "description": "Безопасная ошибка",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DemoLogin"
+              }
+            }
+          }
+        },
+        "x-demo-only": true,
+        "security": [],
+        "x-owner-module": "demo-simulator"
+      }
+    },
+    "/demo/api/v1/cases": {
+      "get": {
+        "operationId": "proposed_get_demo_api_v1_cases",
+        "summary": "Дела имитатора",
+        "description": "Согласованное расширение G07. Спецификация для реализации; см. главу интерфейсов. Маршрут существует только в demo-профиле на loopback/изолированном стенде с синтетикой. Вне профиля 404. Проверять точный Origin и JSON Content-Type для login; для операторских изменений — отдельные cookie и CSRF. Представитель не является оператором.",
+        "tags": [
+          "demo"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Проектный успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DemoCaseList"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "400": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "401": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "403": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "404": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "409": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "422": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "428": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "429": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "503": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "500": {
+            "description": "Безопасная ошибка",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          }
+        },
+        "x-demo-only": true,
+        "security": [
+          {
+            "DemoOperatorCookie": []
+          }
+        ],
+        "x-owner-module": "demo-simulator"
+      }
+    },
+    "/demo/api/v1/cases/{applicationId}/actions": {
+      "post": {
+        "operationId": "proposed_post_demo_api_v1_cases_applicationId_actions",
+        "summary": "Применить допустимую команду имитатора",
+        "description": "Согласованное расширение G07. Спецификация для реализации; см. главу интерфейсов. Маршрут существует только в demo-профиле на loopback/изолированном стенде с синтетикой. Вне профиля 404. Проверять точный Origin и JSON Content-Type для login; для операторских изменений — отдельные cookie и CSRF. Представитель не является оператором.",
+        "tags": [
+          "demo"
+        ],
+        "parameters": [
+          {
+            "name": "applicationId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Проектный успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DemoCase"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "400": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "401": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "403": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "404": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "409": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "422": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "428": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "429": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "503": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "500": {
+            "description": "Безопасная ошибка",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DemoAction"
+              }
+            }
+          }
+        },
+        "x-demo-only": true,
+        "security": [
+          {
+            "DemoOperatorCookie": []
+          }
+        ],
+        "x-owner-module": "demo-simulator"
+      }
+    },
+    "/demo/api/v1/reset": {
+      "post": {
+        "operationId": "proposed_post_demo_api_v1_reset",
+        "summary": "Вернуть начальный синтетический набор",
+        "description": "Согласованное расширение G07. Спецификация для реализации; см. главу интерфейсов. Маршрут существует только в demo-профиле на loopback/изолированном стенде с синтетикой. Вне профиля 404. Проверять точный Origin и JSON Content-Type для login; для операторских изменений — отдельные cookie и CSRF. Представитель не является оператором.",
+        "tags": [
+          "demo"
+        ],
+        "parameters": [
+          {
+            "name": "X-CSRF-Token",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Проектный успешный ответ",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "400": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "401": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "403": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "404": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "409": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "422": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "428": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "429": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "503": {
+            "description": "Безопасная ошибка; семантика главы 5",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          },
+          "500": {
+            "description": "Безопасная ошибка",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "no-store"
+              }
+            }
+          }
+        },
+        "x-demo-only": true,
+        "security": [
+          {
+            "DemoOperatorCookie": []
+          }
+        ],
+        "x-owner-module": "demo-simulator"
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "SessionCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "credit_session"
+      },
+      "UploadGrant": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Upload-Grant"
+      },
+      "DownloadGrant": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Download-Grant"
+      },
+      "DemoOperatorCookie": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "credit_demo_operator"
+      }
+    },
+    "schemas": {
+      "Money": {
+        "type": "object",
+        "properties": {
+          "amountMinor": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "RUB"
+            ]
+          }
+        },
+        "required": [
+          "amountMinor",
+          "currency"
+        ],
+        "additionalProperties": false,
+        "description": "Целые minor units; RUB - копейки. Предел безопасного целого JSON. Расчёты Java: BigDecimal, явное округление."
+      },
+      "FieldError": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "field",
+          "message"
+        ],
+        "additionalProperties": false
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Стабильный прикладной код, например DRAFT_VERSION_CONFLICT, OFFER_CHANGED, CONSENT_REQUIRED, BANK_UNAVAILABLE."
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "correlationId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "fieldErrors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldError"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "correlationId"
+        ],
+        "additionalProperties": false
+      },
+      "Company": {
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "taxId": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 100
+          },
+          "sourceUpdatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "companyId",
+          "displayName",
+          "roles"
+        ],
+        "additionalProperties": false
+      },
+      "Session": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "csrfToken": {
+            "type": "string"
+          },
+          "contextVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "userId",
+          "expiresAt",
+          "csrfToken",
+          "contextVersion"
+        ],
+        "additionalProperties": false,
+        "description": "Выбранная компания общая для вкладок одной cookie-сессии. contextVersion меняется при смене компании/входе; устаревший X-Company-Context отклоняется до бизнес-эффекта. CSRF обновляется при ротации сессии."
+      },
+      "SelectCompany": {
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          }
+        },
+        "required": [
+          "companyId"
+        ],
+        "additionalProperties": false
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "name": {
+            "type": "string"
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "minAmount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "maxAmount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "minMonths": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "maxMonths": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "preliminaryDisclosure": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "productId",
+          "version",
+          "name",
+          "preliminaryDisclosure"
+        ],
+        "additionalProperties": false
+      },
+      "Need": {
+        "type": "object",
+        "properties": {
+          "purpose": {
+            "type": "string"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "termMonths": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "urgency": {
+            "type": "string",
+            "enum": [
+              "NORMAL",
+              "URGENT"
+            ]
+          }
+        },
+        "required": [
+          "purpose",
+          "amount",
+          "termMonths"
+        ],
+        "additionalProperties": false
+      },
+      "RecommendationInput": {
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "need": {
+            "$ref": "#/components/schemas/Need"
+          }
+        },
+        "required": [
+          "companyId",
+          "need"
+        ],
+        "additionalProperties": false
+      },
+      "Recommendation": {
+        "type": "object",
+        "properties": {
+          "product": {
+            "$ref": "#/components/schemas/Product"
+          },
+          "explanation": {
+            "type": "string"
+          },
+          "ruleVersion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "product",
+          "explanation",
+          "ruleVersion"
+        ],
+        "additionalProperties": false
+      },
+      "CreateApplication": {
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "productId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "productVersion": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "need": {
+            "$ref": "#/components/schemas/Need"
+          }
+        },
+        "required": [
+          "companyId",
+          "productId",
+          "productVersion",
+          "need"
+        ],
+        "additionalProperties": false
+      },
+      "Business": {
+        "type": "object",
+        "properties": {
+          "annualRevenue": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "annualExpenses": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "currentDebt": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "businessAgeMonths": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "activityDescription": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "sourceConfirmationVersion": {
+            "type": "string"
+          }
+        },
+        "description": "Минимальный пример синтетического продукта; Промышленные поля определяются продуктом и банковской системой рассмотрения.",
+        "additionalProperties": false
+      },
+      "DraftPatch": {
+        "type": "object",
+        "properties": {
+          "purpose": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "termMonths": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "business": {
+            "$ref": "#/components/schemas/Business"
+          },
+          "clearFields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "business.annualRevenue",
+                "business.annualExpenses",
+                "business.currentDebt",
+                "business.businessAgeMonths",
+                "business.activityDescription",
+                "business.sourceConfirmationVersion"
+              ]
+            },
+            "minItems": 1,
+            "maxItems": 100
+          }
+        },
+        "additionalProperties": false,
+        "minProperties": 1,
+        "description": "Частичное обновление: отсутствующее поле не меняется; business сливается по полям. clearFields явно удаляет только разрешённые необязательные поля. Одновременная запись и очистка того же пути: 422 PATCH_FIELD_CONFLICT. Обязательные цель, сумма и срок не очищаются. confirmedExtractionIds устанавливаются только сервером через confirm-extraction."
+      },
+      "Application": {
+        "type": "object",
+        "properties": {
+          "applicationId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "companyId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "productId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "productVersion": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "SUBMITTED",
+              "REVIEW",
+              "MANUAL",
+              "NEEDS_INFO",
+              "APPROVED",
+              "ALTERNATIVE",
+              "DECLINED",
+              "ACCEPTED",
+              "COMPLETED",
+              "CANCELLED",
+              "EXPIRED"
+            ]
+          },
+          "terms": {
+            "$ref": "#/components/schemas/DraftPatch"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "confirmedExtractionIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "minItems": 0,
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "applicationId",
+          "companyId",
+          "version",
+          "status",
+          "updatedAt",
+          "productId",
+          "productVersion",
+          "terms"
+        ],
+        "additionalProperties": false,
+        "description": "version и ETag принадлежат редактируемым данным заявки. Банковский статус собирается через workspace; его изменение не разрешает правку снимка. После SUBMITTED PATCH и подтверждение OCR исходной анкеты запрещены."
+      },
+      "Submit": {
+        "type": "object",
+        "properties": {
+          "expectedVersion": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "consentRecordIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Непрозрачный идентификатор; без прямых ПДн"
+            },
+            "maxItems": 100
+          },
+          "documentIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Непрозрачный идентификатор; без прямых ПДн"
+            },
+            "maxItems": 100,
+            "uniqueItems": true
+          },
+          "documentReferences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocumentReference"
+            },
+            "maxItems": 100,
+            "uniqueItems": true
+          },
+          "requirementsVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "expectedVersion",
+          "consentRecordIds",
+          "documentIds",
+          "documentReferences",
+          "requirementsVersion"
+        ],
+        "additionalProperties": false,
+        "description": "Точные documentReferences обязательны; множество documentIds должно совпадать без дублей. Сервер проверяет компанию, заявку, актуальную версию требований и CLEAN-байты; версии закрепляются в неизменяемом пакете. Несовпадение: 422 DOCUMENT_REFERENCES_MISMATCH, изменённые требования: 409 DOCUMENT_REQUIREMENTS_CHANGED."
+      },
+      "CommandReceipt": {
+        "type": "object",
+        "properties": {
+          "operationId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "applicationId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "acceptedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "statusUrl": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "operationId",
+          "acceptedAt",
+          "statusUrl"
+        ],
+        "additionalProperties": false
+      },
+      "NextAction": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "CONTINUE",
+              "PROVIDE_INFORMATION",
+              "VIEW_OFFER",
+              "WAIT",
+              "VIEW_RESULT"
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "targetPath": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "label"
+        ],
+        "additionalProperties": false
+      },
+      "StatusEvent": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "label": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "eventId",
+          "occurredAt",
+          "label"
+        ],
+        "additionalProperties": false
+      },
+      "StatusView": {
+        "type": "object",
+        "properties": {
+          "applicationId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "SUBMITTED",
+              "REVIEW",
+              "MANUAL",
+              "NEEDS_INFO",
+              "APPROVED",
+              "ALTERNATIVE",
+              "DECLINED",
+              "ACCEPTED",
+              "COMPLETED",
+              "CANCELLED",
+              "EXPIRED"
+            ]
+          },
+          "viewVersion": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "sourceVersion": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "stale": {
+            "type": "boolean"
+          },
+          "nextAction": {
+            "$ref": "#/components/schemas/NextAction"
+          },
+          "history": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StatusEvent"
+            },
+            "maxItems": 100
+          },
+          "streamCursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "caseVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "applicationId",
+          "status",
+          "viewVersion",
+          "updatedAt",
+          "stale",
+          "nextAction",
+          "streamCursor"
+        ],
+        "additionalProperties": false,
+        "description": "sourceVersion сохранён для совместимости и означает caseVersion. viewVersion - другая последовательность. История ограничена; длительная история читается страницами."
+      },
+      "ConsentInput": {
+        "type": "object",
+        "properties": {
+          "applicationId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "subjectId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "textVersion": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "applicationId",
+          "subjectId",
+          "purpose",
+          "textVersion"
+        ],
+        "additionalProperties": false
+      },
+      "ConsentRecord": {
+        "type": "object",
+        "properties": {
+          "consentId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "subjectId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "textVersion": {
+            "type": "string"
+          },
+          "recordedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "GIVEN",
+              "REVOKED",
+              "EXPIRED"
+            ]
+          }
+        },
+        "required": [
+          "consentId",
+          "subjectId",
+          "purpose",
+          "textVersion",
+          "recordedAt",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "UploadInput": {
+        "type": "object",
+        "properties": {
+          "fileName": {
+            "type": "string"
+          },
+          "declaredMimeType": {
+            "type": "string",
+            "enum": [
+              "application/pdf",
+              "image/jpeg",
+              "image/png"
+            ]
+          },
+          "sizeBytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10485760
+          },
+          "documentType": {
+            "type": "string"
+          },
+          "requestId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "requirementId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "requirementsVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "replacesDocumentId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "expectedDocumentVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "requestVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "fileName",
+          "declaredMimeType",
+          "sizeBytes",
+          "documentType",
+          "requirementId",
+          "requirementsVersion"
+        ],
+        "additionalProperties": false,
+        "description": "Для RFI requestId и requestVersion передаются парой. Замена replacesDocumentId/expectedDocumentVersion также парная. Новый documentId, первоначальные байты и ссылки снимка неизменны. requirementsVersion обязателен. После отправки загрузка допустима только для открытого RFI и запрошенного requirementId.",
+        "oneOf": [
+          {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "replacesDocumentId"
+                  ]
+                },
+                {
+                  "required": [
+                    "expectedDocumentVersion"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "required": [
+              "replacesDocumentId",
+              "expectedDocumentVersion"
+            ]
+          }
+        ],
+        "allOf": [
+          {
+            "oneOf": [
+              {
+                "not": {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "requestId"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "requestVersion"
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "required": [
+                  "requestId",
+                  "requestVersion"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "UploadIntent": {
+        "type": "object",
+        "properties": {
+          "uploadId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "documentId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "uploadUrl": {
+            "type": "string"
+          },
+          "grant": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "maxBytes": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "uploadId",
+          "documentId",
+          "uploadUrl",
+          "grant",
+          "expiresAt",
+          "maxBytes"
+        ],
+        "description": "URL файлового шлюза того же origin; scoped grant передаётся X-Upload-Grant, не query. Начальный срок 10 минут, проверка размера и байтов на шлюзе.",
+        "additionalProperties": false
+      },
+      "Document": {
+        "type": "object",
+        "properties": {
+          "documentId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "applicationId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "description": "Версия метаданных и ETag; изменяется при изменении состояния. documentVersion в ссылке фиксирует наблюдённую версию; неизменные байты определяет objectVersion. Извлечение хранит версию источника при старте; актуальность подтверждается по objectVersion и extractionId.",
+            "maximum": 9007199254740991
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "scanState": {
+            "type": "string",
+            "enum": [
+              "UPLOADING",
+              "QUARANTINED",
+              "CLEAN",
+              "REJECTED",
+              "DELETED"
+            ]
+          },
+          "extractionState": {
+            "type": "string",
+            "enum": [
+              "NOT_REQUESTED",
+              "PENDING",
+              "READY",
+              "FAILED",
+              "CONFIRMED"
+            ]
+          },
+          "extractionId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "companyId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "objectVersion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "sizeBytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10485760
+          },
+          "contentType": {
+            "type": "string",
+            "enum": [
+              "application/pdf",
+              "image/jpeg",
+              "image/png"
+            ]
+          },
+          "requirementId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "replacesDocumentId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "documentId",
+          "applicationId",
+          "version",
+          "scanState",
+          "extractionState",
+          "companyId",
+          "requirementId"
+        ],
+        "additionalProperties": false,
+        "description": "Замена создаёт новый documentId; пока новая запись не CLEAN, старый документ остаётся действующим. Финализация загрузки и отмена сравнивают одну upload-state/version атомарно. Отменённый transfer не финализируется; осиротевшие байты удаляются сверкой."
+      },
+      "ExtractionField": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "page": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "name",
+          "value",
+          "confidence"
+        ],
+        "additionalProperties": false
+      },
+      "Extraction": {
+        "type": "object",
+        "properties": {
+          "extractionId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "documentId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "documentVersion": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExtractionField"
+            },
+            "maxItems": 100
+          },
+          "modelVersion": {
+            "type": "string"
+          },
+          "objectVersion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "extractionId",
+          "documentId",
+          "documentVersion",
+          "fields",
+          "modelVersion",
+          "objectVersion"
+        ],
+        "additionalProperties": false
+      },
+      "ConfirmExtraction": {
+        "type": "object",
+        "properties": {
+          "extractionId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "documentVersion": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "confirmedFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConfirmedField"
+            },
+            "minItems": 1,
+            "maxItems": 100
+          },
+          "objectVersion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "extractionId",
+          "documentVersion",
+          "confirmedFields",
+          "objectVersion"
+        ],
+        "additionalProperties": false,
+        "description": "If-Match защищает целевой черновик. Проверить принадлежность extractionId, неизменяемый objectVersion и версию источника documentVersion. Клиент не задаёт confidence/page/modelVersion. Исправленные человеком значения сохраняются с происхождением USER_CONFIRMED. Имя поля отображается в allowlist бизнес-полей; повтор не добавляет подтверждение дважды."
+      },
+      "DownloadIntent": {
+        "type": "object",
+        "properties": {
+          "downloadUrl": {
+            "type": "string"
+          },
+          "grant": {
+            "type": "string"
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "downloadUrl",
+          "grant",
+          "expiresAt"
+        ],
+        "additionalProperties": false,
+        "description": "Короткое разрешение на точную CLEAN-версию. Полномочия проверяются при выдаче и открытии; не публиковать бессрочную прямую ссылку на S3."
+      },
+      "InformationItem": {
+        "type": "object",
+        "properties": {
+          "itemId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "FIELD",
+              "DOCUMENT",
+              "EXPLANATION"
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "fieldPath": {
+            "type": "string",
+            "enum": [
+              "purpose",
+              "amount",
+              "termMonths",
+              "business.annualRevenue",
+              "business.annualExpenses",
+              "business.currentDebt",
+              "business.businessAgeMonths",
+              "business.activityDescription",
+              "business.sourceConfirmationVersion"
+            ]
+          },
+          "requirementId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "itemId",
+          "kind",
+          "label",
+          "required"
+        ],
+        "additionalProperties": false,
+        "oneOf": [
+          {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "FIELD"
+                ]
+              }
+            },
+            "required": [
+              "fieldPath"
+            ],
+            "not": {
+              "required": [
+                "requirementId"
+              ]
+            }
+          },
+          {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "DOCUMENT"
+                ]
+              }
+            },
+            "required": [
+              "requirementId"
+            ],
+            "not": {
+              "required": [
+                "fieldPath"
+              ]
+            }
+          },
+          {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "EXPLANATION"
+                ]
+              }
+            },
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "fieldPath"
+                  ]
+                },
+                {
+                  "required": [
+                    "requirementId"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "InformationRequest": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InformationItem"
+            },
+            "maxItems": 100
+          },
+          "deadline": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "RESPONDED",
+              "CLOSED",
+              "EXPIRED"
+            ]
+          }
+        },
+        "required": [
+          "requestId",
+          "version",
+          "items",
+          "status"
+        ],
+        "additionalProperties": false,
+        "description": "Пункты FIELD адресуют разрешённый fieldPath, DOCUMENT — requirementId. Банк задаёт допустимые изменения; сервер отклоняет amendment с незапрошенными полями. Одновременно открыт не более один запрос на заявку в MVP."
+      },
+      "InformationResponse": {
+        "type": "object",
+        "properties": {
+          "requestVersion": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "amendment": {
+            "$ref": "#/components/schemas/DraftPatch"
+          },
+          "documentIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Непрозрачный идентификатор; без прямых ПДн"
+            },
+            "maxItems": 100,
+            "uniqueItems": true
+          },
+          "explanation": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "documentReferences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocumentReference"
+            },
+            "maxItems": 100,
+            "uniqueItems": true
+          },
+          "requirementsVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "draftVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "requestVersion",
+          "documentIds",
+          "documentReferences",
+          "requirementsVersion",
+          "draftVersion"
+        ],
+        "additionalProperties": false,
+        "description": "Точные documentReferences обязательны; множество documentIds должно совпадать без дублей. Сервер проверяет компанию, заявку, актуальную версию требований и CLEAN-байты; версии закрепляются в неизменяемом пакете. Несовпадение: 422 DOCUMENT_REFERENCES_MISMATCH, изменённые требования: 409 DOCUMENT_REQUIREMENTS_CHANGED. draftVersion проверяется атомарно с переводом черновика ответа в отправленный; requestVersion относится к запросу банка. Ответ строится из сохранённого черновика, переданные поля должны совпадать с ним; иначе 409 INFORMATION_DRAFT_CONFLICT."
+      },
+      "Decision": {
+        "type": "object",
+        "properties": {
+          "decisionId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "caseVersion": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "APPROVED",
+              "ALTERNATIVE",
+              "NEEDS_INFO",
+              "DECLINED"
+            ]
+          },
+          "publicExplanation": {
+            "type": "string"
+          },
+          "offerIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Непрозрачный идентификатор; без прямых ПДн"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "decisionId",
+          "caseVersion",
+          "outcome",
+          "publicExplanation"
+        ],
+        "additionalProperties": false
+      },
+      "Offer": {
+        "type": "object",
+        "properties": {
+          "offerId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "applicationId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "AVAILABLE",
+              "ACCEPTED",
+              "EXPIRED",
+              "WITHDRAWN"
+            ]
+          },
+          "amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "termMonths": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "termsDisclosure": {
+            "type": "string"
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "documentIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Непрозрачный идентификатор; без прямых ПДн"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "offerId",
+          "applicationId",
+          "version",
+          "status",
+          "amount",
+          "termMonths",
+          "termsDisclosure",
+          "validUntil"
+        ],
+        "additionalProperties": false
+      },
+      "AcceptOffer": {
+        "type": "object",
+        "properties": {
+          "offerVersion": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "offerVersion"
+        ],
+        "additionalProperties": false
+      },
+      "Withdrawal": {
+        "type": "object",
+        "properties": {
+          "expectedVersion": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "reason": {
+            "type": "string"
+          },
+          "expectedCaseVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "expectedVersion"
+        ],
+        "additionalProperties": false,
+        "description": "expectedVersion — Application.version. Если банковское дело известно, expectedCaseVersion из StatusView обязателен и сверяется сервером. При SUBMITTED без caseId journey сначала завершает/сверяет создание дела, затем отзывает его. Не отправлять отзыв с выдуманной caseVersion и не показывать CANCELLED до подтверждения."
+      },
+      "Operation": {
+        "type": "object",
+        "properties": {
+          "operationId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "SUCCEEDED",
+              "FAILED",
+              "RECONCILING"
+            ]
+          },
+          "applicationId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "safeMessage": {
+            "type": "string"
+          },
+          "operationType": {
+            "type": "string",
+            "enum": [
+              "SUBMIT",
+              "RESPOND",
+              "WITHDRAW",
+              "ACCEPT"
+            ]
+          },
+          "resultCode": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "retryAfterSeconds": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 300
+          },
+          "resourceId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "companyId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "operationId",
+          "status",
+          "updatedAt",
+          "applicationId",
+          "operationType",
+          "resourceId",
+          "companyId",
+          "createdAt"
+        ],
+        "additionalProperties": false,
+        "description": "Внешний банковский ключ остаётся в integration. PENDING/RECONCILING — исход не установлен, FAILED — известный неуспех. SUCCEEDED означает подтверждение именно команды, а не завершение кредита. Для RESPOND resourceId=requestId; ACCEPT=offerId; SUBMIT/WITHDRAW=applicationId. Чтение ограничено actor+company."
+      },
+      "FeedCard": {
+        "type": "object",
+        "properties": {
+          "contentId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "title": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "publishedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "reasonCategory": {
+            "type": "string"
+          },
+          "targetPath": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "contentId",
+          "title",
+          "summary",
+          "targetPath"
+        ],
+        "additionalProperties": false
+      },
+      "Feed": {
+        "type": "object",
+        "properties": {
+          "nextAction": {
+            "$ref": "#/components/schemas/NextAction"
+          },
+          "cards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FeedCard"
+            },
+            "maxItems": 100
+          },
+          "rankingMode": {
+            "type": "string",
+            "enum": [
+              "MODEL",
+              "RULES"
+            ]
+          }
+        },
+        "required": [
+          "cards",
+          "rankingMode"
+        ],
+        "additionalProperties": false
+      },
+      "InboxItem": {
+        "type": "object",
+        "properties": {
+          "notificationId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "applicationId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "title": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "read": {
+            "type": "boolean"
+          },
+          "targetPath": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "notificationId",
+          "title",
+          "createdAt",
+          "read",
+          "targetPath"
+        ],
+        "additionalProperties": false
+      },
+      "ConsentRequirement": {
+        "type": "object",
+        "properties": {
+          "purpose": {
+            "type": "string"
+          },
+          "subjectId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "textVersion": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "requiredForOperation": {
+            "type": "boolean"
+          },
+          "actorMayConsent": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "purpose",
+          "subjectId",
+          "textVersion",
+          "text",
+          "requiredForOperation",
+          "actorMayConsent"
+        ],
+        "additionalProperties": false
+      },
+      "ConsentRequirementList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConsentRequirement"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "ContentArticle": {
+        "type": "object",
+        "properties": {
+          "contentId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "title": {
+            "type": "string"
+          },
+          "bodyText": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "publishedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "contentId",
+          "version",
+          "title",
+          "bodyText",
+          "publishedAt"
+        ],
+        "additionalProperties": false
+      },
+      "Feedback": {
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "applicationId": {
+            "type": "string",
+            "description": "Непрозрачный идентификатор; без прямых ПДн"
+          },
+          "screenId": {
+            "type": "string"
+          },
+          "questionId": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          }
+        },
+        "required": [
+          "companyId",
+          "screenId",
+          "questionId",
+          "rating"
+        ],
+        "additionalProperties": false
+      },
+      "DocumentList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Document"
+            },
+            "maxItems": 100
+          },
+          "nextCursor": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "CompanyList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Company"
+            },
+            "maxItems": 100
+          },
+          "nextCursor": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "ProductList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            },
+            "maxItems": 100
+          },
+          "nextCursor": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "ApplicationList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Application"
+            },
+            "maxItems": 100
+          },
+          "nextCursor": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "ConsentList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConsentRecord"
+            },
+            "maxItems": 100
+          },
+          "nextCursor": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "InformationRequestList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InformationRequest"
+            },
+            "maxItems": 100
+          },
+          "nextCursor": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "InboxList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InboxItem"
+            },
+            "maxItems": 100
+          },
+          "nextCursor": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "RecommendationList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Recommendation"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "DocumentReference": {
+        "type": "object",
+        "properties": {
+          "documentId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "documentVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "objectVersion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "documentId",
+          "documentVersion",
+          "objectVersion"
+        ],
+        "additionalProperties": false
+      },
+      "ClientStreamMessage": {
+        "type": "object",
+        "properties": {
+          "eventType": {
+            "type": "string",
+            "enum": [
+              "view_changed",
+              "resync_required"
+            ]
+          },
+          "resourceId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "viewVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "cursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "resourceType": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "enum": [
+              "APPLICATION",
+              "DOCUMENT",
+              "OPERATION",
+              "INBOX",
+              "FEED"
+            ]
+          },
+          "companyId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "contextVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "eventType",
+          "cursor",
+          "companyId",
+          "contextVersion"
+        ],
+        "additionalProperties": false,
+        "oneOf": [
+          {
+            "properties": {
+              "eventType": {
+                "enum": [
+                  "view_changed"
+                ]
+              }
+            },
+            "required": [
+              "resourceType",
+              "resourceId",
+              "viewVersion"
+            ]
+          },
+          {
+            "properties": {
+              "eventType": {
+                "enum": [
+                  "resync_required"
+                ]
+              }
+            }
+          }
+        ],
+        "description": "viewVersion монотонна в пределах resourceType+resourceId и не сравнивается с ETag/caseVersion/document.version. Событие лишь инвалидирует чтение. Все изменения, включая документы и операции, имеют долговечный сигнал через outbox → workspace. Запоздалый сигнал остаётся безопасным."
+      },
+      "StreamSnapshot": {
+        "type": "object",
+        "properties": {
+          "cursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "generatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "applications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StatusView"
+            },
+            "maxItems": 100
+          },
+          "companyId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "contextVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "complete": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          }
+        },
+        "required": [
+          "cursor",
+          "generatedAt",
+          "applications",
+          "companyId",
+          "contextVersion",
+          "complete"
+        ],
+        "additionalProperties": false,
+        "description": "Курсор — барьер подписки; applications — не более 100 предварительных статусов, не полный список компании. complete всегда false. После получения курсора перечитать все активные ресурсы (включая документы, операции, inbox/feed), затем подписаться с этого курсора. События между чтениями воспроизводятся; повторы безопасны. Полные списки читаются штатной пагинацией."
+      },
+      "DemoAccount": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "displayName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "accountId",
+          "displayName"
+        ],
+        "additionalProperties": false
+      },
+      "DemoAccountList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DemoAccount"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "DemoLogin": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "accountId"
+        ],
+        "additionalProperties": false
+      },
+      "InformationDraft": {
+        "type": "object",
+        "properties": {
+          "requestVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "draftVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "amendment": {
+            "$ref": "#/components/schemas/DraftPatch"
+          },
+          "documentReferences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocumentReference"
+            },
+            "maxItems": 100
+          },
+          "explanation": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "requirementsVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "requestVersion",
+          "draftVersion",
+          "documentReferences",
+          "requirementsVersion"
+        ],
+        "additionalProperties": false
+      },
+      "InformationDraftPatch": {
+        "type": "object",
+        "properties": {
+          "requestVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "amendment": {
+            "$ref": "#/components/schemas/DraftPatch"
+          },
+          "documentReferences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocumentReference"
+            },
+            "maxItems": 100
+          },
+          "explanation": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "requirementsVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "requestVersion",
+          "requirementsVersion"
+        ],
+        "additionalProperties": false
+      },
+      "DocumentRequirement": {
+        "type": "object",
+        "properties": {
+          "requirementId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "required": {
+            "type": "boolean"
+          },
+          "allowedContentTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "enum": [
+                "application/pdf",
+                "image/jpeg",
+                "image/png"
+              ]
+            },
+            "maxItems": 100
+          },
+          "maxBytes": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10485760
+          },
+          "maxPagesForExtraction": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20
+          }
+        },
+        "required": [
+          "requirementId",
+          "title",
+          "reason",
+          "required",
+          "allowedContentTypes",
+          "maxBytes",
+          "maxPagesForExtraction"
+        ],
+        "additionalProperties": false
+      },
+      "DocumentRequirements": {
+        "type": "object",
+        "properties": {
+          "requirementsVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DocumentRequirement"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "requirementsVersion",
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "Capability": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "enum": [
+              "CREATE_APPLICATION",
+              "EDIT_DRAFT",
+              "UPLOAD_DOCUMENT",
+              "SUBMIT",
+              "RESPOND",
+              "WITHDRAW",
+              "ACCEPT_OFFER",
+              "DOWNLOAD_DOCUMENT"
+            ]
+          },
+          "allowed": {
+            "type": "boolean"
+          },
+          "safeReason": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "action",
+          "allowed"
+        ],
+        "additionalProperties": false
+      },
+      "Capabilities": {
+        "type": "object",
+        "properties": {
+          "resourceVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Capability"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "resourceVersion",
+          "actions"
+        ],
+        "additionalProperties": false
+      },
+      "DemoCase": {
+        "type": "object",
+        "properties": {
+          "applicationId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "companyId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "caseVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "status": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "enum": [
+              "DRAFT",
+              "SUBMITTED",
+              "REVIEW",
+              "MANUAL",
+              "NEEDS_INFO",
+              "APPROVED",
+              "ALTERNATIVE",
+              "DECLINED",
+              "ACCEPTED",
+              "COMPLETED",
+              "CANCELLED",
+              "EXPIRED"
+            ]
+          }
+        },
+        "required": [
+          "applicationId",
+          "companyId",
+          "caseVersion",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "DemoCaseList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DemoCase"
+            },
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "DemoAction": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "enum": [
+              "REQUEST_INFORMATION",
+              "MANUAL_REVIEW",
+              "APPROVE",
+              "ALTERNATIVE",
+              "DECLINE",
+              "EXPIRE_OFFER",
+              "COMPLETE"
+            ]
+          },
+          "expectedCaseVersion": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "clientMessage": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "internalReason": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InformationItem"
+            },
+            "maxItems": 100,
+            "minItems": 1
+          },
+          "offerTerms": {
+            "$ref": "#/components/schemas/DemoOfferTerms"
+          }
+        },
+        "required": [
+          "action",
+          "expectedCaseVersion",
+          "clientMessage",
+          "internalReason"
+        ],
+        "additionalProperties": false,
+        "oneOf": [
+          {
+            "properties": {
+              "action": {
+                "enum": [
+                  "REQUEST_INFORMATION"
+                ]
+              }
+            },
+            "required": [
+              "items"
+            ],
+            "not": {
+              "required": [
+                "offerTerms"
+              ]
+            }
+          },
+          {
+            "properties": {
+              "action": {
+                "enum": [
+                  "APPROVE",
+                  "ALTERNATIVE"
+                ]
+              }
+            },
+            "required": [
+              "offerTerms"
+            ],
+            "not": {
+              "required": [
+                "items"
+              ]
+            }
+          },
+          {
+            "properties": {
+              "action": {
+                "enum": [
+                  "MANUAL_REVIEW",
+                  "DECLINE",
+                  "EXPIRE_OFFER",
+                  "COMPLETE"
+                ]
+              }
+            },
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "items"
+                  ]
+                },
+                {
+                  "required": [
+                    "offerTerms"
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "description": "APPROVE/ALTERNATIVE требуют полные синтетические условия, REQUEST_INFORMATION — адресуемые items. Имитатор генерирует offerId/version; actor не задаёт их. Каждая команда проверяет expectedCaseVersion и разрешённый переход."
+      },
+      "HistoryItem": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "occurredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "enum": [
+              "DRAFT",
+              "SUBMITTED",
+              "REVIEW",
+              "MANUAL",
+              "NEEDS_INFO",
+              "APPROVED",
+              "ALTERNATIVE",
+              "DECLINED",
+              "ACCEPTED",
+              "COMPLETED",
+              "CANCELLED",
+              "EXPIRED"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "eventId",
+          "occurredAt",
+          "status",
+          "message"
+        ],
+        "additionalProperties": false
+      },
+      "HistoryPage": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HistoryItem"
+            },
+            "maxItems": 100
+          },
+          "nextCursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "OperationList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Operation"
+            },
+            "maxItems": 100
+          },
+          "nextCursor": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false
+      },
+      "ConfirmedField": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "value": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "name",
+          "value"
+        ],
+        "additionalProperties": false
+      },
+      "DemoOfferTerms": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Money"
+          },
+          "termMonths": {
+            "type": "integer",
+            "format": "int64",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "termsDisclosure": {
+            "type": "string"
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "amount",
+          "termMonths",
+          "termsDisclosure",
+          "validUntil"
+        ],
+        "additionalProperties": false
+      },
+      "DemoOperatorSession": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "DEMO_OPERATOR"
+            ]
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "csrfToken": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "userId",
+          "role",
+          "expiresAt",
+          "csrfToken"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

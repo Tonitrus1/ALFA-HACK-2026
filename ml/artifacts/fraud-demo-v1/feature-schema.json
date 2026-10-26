@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "features": [
+    "delta_totalAssetsMinor",
+    "abs_delta_totalAssetsMinor",
+    "delta_currentAssetsMinor",
+    "abs_delta_currentAssetsMinor",
+    "delta_totalLiabilitiesMinor",
+    "abs_delta_totalLiabilitiesMinor",
+    "delta_currentLiabilitiesMinor",
+    "abs_delta_currentLiabilitiesMinor",
+    "delta_equityMinor",
+    "abs_delta_equityMinor",
+    "delta_revenueMinor",
+    "abs_delta_revenueMinor",
+    "delta_netProfitMinor",
+    "abs_delta_netProfitMinor",
+    "delta_ebitMinor",
+    "abs_delta_ebitMinor"
+  ],
+  "normalization": "(declared-reference)/max(abs(reference),100 minor units)",
+  "forbidden": [
+    "companyId",
+    "target",
+    "family",
+    "target_12m",
+    "split",
+    "true_probability_synthetic"
+  ]
+}

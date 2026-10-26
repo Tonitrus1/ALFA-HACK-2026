@@ -1,0 +1,124 @@
+[
+  {
+    "id": 1,
+    "question": "Для чего нужен Демо Оборотный?",
+    "expected": "Демо Оборотный",
+    "follow_up": false
+  },
+  {
+    "id": 2,
+    "question": "Какая синтетическая ставка у Демо Оборотного?",
+    "expected": "Демо Оборотный",
+    "follow_up": false
+  },
+  {
+    "id": 3,
+    "question": "Какие суммы у Демо Оборудования?",
+    "expected": "Демо Оборудование",
+    "follow_up": false
+  },
+  {
+    "id": 4,
+    "question": "Какие документы нужны для Демо Оборудования?",
+    "expected": "Демо Оборудование",
+    "follow_up": false
+  },
+  {
+    "id": 5,
+    "question": "Демо Овердрафт помогает при кассовом разрыве?",
+    "expected": "Демо Овердрафт",
+    "follow_up": false
+  },
+  {
+    "id": 6,
+    "question": "Какая длительность у Демо Овердрафта?",
+    "expected": "Демо Овердрафт",
+    "follow_up": false
+  },
+  {
+    "id": 7,
+    "question": "Какие этапы проходит заявка?",
+    "expected": "Этапы заявки",
+    "follow_up": false
+  },
+  {
+    "id": 8,
+    "question": "Что означает DOCUMENTS_REQUIRED?",
+    "expected": "Статус DOCUMENTS_REQUIRED",
+    "follow_up": false
+  },
+  {
+    "id": 9,
+    "question": "Что делать при UNDER_REVIEW?",
+    "expected": "Статус UNDER_REVIEW",
+    "follow_up": false
+  },
+  {
+    "id": 10,
+    "question": "APPROVED - это настоящее одобрение банка?",
+    "expected": "Статусы APPROVED",
+    "follow_up": false
+  },
+  {
+    "id": 11,
+    "question": "Что означает DECLINED?",
+    "expected": "Статусы APPROVED",
+    "follow_up": false
+  },
+  {
+    "id": 12,
+    "question": "Какие документы компании можно использовать в демо?",
+    "expected": "Документы компании",
+    "follow_up": false
+  },
+  {
+    "id": 13,
+    "question": "Как выбрать финансирование для оборудования и оборотных средств?",
+    "expected": "Выбор финансирования",
+    "follow_up": false
+  },
+  {
+    "id": 14,
+    "question": "Как рассчитывается аннуитет при нулевой ставке?",
+    "expected": "Расчёт аннуитета",
+    "follow_up": false
+  },
+  {
+    "id": 15,
+    "question": "Кто может расширить доступ к заявке другой компании?",
+    "expected": "Безопасность и доступ",
+    "follow_up": false
+  },
+  {
+    "id": 16,
+    "question": "Как сохранить прочитанный веб-источник?",
+    "expected": "Веб-источники",
+    "follow_up": false
+  },
+  {
+    "id": 17,
+    "question": "Какой курс евро будет завтра?",
+    "expected": null,
+    "follow_up": false
+  },
+  {
+    "id": 18,
+    "question": "Какой пароль от банковской системы?",
+    "expected": null,
+    "follow_up": false
+  },
+  {
+    "id": 19,
+    "question": "Какая у него ставка?",
+    "expected": "Демо Овердрафт",
+    "follow_up": true,
+    "previous_question": "Расскажи про Демо Овердрафт"
+  },
+  {
+    "id": 20,
+    "question": "А какие документы нужны для него?",
+    "expected": "Демо Оборудование",
+    "follow_up": true,
+    "previous_question": "Расскажи про Демо Оборудование"
+  }
+]

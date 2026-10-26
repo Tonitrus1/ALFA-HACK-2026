@@ -1,0 +1,27 @@
+{
+  "applicationId": "DEMO:2c20c0db-c513-4191-bf75-5e5151b53c1f",
+  "submissionSnapshotId": "d761f8ac-6ff3-47b9-9d58-a97451cecea5",
+  "financialSnapshotId": "d530de92-8d0c-4a83-a67e-45557b3f6edd",
+  "financialSnapshotDigest": "052f20117381f5f9f66272b65bb2ca721878c4526107a66ca8b6f97aad7040e3",
+  "financialStatementVersion": 1,
+  "asOf": "2026-10-21T09:01:17.035490+00:00",
+  "latestSourceAvailableAt": "2026-04-01T00:00:00Z",
+  "purpose": "DEMO_RESEARCH",
+  "financialStatement": {
+    "currency": "RUB",
+    "periodEnd": "2025-12-31",
+    "periodStart": "2025-01-01",
+    "reportingStandard": "DEMO",
+    "sourceDocumentReferences": [],
+    "values": {
+      "currentAssetsMinor": 1633233164,
+      "currentLiabilitiesMinor": 158120246,
+      "ebitMinor": 1062220169,
+      "equityMinor": 1373639643,
+      "netProfitMinor": 837815739,
+      "revenueMinor": 4044174564,
+      "totalAssetsMinor": 1746438733,
+      "totalLiabilitiesMinor": 372799090
+    }
+  }
+}

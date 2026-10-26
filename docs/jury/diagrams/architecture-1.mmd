@@ -1,0 +1,20 @@
+flowchart TB
+  U[Предприниматель · браузер] --> T[HTTPS · ngrok · демонстрационный сервер]
+  T --> G[Nginx · React 19 / TypeScript]
+  G -->|cookie / CSRF / JSON| B[Java 21 · Spring Boot 4.1.1]
+  B --> DB[(PostgreSQL 17 · бизнес-состояние)]
+  B --> O[(Версионированный файловый том)]
+  B --> AV[ClamAV · карантин и сканирование]
+  B --> BR[ML bridge · DTO / digest / журнал]
+  BR --> R[CatBoost Risk · baseline]
+  BR --> F[E5 Feed · MODEL / RULES]
+  BR --> MDB[(PostgreSQL · ML)]
+  R --> MDB
+  B --> A[RAG-ассистент]
+  A --> Q[(Qdrant · dense-индекс)]
+  A --> K[(SQLite · знания)]
+  A --> S[SearXNG · разрешённый веб-поиск]
+  A --> L[LLM · локальная Qwen или внешний профиль]
+  W[OCR worker · аренда EXTRACT] -->|служебный токен| B
+  W --> OCR[Tesseract rus/eng · извлечение и валидация]
+  OCR --> L

@@ -1,0 +1,1515 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.credit.bank.example/events/v1",
+  "title": "События кредитного кабинета, версия 1",
+  "description": "Минимальные ссылки без анкет, файлов и прямых персональных данных. Доступ задаётся на тему и потребителя. Каждый тип проверяет собственный payload.",
+  "$defs": {
+    "SubmissionRequested": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "eventType": {
+          "const": "SubmissionRequested"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "applicationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "causationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "submissionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "snapshotVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "snapshotRef": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "operationId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "externalRequestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          "required": [
+            "submissionId",
+            "snapshotVersion",
+            "snapshotRef",
+            "operationId",
+            "externalRequestId"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "applicationId",
+        "occurredAt",
+        "correlationId",
+        "causationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "CaseAccepted": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "eventType": {
+          "const": "CaseAccepted"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "applicationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "causationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "caseId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "caseVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "externalRequestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "clientStage": {
+              "const": "REVIEW"
+            }
+          },
+          "required": [
+            "caseId",
+            "caseVersion",
+            "externalRequestId",
+            "clientStage"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "applicationId",
+        "occurredAt",
+        "correlationId",
+        "causationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "CaseStateChanged": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "eventType": {
+          "const": "CaseStateChanged"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "applicationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "causationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "caseId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "caseVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "clientStage": {
+              "type": "string",
+              "enum": [
+                "REVIEW",
+                "MANUAL",
+                "NEEDS_INFO"
+              ]
+            }
+          },
+          "required": [
+            "caseId",
+            "caseVersion",
+            "clientStage"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "applicationId",
+        "occurredAt",
+        "correlationId",
+        "causationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "InformationRequested": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "eventType": {
+          "const": "InformationRequested"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "applicationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "causationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "caseId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "caseVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "requestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "requestVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "requestedItemIds": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "maxItems": 100
+            }
+          },
+          "required": [
+            "caseId",
+            "caseVersion",
+            "requestId",
+            "requestVersion",
+            "requestedItemIds"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "applicationId",
+        "occurredAt",
+        "correlationId",
+        "causationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "InformationResponseSubmitted": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "eventType": {
+          "const": "InformationResponseSubmitted"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "applicationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "causationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "requestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "requestVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "amendmentId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "amendmentVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "operationId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "externalRequestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          "required": [
+            "requestId",
+            "requestVersion",
+            "amendmentId",
+            "amendmentVersion",
+            "operationId",
+            "externalRequestId"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "applicationId",
+        "occurredAt",
+        "correlationId",
+        "causationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "DocumentProcessingRequested": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "eventType": {
+          "const": "DocumentProcessingRequested"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "applicationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "causationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "jobId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "documentId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "objectVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "jobType": {
+              "type": "string",
+              "enum": [
+                "SCAN",
+                "EXTRACT"
+              ]
+            }
+          },
+          "required": [
+            "jobId",
+            "documentId",
+            "objectVersion",
+            "jobType"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "applicationId",
+        "occurredAt",
+        "correlationId",
+        "causationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "DocumentScanCompleted": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "eventType": {
+          "const": "DocumentScanCompleted"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "applicationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "causationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "documentId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "objectVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "verdict": {
+              "type": "string",
+              "enum": [
+                "CLEAN",
+                "REJECTED",
+                "ERROR"
+              ]
+            },
+            "engineVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          "required": [
+            "documentId",
+            "objectVersion",
+            "verdict",
+            "engineVersion"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "applicationId",
+        "occurredAt",
+        "correlationId",
+        "causationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "DocumentExtractionReady": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "eventType": {
+          "const": "DocumentExtractionReady"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "applicationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "causationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "documentId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "objectVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "extractionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "engineVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          "required": [
+            "documentId",
+            "objectVersion",
+            "extractionId",
+            "engineVersion"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "applicationId",
+        "occurredAt",
+        "correlationId",
+        "causationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "DecisionRecorded": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "eventType": {
+          "const": "DecisionRecorded"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "applicationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "causationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "caseId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "caseVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "decisionId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "outcome": {
+              "type": "string",
+              "enum": [
+                "APPROVED",
+                "ALTERNATIVE",
+                "DECLINED"
+              ]
+            },
+            "offerIds": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "maxItems": 100
+            }
+          },
+          "required": [
+            "caseId",
+            "caseVersion",
+            "decisionId",
+            "outcome",
+            "offerIds"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "applicationId",
+        "occurredAt",
+        "correlationId",
+        "causationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "OfferAcceptanceRequested": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "eventType": {
+          "const": "OfferAcceptanceRequested"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "applicationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "causationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "offerId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "offerVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "operationId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "externalRequestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          "required": [
+            "offerId",
+            "offerVersion",
+            "operationId",
+            "externalRequestId"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "applicationId",
+        "occurredAt",
+        "correlationId",
+        "causationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "OfferAccepted": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "eventType": {
+          "const": "OfferAccepted"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "applicationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "causationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "caseId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "caseVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "offerId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "offerVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "externalRequestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          "required": [
+            "caseId",
+            "caseVersion",
+            "offerId",
+            "offerVersion",
+            "externalRequestId"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "applicationId",
+        "occurredAt",
+        "correlationId",
+        "causationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "OfferExpired": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "eventType": {
+          "const": "OfferExpired"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "applicationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "causationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "caseId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "caseVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "offerId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "offerVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": [
+            "caseId",
+            "caseVersion",
+            "offerId",
+            "offerVersion"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "applicationId",
+        "occurredAt",
+        "correlationId",
+        "causationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "WithdrawalRequested": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "eventType": {
+          "const": "WithdrawalRequested"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "applicationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "causationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "operationId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "externalRequestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "expectedCaseVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": [
+            "operationId",
+            "externalRequestId"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "applicationId",
+        "occurredAt",
+        "correlationId",
+        "causationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "ApplicationWithdrawn": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "eventType": {
+          "const": "ApplicationWithdrawn"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "applicationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "causationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "caseId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "caseVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "externalRequestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          "required": [
+            "caseId",
+            "caseVersion",
+            "externalRequestId"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "applicationId",
+        "occurredAt",
+        "correlationId",
+        "causationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "FulfillmentCompleted": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "eventType": {
+          "const": "FulfillmentCompleted"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "applicationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "causationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "caseId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "caseVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "operationId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "resultReference": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          "required": [
+            "caseId",
+            "caseVersion",
+            "operationId",
+            "resultReference"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "applicationId",
+        "occurredAt",
+        "correlationId",
+        "causationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "ConsentRevoked": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "eventType": {
+          "const": "ConsentRevoked"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "applicationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "causationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "consentId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "consentVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "effectiveAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "purpose": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            }
+          },
+          "required": [
+            "consentId",
+            "consentVersion",
+            "effectiveAt",
+            "purpose"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "applicationId",
+        "occurredAt",
+        "correlationId",
+        "causationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/SubmissionRequested"
+    },
+    {
+      "$ref": "#/$defs/CaseAccepted"
+    },
+    {
+      "$ref": "#/$defs/CaseStateChanged"
+    },
+    {
+      "$ref": "#/$defs/InformationRequested"
+    },
+    {
+      "$ref": "#/$defs/InformationResponseSubmitted"
+    },
+    {
+      "$ref": "#/$defs/DocumentProcessingRequested"
+    },
+    {
+      "$ref": "#/$defs/DocumentScanCompleted"
+    },
+    {
+      "$ref": "#/$defs/DocumentExtractionReady"
+    },
+    {
+      "$ref": "#/$defs/DecisionRecorded"
+    },
+    {
+      "$ref": "#/$defs/OfferAcceptanceRequested"
+    },
+    {
+      "$ref": "#/$defs/OfferAccepted"
+    },
+    {
+      "$ref": "#/$defs/OfferExpired"
+    },
+    {
+      "$ref": "#/$defs/WithdrawalRequested"
+    },
+    {
+      "$ref": "#/$defs/ApplicationWithdrawn"
+    },
+    {
+      "$ref": "#/$defs/FulfillmentCompleted"
+    },
+    {
+      "$ref": "#/$defs/ConsentRevoked"
+    }
+  ]
+}

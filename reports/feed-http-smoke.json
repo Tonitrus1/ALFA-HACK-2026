@@ -1,0 +1,7 @@
+{
+  "feedHttp": "PASS",
+  "feedExternalNetwork": "OS_DENIED_LOOPBACK_ONLY",
+  "mode": "MODEL",
+  "releaseId": "feed-e5-v1-d068f7fcb894",
+  "riskReadyConcurrently": true
+}

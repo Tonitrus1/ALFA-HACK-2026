@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "checks": [
+    "offer_accept_complete_and_command_replay",
+    "document_upload_real_clamav_exact_download_company_isolation",
+    "assistant_real_search_only_citations_history_company_isolation"
+  ],
+  "llmInference": "BLOCKED_LLM_API_KEY_MISSING"
+}

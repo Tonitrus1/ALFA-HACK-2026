@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "catalogs": {
+    "1": {
+      "publishedCards": 36,
+      "cardsPerTopicDepth": 2
+    },
+    "2": {
+      "publishedCards": 72,
+      "cardsPerTopicDepth": 4
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "candidateActivationRejected": true,
+  "reason": "Independent confirmation and compatibility checks required before activation",
+  "selectionUnchanged": true,
+  "degeneratePolicyExplicitReject": true,
+  "tamperedEvidenceRejected": true
+}

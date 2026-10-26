@@ -1,0 +1,15 @@
+{
+  "eventId": "event-MLRollbackCompleted",
+  "eventType": "MLRollbackCompleted",
+  "schemaVersion": 1,
+  "aggregateId": "releaseId-demo",
+  "aggregateVersion": 1,
+  "occurredAt": "2026-10-20T10:00:00Z",
+  "correlationId": "corr-demo",
+  "payload": {
+    "releaseId": "releaseId-demo",
+    "previousReleaseId": "previousReleaseId-demo",
+    "routingVersion": 1,
+    "reasonCode": "reasonCode-demo"
+  }
+}

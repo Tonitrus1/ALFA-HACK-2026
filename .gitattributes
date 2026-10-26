@@ -1,0 +1,24 @@
+# Preserve the published dataset byte-for-byte, including CSV line endings.
+datasets/ru-sme-dataset-10000/** -text
+datasets/ru-sme-dataset-10000/**/*.csv -diff
+datasets/ru-sme-dataset-10000/**/*.parquet -diff
+datasets/ru-sme-dataset-10000/**/*.xml -diff
+datasets/ru-sme-dataset-10000/**/*.html -diff
+ml/artifacts/baseline/model.joblib -text -diff
+ml/feed/release/embeddings.npy -text -diff
+
+# Runtime scripts and hash-pinned model source use canonical LF on every host.
+*.sh text eol=lf
+Dockerfile* text eol=lf
+*.yaml text eol=lf
+ml/scoring/** text eol=lf
+ml/artifacts/**/*.json text eol=lf
+ml/artifacts/**/*.md text eol=lf
+ml/migrations/*.sql text eol=lf
+*.joblib -text -diff
+*.npy -text -diff
+
+# Submission artifacts are byte-exact binary files.
+*.pdf binary
+*.pptx binary
+*.zip binary

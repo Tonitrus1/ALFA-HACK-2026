@@ -1,0 +1,77 @@
+{
+  "status": "PASS",
+  "date": "2026-10-21",
+  "method": "Updated CatBoost ML guide and backend policy guide rendered with PDFium and visually inspected (9 pages). Remaining seven PDFs verified byte-identical to previously inspected revision. Character bounds checked in every current PDF. Static document QA only.",
+  "pagesReviewed": 9,
+  "totalCurrentPages": 53,
+  "unchangedPdfsVerified": 7,
+  "pdfs": [
+    {
+      "path": "architecture-atlas.pdf",
+      "sha256": "4f3c29a365eed6ea03c6bd1fb7772b3730ef88b7f818c41609815d5b518ac06b",
+      "pages": 7,
+      "visualStatus": "PASS",
+      "reviewMethod": "UNCHANGED_HASH_VERIFIED"
+    },
+    {
+      "path": "architecture-audit.pdf",
+      "sha256": "8a582471240ac467cc03732bcaad0a60dc950e58880169a87e5e2747c8af0247",
+      "pages": 9,
+      "visualStatus": "PASS",
+      "reviewMethod": "UNCHANGED_HASH_VERIFIED"
+    },
+    {
+      "path": "development-plan.pdf",
+      "sha256": "d3b7ebe76ffa0eb08c597269a11dd556bd8f963753528a56fa2c83122855b07e",
+      "pages": 7,
+      "visualStatus": "PASS",
+      "reviewMethod": "UNCHANGED_HASH_VERIFIED"
+    },
+    {
+      "path": "git-and-jury-guide.pdf",
+      "sha256": "bd3a72bcd30a40c69b204134620f78dd8edaede368fe203b6ffc47a0cc81b38f",
+      "pages": 7,
+      "visualStatus": "PASS",
+      "reviewMethod": "UNCHANGED_HASH_VERIFIED"
+    },
+    {
+      "path": "packages/backend/backend-guide.pdf",
+      "sha256": "656f8a870abb2256ab7add7cfae674386ac7f17e62bb60dbf0ae965a6b83f1e6",
+      "pages": 4,
+      "visualStatus": "PASS",
+      "reviewMethod": "CURRENT_RENDER"
+    },
+    {
+      "path": "packages/frontend/frontend-guide.pdf",
+      "sha256": "98c503ff31d24752f4e8cc43e8ff96217f7f439c7112014932bbd0cf3e90f32d",
+      "pages": 4,
+      "visualStatus": "PASS",
+      "reviewMethod": "UNCHANGED_HASH_VERIFIED"
+    },
+    {
+      "path": "packages/general/general-guide.pdf",
+      "sha256": "afbb08e9244cdb2f121031569af7ee2e7e0555b22bcef612e8060c0f8a597ca7",
+      "pages": 4,
+      "visualStatus": "PASS",
+      "reviewMethod": "UNCHANGED_HASH_VERIFIED"
+    },
+    {
+      "path": "packages/ml/ml-guide.pdf",
+      "sha256": "1e88a51db55e9303b978835ad7db2aaa97d418690339a4b684ad6666318647bd",
+      "pages": 5,
+      "visualStatus": "PASS",
+      "reviewMethod": "CURRENT_RENDER"
+    },
+    {
+      "path": "technology-adapters.pdf",
+      "sha256": "c22b0bb93362d1ca210507a34d71ddfdaf4e8e4739c449bc837b3bf0fb546eb8",
+      "pages": 6,
+      "visualStatus": "PASS",
+      "reviewMethod": "UNCHANGED_HASH_VERIFIED"
+    }
+  ],
+  "findings": [],
+  "layoutChecks": {
+    "charactersOutsidePage": 0
+  }
+}

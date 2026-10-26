@@ -1,0 +1,23 @@
+{
+  "featureSnapshotId": "acea14cc-5605-43e2-bda6-c21d1b944576",
+  "submissionSnapshotId": "d761f8ac-6ff3-47b9-9d58-a97451cecea5",
+  "financialStatementVersion": 1,
+  "featureSchemaVersion": 2,
+  "featureCodeDigest": "2d59d6b8fd40976b0ca11dbf195f77546e6b5112b85cdc2af8c969326e1723eb",
+  "featureAsOf": "2026-10-21T09:01:17.035490+00:00",
+  "latestSourceAvailableAt": "2026-04-01T00:00:00Z",
+  "financialSnapshotId": "d530de92-8d0c-4a83-a67e-45557b3f6edd",
+  "financialSnapshotDigest": "052f20117381f5f9f66272b65bb2ca721878c4526107a66ca8b6f97aad7040e3",
+  "features": {
+    "X1": 0.47972810220534656,
+    "X2": 0.21346244958711644,
+    "X3": 0.8446405190899989,
+    "X4": 10.329057823499719,
+    "X7": 0.6082206887242692,
+    "X8": 3.684664688961553,
+    "X9": 2.3156693032414553,
+    "X10": 0.7865375504128835
+  },
+  "missingFeatures": [],
+  "snapshotDigest": "6e31cdf369b74bfdf8d899c22081fb29bbad4c91edef02a27f5b79fcc06a182f"
+}

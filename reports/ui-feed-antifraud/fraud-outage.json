@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "checks": [
+    "required_fraud_outage_manual",
+    "missing_independent_reference_manual",
+    "signed_kopeck_roundtrip_no_public_scores"
+  ],
+  "applications": [
+    {
+      "applicationId": "a16a04d1-f2d7-403a-82d0-28539878737e",
+      "status": "MANUAL",
+      "year": "2025",
+      "signed": false
+    },
+    {
+      "applicationId": "cce3a2c1-5f76-4dbf-81ee-e389873d3c97",
+      "status": "MANUAL",
+      "year": "2024",
+      "signed": false
+    },
+    {
+      "applicationId": "ce9a6941-c90a-48a6-bb47-7e0210bcb42b",
+      "status": "MANUAL",
+      "year": "2025",
+      "signed": true
+    }
+  ]
+}

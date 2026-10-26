@@ -1,0 +1,81 @@
+{
+  "sourceSplit": "train",
+  "cases": [
+    {
+      "variant": "fraud",
+      "statement": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "currency": "RUB",
+        "reportingStandard": "DEMO",
+        "values": {
+          "totalAssetsMinor": 754818557,
+          "currentAssetsMinor": 387917312,
+          "totalLiabilitiesMinor": 579296392,
+          "currentLiabilitiesMinor": 579296392,
+          "equityMinor": 175522165,
+          "revenueMinor": 705197902,
+          "netProfitMinor": 131128722,
+          "ebitMinor": 227698020
+        },
+        "sourceDocumentReferences": []
+      },
+      "reference": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "currency": "RUB",
+        "reportingStandard": "DEMO",
+        "values": {
+          "totalAssetsMinor": 754818557,
+          "currentAssetsMinor": 387917312,
+          "totalLiabilitiesMinor": 702890800,
+          "currentLiabilitiesMinor": 665839644,
+          "equityMinor": 51927757,
+          "revenueMinor": 705197902,
+          "netProfitMinor": 131128722,
+          "ebitMinor": 227698020
+        },
+        "sourceDocumentReferences": []
+      },
+      "sourceCompanyId": "SIM:00003750"
+    },
+    {
+      "variant": "both",
+      "statement": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "currency": "RUB",
+        "reportingStandard": "DEMO",
+        "values": {
+          "totalAssetsMinor": 518562350,
+          "currentAssetsMinor": 405804273,
+          "totalLiabilitiesMinor": 419528910,
+          "currentLiabilitiesMinor": 419528910,
+          "equityMinor": 99033440,
+          "revenueMinor": 525872751,
+          "netProfitMinor": -3370033,
+          "ebitMinor": 66699847
+        },
+        "sourceDocumentReferences": []
+      },
+      "reference": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "currency": "RUB",
+        "reportingStandard": "DEMO",
+        "values": {
+          "totalAssetsMinor": 518562350,
+          "currentAssetsMinor": 405804273,
+          "totalLiabilitiesMinor": 510536540,
+          "currentLiabilitiesMinor": 479836716,
+          "equityMinor": 8025810,
+          "revenueMinor": 525872751,
+          "netProfitMinor": -3370033,
+          "ebitMinor": 66699847
+        },
+        "sourceDocumentReferences": []
+      },
+      "sourceCompanyId": "SIM:00009307"
+    }
+  ]
+}

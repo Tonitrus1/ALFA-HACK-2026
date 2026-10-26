@@ -1,0 +1,197 @@
+[
+  {
+    "findingId": "H01",
+    "label": "public-count",
+    "check": "public-count"
+  },
+  {
+    "findingId": "H01",
+    "label": "copies-identical",
+    "check": "copies-identical"
+  },
+  {
+    "findingId": "H01",
+    "label": "public-openapi",
+    "check": "public-openapi"
+  },
+  {
+    "findingId": "H02",
+    "label": "financial-package-fields",
+    "check": "financial-package-fields"
+  },
+  {
+    "findingId": "H02",
+    "label": "immutable-financial-reference",
+    "check": "financial-package-fields"
+  },
+  {
+    "findingId": "H03",
+    "label": "no-legacy-risk",
+    "check": "no-legacy-risk"
+  },
+  {
+    "findingId": "H03",
+    "label": "internal-openapi",
+    "check": "internal-openapi"
+  },
+  {
+    "findingId": "H04",
+    "label": "rag-internal-route",
+    "check": "rag-internal-route"
+  },
+  {
+    "findingId": "H04",
+    "label": "rag-context-fixtures",
+    "check": "fixture:rag-context-valid"
+  },
+  {
+    "findingId": "H05",
+    "label": "snapshot-read-route",
+    "check": "snapshot-read-route"
+  },
+  {
+    "findingId": "H05",
+    "label": "snapshot-digest-fixtures",
+    "check": "design-oracle:snapshot-digest-9"
+  },
+  {
+    "findingId": "H06",
+    "label": "ranking-text-inputs",
+    "check": "ranking-text-inputs"
+  },
+  {
+    "findingId": "H06",
+    "label": "ranking-permutation-fixtures",
+    "check": "design-oracle:permutation-0"
+  },
+  {
+    "findingId": "H07",
+    "label": "ranking-metadata-required",
+    "check": "ranking-metadata-required"
+  },
+  {
+    "findingId": "H07",
+    "label": "exposure-fixtures",
+    "check": "design-oracle:exposure-16"
+  },
+  {
+    "findingId": "H08",
+    "label": "finance-standard-fixtures",
+    "check": "fixture:finance-standard-RSBU"
+  },
+  {
+    "findingId": "H09",
+    "label": "submit-financial-required",
+    "check": "submit-financial-required"
+  },
+  {
+    "findingId": "H09",
+    "label": "rfi-financial-required",
+    "check": "informationresponse-financial-required"
+  },
+  {
+    "findingId": "H10",
+    "label": "cpu-profile",
+    "check": "cpu-profile"
+  },
+  {
+    "findingId": "H10",
+    "label": "target-separation",
+    "check": "target-separation"
+  },
+  {
+    "findingId": "H11",
+    "label": "model-selection",
+    "check": "model-selection"
+  },
+  {
+    "findingId": "H11",
+    "label": "supply-chain-gate",
+    "check": "model-selection"
+  },
+  {
+    "findingId": "H12",
+    "label": "budget-consistency",
+    "check": "budget-consistency"
+  },
+  {
+    "findingId": "H13",
+    "label": "screen-route-coverage",
+    "check": "screen-route-coverage"
+  },
+  {
+    "findingId": "H13",
+    "label": "operation-task-coverage",
+    "check": "operation-task-coverage"
+  },
+  {
+    "findingId": "H14",
+    "label": "task-dag",
+    "check": "task-dag"
+  },
+  {
+    "findingId": "H14",
+    "label": "task-hours",
+    "check": "task-hours"
+  },
+  {
+    "findingId": "H14",
+    "label": "critical-path",
+    "check": "task-hours"
+  },
+  {
+    "findingId": "H15",
+    "label": "release-profiles",
+    "check": "release-profiles"
+  },
+  {
+    "findingId": "H16",
+    "label": "all-four-packages",
+    "check": "all-four-packages"
+  },
+  {
+    "findingId": "H16",
+    "label": "negative-fixtures",
+    "check": "negative-fixtures"
+  },
+  {
+    "findingId": "H17",
+    "label": "self-contained",
+    "check": "self-contained"
+  },
+  {
+    "findingId": "H17",
+    "label": "deterministic-build",
+    "check": "deterministic-build"
+  },
+  {
+    "findingId": "H18",
+    "label": "git-handbook",
+    "check": "git-handbook"
+  },
+  {
+    "findingId": "H18",
+    "label": "jury-traceability",
+    "check": "jury-traceability"
+  },
+  {
+    "findingId": "H19",
+    "label": "evidence-boundary",
+    "check": "runtime-not-executed"
+  },
+  {
+    "findingId": "H19",
+    "label": "runtime-not-executed",
+    "check": "runtime-not-executed"
+  },
+  {
+    "findingId": "H20",
+    "label": "serialized-fixtures-revalidated",
+    "check": "serialized-fixtures-revalidated"
+  },
+  {
+    "findingId": "H20",
+    "label": "fixture-migration-log",
+    "check": "fixture-migration-log"
+  }
+]

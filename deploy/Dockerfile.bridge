@@ -1,0 +1,16 @@
+FROM python:3.12-slim-bookworm
+ENV PIP_DEFAULT_TIMEOUT=120 PIP_RETRIES=8 PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONPATH=/app/ml OPENBLAS_NUM_THREADS=1
+WORKDIR /app
+COPY ml/bridge/requirements.txt /tmp/requirements.txt
+COPY deploy/install.py /tmp/install.py
+RUN --mount=type=cache,target=/root/.cache/pip python /tmp/install.py -r /tmp/requirements.txt
+COPY ml/bridge ml/bridge
+COPY ml/scoring/features.py ml/scoring/features.py
+COPY ml/scoring/__init__.py ml/scoring/__init__.py
+COPY ml/feed ml/feed
+COPY ml/feed_v2 ml/feed_v2
+COPY deploy/normalize_text.py /tmp/normalize_text.py
+RUN python /tmp/normalize_text.py /app/ml
+RUN useradd --uid 10001 --create-home service
+USER service
+CMD ["uvicorn", "bridge.server:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000", "--no-access-log"]

@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "modelHash": "0917c74937bf94b32753e26e862084e7e4a28076eadc2c5d77689dd1e496cf6c",
+  "bundleDigestAtTest": "93c0f2e2fb1f26f6898cee72fd595d191c35544191355f4ad4b257644c6d3065",
+  "schemaUnchanged": true,
+  "scenariosPassed": true,
+  "restartPreservesSnapshotAndInference": true,
+  "failedPersistenceReturns503": true,
+  "idempotencyConflictsAuthenticationAndMissingRatios": "pytest tests.xml",
+  "scope": "real local HTTP + dedicated PostgreSQL; no frontend/backend lifecycle claimed"
+}

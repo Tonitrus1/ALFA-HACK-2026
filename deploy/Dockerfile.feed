@@ -1,0 +1,23 @@
+FROM python:3.12-slim-bookworm AS runtime
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PYTHONPATH=/app/ml HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 FEED_CPU_THREADS=2
+WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 && rm -rf /var/lib/apt/lists/*
+# The CPU wheel index prevents a multi-GB CUDA runtime on a CPU-only MVP.
+COPY deploy/install.py /tmp/install.py
+RUN --mount=type=cache,target=/root/.cache/pip python /tmp/install.py torch==2.6.0 --index-url https://download.pytorch.org/whl/cpu
+COPY ml/feed_v2/requirements.txt /tmp/requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip python /tmp/install.py -r /tmp/requirements.txt
+COPY ml/feed ml/feed
+COPY ml/feed_v2 ml/feed_v2
+COPY ml/feed_runtime.py ml/feed_runtime.py
+COPY deploy/feed-init.sh /feed-init.sh
+COPY deploy/normalize_text.py /tmp/normalize_text.py
+RUN python /tmp/normalize_text.py /app/ml /feed-init.sh
+RUN useradd --uid 10001 --create-home service && mkdir /bundle && chown service /bundle
+USER service
+CMD ["uvicorn", "feed_runtime:create_app", "--factory", "--host", "0.0.0.0", "--port", "8002", "--no-access-log"]
+
+FROM runtime AS preparation
+USER root
+RUN --mount=type=cache,target=/root/.cache/pip python /tmp/install.py pytest==8.3.5
+USER service

@@ -1,0 +1,22 @@
+{
+  "synthetic_only": true,
+  "real_ocr": true,
+  "real_llm": true,
+  "checks": {
+    "ready": true,
+    "reject_11_files": true,
+    "reject_51_pages": true,
+    "reject_invalid": true,
+    "auth_required": true
+  },
+  "base": {
+    "job_id": "ac364a8a-9e0c-4772-9e79-8e40e085f2ed",
+    "status": "failed",
+    "error_code": "LLM_CONNECTION_ERROR"
+  },
+  "conflict": {
+    "job_id": "a0980901-a9c7-42f7-b755-4091573d0eca",
+    "status": "failed",
+    "error_code": "LLM_SCHEMA_INVALID"
+  }
+}

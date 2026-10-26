@@ -1,0 +1,49 @@
+{
+  "architecturePass": true,
+  "checksums": {
+    "docs/architecture": {
+      "files": 143,
+      "failures": []
+    },
+    "datasets/ru-sme-dataset-10000": {
+      "files": 20,
+      "failures": []
+    },
+    "ml/artifacts/baseline": {
+      "files": 8,
+      "failures": []
+    },
+    "ml/artifacts/scoring-v2-351935cfd80c": {
+      "files": 14,
+      "failures": []
+    },
+    "ml/experiments/scoring-v2-351935cfd80c": {
+      "files": 8,
+      "failures": []
+    },
+    "ml/feed/release": {
+      "files": 9,
+      "failures": [],
+      "externalModelFilesVerifiedAgainstLocalBundle": [
+        "model/README.md",
+        "model/config.json",
+        "model/model.safetensors",
+        "model/sentencepiece.bpe.model",
+        "model/special_tokens_map.json",
+        "model/tokenizer.json",
+        "model/tokenizer_config.json"
+      ]
+    }
+  },
+  "handoffBrokenLinks": [],
+  "frozenFilesChecked": 134,
+  "frozenFileDifferences": [],
+  "stagedPrivatePaths": [],
+  "stagedFilesOver10MiB": [],
+  "stagedFiles": 137,
+  "approvedEvidenceLinkChange": {
+    "path": "reports/feed-contract-validation.json",
+    "sha256": "55e5238dc0cd0d632d0ae2a848f62a966a14c624922d7a58f8e6a9afc9366bd4",
+    "scope": "Only historical XML relative path; source unchanged"
+  }
+}

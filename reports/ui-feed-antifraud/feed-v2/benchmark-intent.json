@@ -1,0 +1,645 @@
+{
+  "isSynthetic": true,
+  "split": "test",
+  "requests": 600,
+  "contexts": 75,
+  "releaseId": "feed-catboost-v1-52ea168429fd",
+  "datasetManifestDigest": "477cf9c498dd618f618fde6a3b1dba16aad052ea871bec19b3bde99fb59df8b0",
+  "metrics": {
+    "random/raw": {
+      "ndcg3": 0.3382590020874219,
+      "ndcg6": 0.3457210348455213,
+      "recall6": 0.11602316812292933,
+      "topics6": 3.828333333333333,
+      "simulatedExpectedNotInterestedRate6": 0.16336496742077955,
+      "catalogCoverage6": 1.0
+    },
+    "random/diversified": {
+      "ndcg3": 0.3336067287848986,
+      "ndcg6": 0.34043991207734553,
+      "recall6": 0.11163321773154412,
+      "topics6": 4.176666666666667,
+      "simulatedExpectedNotInterestedRate6": 0.16428731828857768,
+      "catalogCoverage6": 1.0
+    },
+    "rules/raw": {
+      "ndcg3": 0.5598288241486603,
+      "ndcg6": 0.5502034162446605,
+      "recall6": 0.1971291023075651,
+      "topics6": 1.5533333333333332,
+      "simulatedExpectedNotInterestedRate6": 0.12327270142110512,
+      "catalogCoverage6": 1.0
+    },
+    "rules/diversified": {
+      "ndcg3": 0.5475583215185664,
+      "ndcg6": 0.5457893217144629,
+      "recall6": 0.19323221027305704,
+      "topics6": 3.4833333333333334,
+      "simulatedExpectedNotInterestedRate6": 0.12571300707422428,
+      "catalogCoverage6": 1.0
+    },
+    "e5/raw": {
+      "ndcg3": 0.38943084931341193,
+      "ndcg6": 0.4017437245541718,
+      "recall6": 0.14305613477280338,
+      "topics6": 2.901666666666667,
+      "simulatedExpectedNotInterestedRate6": 0.15108721583831605,
+      "catalogCoverage6": 0.9861111111111112
+    },
+    "e5/diversified": {
+      "ndcg3": 0.38402462731827447,
+      "ndcg6": 0.3839536867393998,
+      "recall6": 0.13529771949906086,
+      "topics6": 3.7333333333333334,
+      "simulatedExpectedNotInterestedRate6": 0.15533181186381642,
+      "catalogCoverage6": 0.9166666666666666
+    },
+    "e5_rules/raw": {
+      "ndcg3": 0.530774574955519,
+      "ndcg6": 0.5401162981543957,
+      "recall6": 0.19768150884596367,
+      "topics6": 2.11,
+      "simulatedExpectedNotInterestedRate6": 0.12641565298375218,
+      "catalogCoverage6": 1.0
+    },
+    "e5_rules/diversified": {
+      "ndcg3": 0.5304071589481735,
+      "ndcg6": 0.5119313445182266,
+      "recall6": 0.1843544979885989,
+      "topics6": 3.493333333333333,
+      "simulatedExpectedNotInterestedRate6": 0.13158669806754256,
+      "catalogCoverage6": 1.0
+    },
+    "catboost/raw": {
+      "ndcg3": 0.5050413141699672,
+      "ndcg6": 0.5122403567005887,
+      "recall6": 0.1849703981824911,
+      "topics6": 1.8116666666666668,
+      "simulatedExpectedNotInterestedRate6": 0.1295209844644061,
+      "catalogCoverage6": 1.0
+    },
+    "catboost/diversified": {
+      "ndcg3": 0.491963872125205,
+      "ndcg6": 0.4873596920822019,
+      "recall6": 0.18354533769474954,
+      "topics6": 3.2666666666666666,
+      "simulatedExpectedNotInterestedRate6": 0.1355031723305289,
+      "catalogCoverage6": 1.0
+    }
+  },
+  "clusteredDifferenceCI95": [
+    -0.05277267704313214,
+    0.0041025919575206895
+  ],
+  "relativeNDCG6Improvement": -0.04799794483994502,
+  "slices": {
+    "business:HOSPITALITY": {
+      "random": {
+        "ndcg6": 0.32061489172064994,
+        "requests": 72
+      },
+      "rules": {
+        "ndcg6": 0.4509295071816002,
+        "requests": 72
+      },
+      "e5": {
+        "ndcg6": 0.3404928219871124,
+        "requests": 72
+      },
+      "e5_rules": {
+        "ndcg6": 0.4925579678396924,
+        "requests": 72
+      },
+      "catboost": {
+        "ndcg6": 0.44844835343552486,
+        "requests": 72
+      }
+    },
+    "depth:PRACTICAL": {
+      "random": {
+        "ndcg6": 0.3511818644752252,
+        "requests": 104
+      },
+      "rules": {
+        "ndcg6": 0.5772651992003843,
+        "requests": 104
+      },
+      "e5": {
+        "ndcg6": 0.3493895866621311,
+        "requests": 104
+      },
+      "e5_rules": {
+        "ndcg6": 0.5080622260793306,
+        "requests": 104
+      },
+      "catboost": {
+        "ndcg6": 0.5103839993409957,
+        "requests": 104
+      }
+    },
+    "task:PURCHASE": {
+      "random": {
+        "ndcg6": 0.32623603346266783,
+        "requests": 144
+      },
+      "rules": {
+        "ndcg6": 0.5222326030557443,
+        "requests": 144
+      },
+      "e5": {
+        "ndcg6": 0.3403645998244438,
+        "requests": 144
+      },
+      "e5_rules": {
+        "ndcg6": 0.5140455830868754,
+        "requests": 144
+      },
+      "catboost": {
+        "ndcg6": 0.5189525571184058,
+        "requests": 144
+      }
+    },
+    "profile:present": {
+      "random": {
+        "ndcg6": 0.33702567085498375,
+        "requests": 544
+      },
+      "rules": {
+        "ndcg6": 0.5635139903076867,
+        "requests": 544
+      },
+      "e5": {
+        "ndcg6": 0.38501880467342603,
+        "requests": 544
+      },
+      "e5_rules": {
+        "ndcg6": 0.5261706331059556,
+        "requests": 544
+      },
+      "catboost": {
+        "ndcg6": 0.49906954586034,
+        "requests": 544
+      }
+    },
+    "history:empty": {
+      "random": {
+        "ndcg6": 0.313684065118307,
+        "requests": 85
+      },
+      "rules": {
+        "ndcg6": 0.5029503406910291,
+        "requests": 85
+      },
+      "e5": {
+        "ndcg6": 0.3800644275340164,
+        "requests": 85
+      },
+      "e5_rules": {
+        "ndcg6": 0.4501205670435404,
+        "requests": 85
+      },
+      "catboost": {
+        "ndcg6": 0.42761602031959417,
+        "requests": 85
+      }
+    },
+    "history:present": {
+      "random": {
+        "ndcg6": 0.34485592565310924,
+        "requests": 515
+      },
+      "rules": {
+        "ndcg6": 0.5528598331455151,
+        "requests": 515
+      },
+      "e5": {
+        "ndcg6": 0.38459560330727866,
+        "requests": 515
+      },
+      "e5_rules": {
+        "ndcg6": 0.5221331233247282,
+        "requests": 515
+      },
+      "catboost": {
+        "ndcg6": 0.49722029810127305,
+        "requests": 515
+      }
+    },
+    "business:MISSING": {
+      "random": {
+        "ndcg6": 0.36245572532266124,
+        "requests": 112
+      },
+      "rules": {
+        "ndcg6": 0.42918126624984243,
+        "requests": 112
+      },
+      "e5": {
+        "ndcg6": 0.36767410931953887,
+        "requests": 112
+      },
+      "e5_rules": {
+        "ndcg6": 0.41665280038951613,
+        "requests": 112
+      },
+      "catboost": {
+        "ndcg6": 0.3986137069779777,
+        "requests": 112
+      }
+    },
+    "depth:MISSING": {
+      "random": {
+        "ndcg6": 0.3642049366523628,
+        "requests": 88
+      },
+      "rules": {
+        "ndcg6": 0.413297963241839,
+        "requests": 88
+      },
+      "e5": {
+        "ndcg6": 0.38228200774686294,
+        "requests": 88
+      },
+      "e5_rules": {
+        "ndcg6": 0.38853134396384625,
+        "requests": 88
+      },
+      "catboost": {
+        "ndcg6": 0.3730122549879621,
+        "requests": 88
+      }
+    },
+    "task:MISSING": {
+      "random": {
+        "ndcg6": 0.3492311063610862,
+        "requests": 96
+      },
+      "rules": {
+        "ndcg6": 0.4500579721195117,
+        "requests": 96
+      },
+      "e5": {
+        "ndcg6": 0.38927254007868695,
+        "requests": 96
+      },
+      "e5_rules": {
+        "ndcg6": 0.41973283909761044,
+        "requests": 96
+      },
+      "catboost": {
+        "ndcg6": 0.39110007092564586,
+        "requests": 96
+      }
+    },
+    "profile:empty": {
+      "random": {
+        "ndcg6": 0.3736068268088598,
+        "requests": 56
+      },
+      "rules": {
+        "ndcg6": 0.3736068268088598,
+        "requests": 56
+      },
+      "e5": {
+        "ndcg6": 0.3736068268088598,
+        "requests": 56
+      },
+      "e5_rules": {
+        "ndcg6": 0.3736068268088598,
+        "requests": 56
+      },
+      "catboost": {
+        "ndcg6": 0.3736068268088598,
+        "requests": 56
+      }
+    },
+    "depth:EXPLAINED": {
+      "random": {
+        "ndcg6": 0.33697705245684484,
+        "requests": 208
+      },
+      "rules": {
+        "ndcg6": 0.5761361453743371,
+        "requests": 208
+      },
+      "e5": {
+        "ndcg6": 0.4164208784155088,
+        "requests": 208
+      },
+      "e5_rules": {
+        "ndcg6": 0.5759054885666228,
+        "requests": 208
+      },
+      "catboost": {
+        "ndcg6": 0.5215604564635578,
+        "requests": 208
+      }
+    },
+    "task:EXPANSION": {
+      "random": {
+        "ndcg6": 0.3014140412186994,
+        "requests": 64
+      },
+      "rules": {
+        "ndcg6": 0.5004795139923632,
+        "requests": 64
+      },
+      "e5": {
+        "ndcg6": 0.36064214672841155,
+        "requests": 64
+      },
+      "e5_rules": {
+        "ndcg6": 0.45582234353336015,
+        "requests": 64
+      },
+      "catboost": {
+        "ndcg6": 0.4631910435032244,
+        "requests": 64
+      }
+    },
+    "business:OTHER": {
+      "random": {
+        "ndcg6": 0.33063692634420894,
+        "requests": 112
+      },
+      "rules": {
+        "ndcg6": 0.5947401999173282,
+        "requests": 112
+      },
+      "e5": {
+        "ndcg6": 0.4111656821550306,
+        "requests": 112
+      },
+      "e5_rules": {
+        "ndcg6": 0.5531568944814317,
+        "requests": 112
+      },
+      "catboost": {
+        "ndcg6": 0.5472106176523699,
+        "requests": 112
+      }
+    },
+    "depth:BASICS": {
+      "random": {
+        "ndcg6": 0.32799886002276124,
+        "requests": 200
+      },
+      "rules": {
+        "ndcg6": 0.5561573665434691,
+        "requests": 200
+      },
+      "e5": {
+        "ndcg6": 0.3688966781931425,
+        "requests": 200
+      },
+      "e5_rules": {
+        "ndcg6": 0.501706176540048,
+        "requests": 200
+      },
+      "catboost": {
+        "ndcg6": 0.4901311296724846,
+        "requests": 200
+      }
+    },
+    "task:EXPLORING": {
+      "random": {
+        "ndcg6": 0.35112872081899876,
+        "requests": 136
+      },
+      "rules": {
+        "ndcg6": 0.6176288942628229,
+        "requests": 136
+      },
+      "e5": {
+        "ndcg6": 0.4185983582767071,
+        "requests": 136
+      },
+      "e5_rules": {
+        "ndcg6": 0.5674588288696545,
+        "requests": 136
+      },
+      "catboost": {
+        "ndcg6": 0.5657828554967135,
+        "requests": 136
+      }
+    },
+    "business:WHOLESALE": {
+      "random": {
+        "ndcg6": 0.3474810042450071,
+        "requests": 112
+      },
+      "rules": {
+        "ndcg6": 0.5912272129393435,
+        "requests": 112
+      },
+      "e5": {
+        "ndcg6": 0.4208186302811798,
+        "requests": 112
+      },
+      "e5_rules": {
+        "ndcg6": 0.5559608284349681,
+        "requests": 112
+      },
+      "catboost": {
+        "ndcg6": 0.5005724775769195,
+        "requests": 112
+      }
+    },
+    "business:SERVICES": {
+      "random": {
+        "ndcg6": 0.2877031078784729,
+        "requests": 48
+      },
+      "rules": {
+        "ndcg6": 0.5422458831136229,
+        "requests": 48
+      },
+      "e5": {
+        "ndcg6": 0.2726994165301569,
+        "requests": 48
+      },
+      "e5_rules": {
+        "ndcg6": 0.46156776355125007,
+        "requests": 48
+      },
+      "catboost": {
+        "ndcg6": 0.46648944120842545,
+        "requests": 48
+      }
+    },
+    "business:RETAIL": {
+      "random": {
+        "ndcg6": 0.39013322896185354,
+        "requests": 80
+      },
+      "rules": {
+        "ndcg6": 0.6419502639095004,
+        "requests": 80
+      },
+      "e5": {
+        "ndcg6": 0.4384609399615072,
+        "requests": 80
+      },
+      "e5_rules": {
+        "ndcg6": 0.5780520991150355,
+        "requests": 80
+      },
+      "catboost": {
+        "ndcg6": 0.5580740498611164,
+        "requests": 80
+      }
+    },
+    "task:EQUIPMENT": {
+      "random": {
+        "ndcg6": 0.37781583250307593,
+        "requests": 80
+      },
+      "rules": {
+        "ndcg6": 0.6202061544365998,
+        "requests": 80
+      },
+      "e5": {
+        "ndcg6": 0.43004505100087,
+        "requests": 80
+      },
+      "e5_rules": {
+        "ndcg6": 0.5504399289886507,
+        "requests": 80
+      },
+      "catboost": {
+        "ndcg6": 0.5033981346872947,
+        "requests": 80
+      }
+    },
+    "task:CASH_GAP": {
+      "random": {
+        "ndcg6": 0.3311312618436529,
+        "requests": 80
+      },
+      "rules": {
+        "ndcg6": 0.5427727749374285,
+        "requests": 80
+      },
+      "e5": {
+        "ndcg6": 0.36969334531307435,
+        "requests": 80
+      },
+      "e5_rules": {
+        "ndcg6": 0.5307458145194399,
+        "requests": 80
+      },
+      "catboost": {
+        "ndcg6": 0.4159811788583216,
+        "requests": 80
+      }
+    },
+    "business:MANUFACTURING": {
+      "random": {
+        "ndcg6": 0.3064846575824267,
+        "requests": 64
+      },
+      "rules": {
+        "ndcg6": 0.5738467648352967,
+        "requests": 64
+      },
+      "e5": {
+        "ndcg6": 0.36450841302430914,
+        "requests": 64
+      },
+      "e5_rules": {
+        "ndcg6": 0.5063892786961359,
+        "requests": 64
+      },
+      "catboost": {
+        "ndcg6": 0.4858386685602455,
+        "requests": 64
+      }
+    }
+  },
+  "semanticScenarios": [
+    {
+      "id": "purchase-cost",
+      "expected": [
+        "WORKING_CAPITAL",
+        "FINANCING_COST"
+      ],
+      "actual": [
+        "FINANCING_COST",
+        "WORKING_CAPITAL"
+      ],
+      "passed": true
+    },
+    {
+      "id": "equipment-application",
+      "expected": [
+        "EQUIPMENT",
+        "APPLICATION"
+      ],
+      "actual": [
+        "APPLICATION",
+        "EQUIPMENT"
+      ],
+      "passed": true
+    },
+    {
+      "id": "cash-gap-amount",
+      "expected": [
+        "CASH_GAP"
+      ],
+      "actual": [
+        "CASH_GAP",
+        "SEASONALITY"
+      ],
+      "passed": true
+    },
+    {
+      "id": "application-clarification",
+      "expected": [
+        "APPLICATION"
+      ],
+      "actual": [
+        "EQUIPMENT",
+        "FINANCING_COST"
+      ],
+      "passed": false
+    },
+    {
+      "id": "expansion-practice",
+      "expected": [
+        "EQUIPMENT"
+      ],
+      "actual": [
+        "APPLICATION",
+        "EQUIPMENT"
+      ],
+      "passed": true
+    }
+  ],
+  "contentReview": {
+    "status": "pending_human_review",
+    "independentHumanReview": false,
+    "cases": 12,
+    "fixtureDigest": "2c814c92f14a1c631b424ab6528f4fbd665c896cb85a288993b4b85fe6ee901a",
+    "draftMetrics": {
+      "random": 0.13117077799574992,
+      "rules": 0.6559776080409149,
+      "e5": 0.3905338846889442,
+      "e5_rules": 0.48203000948357505,
+      "catboost": 0.5130515512977
+    },
+    "passed": false
+  },
+  "gates": {
+    "relativeNDCG6": false,
+    "positiveClusterCI": false,
+    "semanticScenarios": false,
+    "humanReview": false
+  },
+  "defaultRanker": "e5",
+  "limitations": [
+    "Oracle relevance and rejection rates are properties of a synthetic world.",
+    "No real-user uplift, causal A/B effect, or unbiased click estimate is established.",
+    "Position is excluded from model features; selection bias is not eliminated.",
+    "AI draft content grades cannot satisfy the human-review gate."
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "checks": [
+    "real_E5_ranking",
+    "feed_cursor_feedback_saved_and_idempotency",
+    "public_openapi_schemas",
+    "application_real_risk_approved",
+    "company_isolation"
+  ]
+}

@@ -1,0 +1,554 @@
+{
+  "scope": "Standalone real Python/PostgreSQL ML service + executable reference policy. No UI, bank simulator or offer lifecycle implementation claimed.",
+  "bundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+  "modelVersion": "catboost-optuna-v1",
+  "policyVersion": "synthetic-demo-policy-3",
+  "T_manual": 0.03504223273828764,
+  "scenarios": [
+    {
+      "scenario": "S01",
+      "companyId": "DEMO:S01",
+      "expected": [
+        "APPROVED"
+      ],
+      "actual": [
+        "APPROVED"
+      ],
+      "attempts": [
+        {
+          "policy": {
+            "outcome": "APPROVED",
+            "rule": "WITHIN_DEMO_RULES",
+            "policyVersion": "synthetic-demo-policy-3",
+            "offerAmountMinor": 20000000
+          },
+          "mlCalled": true,
+          "snapshotRequest": {
+            "applicationId": "DEMO:2c20c0db-c513-4191-bf75-5e5151b53c1f",
+            "submissionSnapshotId": "d761f8ac-6ff3-47b9-9d58-a97451cecea5",
+            "financialSnapshotId": "d530de92-8d0c-4a83-a67e-45557b3f6edd",
+            "financialSnapshotDigest": "052f20117381f5f9f66272b65bb2ca721878c4526107a66ca8b6f97aad7040e3",
+            "financialStatementVersion": 1,
+            "asOf": "2026-10-21T09:01:17.035490+00:00",
+            "latestSourceAvailableAt": "2026-04-01T00:00:00Z",
+            "purpose": "DEMO_RESEARCH",
+            "financialStatement": {
+              "currency": "RUB",
+              "periodEnd": "2025-12-31",
+              "periodStart": "2025-01-01",
+              "reportingStandard": "DEMO",
+              "sourceDocumentReferences": [],
+              "values": {
+                "currentAssetsMinor": 1633233164,
+                "currentLiabilitiesMinor": 158120246,
+                "ebitMinor": 1062220169,
+                "equityMinor": 1373639643,
+                "netProfitMinor": 837815739,
+                "revenueMinor": 4044174564,
+                "totalAssetsMinor": 1746438733,
+                "totalLiabilitiesMinor": 372799090
+              }
+            }
+          },
+          "snapshot": {
+            "featureSnapshotId": "acea14cc-5605-43e2-bda6-c21d1b944576",
+            "submissionSnapshotId": "d761f8ac-6ff3-47b9-9d58-a97451cecea5",
+            "financialStatementVersion": 1,
+            "featureSchemaVersion": 2,
+            "featureCodeDigest": "2d59d6b8fd40976b0ca11dbf195f77546e6b5112b85cdc2af8c969326e1723eb",
+            "featureAsOf": "2026-10-21T09:01:17.035490+00:00",
+            "latestSourceAvailableAt": "2026-04-01T00:00:00Z",
+            "financialSnapshotId": "d530de92-8d0c-4a83-a67e-45557b3f6edd",
+            "financialSnapshotDigest": "052f20117381f5f9f66272b65bb2ca721878c4526107a66ca8b6f97aad7040e3",
+            "features": {
+              "X1": 0.47972810220534656,
+              "X2": 0.21346244958711644,
+              "X3": 0.8446405190899989,
+              "X4": 10.329057823499719,
+              "X7": 0.6082206887242692,
+              "X8": 3.684664688961553,
+              "X9": 2.3156693032414553,
+              "X10": 0.7865375504128835
+            },
+            "missingFeatures": [],
+            "snapshotDigest": "6e31cdf369b74bfdf8d899c22081fb29bbad4c91edef02a27f5b79fcc06a182f"
+          },
+          "riskRequest": {
+            "requestId": "cf16ac05-d8e6-4aef-9b6b-f2e4ac5e6d9b",
+            "featureSnapshotId": "acea14cc-5605-43e2-bda6-c21d1b944576",
+            "featureSnapshotDigest": "6e31cdf369b74bfdf8d899c22081fb29bbad4c91edef02a27f5b79fcc06a182f",
+            "featureSchemaVersion": 2,
+            "bundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+            "purpose": "DEMO_RESEARCH"
+          },
+          "inference": {
+            "requestId": "cf16ac05-d8e6-4aef-9b6b-f2e4ac5e6d9b",
+            "inferenceId": "3466b994-6dcc-48b6-93b3-0d0cb491dc37",
+            "featureSnapshotId": "acea14cc-5605-43e2-bda6-c21d1b944576",
+            "featureSnapshotDigest": "6e31cdf369b74bfdf8d899c22081fb29bbad4c91edef02a27f5b79fcc06a182f",
+            "modelVersion": "catboost-optuna-v1",
+            "bundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+            "score": 0.0033180779320394808,
+            "scoreKind": "BANKRUPTCY_PROXY",
+            "calibrationStatus": "DEMONSTRATION",
+            "releaseId": "catboost-optuna-v1",
+            "purpose": "DEMO_RESEARCH",
+            "internalReasonCodes": [
+              "SYNTHETIC_SIMULATION"
+            ]
+          },
+          "failure": null,
+          "seconds": 0.015814415994100273
+        }
+      ]
+    },
+    {
+      "scenario": "S02",
+      "companyId": "DEMO:S02",
+      "expected": [
+        "DECLINED"
+      ],
+      "actual": [
+        "DECLINED"
+      ],
+      "attempts": [
+        {
+          "policy": {
+            "outcome": "DECLINED",
+            "rule": "NEGATIVE_EQUITY_OR_LEVERAGE",
+            "policyVersion": "synthetic-demo-policy-3",
+            "offerAmountMinor": null
+          },
+          "inference": null,
+          "mlCalled": false
+        }
+      ]
+    },
+    {
+      "scenario": "S03",
+      "companyId": "DEMO:S03",
+      "expected": [
+        "NEEDS_INFO",
+        "APPROVED"
+      ],
+      "actual": [
+        "NEEDS_INFO",
+        "APPROVED"
+      ],
+      "attempts": [
+        {
+          "policy": {
+            "outcome": "NEEDS_INFO",
+            "rule": "REFERENCE_REVENUE_DISCREPANCY",
+            "policyVersion": "synthetic-demo-policy-3",
+            "offerAmountMinor": null
+          },
+          "inference": null,
+          "mlCalled": false
+        },
+        {
+          "policy": {
+            "outcome": "APPROVED",
+            "rule": "WITHIN_DEMO_RULES",
+            "policyVersion": "synthetic-demo-policy-3",
+            "offerAmountMinor": 20000000
+          },
+          "mlCalled": true,
+          "snapshotRequest": {
+            "applicationId": "DEMO:dfdce208-5e71-43a0-8e87-d69dd28eabcd",
+            "submissionSnapshotId": "2db6b8f2-6c43-4944-b1cd-bf916fd8cccd",
+            "financialSnapshotId": "3e8fd4fd-19e1-4064-bee2-f7cf63a29e49",
+            "financialSnapshotDigest": "052f20117381f5f9f66272b65bb2ca721878c4526107a66ca8b6f97aad7040e3",
+            "financialStatementVersion": 1,
+            "asOf": "2026-10-21T09:01:17.051362+00:00",
+            "latestSourceAvailableAt": "2026-04-01T00:00:00Z",
+            "purpose": "DEMO_RESEARCH",
+            "financialStatement": {
+              "currency": "RUB",
+              "periodEnd": "2025-12-31",
+              "periodStart": "2025-01-01",
+              "reportingStandard": "DEMO",
+              "sourceDocumentReferences": [],
+              "values": {
+                "currentAssetsMinor": 1633233164,
+                "currentLiabilitiesMinor": 158120246,
+                "ebitMinor": 1062220169,
+                "equityMinor": 1373639643,
+                "netProfitMinor": 837815739,
+                "revenueMinor": 4044174564,
+                "totalAssetsMinor": 1746438733,
+                "totalLiabilitiesMinor": 372799090
+              }
+            }
+          },
+          "snapshot": {
+            "featureSnapshotId": "7db44120-13d8-44c4-a809-a8a129aea474",
+            "submissionSnapshotId": "2db6b8f2-6c43-4944-b1cd-bf916fd8cccd",
+            "financialStatementVersion": 1,
+            "featureSchemaVersion": 2,
+            "featureCodeDigest": "2d59d6b8fd40976b0ca11dbf195f77546e6b5112b85cdc2af8c969326e1723eb",
+            "featureAsOf": "2026-10-21T09:01:17.051362+00:00",
+            "latestSourceAvailableAt": "2026-04-01T00:00:00Z",
+            "financialSnapshotId": "3e8fd4fd-19e1-4064-bee2-f7cf63a29e49",
+            "financialSnapshotDigest": "052f20117381f5f9f66272b65bb2ca721878c4526107a66ca8b6f97aad7040e3",
+            "features": {
+              "X1": 0.47972810220534656,
+              "X2": 0.21346244958711644,
+              "X3": 0.8446405190899989,
+              "X4": 10.329057823499719,
+              "X7": 0.6082206887242692,
+              "X8": 3.684664688961553,
+              "X9": 2.3156693032414553,
+              "X10": 0.7865375504128835
+            },
+            "missingFeatures": [],
+            "snapshotDigest": "4ba49ca99ca73afde958425ce7e15bbcfa56d57a5be983d15507613687f02cb2"
+          },
+          "riskRequest": {
+            "requestId": "e859a356-b1a9-48b6-a329-7e1567f885b1",
+            "featureSnapshotId": "7db44120-13d8-44c4-a809-a8a129aea474",
+            "featureSnapshotDigest": "4ba49ca99ca73afde958425ce7e15bbcfa56d57a5be983d15507613687f02cb2",
+            "featureSchemaVersion": 2,
+            "bundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+            "purpose": "DEMO_RESEARCH"
+          },
+          "inference": {
+            "requestId": "e859a356-b1a9-48b6-a329-7e1567f885b1",
+            "inferenceId": "dc0401db-814d-4e20-8409-6566122695c2",
+            "featureSnapshotId": "7db44120-13d8-44c4-a809-a8a129aea474",
+            "featureSnapshotDigest": "4ba49ca99ca73afde958425ce7e15bbcfa56d57a5be983d15507613687f02cb2",
+            "modelVersion": "catboost-optuna-v1",
+            "bundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+            "score": 0.0033180779320394808,
+            "scoreKind": "BANKRUPTCY_PROXY",
+            "calibrationStatus": "DEMONSTRATION",
+            "releaseId": "catboost-optuna-v1",
+            "purpose": "DEMO_RESEARCH",
+            "internalReasonCodes": [
+              "SYNTHETIC_SIMULATION"
+            ]
+          },
+          "failure": null,
+          "seconds": 0.014648333948571235
+        }
+      ]
+    },
+    {
+      "scenario": "S04",
+      "companyId": "DEMO:S04",
+      "expected": [
+        "ALTERNATIVE"
+      ],
+      "actual": [
+        "ALTERNATIVE"
+      ],
+      "attempts": [
+        {
+          "policy": {
+            "outcome": "ALTERNATIVE",
+            "rule": "AMOUNT_ABOVE_CAP",
+            "policyVersion": "synthetic-demo-policy-3",
+            "offerAmountMinor": 500000000
+          },
+          "mlCalled": true,
+          "snapshotRequest": {
+            "applicationId": "DEMO:8660707c-090c-40d4-b898-e926494b40b2",
+            "submissionSnapshotId": "902c2235-0738-4135-b1ea-cb35d0f07fb6",
+            "financialSnapshotId": "a50f1372-2e54-4bba-b604-270e597e458a",
+            "financialSnapshotDigest": "052f20117381f5f9f66272b65bb2ca721878c4526107a66ca8b6f97aad7040e3",
+            "financialStatementVersion": 1,
+            "asOf": "2026-10-21T09:01:17.066033+00:00",
+            "latestSourceAvailableAt": "2026-04-01T00:00:00Z",
+            "purpose": "DEMO_RESEARCH",
+            "financialStatement": {
+              "currency": "RUB",
+              "periodEnd": "2025-12-31",
+              "periodStart": "2025-01-01",
+              "reportingStandard": "DEMO",
+              "sourceDocumentReferences": [],
+              "values": {
+                "currentAssetsMinor": 1633233164,
+                "currentLiabilitiesMinor": 158120246,
+                "ebitMinor": 1062220169,
+                "equityMinor": 1373639643,
+                "netProfitMinor": 837815739,
+                "revenueMinor": 4044174564,
+                "totalAssetsMinor": 1746438733,
+                "totalLiabilitiesMinor": 372799090
+              }
+            }
+          },
+          "snapshot": {
+            "featureSnapshotId": "5bf497b1-7959-45d7-a579-e78468ad4fa0",
+            "submissionSnapshotId": "902c2235-0738-4135-b1ea-cb35d0f07fb6",
+            "financialStatementVersion": 1,
+            "featureSchemaVersion": 2,
+            "featureCodeDigest": "2d59d6b8fd40976b0ca11dbf195f77546e6b5112b85cdc2af8c969326e1723eb",
+            "featureAsOf": "2026-10-21T09:01:17.066033+00:00",
+            "latestSourceAvailableAt": "2026-04-01T00:00:00Z",
+            "financialSnapshotId": "a50f1372-2e54-4bba-b604-270e597e458a",
+            "financialSnapshotDigest": "052f20117381f5f9f66272b65bb2ca721878c4526107a66ca8b6f97aad7040e3",
+            "features": {
+              "X1": 0.47972810220534656,
+              "X2": 0.21346244958711644,
+              "X3": 0.8446405190899989,
+              "X4": 10.329057823499719,
+              "X7": 0.6082206887242692,
+              "X8": 3.684664688961553,
+              "X9": 2.3156693032414553,
+              "X10": 0.7865375504128835
+            },
+            "missingFeatures": [],
+            "snapshotDigest": "56e6e43ca84aab0d79fdf9c92e30f4deb64abb00aa2847403c1d75784ef4b95a"
+          },
+          "riskRequest": {
+            "requestId": "49ee5f14-dc5f-40e8-8c97-c67958ac3bba",
+            "featureSnapshotId": "5bf497b1-7959-45d7-a579-e78468ad4fa0",
+            "featureSnapshotDigest": "56e6e43ca84aab0d79fdf9c92e30f4deb64abb00aa2847403c1d75784ef4b95a",
+            "featureSchemaVersion": 2,
+            "bundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+            "purpose": "DEMO_RESEARCH"
+          },
+          "inference": {
+            "requestId": "49ee5f14-dc5f-40e8-8c97-c67958ac3bba",
+            "inferenceId": "31bba237-d325-44c3-b692-6db67d82ff9e",
+            "featureSnapshotId": "5bf497b1-7959-45d7-a579-e78468ad4fa0",
+            "featureSnapshotDigest": "56e6e43ca84aab0d79fdf9c92e30f4deb64abb00aa2847403c1d75784ef4b95a",
+            "modelVersion": "catboost-optuna-v1",
+            "bundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+            "score": 0.0033180779320394808,
+            "scoreKind": "BANKRUPTCY_PROXY",
+            "calibrationStatus": "DEMONSTRATION",
+            "releaseId": "catboost-optuna-v1",
+            "purpose": "DEMO_RESEARCH",
+            "internalReasonCodes": [
+              "SYNTHETIC_SIMULATION"
+            ]
+          },
+          "failure": null,
+          "seconds": 0.014435874996706843
+        }
+      ]
+    },
+    {
+      "scenario": "S05",
+      "companyId": "DEMO:S05",
+      "expected": [
+        "MANUAL"
+      ],
+      "actual": [
+        "MANUAL"
+      ],
+      "attempts": [
+        {
+          "policy": {
+            "outcome": "MANUAL",
+            "rule": "MODEL_REVIEW_BUDGET",
+            "policyVersion": "synthetic-demo-policy-3",
+            "offerAmountMinor": null
+          },
+          "mlCalled": true,
+          "snapshotRequest": {
+            "applicationId": "DEMO:dec4698f-4e43-469b-aca4-1cad84eb8a06",
+            "submissionSnapshotId": "8edacc51-f6cb-4bcb-a99f-6f23b276834d",
+            "financialSnapshotId": "1e64e764-5c8f-4bf6-8b90-f2c608e92a10",
+            "financialSnapshotDigest": "2e59fa7ab78226bf766f44bacda8497e6395782b38c50dda9a372270416304de",
+            "financialStatementVersion": 1,
+            "asOf": "2026-10-21T09:01:17.080495+00:00",
+            "latestSourceAvailableAt": "2026-04-01T00:00:00Z",
+            "purpose": "DEMO_RESEARCH",
+            "financialStatement": {
+              "currency": "RUB",
+              "periodEnd": "2025-12-31",
+              "periodStart": "2025-01-01",
+              "reportingStandard": "DEMO",
+              "sourceDocumentReferences": [],
+              "values": {
+                "currentAssetsMinor": 391801248,
+                "currentLiabilitiesMinor": 932884898,
+                "ebitMinor": -355603992,
+                "equityMinor": 219120002,
+                "netProfitMinor": -480968834,
+                "revenueMinor": 2462949780,
+                "totalAssetsMinor": 1240042041,
+                "totalLiabilitiesMinor": 1020922039
+              }
+            }
+          },
+          "snapshot": {
+            "featureSnapshotId": "0c03a47a-fc43-462d-a2a9-89913db7f0b3",
+            "submissionSnapshotId": "8edacc51-f6cb-4bcb-a99f-6f23b276834d",
+            "financialStatementVersion": 1,
+            "featureSchemaVersion": 2,
+            "featureCodeDigest": "2d59d6b8fd40976b0ca11dbf195f77546e6b5112b85cdc2af8c969326e1723eb",
+            "featureAsOf": "2026-10-21T09:01:17.080495+00:00",
+            "latestSourceAvailableAt": "2026-04-01T00:00:00Z",
+            "financialSnapshotId": "1e64e764-5c8f-4bf6-8b90-f2c608e92a10",
+            "financialSnapshotDigest": "2e59fa7ab78226bf766f44bacda8497e6395782b38c50dda9a372270416304de",
+            "features": {
+              "X1": -0.387864941749987,
+              "X2": 0.8232963119352822,
+              "X3": -0.4363429884713078,
+              "X4": 0.4199888419675114,
+              "X7": -0.28676769032220256,
+              "X8": 0.21462951491832766,
+              "X9": 1.9861824829856716,
+              "X10": 0.1767036880647178
+            },
+            "missingFeatures": [],
+            "snapshotDigest": "b16a3b12d8b7ecb32ab51bf16fac573abad8d107052af7c62250f9592d5837f3"
+          },
+          "riskRequest": {
+            "requestId": "3556e552-2c07-40b5-b548-583c4f96d221",
+            "featureSnapshotId": "0c03a47a-fc43-462d-a2a9-89913db7f0b3",
+            "featureSnapshotDigest": "b16a3b12d8b7ecb32ab51bf16fac573abad8d107052af7c62250f9592d5837f3",
+            "featureSchemaVersion": 2,
+            "bundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+            "purpose": "DEMO_RESEARCH"
+          },
+          "inference": {
+            "requestId": "3556e552-2c07-40b5-b548-583c4f96d221",
+            "inferenceId": "aadace7d-27df-42f8-b832-e2baeb9efd1a",
+            "featureSnapshotId": "0c03a47a-fc43-462d-a2a9-89913db7f0b3",
+            "featureSnapshotDigest": "b16a3b12d8b7ecb32ab51bf16fac573abad8d107052af7c62250f9592d5837f3",
+            "modelVersion": "catboost-optuna-v1",
+            "bundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+            "score": 0.6063120314532598,
+            "scoreKind": "BANKRUPTCY_PROXY",
+            "calibrationStatus": "DEMONSTRATION",
+            "releaseId": "catboost-optuna-v1",
+            "purpose": "DEMO_RESEARCH",
+            "internalReasonCodes": [
+              "SYNTHETIC_SIMULATION"
+            ]
+          },
+          "failure": null,
+          "seconds": 0.014575333043467253
+        }
+      ]
+    },
+    {
+      "scenario": "S06",
+      "companyId": "DEMO:S06",
+      "expected": [
+        "MANUAL"
+      ],
+      "actual": [
+        "MANUAL"
+      ],
+      "attempts": [
+        {
+          "policy": {
+            "outcome": "MANUAL",
+            "rule": "ML_FAILURE",
+            "policyVersion": "synthetic-demo-policy-3",
+            "offerAmountMinor": null
+          },
+          "mlCalled": true,
+          "snapshotRequest": {
+            "applicationId": "DEMO:08e3a147-97ce-407a-a252-39193e041813",
+            "submissionSnapshotId": "65bd8fda-8ac8-4726-993e-ed092b6f3bcc",
+            "financialSnapshotId": "71b9b679-79f6-43cd-bbd0-e9c8129c97f1",
+            "financialSnapshotDigest": "052f20117381f5f9f66272b65bb2ca721878c4526107a66ca8b6f97aad7040e3",
+            "financialStatementVersion": 1,
+            "asOf": "2026-10-21T09:01:17.095104+00:00",
+            "latestSourceAvailableAt": "2026-04-01T00:00:00Z",
+            "purpose": "DEMO_RESEARCH",
+            "financialStatement": {
+              "currency": "RUB",
+              "periodEnd": "2025-12-31",
+              "periodStart": "2025-01-01",
+              "reportingStandard": "DEMO",
+              "sourceDocumentReferences": [],
+              "values": {
+                "currentAssetsMinor": 1633233164,
+                "currentLiabilitiesMinor": 158120246,
+                "ebitMinor": 1062220169,
+                "equityMinor": 1373639643,
+                "netProfitMinor": 837815739,
+                "revenueMinor": 4044174564,
+                "totalAssetsMinor": 1746438733,
+                "totalLiabilitiesMinor": 372799090
+              }
+            }
+          },
+          "snapshot": {
+            "featureSnapshotId": "cc9458e8-93f2-4f16-9793-a73d3a3485f9",
+            "submissionSnapshotId": "65bd8fda-8ac8-4726-993e-ed092b6f3bcc",
+            "financialStatementVersion": 1,
+            "featureSchemaVersion": 2,
+            "featureCodeDigest": "2d59d6b8fd40976b0ca11dbf195f77546e6b5112b85cdc2af8c969326e1723eb",
+            "featureAsOf": "2026-10-21T09:01:17.095104+00:00",
+            "latestSourceAvailableAt": "2026-04-01T00:00:00Z",
+            "financialSnapshotId": "71b9b679-79f6-43cd-bbd0-e9c8129c97f1",
+            "financialSnapshotDigest": "052f20117381f5f9f66272b65bb2ca721878c4526107a66ca8b6f97aad7040e3",
+            "features": {
+              "X1": 0.47972810220534656,
+              "X2": 0.21346244958711644,
+              "X3": 0.8446405190899989,
+              "X4": 10.329057823499719,
+              "X7": 0.6082206887242692,
+              "X8": 3.684664688961553,
+              "X9": 2.3156693032414553,
+              "X10": 0.7865375504128835
+            },
+            "missingFeatures": [],
+            "snapshotDigest": "47dccaf38d5f2bfb52d9b6be3be0061ba8de0f445eeb221f28687cb33bb86dff"
+          },
+          "riskRequest": {
+            "requestId": "c69776e6-d1ac-49cd-b9d8-fbfe9d1db669",
+            "featureSnapshotId": "cc9458e8-93f2-4f16-9793-a73d3a3485f9",
+            "featureSnapshotDigest": "47dccaf38d5f2bfb52d9b6be3be0061ba8de0f445eeb221f28687cb33bb86dff",
+            "featureSchemaVersion": 2,
+            "bundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+            "purpose": "DEMO_RESEARCH"
+          },
+          "inference": null,
+          "failure": "ConnectionError",
+          "seconds": 0.007472749974112958
+        }
+      ]
+    }
+  ],
+  "latency": {
+    "requests": 30,
+    "concurrency": 1,
+    "p95Seconds": 0.014124833047389984,
+    "maxSeconds": 0.014258916024118662,
+    "samplesSeconds": [
+      0.014258916024118662,
+      0.014010499988216907,
+      0.013691208965610713,
+      0.014014958986081183,
+      0.013817958999425173,
+      0.014188583998475224,
+      0.013506292016245425,
+      0.013822957989759743,
+      0.014028125035110861,
+      0.013701999967452139,
+      0.013578041980508715,
+      0.013755708001554012,
+      0.014018832996953279,
+      0.0139645830495283,
+      0.013671416963916272,
+      0.013875874981749803,
+      0.013961374992504716,
+      0.01361675001680851,
+      0.014109499985352159,
+      0.014124833047389984,
+      0.013769957993645221,
+      0.013850416988134384,
+      0.013609457993879914,
+      0.013952000008430332,
+      0.013930832967162132,
+      0.013821124972309917,
+      0.013910042005591094,
+      0.01382125000236556,
+      0.013968916959129274,
+      0.013961584016215056
+    ],
+    "platform": "macOS-14.5-arm64-arm-64bit",
+    "logicalCpu": 8
+  },
+  "passed": true
+}

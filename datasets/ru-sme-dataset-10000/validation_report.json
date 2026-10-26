@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "real_registry_rows": 10000,
+  "hybrid_rows": 10000,
+  "simulation_rows": 10000,
+  "unique_inns": 10000,
+  "unique_ogrns": 10000,
+  "regional_codes": 88,
+  "okved_divisions": 80,
+  "msp_categories": {
+    "1": 8957,
+    "2": 1005,
+    "3": 38
+  },
+  "source_document_hashes_verified": 10000,
+  "accounting_identities_checked_on_rows": 20000,
+  "real_outcomes_known": 0,
+  "synthetic_positive_labels": 512,
+  "disjoint_splits": {
+    "train": 7016,
+    "validation": 1494,
+    "test": 1490
+  },
+  "synthetic_labels_attached_to_real_inns": false,
+  "note": "Synthetic financials and labels are not evidence about real company solvency."
+}

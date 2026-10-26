@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-10-26T11:28:50.158251+00:00",
+  "baseUrl": "https://president-diameter-endearing.ngrok-free.dev",
+  "method": "Manual browser interaction with real backend. No mock was enabled.",
+  "observations": [
+    {
+      "question": "Какие документы нужны для заявки на оборотный кредит?",
+      "result": "Недостаточно проверяемых данных для ответа; источники ответа не подтверждены.",
+      "classification": "NO_VALIDATED_ANSWER"
+    },
+    {
+      "question": "Что публикует ФНС в открытых данных реестра получателей поддержки МСП? Покажи источник.",
+      "result": "Генерация недоступна. Доступные источники приведены отдельно. Доступен только поиск по источникам.",
+      "classification": "SEARCH_ONLY",
+      "visibleSourceCount": 5,
+      "visibleSources": [
+        "https://www.nalog.gov.ru/opendata/7707329152-rsmppp/",
+        "https://alfabank.ru/help/articles/sme/profits/kakie-dokumenty-nuzhny-dlya-kreditovaniya-biznesa/",
+        "https://alfabank.ru/sme/partner/ab_partner_businesscredit/",
+        "https://cbr.ru/develop/msp/",
+        "https://cbr.ru/analytics/develop/inf_material_msp/"
+      ]
+    }
+  ],
+  "conclusion": "Live retrieval is available. Successful live LLM generation is NOT confirmed; current UI explicitly reports unavailability. Historical local Qwen inference is documented separately."
+}

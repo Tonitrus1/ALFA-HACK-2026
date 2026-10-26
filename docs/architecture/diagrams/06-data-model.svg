@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1380" height="900" viewBox="0 0 1380 900"><rect width="1380" height="900" fill="#ffffff"/><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 Z" fill="#6d8291"/></marker></defs>
+<text x="40" y="55" font-family="DejaVu Sans,sans-serif" font-size="31" font-weight="bold" fill="#182b3b">Модель данных: неизменяемые связи</text>
+<text x="40" y="92" font-family="DejaVu Sans,sans-serif" font-size="17" fill="#5a6b7b">Полная модель и ограничения: contracts/data-model.json. Это логические связи, не миграция БД.</text>
+<polyline points="305,207.5 385,207.5" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="345.0" y="199.5" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">1:N</text>
+<polyline points="645,207.5 725,207.5" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="685.0" y="199.5" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">1:1</text>
+<polyline points="985,207.5 1060,207.5" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="1022.5" y="199.5" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">1:N</text>
+<polyline points="175.0,270 175.0,360.0 175.0,360.0 175.0,450" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="175.0" y="352.0" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">1:N</text>
+<polyline points="515.0,270 515.0,360.0 515.0,360.0 515.0,450" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="515.0" y="352.0" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">точные refs</text>
+<polyline points="855.0,270 855.0,360.0 855.0,360.0 855.0,450" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="855.0" y="352.0" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">пакет</text>
+<polyline points="305,512 345,512 345,552 385,552" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="8 6"/>
+<text x="345.0" y="524.0" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">ответ</text>
+<rect x="45" y="145" width="260" height="125" rx="12" fill="#eaf5ef" stroke="#6e9e86" stroke-width="1.8"/>
+<text x="59" y="174" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Заявка</text>
+<text x="59" y="205" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Компания / продукт /</text>
+<text x="59" y="227" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">версия</text>
+<rect x="385" y="145" width="260" height="125" rx="12" fill="#eaf5ef" stroke="#6e9e86" stroke-width="1.8"/>
+<text x="399" y="174" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Снимок отправки</text>
+<text x="399" y="205" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Пакет / согласия /</text>
+<text x="399" y="227" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">документы</text>
+<rect x="725" y="145" width="260" height="125" rx="12" fill="#eaf5ef" stroke="#6e9e86" stroke-width="1.8"/>
+<text x="739" y="174" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Финансовый снимок</text>
+<text x="739" y="205" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Значения / provenance /</text>
+<text x="739" y="227" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">digest</text>
+<rect x="1060" y="145" width="260" height="125" rx="12" fill="#eaf5ef" stroke="#6e9e86" stroke-width="1.8"/>
+<text x="1074" y="174" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Feature / inference</text>
+<text x="1074" y="205" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Версия модели и</text>
+<text x="1074" y="227" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">признаков</text>
+<rect x="45" y="450" width="260" height="125" rx="12" fill="#eaf5ef" stroke="#6e9e86" stroke-width="1.8"/>
+<text x="59" y="479" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Запрос уточнений</text>
+<text x="59" y="510" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Request и отдельный draft</text>
+<rect x="385" y="450" width="260" height="125" rx="12" fill="#eaf5ef" stroke="#6e9e86" stroke-width="1.8"/>
+<text x="399" y="479" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Документы</text>
+<text x="399" y="510" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">ObjectVersion / CLEAN /</text>
+<text x="399" y="532" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">lease</text>
+<rect x="725" y="450" width="260" height="125" rx="12" fill="#eaf5ef" stroke="#6e9e86" stroke-width="1.8"/>
+<text x="739" y="479" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Дело / предложение</text>
+<text x="739" y="510" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Банковские версии / срок</text>
+<rect x="1060" y="450" width="260" height="125" rx="12" fill="#eaf5ef" stroke="#6e9e86" stroke-width="1.8"/>
+<text x="1074" y="479" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">KB / сообщения</text>
+<text x="1074" y="510" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Источник / epoch / actor</text>
+<text x="40" y="820" font-family="DejaVu Sans,sans-serif" font-size="15" fill="#5a6b7b">Версии редактируемых контейнеров не равны версиям снимков, байтов файлов и банковских событий.</text>
+<text x="40" y="848" font-family="DejaVu Sans,sans-serif" font-size="15" fill="#5a6b7b">Все tenant-sensitive связи проверяются по company/actor, не только по непрозрачному ID.</text>
+<text x="40" y="887" font-family="DejaVu Sans,sans-serif" font-size="12" fill="#5a6b7b">HACKATHON-1.5 · 20.10.2026 · 06/07 · проектная схема, runtime не проверен</text></svg>

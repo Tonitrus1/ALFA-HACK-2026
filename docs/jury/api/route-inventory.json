@@ -1,0 +1,227 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/access/api/PasswordAccessController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/session",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/access/api/SessionController.java"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/session/logout",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/access/api/SessionController.java"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/session/company",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/access/api/SessionController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/companies",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/access/api/CompanyController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/companies/{companyId}",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/access/api/CompanyController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/products",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/catalog/api/ProductController.java"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/applications",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/applications/api/ApplicationController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/applications",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/applications/api/ApplicationController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/applications/api/ApplicationController.java"
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/applications/{applicationId}",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/applications/api/ApplicationController.java"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/applications/{applicationId}/submit",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/applications/api/ApplicationController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/financial-statement",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/applications/api/FinancialStatementController.java"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/applications/{applicationId}/financial-statement",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/applications/api/FinancialStatementController.java"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/applications/{applicationId}/financial-statement/confirm",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/applications/api/FinancialStatementController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/information-requests",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/applications/api/InformationRequestController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/information-requests/{requestId}/draft",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/applications/api/InformationRequestController.java"
+  },
+  {
+    "method": "PATCH",
+    "path": "/api/v1/applications/{applicationId}/information-requests/{requestId}/draft",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/applications/api/InformationRequestController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/information-requests/{requestId}/draft/financial-statement",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/applications/api/InformationRequestController.java"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/applications/{applicationId}/information-requests/{requestId}/draft/financial-statement",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/applications/api/InformationRequestController.java"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/applications/{applicationId}/information-requests/{requestId}/draft/financial-statement/confirm",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/applications/api/InformationRequestController.java"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/applications/{applicationId}/information-requests/{requestId}/responses",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/applications/api/InformationRequestController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/status",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/workspace/api/StatusController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/operations/{operationId}",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/journey/api/OperationController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/document-requirements",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/documents/api/DocumentController.java"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/applications/{applicationId}/documents/upload-intents",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/documents/api/DocumentController.java"
+  },
+  {
+    "method": "DELETE",
+    "path": "/api/v1/uploads/{uploadId}",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/documents/api/DocumentController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/documents",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/documents/api/DocumentController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/documents/{documentId}",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/documents/api/DocumentController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/documents/{documentId}/extraction",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/documents/api/DocumentController.java"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/documents/{documentId}/download-intents",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/documents/api/DocumentController.java"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/files/uploads/{transferId}",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/documents/api/FileTransferController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/files/downloads/{transferId}",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/documents/api/FileTransferController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/applications/{applicationId}/decision",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/integration/api/DecisionController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/offers/{offerId}",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/integration/api/DecisionController.java"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/offers/{offerId}/accept",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/integration/api/OfferCommandController.java"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/offers/{offerId}/complete",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/integration/api/OfferCommandController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/feed/preferences",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/workspace/api/FeedController.java"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/feed/preferences",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/workspace/api/FeedController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/feed",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/workspace/api/FeedController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/feed/saved",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/workspace/api/FeedController.java"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/recommendation-feedback",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/workspace/api/FeedController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/assistant/conversations/{conversationId}/messages",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/assistant/AssistantController.java"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/assistant/conversations/{conversationId}/messages",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/assistant/AssistantController.java"
+  },
+  {
+    "method": "GET",
+    "path": "/api/v1/assistant/conversations/{conversationId}/sources/{documentId}/{version}",
+    "source": "backend/app/src/main/java/ru/alfahack/credit/assistant/AssistantController.java"
+  }
+]

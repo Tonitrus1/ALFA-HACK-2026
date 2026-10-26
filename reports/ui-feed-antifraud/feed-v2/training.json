@@ -1,0 +1,160 @@
+{
+  "isSynthetic": true,
+  "objective": "PairLogit",
+  "selectionSplit": "validation",
+  "testUsedForSelection": false,
+  "counts": {
+    "train_all_groups": 2800,
+    "train_excluded_groups": 1080,
+    "train_groups": 1720,
+    "train_rows": 5539,
+    "validation_all_groups": 600,
+    "validation_groups": 330,
+    "validation_rows": 1090,
+    "validation_excluded_groups": 270
+  },
+  "dataValidation": {
+    "valid": true,
+    "isSynthetic": true,
+    "requests": 4000,
+    "contexts": 500,
+    "events": 32686,
+    "actions": {
+      "VIEW": 15597,
+      "CLICK": 9172,
+      "HELPFUL": 5115,
+      "NOT_INTERESTED": 2802
+    },
+    "splits": {
+      "train": 350,
+      "validation": 75,
+      "test": 75
+    },
+    "checks": [
+      "checksums",
+      "analytics_schema",
+      "context_disjoint_splits",
+      "exposure_membership",
+      "versions",
+      "positions",
+      "event_id_uniqueness",
+      "timestamps",
+      "eligibility_replay",
+      "point_in_time_reactions"
+    ]
+  },
+  "runs": [
+    {
+      "params": {
+        "loss_function": "PairLogit",
+        "eval_metric": "NDCG:top=6",
+        "depth": 4,
+        "learning_rate": 0.03,
+        "iterations": 500,
+        "early_stopping_rounds": 50,
+        "random_seed": 20261022,
+        "task_type": "CPU",
+        "thread_count": 4,
+        "allow_writing_files": false,
+        "verbose": false
+      },
+      "validationNDCG6": 0.8892148665445551,
+      "trees": 23
+    },
+    {
+      "params": {
+        "loss_function": "PairLogit",
+        "eval_metric": "NDCG:top=6",
+        "depth": 4,
+        "learning_rate": 0.1,
+        "iterations": 500,
+        "early_stopping_rounds": 50,
+        "random_seed": 20261022,
+        "task_type": "CPU",
+        "thread_count": 4,
+        "allow_writing_files": false,
+        "verbose": false
+      },
+      "validationNDCG6": 0.891714881070726,
+      "trees": 74
+    },
+    {
+      "params": {
+        "loss_function": "PairLogit",
+        "eval_metric": "NDCG:top=6",
+        "depth": 6,
+        "learning_rate": 0.03,
+        "iterations": 500,
+        "early_stopping_rounds": 50,
+        "random_seed": 20261022,
+        "task_type": "CPU",
+        "thread_count": 4,
+        "allow_writing_files": false,
+        "verbose": false
+      },
+      "validationNDCG6": 0.8892425573056114,
+      "trees": 40
+    },
+    {
+      "params": {
+        "loss_function": "PairLogit",
+        "eval_metric": "NDCG:top=6",
+        "depth": 6,
+        "learning_rate": 0.1,
+        "iterations": 500,
+        "early_stopping_rounds": 50,
+        "random_seed": 20261022,
+        "task_type": "CPU",
+        "thread_count": 4,
+        "allow_writing_files": false,
+        "verbose": false
+      },
+      "validationNDCG6": 0.8886430336844524,
+      "trees": 40
+    }
+  ],
+  "selectedValidationNDCG6": 0.891714881070726,
+  "selectedParams": {
+    "iterations": 500,
+    "learning_rate": 0.1,
+    "depth": 4,
+    "loss_function": "PairLogit",
+    "thread_count": 4,
+    "random_seed": 20261022,
+    "verbose": false,
+    "eval_metric": "NDCG:top=6",
+    "allow_writing_files": false,
+    "task_type": "CPU",
+    "early_stopping_rounds": 50
+  },
+  "featureImportance": {
+    "task": -0.0004904812315912332,
+    "help": -0.0001844810320957846,
+    "depth": -0.00042190266999098114,
+    "businessCategory": 0.00020912521389238048,
+    "applicationStage": -0.0003052207756698566,
+    "item_topic": -0.0013679443681118286,
+    "item_depth": 0.0005679761389807414,
+    "item_format": -0.00010598480166235102,
+    "semantic_similarity": -0.0011423264770268338,
+    "task_match": 0.009703710891383333,
+    "help_match": -0.0005706983472085758,
+    "depth_match": -0.0007992722900933558,
+    "business_match": 0.0,
+    "stage_match": 0.00010560721594621292,
+    "business_universal": -0.00012960935592876144,
+    "helpful": 0.0021199137460803374,
+    "not_interested": 0.00533539259732152,
+    "reaction_difference": -0.0007523401335192137,
+    "task_missing": 0.0001737262964298658,
+    "help_missing": 0.0,
+    "depth_missing": -0.0007286102044403719,
+    "businessCategory_missing": 0.000123371184347576,
+    "applicationStage_missing": -5.0507543985500725e-05
+  },
+  "limitations": [
+    "Observed labels are selective and position-biased.",
+    "Validation NDCG concerns labeled exposed items, not all eligible cards.",
+    "Independent human review is required before promotion."
+  ]
+}

@@ -1,0 +1,141 @@
+"""Train an immutable candidate without publishing or changing active artifacts."""
+import argparse
+from datetime import datetime, timezone
+import importlib.metadata
+import json
+import os
+from pathlib import Path
+import platform
+import shutil
+import tempfile
+import joblib
+import numpy as np
+import pyarrow.parquet as pq
+from .bundle import file_hash, load_bundle, predict_probability
+from .evaluation import create_policy, financial_eligible
+from .features import FEATURES, FIELDS, code_digest, digest, matrix, statement_from_row
+from .learning import CONFIGS, develop, estimator, select
+from .training_fixtures import create_fixtures
+
+ROOT = Path(__file__).resolve().parents[2]
+
+
+def write(path, value):
+    path.write_text(json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + '\n')
+
+
+def load(path):
+    rows = pq.read_table(path, columns=list(FIELDS)+['company_id','target_12m','split']).to_pylist()
+    statements = [statement_from_row(r) for r in rows]
+    return rows, statements, np.array([r['target_12m'] for r in rows], dtype=np.int8)
+
+
+def finalize_manifest(out, metadata):
+    names = sorted(p.name for p in out.iterdir() if p.is_file() and p.name not in {'manifest.json', 'SHA256SUMS'})
+    manifest = {**metadata, 'artifacts': {name: file_hash(out/name) for name in names}}
+    manifest['bundleDigest'] = digest(manifest)
+    write(out/'manifest.json', manifest)
+    (out/'SHA256SUMS').write_text(''.join(f'{file_hash(out/name)}  {name}\n' for name in names+['manifest.json']))
+    return manifest
+
+
+def train(dataset, output, folds=5, repeats=3, threads=2, family='auto'):
+    # Check both the supplied path and its symlink target, including nonexistent
+    # children. A symlink inside artifacts must not turn publication into training.
+    supplied = Path(os.path.abspath(output))
+    dataset, output = Path(dataset).resolve(), supplied.resolve()
+    protected = [ROOT/'ml/artifacts', ROOT/'reports', ROOT/'ml/fixtures', ROOT/'ml/generated', ROOT/'datasets', dataset]
+    protected = {q for p in protected for q in (p.absolute(), p.resolve())}
+    if supplied.is_symlink() or output.exists() or any(
+        candidate == p or p in candidate.parents or candidate in p.parents
+        for candidate in (supplied, output) for p in protected
+    ):
+        raise ValueError('A new candidate directory outside datasets/published artifacts is required')
+    if folds < 2 or repeats < 1 or threads < 1 or family not in {'auto', 'logistic', 'catboost'}:
+        raise ValueError('Invalid development configuration')
+    published = {line.split(maxsplit=1)[1].lstrip('*'): line.split()[0] for line in (dataset/'MANIFEST.sha256').read_text().splitlines() if line.strip()}
+    train_path = dataset/'simulation_splits/train.parquet'
+    if file_hash(train_path) != published['simulation_splits/train.parquet']:
+        raise ValueError('Train checksum mismatch')
+    rows, statements, y = load(train_path)
+    ids = [r['company_id'] for r in rows]
+    if len(set(ids)) != len(ids) or not all(r['split']=='train' for r in rows):
+        raise ValueError('Train must contain unique companies and only train rows')
+    x = matrix(statements)
+    eligible = np.array([financial_eligible(s) for s in statements])
+    seed = 20261021
+    output.parent.mkdir(parents=True, exist_ok=True)
+    staging = Path(tempfile.mkdtemp(prefix='.scoring-candidate-', dir=output.parent))
+    try:
+        protocol = {'version':2,'task':'synthetic demonstration; future intent credit default, not observed default labels',
+                    'data':'original train only; historical validation/test not read', 'primary':'eligible Recall@5%',
+                    'tieBreakers':['eligible AP','ordinary eligible Logloss'], 'folds':folds,'repeats':repeats,
+                    'seeds':[seed+i for i in range(repeats)], 'innerFolds':3,'boundedCandidates':CONFIGS,
+                    'classWeights':'unweighted default; Balanced diagnostic only',
+                    'earlyStopping':'fixed iterations chosen within development; no outer-fold early stopping',
+                    'calibration':'none; requires separate evidence',
+                    'independence':'reused synthetic train; final confirmation required',
+                    'featureContract':{'schema':2,'features':FEATURES,'rawWhitelist':list(FIELDS)},
+                    'trainHash':file_hash(train_path),'sourceHash':file_hash(Path(__file__)),
+                    'learningSourceHash':file_hash(Path(__file__).with_name('learning.py'))}
+        write(staging/'protocol.json',protocol)
+        winner, summaries, records, membership, predictions = develop(x,y,eligible,ids,folds,repeats,seed,threads,
+            progress=lambda repeat,fold:print(json.dumps({'repeat':repeat,'fold':fold,'status':'complete'}),flush=True))
+        if family != 'auto': winner=family
+        config, final_candidates = select(CONFIGS[winner],x,y,eligible,3,62021,threads)
+        model=estimator(config,threads);model.fit(x,y)
+        policy_version='synthetic-demo-policy-4'
+        policy=create_policy(y,predictions[winner][0],eligible,policy_version)
+        model_version='scoring-v2-'+digest({'config':config,'protocol':protocol})[:12]
+        joblib.dump(model,staging/'model.joblib');write(staging/'policy.json',policy)
+        write(staging/'evaluation.json',{'modelType':type(model).__name__,'selectionFamily':winner,'config':config,
+                    'development':summaries,'foldResults':records,'uncertainty':'repeat variation; no independent test claimed',
+                    'finalInnerCandidates':final_candidates,'historicalTestUsed':False})
+        write(staging/'fold-membership.json',membership)
+        np.savez_compressed(staging/'oof-predictions.npz',y=y,eligible=eligible,**predictions)
+        write(staging/'selection-lock.json',{'modelHash':file_hash(staging/'model.joblib'),'policyHash':file_hash(staging/'policy.json'),
+                    'featureCodeDigest':code_digest(),'protocolHash':file_hash(staging/'protocol.json'),
+                    'selectedFamily':winner,'config':config,'independentEvaluation':'required before activation'})
+        shutil.copy2(ROOT/'docs/architecture/contracts/feature-snapshot.schema.json',staging/'feature-schema.json')
+        (staging/'model-card.md').write_text(f'# {model_version}\n\nSynthetic demonstration only. BANKRUPTCY_PROXY / DEMONSTRATION / DEMO_RESEARCH.\n'
+            'Not a validated probability of credit default. Eight-feature schema 2 is unchanged.\n'
+            'Learned imputation/scaling is serialized with the estimator. Primary metric: eligible Recall@5%.\n'
+            'Candidate only: training never activates a service or changes published fixtures.\n')
+        fixture=create_fixtures(rows,statements,predict_probability(model,x),policy['T_manual'],'candidate',policy_version)
+        fixture.pop('bundleDigest');fixture['modelHash']=file_hash(staging/'model.joblib');fixture['policyHash']=file_hash(staging/'policy.json')
+        write(staging/'scenarios.json',fixture)
+        shutil.copy2(ROOT/'ml/fixtures/expectations.json',staging/'expectations.json')
+        metadata={'modelVersion':model_version,'modelType':type(model).__name__,'featureSchemaVersion':2,
+                  'featureCodeDigest':code_digest(),'featureSchemaDigest':file_hash(staging/'feature-schema.json'),
+                  'features':FEATURES,'rawWhitelist':list(FIELDS),'scoreKind':'BANKRUPTCY_PROXY',
+                  'validationStatus':'DEMONSTRATION','purpose':'DEMO_RESEARCH','financialsSynthetic':True,'labelsSynthetic':True,
+                  'datasetHash':file_hash(train_path),'python':platform.python_version(),
+                  'libraries':{p:importlib.metadata.version(p) for p in ['numpy','scikit-learn','scipy','joblib','pyarrow','catboost','optuna']},
+                  'createdUTC':datetime.now(timezone.utc).isoformat(),'releaseStatus':'candidate',
+                  'compatibility':'schema 2 requests, eight raw fields and risk response unchanged'}
+        finalize_manifest(staging,metadata)
+        load_bundle(staging)
+        os.rename(staging,output)
+        return output
+    except BaseException:
+        shutil.rmtree(staging,ignore_errors=True)
+        raise
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--dataset',type=Path,required=True)
+    p.add_argument('--output',type=Path,default=ROOT.parent/'output/trained-candidates'/datetime.now(timezone.utc).strftime('scoring-%Y%m%dT%H%M%S%fZ'))
+    p.add_argument('--folds',type=int,default=5);p.add_argument('--repeats',type=int,default=3);p.add_argument('--threads',type=int,default=2)
+    p.add_argument('--family',choices=['auto','logistic','catboost'],default='auto')
+    p.add_argument('--trials',type=int,help='Legacy: bounded nested search replaces Optuna trials')
+    p.add_argument('--shortlist',type=int,help='Legacy: validation selection removed')
+    p.add_argument('--storage',help='Legacy Optuna storage is unsupported')
+    a=p.parse_args()
+    if a.storage:p.error('Optuna storage unsupported in bounded nested training')
+    if a.trials is not None or a.shortlist is not None:print('Legacy trials/shortlist ignored: bounded nested development',flush=True)
+    out=train(a.dataset,a.output,a.folds,a.repeats,a.threads,a.family)
+    print(json.dumps({'candidate':str(out),'activated':False},ensure_ascii=False))
+
+
+if __name__=='__main__':main()

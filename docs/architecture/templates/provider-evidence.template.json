@@ -1,0 +1,124 @@
+{
+  "status": "TEMPLATE_NOT_RUNTIME_EVIDENCE",
+  "commit": null,
+  "bindingConfigSha256": null,
+  "capabilities": [
+    {
+      "capability": "sessions",
+      "intendedTechnology": "Redis",
+      "selectedProvider": null,
+      "implementationStatus": "ARCHITECTURAL_SLOT",
+      "testStatus": "NOT_EXECUTED",
+      "evidencePath": null,
+      "evidenceSha256": null
+    },
+    {
+      "capability": "cache",
+      "intendedTechnology": "Redis",
+      "selectedProvider": null,
+      "implementationStatus": "ARCHITECTURAL_SLOT",
+      "testStatus": "NOT_EXECUTED",
+      "evidencePath": null,
+      "evidenceSha256": null
+    },
+    {
+      "capability": "vectors",
+      "intendedTechnology": "Qdrant",
+      "selectedProvider": null,
+      "implementationStatus": "ARCHITECTURAL_SLOT",
+      "testStatus": "NOT_EXECUTED",
+      "evidencePath": null,
+      "evidenceSha256": null
+    },
+    {
+      "capability": "features",
+      "intendedTechnology": "Feast",
+      "selectedProvider": null,
+      "implementationStatus": "ARCHITECTURAL_SLOT",
+      "testStatus": "NOT_EXECUTED",
+      "evidencePath": null,
+      "evidenceSha256": null
+    },
+    {
+      "capability": "registry",
+      "intendedTechnology": "MLflow",
+      "selectedProvider": null,
+      "implementationStatus": "ARCHITECTURAL_SLOT",
+      "testStatus": "NOT_EXECUTED",
+      "evidencePath": null,
+      "evidenceSha256": null
+    },
+    {
+      "capability": "jobs",
+      "intendedTechnology": "Airflow",
+      "selectedProvider": null,
+      "implementationStatus": "ARCHITECTURAL_SLOT",
+      "testStatus": "NOT_EXECUTED",
+      "evidencePath": null,
+      "evidenceSha256": null
+    },
+    {
+      "capability": "quality",
+      "intendedTechnology": "Evidently",
+      "selectedProvider": null,
+      "implementationStatus": "ARCHITECTURAL_SLOT",
+      "testStatus": "NOT_EXECUTED",
+      "evidencePath": null,
+      "evidenceSha256": null
+    },
+    {
+      "capability": "generation",
+      "intendedTechnology": "vLLM",
+      "selectedProvider": null,
+      "implementationStatus": "ARCHITECTURAL_SLOT",
+      "testStatus": "NOT_EXECUTED",
+      "evidencePath": null,
+      "evidenceSha256": null
+    },
+    {
+      "capability": "events",
+      "intendedTechnology": "Kafka",
+      "selectedProvider": null,
+      "implementationStatus": "ARCHITECTURAL_SLOT",
+      "testStatus": "NOT_EXECUTED",
+      "evidencePath": null,
+      "evidenceSha256": null
+    },
+    {
+      "capability": "objects",
+      "intendedTechnology": "S3",
+      "selectedProvider": null,
+      "implementationStatus": "ARCHITECTURAL_SLOT",
+      "testStatus": "NOT_EXECUTED",
+      "evidencePath": null,
+      "evidenceSha256": null
+    },
+    {
+      "capability": "metrics",
+      "intendedTechnology": "Prometheus",
+      "selectedProvider": null,
+      "implementationStatus": "ARCHITECTURAL_SLOT",
+      "testStatus": "NOT_EXECUTED",
+      "evidencePath": null,
+      "evidenceSha256": null
+    },
+    {
+      "capability": "dashboards",
+      "intendedTechnology": "Grafana",
+      "selectedProvider": null,
+      "implementationStatus": "ARCHITECTURAL_SLOT",
+      "testStatus": "NOT_EXECUTED",
+      "evidencePath": null,
+      "evidenceSha256": null
+    },
+    {
+      "capability": "orchestration",
+      "intendedTechnology": "Kubernetes",
+      "selectedProvider": null,
+      "implementationStatus": "ARCHITECTURAL_SLOT",
+      "testStatus": "NOT_EXECUTED",
+      "evidencePath": null,
+      "evidenceSha256": null
+    }
+  ]
+}

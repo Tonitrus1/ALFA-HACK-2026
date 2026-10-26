@@ -1,0 +1,1373 @@
+{
+  "info": {
+    "name": "Credit Workspace HACKATHON-1.5 - contract request templates",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "API templates generated from the canonical public contract. This is not an executed E2E collection. Set runtime IDs/session/CSRF and provide body from the canonical schema. No application is included."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "companyContext",
+      "value": "1"
+    },
+    {
+      "key": "csrfToken",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "GET /api/v1/session",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/session",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Текущая сессия\nCanonical operationId: get_api_v1_session\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "POST /api/v1/session/company",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/session/company",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          }
+        ],
+        "description": "Выбрать компанию с повторной проверкой полномочий\nCanonical operationId: post_api_v1_session_company\nRequest schema: {'$ref': '#/components/schemas/SelectCompany'}"
+      }
+    },
+    {
+      "name": "POST /api/v1/logout",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/logout",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          }
+        ],
+        "description": "Завершить сессию\nCanonical operationId: post_api_v1_logout\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/companies",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/companies",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Разрешённые компании\nCanonical operationId: get_api_v1_companies\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/companies/{companyId}",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/companies/{{companyId}}",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Компания и полномочия\nCanonical operationId: get_api_v1_companies_companyId\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/products",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/products",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Версионированный каталог\nCanonical operationId: get_api_v1_products\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "POST /api/v1/recommendations",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/recommendations",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          }
+        ],
+        "description": "Подобрать продукты без создания кредитной заявки\nCanonical operationId: post_api_v1_recommendations\nRequest schema: {'$ref': '#/components/schemas/RecommendationInput'}"
+      }
+    },
+    {
+      "name": "GET /api/v1/applications",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/applications",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Список заявок выбранной компании\nCanonical operationId: get_api_v1_applications\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "POST /api/v1/applications",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/applications",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotencyKey}}"
+          }
+        ],
+        "description": "Создать черновик\nCanonical operationId: post_api_v1_applications\nRequest schema: {'$ref': '#/components/schemas/CreateApplication'}"
+      }
+    },
+    {
+      "name": "GET /api/v1/applications/{applicationId}",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Черновик или отправленный снимок\nCanonical operationId: get_api_v1_applications_applicationId\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "PATCH /api/v1/applications/{applicationId}",
+      "request": {
+        "method": "PATCH",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "If-Match",
+            "value": "{{etag}}"
+          }
+        ],
+        "description": "Сохранить черновик\nCanonical operationId: patch_api_v1_applications_applicationId\nRequest schema: {'$ref': '#/components/schemas/DraftPatch'}"
+      }
+    },
+    {
+      "name": "POST /api/v1/applications/{applicationId}/submit",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/submit",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotencyKey}}"
+          }
+        ],
+        "description": "Надёжно принять пакет заявки\nCanonical operationId: post_api_v1_applications_applicationId_submit\nRequest schema: {'$ref': '#/components/schemas/Submit'}"
+      }
+    },
+    {
+      "name": "GET /api/v1/applications/{applicationId}/status",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/status",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Клиентская проекция статуса\nCanonical operationId: get_api_v1_applications_applicationId_status\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/applications/{applicationId}/consents",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/consents",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Согласия для заявки\nCanonical operationId: get_api_v1_applications_applicationId_consents\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "POST /api/v1/applications/{applicationId}/consents",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/consents",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotencyKey}}"
+          }
+        ],
+        "description": "Зафиксировать согласие субъекта\nCanonical operationId: post_api_v1_applications_applicationId_consents\nRequest schema: {'$ref': '#/components/schemas/ConsentInput'}"
+      }
+    },
+    {
+      "name": "GET /api/v1/applications/{applicationId}/consent-requirements",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/consent-requirements",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Тексты, цели, субъекты и допустимость согласий\nCanonical operationId: get_api_v1_applications_applicationId_consent_requirements\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "POST /api/v1/consents/{consentId}/revocation",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/consents/{{consentId}}/revocation",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotencyKey}}"
+          }
+        ],
+        "description": "Зафиксировать отзыв согласия и пересмотреть будущие операции\nCanonical operationId: post_api_v1_consents_consentId_revocation\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "POST /api/v1/applications/{applicationId}/documents/upload-intents",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/documents/upload-intents",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotencyKey}}"
+          }
+        ],
+        "description": "Разрешение загрузки в file gateway\nCanonical operationId: post_api_v1_applications_applicationId_documents_upload_intents\nRequest schema: {'$ref': '#/components/schemas/UploadInput'}"
+      }
+    },
+    {
+      "name": "GET /api/v1/applications/{applicationId}/documents",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/documents",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Список документов заявки\nCanonical operationId: get_api_v1_applications_applicationId_documents\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/documents/{documentId}",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/documents/{{documentId}}",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Метаданные и статус документа\nCanonical operationId: get_api_v1_documents_documentId\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/documents/{documentId}/extraction",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/documents/{{documentId}}/extraction",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Кандидаты полей OCR\nCanonical operationId: get_api_v1_documents_documentId_extraction\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "POST /api/v1/applications/{applicationId}/confirm-extraction",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/confirm-extraction",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotencyKey}}"
+          },
+          {
+            "key": "If-Match",
+            "value": "{{etag}}"
+          }
+        ],
+        "description": "Подтвердить OCR-поля для черновика\nCanonical operationId: post_api_v1_applications_applicationId_confirm_extraction\nRequest schema: {'$ref': '#/components/schemas/ConfirmExtraction'}"
+      }
+    },
+    {
+      "name": "POST /api/v1/documents/{documentId}/download-intents",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/documents/{{documentId}}/download-intents",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          }
+        ],
+        "description": "Разрешение на контролируемое скачивание\nCanonical operationId: post_api_v1_documents_documentId_download_intents\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/applications/{applicationId}/information-requests",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/information-requests",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Запросы уточнения банка\nCanonical operationId: get_api_v1_applications_applicationId_information_requests\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "POST /api/v1/applications/{applicationId}/information-requests/{requestId}/responses",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/information-requests/{{requestId}}/responses",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotencyKey}}"
+          }
+        ],
+        "description": "Отправить уточнение без новой заявки\nCanonical operationId: post_api_v1_applications_applicationId_information_requests_requestId_responses\nRequest schema: {'$ref': '#/components/schemas/InformationResponse'}"
+      }
+    },
+    {
+      "name": "POST /api/v1/applications/{applicationId}/withdrawal",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/withdrawal",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotencyKey}}"
+          }
+        ],
+        "description": "Запросить отзыв по правилам владельца\nCanonical operationId: post_api_v1_applications_applicationId_withdrawal\nRequest schema: {'$ref': '#/components/schemas/Withdrawal'}"
+      }
+    },
+    {
+      "name": "GET /api/v1/applications/{applicationId}/decision",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/decision",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Разрешённый для клиента результат\nCanonical operationId: get_api_v1_applications_applicationId_decision\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/offers/{offerId}",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/offers/{{offerId}}",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Актуальные условия через X03\nCanonical operationId: get_api_v1_offers_offerId\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "POST /api/v1/offers/{offerId}/acceptance",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/offers/{{offerId}}/acceptance",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotencyKey}}"
+          }
+        ],
+        "description": "Принять актуальную версию предложения\nCanonical operationId: post_api_v1_offers_offerId_acceptance\nRequest schema: {'$ref': '#/components/schemas/AcceptOffer'}"
+      }
+    },
+    {
+      "name": "GET /api/v1/operations/{operationId}",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/operations/{{operationId}}",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Результат команды / сверки\nCanonical operationId: get_api_v1_operations_operationId\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/feed",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/feed",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Порция рекомендательных карточек о финансировании бизнеса\nCanonical operationId: get_api_v1_feed\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/content/{contentId}",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/content/{{contentId}}",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Утверждённая статья внутри кабинета\nCanonical operationId: get_api_v1_content_contentId\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "POST /api/v1/feedback",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/feedback",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          }
+        ],
+        "description": "Необязательная оценка понятности шага\nCanonical operationId: post_api_v1_feedback\nRequest schema: {'$ref': '#/components/schemas/Feedback'}"
+      }
+    },
+    {
+      "name": "GET /api/v1/inbox",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/inbox",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Внутрипродуктовые уведомления\nCanonical operationId: get_api_v1_inbox\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "POST /api/v1/inbox/{notificationId}/read",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/inbox/{{notificationId}}/read",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          }
+        ],
+        "description": "Отметить прочитанным\nCanonical operationId: post_api_v1_inbox_notificationId_read\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/events",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/events",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "SSE разрешённых обновлений\nCanonical operationId: get_api_v1_events\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/events/snapshot",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/events/snapshot",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Снимок и курсор для согласованного подключения потока\nCanonical operationId: get_stream_snapshot\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "PUT /api/v1/files/uploads/{transferId}",
+      "request": {
+        "method": "PUT",
+        "url": "{{baseUrl}}/api/v1/files/uploads/{{transferId}}",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          }
+        ],
+        "description": "Потоковая загрузка в карантин\nCanonical operationId: put_file_uploads\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/files/downloads/{transferId}",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/files/downloads/{{transferId}}",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Контролируемое скачивание CLEAN-версии\nCanonical operationId: get_file_downloads\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/applications/{applicationId}/information-requests/{requestId}/draft",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/information-requests/{{requestId}}/draft",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Прочитать отдельный черновик уточнения\nCanonical operationId: proposed_get_api_v1_applications_applicationId_information_requests_requestId_draft\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "PATCH /api/v1/applications/{applicationId}/information-requests/{requestId}/draft",
+      "request": {
+        "method": "PATCH",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/information-requests/{{requestId}}/draft",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "If-Match",
+            "value": "{{etag}}"
+          }
+        ],
+        "description": "Сохранить отдельный черновик уточнения\nCanonical operationId: proposed_patch_api_v1_applications_applicationId_information_requests_requestId_draft\nRequest schema: {'$ref': '#/components/schemas/InformationDraftPatch'}"
+      }
+    },
+    {
+      "name": "GET /api/v1/applications/{applicationId}/document-requirements",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/document-requirements",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Требования к документам\nCanonical operationId: proposed_get_api_v1_applications_applicationId_document_requirements\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "DELETE /api/v1/uploads/{uploadId}",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/v1/uploads/{{uploadId}}",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          }
+        ],
+        "description": "Отозвать незавершённое разрешение загрузки\nCanonical operationId: proposed_delete_api_v1_uploads_uploadId\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/companies/{companyId}/capabilities",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/companies/{{companyId}}/capabilities",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Разрешённые действия и безопасные причины\nCanonical operationId: proposed_get_api_v1_companies_companyId_capabilities\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/applications/{applicationId}/capabilities",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/capabilities",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Разрешённые действия и безопасные причины\nCanonical operationId: proposed_get_api_v1_applications_applicationId_capabilities\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/applications/{applicationId}/history",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/history",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Клиентская история страницами\nCanonical operationId: proposed_get_api_v1_applications_applicationId_history\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/operations/lookup",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/operations/lookup",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotencyKey}}"
+          }
+        ],
+        "description": "Найти прежнюю команду по ключу\nCanonical operationId: proposed_get_api_v1_operations_lookup\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/operations",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/operations",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Активные операции заявки после входа\nCanonical operationId: proposed_get_api_v1_operations\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "POST /api/v1/applications/{applicationId}/information-requests/{requestId}/draft/confirm-extraction",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/information-requests/{{requestId}}/draft/confirm-extraction",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotencyKey}}"
+          },
+          {
+            "key": "If-Match",
+            "value": "{{etag}}"
+          }
+        ],
+        "description": "Подтвердить извлечение в черновике ответа на уточнение\nCanonical operationId: confirm_information_draft_extraction\nRequest schema: {'$ref': '#/components/schemas/ConfirmExtraction'}"
+      }
+    },
+    {
+      "name": "GET /api/v1/applications/{applicationId}/financial-statement",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/financial-statement",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Прочитать финансовую анкету\nCanonical operationId: getFinancial\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "PUT /api/v1/applications/{applicationId}/financial-statement",
+      "request": {
+        "method": "PUT",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/financial-statement",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotencyKey}}"
+          },
+          {
+            "key": "If-Match",
+            "value": "{{etag}}"
+          }
+        ],
+        "description": "Сохранить финансовые сведения в разрешённом черновике\nCanonical operationId: saveFinancial\nRequest schema: {'$ref': '#/components/schemas/MLFinancialInput'}"
+      }
+    },
+    {
+      "name": "POST /api/v1/applications/{applicationId}/financial-statement/confirm",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/financial-statement/confirm",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotencyKey}}"
+          },
+          {
+            "key": "If-Match",
+            "value": "{{etag}}"
+          }
+        ],
+        "description": "Подтвердить сохранённую финансовую версию\nCanonical operationId: confirmFinancial\nRequest schema: {'$ref': '#/components/schemas/MLFinancialConfirmation'}"
+      }
+    },
+    {
+      "name": "GET /api/v1/applications/{applicationId}/information-requests/{requestId}/draft/financial-statement",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/information-requests/{{requestId}}/draft/financial-statement",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Прочитать финансовую анкету\nCanonical operationId: getFinancialRfi\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "PUT /api/v1/applications/{applicationId}/information-requests/{requestId}/draft/financial-statement",
+      "request": {
+        "method": "PUT",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/information-requests/{{requestId}}/draft/financial-statement",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotencyKey}}"
+          },
+          {
+            "key": "If-Match",
+            "value": "{{etag}}"
+          }
+        ],
+        "description": "Сохранить финансовые сведения в разрешённом черновике\nCanonical operationId: saveFinancialRfi\nRequest schema: {'$ref': '#/components/schemas/MLFinancialInput'}"
+      }
+    },
+    {
+      "name": "POST /api/v1/applications/{applicationId}/information-requests/{requestId}/draft/financial-statement/confirm",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/applications/{{applicationId}}/information-requests/{{requestId}}/draft/financial-statement/confirm",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotencyKey}}"
+          },
+          {
+            "key": "If-Match",
+            "value": "{{etag}}"
+          }
+        ],
+        "description": "Подтвердить сохранённую финансовую версию\nCanonical operationId: confirmFinancialRfi\nRequest schema: {'$ref': '#/components/schemas/MLFinancialConfirmation'}"
+      }
+    },
+    {
+      "name": "POST /api/v1/assistant/messages",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/assistant/messages",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotencyKey}}"
+          }
+        ],
+        "description": "Ответить по утверждённой клиентской базе\nCanonical operationId: sendAssistantMessage\nRequest schema: {'$ref': '#/components/schemas/MLAssistantInput'}"
+      }
+    },
+    {
+      "name": "GET /api/v1/assistant/conversations/{conversationId}",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/assistant/conversations/{{conversationId}}",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "История с повторной проверкой доступа и отзыва\nCanonical operationId: getAssistantConversation\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "POST /api/v1/assistant/feedback",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/assistant/feedback",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotencyKey}}"
+          }
+        ],
+        "description": "Сохранить UX-оценку без превращения в эталон\nCanonical operationId: recordAssistantFeedback\nRequest schema: {'$ref': '#/components/schemas/MLAssistantFeedback'}"
+      }
+    },
+    {
+      "name": "POST /api/v1/recommendation-feedback",
+      "request": {
+        "method": "POST",
+        "url": "{{baseUrl}}/api/v1/recommendation-feedback",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          },
+          {
+            "key": "Idempotency-Key",
+            "value": "{{idempotencyKey}}"
+          }
+        ],
+        "description": "Подтвердить показ/клик ранее выданного itemId\nCanonical operationId: recordRecommendationFeedback\nRequest schema: {'$ref': '#/components/schemas/MLRecommendationFeedback'}"
+      }
+    },
+    {
+      "name": "GET /api/v1/knowledge/{documentId}/versions/{documentVersion}",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/knowledge/{{documentId}}/versions/{{documentVersion}}",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Прочитать доступную опубликованную версию источника\nCanonical operationId: getPublishedKnowledge\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "GET /api/v1/feed/preferences",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/feed/preferences",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Прочитать необязательные ответы опроса\nCanonical operationId: getFeedPreferences\nRequest schema: {}"
+      }
+    },
+    {
+      "name": "PUT /api/v1/feed/preferences",
+      "request": {
+        "method": "PUT",
+        "url": "{{baseUrl}}/api/v1/feed/preferences",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          },
+          {
+            "key": "X-CSRF-Token",
+            "value": "{{csrfToken}}"
+          }
+        ],
+        "description": "Заменить ответы опроса и начать новую подборку\nCanonical operationId: putFeedPreferences\nRequest schema: {'$ref': '#/components/schemas/FeedPreferences'}"
+      }
+    },
+    {
+      "name": "GET /api/v1/feed/saved",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/v1/feed/saved",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "X-Company-Context",
+            "value": "{{companyContext}}"
+          }
+        ],
+        "description": "Прочитать сохранённые полезные карточки\nCanonical operationId: getSavedFeed\nRequest schema: {}"
+      }
+    }
+  ]
+}

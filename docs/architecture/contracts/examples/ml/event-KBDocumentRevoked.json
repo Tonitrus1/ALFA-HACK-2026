@@ -1,0 +1,16 @@
+{
+  "eventId": "event-KBDocumentRevoked",
+  "eventType": "KBDocumentRevoked",
+  "schemaVersion": 1,
+  "aggregateId": "corpusId-demo",
+  "aggregateVersion": 1,
+  "occurredAt": "2026-10-20T10:00:00Z",
+  "correlationId": "corr-demo",
+  "payload": {
+    "corpusId": "corpusId-demo",
+    "documentId": "documentId-demo",
+    "documentVersion": 1,
+    "epoch": 1,
+    "revocationId": "revocationId-demo"
+  }
+}

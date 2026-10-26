@@ -1,0 +1,109 @@
+{
+  "candidateVersion": "scoring-v2-351935cfd80c",
+  "candidateBundleDigest": "1875fa0e05086e2f6cc9e55f13cd23ecc4548deee0a9e2571ce0f3f0574980ef",
+  "candidateModelHash": "0917c74937bf94b32753e26e862084e7e4a28076eadc2c5d77689dd1e496cf6c",
+  "status": "evaluated-candidate",
+  "activeBundle": "ml/artifacts/baseline",
+  "activeVersion": "catboost-optuna-v1",
+  "activated": false,
+  "newSyntheticHoldoutRows": 20000,
+  "eligibleRows": 16284,
+  "eligibleEvents": 467,
+  "candidate": {
+    "rows": 16284,
+    "events": 467,
+    "prevalence": 0.028678457381478752,
+    "baselineAP": 0.028678457381478752,
+    "averagePrecision": 0.1506693958884336,
+    "rocAuc": 0.8095481523890959,
+    "logLoss": 0.11023593652583777,
+    "brier": 0.026102445255826563,
+    "meanPrediction": 0.027195414352086934,
+    "top5": {
+      "reviewed": 814,
+      "eventsFound": 123,
+      "precision": 0.1511056511056511,
+      "recall": 0.2633832976445396,
+      "coverage": 0.04998771800540408
+    },
+    "top10": {
+      "reviewed": 1628,
+      "eventsFound": 199,
+      "precision": 0.12223587223587223,
+      "recall": 0.4261241970021413,
+      "coverage": 0.09997543601080816
+    },
+    "top20": {
+      "reviewed": 3256,
+      "eventsFound": 293,
+      "precision": 0.08998771498771499,
+      "recall": 0.6274089935760171,
+      "coverage": 0.19995087202161632
+    }
+  },
+  "baseline": {
+    "rows": 16284,
+    "events": 467,
+    "prevalence": 0.028678457381478752,
+    "baselineAP": 0.028678457381478752,
+    "averagePrecision": 0.13856365971354753,
+    "rocAuc": 0.7979292467013306,
+    "logLoss": 0.11240931294083073,
+    "brier": 0.026303482127902955,
+    "meanPrediction": 0.0272184985275129,
+    "top5": {
+      "reviewed": 814,
+      "eventsFound": 113,
+      "precision": 0.13882063882063883,
+      "recall": 0.24197002141327623,
+      "coverage": 0.04998771800540408
+    },
+    "top10": {
+      "reviewed": 1628,
+      "eventsFound": 195,
+      "precision": 0.11977886977886978,
+      "recall": 0.41755888650963596,
+      "coverage": 0.09997543601080816
+    },
+    "top20": {
+      "reviewed": 3256,
+      "eventsFound": 288,
+      "precision": 0.08845208845208845,
+      "recall": 0.6167023554603854,
+      "coverage": 0.19995087202161632
+    }
+  },
+  "paired95": {
+    "recall5": [
+      0.0,
+      0.0460602561868247
+    ],
+    "averagePrecision": [
+      -0.002219365293174937,
+      0.0260207826705315
+    ],
+    "logLoss": [
+      -0.0030849065426481366,
+      -0.0011573518838465327
+    ]
+  },
+  "qualityGatePassed": false,
+  "qualityGateReason": "primary eligible Recall@5% lower95 equals zero; strict superiority not established",
+  "apiCompatible": true,
+  "featureSchemaVersion": 2,
+  "rawInputFields": 8,
+  "riskOutput": "unchanged score [0,1] and existing metadata",
+  "fullHttpTestsPassed": 26,
+  "bothModelsPassedDurableHttpChecks": true,
+  "protectedFilesUnchanged": true,
+  "protectedFileCount": 85,
+  "runtimeNeedsRetraining": false,
+  "newDependencies": false,
+  "databaseMigrationRequired": false,
+  "candidateLocalOnly": false,
+  "candidateLocation": "ml/artifacts/scoring-v2-351935cfd80c",
+  "scope": "demonstration on synthetic outcomes only",
+  "evidenceLocation": "ml/experiments/scoring-v2-351935cfd80c",
+  "offlineReplayCommand": ".venv/bin/python scripts/replay_scoring_evidence.py",
+  "replayScope": "verification of the already evaluated saved synthetic holdout; not a new independent test or retraining"
+}

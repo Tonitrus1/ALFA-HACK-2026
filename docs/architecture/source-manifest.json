@@ -1,0 +1,337 @@
+{
+  "version": "HACKATHON-1.5",
+  "files": [
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "f419c1765d71f9bb819049e7bc690e484126a0e2495e17a69d96134051fbdffc"
+    },
+    {
+      "path": "acceptance-cases.json",
+      "sha256": "87de5fc40fdcd89fc5f93cf47a218f1249b72d8a5e28528509900cadb6b62a00"
+    },
+    {
+      "path": "contracts/adapter-bindings.schema.json",
+      "sha256": "d30c82e2835777b2e0ca381af9fd4765151c7406d0e36b8a237be0fc13963491"
+    },
+    {
+      "path": "contracts/bank-target-release-policy.json",
+      "sha256": "66b5d0957e624b6c2d2344e5ec9f1df7baf38029903ec7487b85091a66b429c5"
+    },
+    {
+      "path": "contracts/credit-events-v1.schema.json",
+      "sha256": "7d0bfd30821f2488e40e38afca999b07e2d2be3f4b1d1f3c0ba2490b01942ad4"
+    },
+    {
+      "path": "contracts/data-model.json",
+      "sha256": "060ecdeecabf199bc6b539b0b142553725436e5c87a49019fe803c7e3ef1280e"
+    },
+    {
+      "path": "contracts/dataset-manifest.schema.json",
+      "sha256": "c4ddde0ec2e2d15b5d134541b0488913a6297cd294431a04ec7c4e4217e98660"
+    },
+    {
+      "path": "contracts/demo.openapi.json",
+      "sha256": "39169aa179af740a4da1de6368acc7eeee5f723fff570f2b5842d47332487bc5"
+    },
+    {
+      "path": "contracts/deployment-spec.json",
+      "sha256": "b1e352140e038d242463a710e1b7fe3cecd75f7ef81e00b4f16f3b000904bbd0"
+    },
+    {
+      "path": "contracts/examples/credit/ApplicationWithdrawn.json",
+      "sha256": "a61c7341bc59b97ba07947ecd7780b6effea8e64265a94e30fff32476732e35b"
+    },
+    {
+      "path": "contracts/examples/credit/CaseAccepted.json",
+      "sha256": "dcc2a094291c4f7778ce5adf21ce51b80e226566acddc66bd170a8130c08ee8f"
+    },
+    {
+      "path": "contracts/examples/credit/CaseStateChanged.json",
+      "sha256": "eacdd038a64dc74dcad170cc139ae1dd1f2d2b4142a9f932f27deb7a459a66cc"
+    },
+    {
+      "path": "contracts/examples/credit/ConsentRevoked.json",
+      "sha256": "b8c034821f7e8b930f4b205e235c1e74dcf4a8d28aceebdb58c744614e5f9827"
+    },
+    {
+      "path": "contracts/examples/credit/DecisionRecorded.json",
+      "sha256": "79cecc2ea57a6aebfb8ea97713a8a290497e7d50df528661e674669dd412a2cd"
+    },
+    {
+      "path": "contracts/examples/credit/DocumentExtractionReady.json",
+      "sha256": "6e767284fde177e4ebe217c006825815c89a76e36c29ff9dcf5e0fd8f00a3c6d"
+    },
+    {
+      "path": "contracts/examples/credit/DocumentProcessingRequested.json",
+      "sha256": "89518aeada85a2d4497b40b1c98822f13412791ac3158825a26fac0e6ee3cc39"
+    },
+    {
+      "path": "contracts/examples/credit/DocumentScanCompleted.json",
+      "sha256": "91ff2767cd30f5fdfda05a977234fe0d525637a411ea54abd97da8381d67275f"
+    },
+    {
+      "path": "contracts/examples/credit/FulfillmentCompleted.json",
+      "sha256": "21127cfdb043c03c1eb8697438180f995848e11197bb98c9bdd7816c87843ca6"
+    },
+    {
+      "path": "contracts/examples/credit/InformationRequested.json",
+      "sha256": "7c19de7916fe04b28ea4af3f988c5d80f880a6f80fe9c11bc95a5d9033ff0f62"
+    },
+    {
+      "path": "contracts/examples/credit/InformationResponseSubmitted.json",
+      "sha256": "8380385ef59701619fb7d017923de72ef8c3c465c0103cadc6f1d83fbd4d0387"
+    },
+    {
+      "path": "contracts/examples/credit/OfferAcceptanceRequested.json",
+      "sha256": "36974891f953b78b4c0fd67242a1b25ec54843d1173629962d3b0a2a52be8b5d"
+    },
+    {
+      "path": "contracts/examples/credit/OfferAccepted.json",
+      "sha256": "56ac12d82cf76cf1d2fc1431234db27ff3c5a51dd186fdb01e0df10451ee7a36"
+    },
+    {
+      "path": "contracts/examples/credit/OfferExpired.json",
+      "sha256": "c0d0c6cc7d5d05c6bfd6a2285c3c4c75842105a35a8a366b3cb285d2faec319d"
+    },
+    {
+      "path": "contracts/examples/credit/SubmissionRequested.json",
+      "sha256": "a4ff11f4ac1cec4e8014081eb1dc6b03537451ea650881731c4c04b0bfe5290e"
+    },
+    {
+      "path": "contracts/examples/credit/WithdrawalRequested.json",
+      "sha256": "e1521bfc3fc81ce0ad785795170927a6e829a9748a070926a77d7cbb53140263"
+    },
+    {
+      "path": "contracts/examples/ml/event-KBDocumentPublished.json",
+      "sha256": "32b9f0b59e4362913c9f232f20926102f8030b71ed3bf014877f6939f5364e6a"
+    },
+    {
+      "path": "contracts/examples/ml/event-KBDocumentRevoked.json",
+      "sha256": "fa0ba82de0485cb78e50e92eefd3e9b70f2bf4bb020ee0ac4fd324676ce05fbc"
+    },
+    {
+      "path": "contracts/examples/ml/event-MLReleaseActivated.json",
+      "sha256": "11c4af4e6813c1d144dc785db3b835cefac38c936e2fe650e16ce0e538827105"
+    },
+    {
+      "path": "contracts/examples/ml/event-MLReleaseApprovalRecorded.json",
+      "sha256": "757b5a35421fe0c4f24d67b5402ae95e54e38d444765b0dcc1955a41be4c5894"
+    },
+    {
+      "path": "contracts/examples/ml/event-MLReleaseValidated.json",
+      "sha256": "946b692aa831a8b80dc2fda7fffcbc1589c98d37ae8fcc8077bb7fb84446ebb4"
+    },
+    {
+      "path": "contracts/examples/ml/event-MLRollbackCompleted.json",
+      "sha256": "0667cadc2433ac9f6d5a8430d72e1d48a0b91696fbff498807bd516157845c7c"
+    },
+    {
+      "path": "contracts/examples/ml/event-MLUpdateRequested.json",
+      "sha256": "dc99e3fed23b799aa2a13a75d2f0ec44a323a0612338a81042e1c347eef8b302"
+    },
+    {
+      "path": "contracts/examples/ml/event-RecommendationExposureRecorded.json",
+      "sha256": "722ea9568968a7b6aebfeae2c6f7db9424ed3aee69ea1d68e924e90470227812"
+    },
+    {
+      "path": "contracts/examples/ml/event-RecommendationFeedbackRecorded.json",
+      "sha256": "50d8a4ba54a42a5c010ac753934863b1c982f8bbeaa46112c3fbdd688be136ae"
+    },
+    {
+      "path": "contracts/examples/profiles/bank-target.json",
+      "sha256": "cd83f3c1de737dd7424f1de63ca1cb40d5a01dff552fe84a2ab92ad0c6556bf6"
+    },
+    {
+      "path": "contracts/examples/profiles/local-integrations.json",
+      "sha256": "f479071b735f599898ae7434abdfe8b808afe78cc92f9dc293a8ec5830edeae8"
+    },
+    {
+      "path": "contracts/examples/profiles/local-mvp.json",
+      "sha256": "bd2a0596ca4eb2299d81f2fddacdde115fcd0833c6472af56c109d27a7f881a4"
+    },
+    {
+      "path": "contracts/experiment-manifest.schema.json",
+      "sha256": "8d6075fd4f125a71170d67a17ca2c6e576a0c435c738ed4de4d8d936a6803b6a"
+    },
+    {
+      "path": "contracts/feature-snapshot.schema.json",
+      "sha256": "9c3857c9c410345334e593b8479bcdc745e38aac450385ecda6d931fe323e470"
+    },
+    {
+      "path": "contracts/internal.openapi.json",
+      "sha256": "dabcc0166bc553beca190fea12f49dcfad95799d9e9d848d69524b09921be675"
+    },
+    {
+      "path": "contracts/ml-events-v1.schema.json",
+      "sha256": "5c4bbb9b88533c57c38d4c4f37ec9722e003ce67ef7fafe5cf0e77e9765be614"
+    },
+    {
+      "path": "contracts/policy.json",
+      "sha256": "7099800e88714595ce4fd0ef62d1906dfa7d0252a241078df531775fc4992dfb"
+    },
+    {
+      "path": "contracts/public.openapi.json",
+      "sha256": "4d30dd126e758abe9fa9016068d61d6960ddbae8afb701b765d828b82026539b"
+    },
+    {
+      "path": "contracts/release-manifest.schema.json",
+      "sha256": "1e73722a7aca27a0837cbd62cd678510ec035edb0119b4bd33e575f0b84aa092"
+    },
+    {
+      "path": "contracts/requests.postman_collection.json",
+      "sha256": "2532648c57cf35cfb5ef998e7ce2b9adef64068b1473f82be29ea2ac59ea02d0"
+    },
+    {
+      "path": "contracts/runtime-policy.json",
+      "sha256": "17171a3a29f7f47b7232428179bf044738add0e32ff51c896dd04d392af9b068"
+    },
+    {
+      "path": "contracts/service-role-map.json",
+      "sha256": "e36a37968b35638268bebb005f3bbb6cdfa908c0249bd911e60421994f31ee6d"
+    },
+    {
+      "path": "contracts/state-machine.json",
+      "sha256": "4fb0b32e179237eaf0a5bb109b5fa0c0bd4a7834c29240622a369f89cfaea566"
+    },
+    {
+      "path": "contracts/technology-adapters.json",
+      "sha256": "5878f825873ae3622e457ff23e1424457da8b20e27088f3a66a14eabff11fab9"
+    },
+    {
+      "path": "docs/acceptance.md",
+      "sha256": "311c4d56038551e01742376e04d61f5af02df1430e537a5bcc41ca86ae256cdf"
+    },
+    {
+      "path": "docs/architecture-audit.md",
+      "sha256": "31ed2551f1437edc38f0951110f36320f28ea4f15055acca640d5aec5dcc3a24"
+    },
+    {
+      "path": "docs/assumptions-and-gates.md",
+      "sha256": "547b5ac33d0b66f1c0e6bbae1283c7a76c32ff17465f2eaa331676285195b85d"
+    },
+    {
+      "path": "docs/contract-decisions.md",
+      "sha256": "047cfec8f4cbfdf565c4e07a5aa06d94d2f8df80083861677dfad57b611b47c4"
+    },
+    {
+      "path": "docs/data-model.md",
+      "sha256": "893467e7f51cac60354f687eb68ee68c9a5688985df988eaac1488107050bc6c"
+    },
+    {
+      "path": "docs/development-plan.md",
+      "sha256": "a4948ba25dd5e3976d21ea6460c73a807048bf897fa22f9d92298e86958d3eda"
+    },
+    {
+      "path": "docs/git-and-jury-guide.md",
+      "sha256": "f56d6254dc7428e07fe9e58bb17dccebc3801985367274d5b185d9a74994194d"
+    },
+    {
+      "path": "docs/sources.md",
+      "sha256": "f3f58a224d20396f005a8888d10a516b633ecba35ee5e515c38c13ee5c570e33"
+    },
+    {
+      "path": "docs/technology-adapters.md",
+      "sha256": "bdb84481c74e02a080f89cafb9a022a1b9a51fb923dba17bc50c1cfbcf17e028"
+    },
+    {
+      "path": "docs/traceability.md",
+      "sha256": "33dccb2763b377396e2d42d509924e24b3ada353c12ebf871f232b32130a1670"
+    },
+    {
+      "path": "findings.json",
+      "sha256": "b543fa6c60209a05f6cc3aff0b34f44510007f104292c8a0ccfed5e403502f8e"
+    },
+    {
+      "path": "packages/backend/docs/guide.md",
+      "sha256": "56c0a82e58613b06d240959fceab743d75e09fa5a304bee590e289e086d9c4c2"
+    },
+    {
+      "path": "packages/frontend/docs/guide.md",
+      "sha256": "ee767b9861677192af7be563341129fd8083b321c79eb0dab94e881aa4fbcdbb"
+    },
+    {
+      "path": "packages/general/docs/guide.md",
+      "sha256": "4d11fba58cbf5cfc76a8c0db7a779a5754777a6a86af5e716687f972f54e882f"
+    },
+    {
+      "path": "packages/ml/docs/guide.md",
+      "sha256": "6f3ffac98d390c2b0950f0a906dda278aa7e7f48679b1e30b49bc5b1a7bb0932"
+    },
+    {
+      "path": "sources/audit-template.md",
+      "sha256": "013e8db68654541442a0ab866d05d801bfef3f96807447bcc5c09b5556675300"
+    },
+    {
+      "path": "sources/build.py",
+      "sha256": "6190d0693e9c8177e2fe89c70d9b87301e306ed8591c506a8a3f7eb32d7ee224"
+    },
+    {
+      "path": "sources/development-plan.template.md",
+      "sha256": "115aa9191ab4179d3ee575e99d26c5cc072366b37210e650b65d03b556e562e6"
+    },
+    {
+      "path": "sources/diagrams.json",
+      "sha256": "38de05cd8e5bba8dea4f3a489aaf151efb97c2676d3781067ffc52f67f2d4d9d"
+    },
+    {
+      "path": "sources/fonts/DejaVuSans-Bold.ttf",
+      "sha256": "e6476c1b80502924294eed40894c5b18e06c181444ca953e5334262df9c27724"
+    },
+    {
+      "path": "sources/fonts/DejaVuSans.ttf",
+      "sha256": "7da195a74c55bef988d0d48f9508bd5d849425c1770dba5d7bfc6ce9ed848954"
+    },
+    {
+      "path": "sources/fonts/LICENSE.txt",
+      "sha256": "029e77a2f2b2f7bd985617a19a739c20d73fb604d45b47192227d6fba6b7a797"
+    },
+    {
+      "path": "sources/package.py",
+      "sha256": "72270acdd7b02330c9ed024aa747c0790683eea17221aeb3ea078e2e6884939d"
+    },
+    {
+      "path": "sources/render_qa.py",
+      "sha256": "61e4e230f99f8a03d497d435a4e3b0e3228a558a9e2b70e8603c08f4ffa22b80"
+    },
+    {
+      "path": "sources/requirements-render.txt",
+      "sha256": "ac825e559dd91d9c223be483a8700174e26662a946b14453d9915dc5edee10aa"
+    },
+    {
+      "path": "sources/validate.py",
+      "sha256": "869fb162fba2898e746ad4cfbdc8e4f6e45bb81c86b6736f532ffcda735c9c9b"
+    },
+    {
+      "path": "sources/verify_rebuild.py",
+      "sha256": "666465c221074a9d238db814326b913432ab7e0c535db411641febb59eb3c40b"
+    },
+    {
+      "path": "tasks.json",
+      "sha256": "85cb664d2af680f6485ab9d356b87814dbf812f8d1d1064f89ea809257c92aa4"
+    },
+    {
+      "path": "templates/.github/pull_request_template.md",
+      "sha256": "6da28191db31d0d26a441f47baf17915ad6ad2deb225823c81098dad02c64f96"
+    },
+    {
+      "path": "templates/CODEOWNERS.example",
+      "sha256": "aeb62083f3ef79974b07b6c915af6328dbf355125312870130f94946fcdf0f5a"
+    },
+    {
+      "path": "templates/README.application.template.md",
+      "sha256": "80a6b059e6fa83045f7fdaeaf920c478cf1ef68cfb99a425884043e9bfac8e27"
+    },
+    {
+      "path": "templates/THIRD_PARTY_NOTICES.template.md",
+      "sha256": "9ce43858be0708b00d9d13e0d266493b702de718e5d41ce2bfc8ea29920314dc"
+    },
+    {
+      "path": "templates/provider-evidence.template.json",
+      "sha256": "8ffadede8475ec71ebcb484b8944484f86631fb9c5e3f85ea240b77c5cb8aa1b"
+    },
+    {
+      "path": "traceability.json",
+      "sha256": "d174d534e6cb7931b179ca880f6a0eea6460ff130bdcef91105b87d28180c6ef"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "eventId": "event-RecommendationExposureRecorded",
+  "eventType": "RecommendationExposureRecorded",
+  "schemaVersion": 1,
+  "aggregateId": "exposureId-demo",
+  "aggregateVersion": 1,
+  "occurredAt": "2026-10-20T10:00:00Z",
+  "correlationId": "corr-demo",
+  "payload": {
+    "exposureId": "exposureId-demo",
+    "scope": "PRODUCT",
+    "candidateSetDigest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "releaseId": "releaseId-demo"
+  }
+}

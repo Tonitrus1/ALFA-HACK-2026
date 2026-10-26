@@ -1,0 +1,748 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/MLUpdateRequested"
+    },
+    {
+      "$ref": "#/$defs/MLReleaseValidated"
+    },
+    {
+      "$ref": "#/$defs/MLReleaseApprovalRecorded"
+    },
+    {
+      "$ref": "#/$defs/MLReleaseActivated"
+    },
+    {
+      "$ref": "#/$defs/MLRollbackCompleted"
+    },
+    {
+      "$ref": "#/$defs/KBDocumentPublished"
+    },
+    {
+      "$ref": "#/$defs/KBDocumentRevoked"
+    },
+    {
+      "$ref": "#/$defs/RecommendationExposureRecorded"
+    },
+    {
+      "$ref": "#/$defs/RecommendationFeedbackRecorded"
+    }
+  ],
+  "$defs": {
+    "MLUpdateRequested": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "eventType": {
+          "const": "MLUpdateRequested"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "updateRequestId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "family": {
+              "type": "string",
+              "enum": [
+                "RISK",
+                "PRODUCT",
+                "FEED",
+                "OCR",
+                "RAG_INDEX",
+                "RAG_COMPONENT"
+              ]
+            },
+            "triggerPolicyVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "updateRequestId",
+            "family",
+            "triggerPolicyVersion"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "occurredAt",
+        "correlationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "MLReleaseValidated": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "eventType": {
+          "const": "MLReleaseValidated"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "releaseId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "bundleDigest": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "evaluationDigest": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "policyVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "releaseId",
+            "bundleDigest",
+            "evaluationDigest",
+            "policyVersion"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "occurredAt",
+        "correlationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "MLReleaseApprovalRecorded": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "eventType": {
+          "const": "MLReleaseApprovalRecorded"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "releaseId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "approvalId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "decision": {
+              "type": "string",
+              "enum": [
+                "APPROVE",
+                "REJECT"
+              ]
+            },
+            "bundleDigest": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "releaseId",
+            "approvalId",
+            "decision",
+            "bundleDigest"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "occurredAt",
+        "correlationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "MLReleaseActivated": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "eventType": {
+          "const": "MLReleaseActivated"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "releaseId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "bundleDigest": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "routingVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "stage": {
+              "type": "string",
+              "enum": [
+                "SHADOW",
+                "CANARY_5",
+                "CANARY_25",
+                "CHAMPION"
+              ]
+            }
+          },
+          "required": [
+            "releaseId",
+            "bundleDigest",
+            "routingVersion",
+            "stage"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "occurredAt",
+        "correlationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "MLRollbackCompleted": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "eventType": {
+          "const": "MLRollbackCompleted"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "releaseId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "previousReleaseId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "routingVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "reasonCode": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "releaseId",
+            "previousReleaseId",
+            "routingVersion",
+            "reasonCode"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "occurredAt",
+        "correlationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "KBDocumentPublished": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "eventType": {
+          "const": "KBDocumentPublished"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "corpusId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "documentId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "documentVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "objectDigest": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "required": [
+            "corpusId",
+            "documentId",
+            "documentVersion",
+            "objectDigest"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "occurredAt",
+        "correlationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "KBDocumentRevoked": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "eventType": {
+          "const": "KBDocumentRevoked"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "corpusId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "documentId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "documentVersion": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "epoch": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "revocationId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "corpusId",
+            "documentId",
+            "documentVersion",
+            "epoch",
+            "revocationId"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "occurredAt",
+        "correlationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "RecommendationExposureRecorded": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "eventType": {
+          "const": "RecommendationExposureRecorded"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "exposureId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "scope": {
+              "type": "string",
+              "enum": [
+                "PRODUCT",
+                "FEED"
+              ]
+            },
+            "candidateSetDigest": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "releaseId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [
+            "exposureId",
+            "scope",
+            "candidateSetDigest",
+            "releaseId"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "occurredAt",
+        "correlationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "RecommendationFeedbackRecorded": {
+      "type": "object",
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "eventType": {
+          "const": "RecommendationFeedbackRecorded"
+        },
+        "schemaVersion": {
+          "const": 1
+        },
+        "aggregateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "aggregateVersion": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "correlationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "exposureId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "clientEventId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "itemId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "action": {
+              "type": "string",
+              "enum": [
+                "VIEW",
+                "CLICK",
+                "HELPFUL",
+                "NOT_INTERESTED"
+              ]
+            }
+          },
+          "required": [
+            "exposureId",
+            "clientEventId",
+            "itemId",
+            "action"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "eventId",
+        "eventType",
+        "schemaVersion",
+        "aggregateId",
+        "aggregateVersion",
+        "occurredAt",
+        "correlationId",
+        "payload"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

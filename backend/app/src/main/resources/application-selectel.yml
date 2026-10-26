@@ -1,0 +1,16 @@
+# Public HTTPS deployment of the project with its two isolated synthetic companies.
+spring:
+  flyway:
+    locations: classpath:db/migration,classpath:db/seed/demo
+
+credit:
+  demo:
+    # Enables only provisioning project accounts. Passwordless routes were removed.
+    enabled: true
+  auth:
+    company-a-password: ${CABINET_A_PASSWORD}
+    company-b-password: ${CABINET_B_PASSWORD}
+    allowed-origins:
+      - ${PUBLIC_ORIGIN}
+  session:
+    cookie-secure: true

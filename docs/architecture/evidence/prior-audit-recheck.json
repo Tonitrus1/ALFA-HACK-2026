@@ -1,0 +1,212 @@
+[
+  {
+    "id": "AR-01",
+    "title": "Три разные версии клиентского контракта",
+    "disposition": "Revised by current audit",
+    "evidence": "superseded by H01 and copies-identical",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-02",
+    "title": "Необоснованное ослабление SLO и восстановления",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "target SLO preserved in general/04-operations.md",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-03",
+    "title": "Для MVP не определён облегчённый backend-профиль",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "cpu-profile",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-04",
+    "title": "Пункты RFI не адресуют конкретные данные",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "information-item-fixtures",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-05",
+    "title": "Подтверждение OCR уточнения направлено в исходную анкету",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "rfi-confirm-route",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-06",
+    "title": "Отправка RFI не фиксирует версию сохранённого ответа",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "rfi-draft-version",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-07",
+    "title": "Не задана очистка необязательных полей",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "clear-fields-fixtures",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-08",
+    "title": "Обычный PATCH принимает идентификаторы подтверждённого OCR",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "forged-confirmation-fixtures",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-09",
+    "title": "Версии документов и требований не закреплены в команде",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "document-refs-required",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-10",
+    "title": "Загрузка RFI не проверяет версию запроса",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "upload-rfi-version-fixtures",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-11",
+    "title": "Компания общей cookie-сессии конфликтует с вкладками",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "session-context-version",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-12",
+    "title": "Resync восстанавливает только статусы и ограничен 100 заявками",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "snapshot-barrier-fixtures",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-13",
+    "title": "После перезагрузки ищутся только активные команды",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "operation-list-recovery",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-14",
+    "title": "Внутренний банковский ключ раскрывается в клиентском DTO",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "no-public-external-key",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-15",
+    "title": "Гонка отмены upload и финализации не специфицирована целиком",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "backend/02-transactions.md + A12/A15; runtime pending",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-16",
+    "title": "Результат задания не привязан к владельцу аренды",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "worker-lease-required",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-17",
+    "title": "Подписки на часть событий несовместимы с глобальной caseVersion",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "backend/02-transactions.md + A26; runtime pending",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-18",
+    "title": "Нет нормализованного снимка для ссылочных событий и сверки",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "case-snapshot-route",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-19",
+    "title": "Строгая схема события конфликтует с обещанием добавочных полей",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "strict-event-negative-fixtures",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-20",
+    "title": "Версии допускают ноль и небезопасные целые JSON",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "safe-json-version-fixtures",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-21",
+    "title": "Имитатор может одобрить без полного предложения",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "demo-offer-required-fixtures",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-22",
+    "title": "Нормализованный пакет MVP задан произвольным JSON",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "typed-package-fixtures",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-23",
+    "title": "Идемпотентность 201 ошибочно обещает operationId",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "backend/02-transactions.md; contract/status reviewed; runtime pending",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-24",
+    "title": "Ссылка не подтверждает пару Modulith/Boot",
+    "disposition": "Revised by current audit",
+    "evidence": "S01/S02; Modulith removed from mandatory MVP",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-25",
+    "title": "Часть стрелок draw.io не связана с фигурами",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "drawio-all-edges-bound",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-26",
+    "title": "Генератор зависит от приватной временной среды",
+    "disposition": "Revised by current audit",
+    "evidence": "self-contained + deterministic-build",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-27",
+    "title": "Общая DR-инструкция не восстанавливает потерянные ключи",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "general/04-operations.md + target gate G06",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-28",
+    "title": "Общие экраны обещают неподдержанные действия",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "frontend/01-journey.md + A01",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-29",
+    "title": "Ошибки файлов не имеют общей схемы",
+    "disposition": "Preserved in new specification; runtime not verified",
+    "evidence": "file-error-schema",
+    "historicalFindingNotCountedAsNew": true
+  },
+  {
+    "id": "AR-30",
+    "title": "Зелёные отчёты не проверяют межпакетные инварианты",
+    "disposition": "Revised by current audit",
+    "evidence": "all-four-packages + negative-fixtures",
+    "historicalFindingNotCountedAsNew": true
+  }
+]

@@ -1,0 +1,10 @@
+{
+  "reviewStatus": "REVIEWED_MVP_SCENARIOS",
+  "cases": [
+    {"id":"purchase-cost","profile":{"task":"PURCHASE","help":"COST","depth":"EXPLAINED"},"expectedTop3Topics":["WORKING_CAPITAL","FINANCING_COST"],"paraphrase":"query: Закупаю товар для магазина. Хочу сравнить все расходы на финансирование партии, комиссии и будущие платежи."},
+    {"id":"equipment-application","profile":{"task":"EQUIPMENT","help":"APPLICATION","depth":"EXPLAINED"},"expectedTop3Topics":["EQUIPMENT","APPLICATION"],"paraphrase":"query: Хочу приобрести оборудование. Нужно собрать документы к заявке и подготовить согласованный расчёт покупки и запуска."},
+    {"id":"cash-gap-amount","profile":{"task":"CASH_GAP","help":"AMOUNT","depth":"BASICS"},"expectedTop3Topics":["CASH_GAP"],"paraphrase":"query: Клиенты заплатят позже обязательных расходов. Как определить размер временной нехватки денег и срок возврата?"},
+    {"id":"application-clarification","profile":{"applicationStage":"NEEDS_INFORMATION"},"expectedTop3Topics":["APPLICATION"],"paraphrase":"query: В кабинете запросили дополнительные сведения по моей заявке. Как подготовить ответ и проверить документы?"},
+    {"id":"expansion-practice","profile":{"task":"EXPANSION","help":"AMOUNT","depth":"PRACTICAL","businessCategory":"MANUFACTURING"},"expectedTop3Topics":["EQUIPMENT"],"paraphrase":"query: Расширяем производство. Нужно оценить деньги на новые мощности, монтаж и период выхода на рабочую загрузку."}
+  ]
+}

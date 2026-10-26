@@ -1,0 +1,18 @@
+{
+  "modelHash": "2cd91c344d5d62c7c7f0065ef21fb34aec065551f5ec8041cd1a61d5fb1e7fba",
+  "policyHash": "0b249e1412aa9da5992f343bf90728ceb967e27238113aa46f846b49225003d0",
+  "studyHash": "a361e6e79a6ca78533dc83110c0d3d87b5262a0fda65f5ef2053a1f093fdf1e3",
+  "selectedTrial": 28,
+  "params": {
+    "iterations": 302,
+    "depth": 3,
+    "learning_rate": 0.017169946473376285,
+    "l2_leaf_reg": 7.543876335558273,
+    "random_strength": 0.4890915518202954,
+    "bagging_temperature": 0.23694932167282895,
+    "rsm": 0.6930882696132237,
+    "border_count": 64,
+    "auto_class_weights": "None"
+  },
+  "featureCodeDigest": "2d59d6b8fd40976b0ca11dbf195f77546e6b5112b85cdc2af8c969326e1723eb"
+}

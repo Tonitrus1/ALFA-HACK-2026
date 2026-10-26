@@ -1,0 +1,6 @@
+{
+  "status": "PASS",
+  "checks": [
+    "restart_preserves_decision_page_and_feedback_replay"
+  ]
+}

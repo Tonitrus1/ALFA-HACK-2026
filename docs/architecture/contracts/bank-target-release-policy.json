@@ -1,0 +1,130 @@
+{
+  "policyVersion": "dev-demo-1",
+  "status": "DEVELOPMENT_DEFAULT_NOT_PRODUCTION_APPROVED",
+  "environment": "DEV_DEMO",
+  "productionRequires": [
+    "approved-data-target",
+    "approved-policy-signature",
+    "approved-retention-security",
+    "measured-capacity-ha",
+    "two-independent-reviewers"
+  ],
+  "manualApproval": {
+    "allFamilies": true,
+    "independentValidator": true,
+    "ownerRequired": true,
+    "authorCannotApprove": true,
+    "binds": [
+      "bundleDigest",
+      "evaluationDigest",
+      "policyVersion"
+    ],
+    "ttlHours": 168
+  },
+  "prohibitedLiveScoreKinds": [
+    "BANKRUPTCY_PROXY"
+  ],
+  "canary": {
+    "stagesPercent": [
+      5,
+      25,
+      100
+    ],
+    "minMinutesPerStage": 30,
+    "minCandidateRequests": 1000,
+    "ragMinCandidateAnswers": 200,
+    "ragHumanReviewedAnswers": 25,
+    "errorRateMax": 0.01,
+    "p95RatioToChampionMax": 1.2,
+    "minGuardrailRequests": 100,
+    "noDataAction": "HOLD"
+  },
+  "hardInvariants": {
+    "unauthorizedDisclosures": 0,
+    "revokedSourceExposures": 0,
+    "ineligibleRecommendations": 0,
+    "invalidFinancialSignUnits": 0
+  },
+  "quality": {
+    "risk": {
+      "rocAucMin": 0.7,
+      "prAucMustBeatPrevalence": true,
+      "brierMaxIncrease": 0.01,
+      "rocAucNonInferiorityMargin": 0.02,
+      "bootstrapRepeats": 1000,
+      "minTestPositives": 30
+    },
+    "ranking": {
+      "ndcgAt5MaxRelativeDrop": 0.02,
+      "minLabeledExposures": 1000,
+      "minPositiveActions": 100
+    },
+    "ocr": {
+      "financialFieldExactMatchMin": 0.95,
+      "minVerifiedDocuments": 200,
+      "signUnitErrorsMax": 0
+    },
+    "rag": {
+      "recallAt10Min": 0.85,
+      "faithfulnessMin": 0.9,
+      "responseRelevancyMin": 0.8,
+      "correctRefusalMin": 0.95,
+      "citationValidityMin": 1.0,
+      "minGoldenQuestions": 100,
+      "minAdversarialCases": 50
+    }
+  },
+  "update": {
+    "kbUniqueDocumentsN": 10,
+    "kbMaxWaitHours": 24,
+    "deletionBypassesBatch": true,
+    "singleBuildPerCorpus": true,
+    "cooldownHours": 24,
+    "minNewMatureRiskRows": 1000,
+    "minNewMatureRiskPositives": 100,
+    "minRagVerifiedPairs": 500,
+    "leaseMinutes": 10,
+    "heartbeatSeconds": 60,
+    "technicalRetryMinutes": [
+      1,
+      5,
+      15
+    ]
+  },
+  "drift": {
+    "psiThreshold": 0.2,
+    "successiveDailyWindows": 2,
+    "minRowsPerWindow": 1000,
+    "action": "DIAGNOSE_BEFORE_RETRAIN"
+  },
+  "reproduction": {
+    "featureAbsoluteTolerance": 1e-08,
+    "tabularPredictionAbsoluteTolerance": 1e-06,
+    "trainingMetricTolerance": 0.005,
+    "publicSplit": [
+      0.6,
+      0.2,
+      0.2
+    ],
+    "seed": 42
+  },
+  "deadlinesMs": {
+    "risk": 1000,
+    "ranking": 150,
+    "retrieval": 1000,
+    "reranking": 300,
+    "ragTotal": 20000
+  },
+  "rag": {
+    "denseTopK": 20,
+    "sparseTopK": 20,
+    "rrfK": 60,
+    "rerankTopK": 20,
+    "contextChunksMax": 5,
+    "chunkTokensApprox": 450,
+    "overlapTokens": 60,
+    "streaming": false,
+    "responseCacheEnabled": false,
+    "revocationTargetSeconds": 5
+  }
+}

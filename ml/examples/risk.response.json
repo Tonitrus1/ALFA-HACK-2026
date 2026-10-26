@@ -1,0 +1,16 @@
+{
+  "requestId": "cf16ac05-d8e6-4aef-9b6b-f2e4ac5e6d9b",
+  "inferenceId": "3466b994-6dcc-48b6-93b3-0d0cb491dc37",
+  "featureSnapshotId": "acea14cc-5605-43e2-bda6-c21d1b944576",
+  "featureSnapshotDigest": "6e31cdf369b74bfdf8d899c22081fb29bbad4c91edef02a27f5b79fcc06a182f",
+  "modelVersion": "catboost-optuna-v1",
+  "bundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+  "score": 0.0033180779320394808,
+  "scoreKind": "BANKRUPTCY_PROXY",
+  "calibrationStatus": "DEMONSTRATION",
+  "releaseId": "catboost-optuna-v1",
+  "purpose": "DEMO_RESEARCH",
+  "internalReasonCodes": [
+    "SYNTHETIC_SIMULATION"
+  ]
+}

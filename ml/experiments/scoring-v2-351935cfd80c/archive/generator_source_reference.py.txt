@@ -1,0 +1,165 @@
+"""Explicitly artificial accounting data; never factual statements of real companies."""
+from __future__ import annotations
+import csv
+import hashlib
+import json
+import math
+import random
+from collections import Counter
+from datetime import date,timedelta
+from decimal import Decimal
+from pathlib import Path
+import pyarrow as pa
+import pyarrow.compute as pc
+import pyarrow.parquet as pq
+from .core import identifier,iso,json_write,now,sha_file
+from .dataset import horizon
+
+FINANCIAL_FIELDS=["total_assets","non_current_assets","current_assets","equity","long_term_liabilities","current_liabilities",
+ "total_liabilities","cash","receivables","inventories","other_current_assets","revenue","ebit","interest_expense",
+ "other_income","tax_expense","net_profit","operating_cash_flow"]
+FIELD_DESCRIPTIONS={
+ "total_assets":"Активы", "non_current_assets":"Внеоборотные активы", "current_assets":"Оборотные активы",
+ "equity":"Капитал, может быть отрицательным", "long_term_liabilities":"Долгосрочные обязательства",
+ "current_liabilities":"Краткосрочные обязательства", "total_liabilities":"Все обязательства, без капитала",
+ "cash":"Денежные средства", "receivables":"Дебиторская задолженность", "inventories":"Запасы",
+ "other_current_assets":"Прочие оборотные активы", "revenue":"Выручка", "ebit":"Сгенерированная операционная прибыль до процентов и налога",
+ "interest_expense":"Процентные расходы", "other_income":"Прочий результат, до налога", "tax_expense":"Искусственная налоговая нагрузка",
+ "net_profit":"Чистая прибыль/убыток", "operating_cash_flow":"Искусственный денежный поток от операций",
+ "dataset_warning":"Предупреждение об искусственном происхождении", "company_id":"RU:INN для реестра; SIM для вымышленных компаний",
+ "inn":"Реальный ИНН ЮЛ текстом", "ogrn":"Реальный ОГРН текстом", "name":"Реальное наименование из реестра МСП",
+ "region":"Региональный код ФНС из реестра", "okved":"Основной ОКВЭД2 из реестра", "msp_category":"Исходный код категории МСП: 1/2/3",
+ "msp_snapshot_date":"Дата состояния реестра МСП", "registry_is_synthetic":"false для настоящих реквизитов; true для вымышленных SIM-ID",
+ "registry_source_document_sha256":"SHA-256 исходного XML-документа ЮЛ", "as_of_date":"Условная дата оценки в эксперименте",
+ "reporting_period_end":"Период искусственной годовой отчётности", "simulated_available_at":"ВЫМЫШЛЕННАЯ дата доступности, не публикация ФНС",
+ "currency":"Валюта искусственных сумм: RUB", "financial_unit":"Единица сумм: рубли", "financial_source":"Всегда SYNTHETIC_FINANCE_V1",
+ "financial_is_synthetic":"Всегда true", "is_synthetic":"true: строка содержит искусственные данные",
+ "horizon_end":"Конец календарных 12 месяцев после as_of_date", "target_12m":"null в гибриде; искусственный класс 0/1 в симуляции",
+ "label_status":"Причина неизвестной реальной метки либо указание синтетического исхода", "label_source":"Источник/отсутствие метки",
+ "label_is_synthetic":"true только для вымышленных исходов SIM-компаний", "event_date":"Искусственная дата события только в SIM-наборе; иначе null",
+ "observation_end_date":"Искусственный конец наблюдения в SIM; у реальных компаний null без подтверждённого покрытия",
+ "data_use":"Ограничение интерпретации: инженерный эксперимент", "split":"Заранее назначенная train/validation/test часть",
+}
+
+def generated_finances(category,rng):
+    # These scale/shape assumptions are hypothetical, not estimates of Russian SME distributions.
+    median={"1":12_000_000,"2":80_000_000,"3":350_000_000}.get(str(category),15_000_000)
+    assets=round(min(3_000_000_000,max(50_000,math.exp(rng.gauss(math.log(median),1.05))))*100)
+    current=round(assets*rng.uniform(.2,.95));noncurrent=assets-current
+    leverage=min(1.6,max(0,rng.betavariate(2.2,2.4)*1.25 + (.3 if rng.random()<.08 else 0)))
+    liabilities=round(assets*leverage);current_liabilities=round(liabilities*rng.uniform(.25,.95))
+    long_liabilities=liabilities-current_liabilities;equity=assets-liabilities
+    weights=[rng.gammavariate(a,1) for a in [1.1,2.0,1.5,1.2]];total=sum(weights)
+    cash=round(current*weights[0]/total);receivables=min(current-cash,round(current*weights[1]/total))
+    inventory=min(current-cash-receivables,round(current*weights[2]/total));other=current-cash-receivables-inventory
+    revenue=0 if rng.random()<.015 else round(assets*min(7,math.exp(rng.gauss(.3,.7))))
+    ebit=round(revenue*rng.gauss(.12,.11)-assets*rng.uniform(.005,.035))
+    interest=round(liabilities*rng.uniform(.025,.15));other_income=round(assets*rng.gauss(.005,.015))
+    before_tax=ebit-interest+other_income
+    # 20% here is a fictional effective-tax assumption, NOT a statement of current tax law.
+    tax=round(max(0,before_tax)*.2);profit=before_tax-tax
+    cfo=profit+round(noncurrent*.05)-round(revenue*rng.gauss(.02,.07))
+    values=[assets,noncurrent,current,equity,long_liabilities,current_liabilities,liabilities,cash,receivables,inventory,other,
+            revenue,ebit,interest,other_income,tax,profit,cfo]
+    return {name:Decimal(value)/100 for name,value in zip(FINANCIAL_FIELDS,values)}
+
+def probability_score(f):
+    assets=float(f["total_assets"])
+    leverage=float(f["total_liabilities"])/assets
+    loss=max(-.8,min(.8,float(f["net_profit"])/assets))
+    liquidity=float(f["current_assets"])/(float(f["current_liabilities"])+.02*assets)
+    return 2.4*(leverage-.6)-5.0*loss-0.6*min(4,liquidity)+(.6 if f["equity"]<0 else 0)
+
+def sigmoid(x):
+    return 1/(1+math.exp(-max(-50,min(50,x))))
+
+def typed_table(rows):
+    table=pa.Table.from_pylist(rows)
+    for name in FINANCIAL_FIELDS:
+        i=table.schema.get_field_index(name)
+        if i>=0: table=table.set_column(i,name,pa.array([r.get(name) for r in rows],type=pa.decimal128(28,2)))
+    for name in ["as_of_date","reporting_period_end","simulated_available_at","horizon_end","event_date","observation_end_date"]:
+        if name in table.column_names:
+            values=[date.fromisoformat(r[name]) if r.get(name) else None for r in rows]
+            table=table.set_column(table.schema.get_field_index(name),name,pa.array(values,type=pa.date32()))
+    if "target_12m" in table.column_names:
+        table=table.set_column(table.schema.get_field_index("target_12m"),"target_12m",pa.array([r.get("target_12m") for r in rows],type=pa.int8()))
+    return table.replace_schema_metadata({b"data_warning":b"SYNTHETIC FINANCES. Read DATASET_README_RU.md before use.",b"money_unit":b"RUB",b"generator":b"synthetic_finance_v1"})
+
+def csv_write(path,table):
+    with Path(path).open("w",encoding="utf-8-sig",newline="") as f:
+        writer=csv.DictWriter(f,fieldnames=table.column_names);writer.writeheader()
+        for row in table.to_pylist():writer.writerow(row)
+
+def generate(registry_path,output,seed=20261021,report_year=2025,as_of="2026-10-21",positive_rate=.05):
+    if not 0<positive_rate<1:raise ValueError("positive_rate must be between 0 and 1")
+    as_of=iso(as_of);period=f"{int(report_year)}-12-31"
+    if period>=as_of:raise ValueError("Financial period must end before assessment")
+    out=Path(output);out.mkdir(parents=True,exist_ok=True)
+    registry=pq.read_table(registry_path).to_pylist()
+    if not registry or len({r["inn"] for r in registry})!=len(registry):raise ValueError("Unique real registry companies required")
+    if any(r.get("is_synthetic") for r in registry):raise ValueError("Registry input must be real, not demo fixtures")
+    for row in registry:
+        identifier(row["inn"]);identifier(row["ogrn"],"ogrn")
+    hybrid=[];simulation=[];scores=[];truth=[]
+    end=horizon(as_of)
+    for i,r in enumerate(registry,1):
+        digest=hashlib.sha256(f"{seed}:financial:{r['inn']}".encode()).digest()
+        rng=random.Random(int.from_bytes(digest,"big"));f=generated_finances(r.get("msp_category"),rng)
+        common={"as_of_date":as_of,"reporting_period_end":period,"simulated_available_at":f"{report_year+1}-04-01",
+                "currency":"RUB","financial_unit":"RUB","financial_source":"SYNTHETIC_FINANCE_V1",
+                "financial_is_synthetic":True,"is_synthetic":True,"horizon_end":end,**f}
+        h={"dataset_warning":"SYNTHETIC ACCOUNTS; NOT FACTUAL COMPANY FINANCES", "company_id":r["company_id"],"inn":r["inn"],"ogrn":r["ogrn"],"name":r["name"],"region":r.get("region"),
+           "okved":r.get("okved"),"msp_category":r.get("msp_category"),"msp_snapshot_date":r["snapshot_date"],
+           "registry_is_synthetic":False,"registry_source_document_sha256":r["source_document_sha256"],**common,
+           "target_12m":None,"label_status":"unknown_no_verified_real_outcome_coverage","label_source":"NOT_COLLECTED",
+           "label_is_synthetic":False,"event_date":None,"observation_end_date":None,"data_use":"ENGINEERING_ONLY_NOT_FACTUAL_ACCOUNTS"}
+        hybrid.append(h)
+        # Simulated bankruptcy labels are NEVER attached to actual INNs/names.
+        sid=f"SIM:{i:08d}"
+        split_value=int(hashlib.sha256(f"{seed}:split:{sid}".encode()).hexdigest(),16)/2**256
+        split="train" if split_value<.7 else "validation" if split_value<.85 else "test"
+        simulation.append({"dataset_warning":"FICTIONAL COMPANIES, FINANCES AND BANKRUPTCY LABELS", "company_id":sid,**common,"registry_is_synthetic":True,"label_is_synthetic":True,
+                           "target_12m":None,"label_status":"synthetic_simulated_outcome","label_source":"SYNTHETIC_DGP_V1",
+                           "split":split,"event_date":None,"observation_end_date":end,"data_use":"SIMULATION_ONLY"})
+        scores.append(probability_score(f))
+    lo,hi=-30.,30.
+    for _ in range(70):
+        mid=(lo+hi)/2
+        if sum(sigmoid(s+mid) for s in scores)/len(scores)<positive_rate:lo=mid
+        else:hi=mid
+    intercept=(lo+hi)/2
+    for row,score in zip(simulation,scores):
+        sid=row["company_id"];rng=random.Random(int(hashlib.sha256(f"{seed}:outcome:{sid}".encode()).hexdigest(),16))
+        p=sigmoid(score+intercept);target=int(rng.random()<p);row["target_12m"]=target
+        if target:
+            a=date.fromisoformat(as_of);b=date.fromisoformat(end)
+            row["event_date"]=(a+timedelta(days=rng.randint(1,(b-a).days))).isoformat()
+        truth.append({"company_id":sid,"true_probability_synthetic":p,"target_is_synthetic":True})
+    ht=typed_table(hybrid);st=typed_table(simulation)
+    pq.write_table(ht,out/"hybrid_real_msps_synthetic_financials.parquet",compression="zstd")
+    pq.write_table(st,out/"training_simulation.parquet",compression="zstd")
+    csv_write(out/"hybrid_real_msps_synthetic_financials.csv",ht);csv_write(out/"training_simulation.csv",st)
+    pq.write_table(pa.Table.from_pylist(truth),out/"simulation_truth_DO_NOT_USE_AS_FEATURES.parquet",compression="zstd")
+    splits=out/"simulation_splits";splits.mkdir(exist_ok=True)
+    for split in ("train","validation","test"):
+        pq.write_table(st.filter(pc.equal(st["split"],split)),splits/(split+".parquet"),compression="zstd")
+    split_counts={s:{"rows":sum(r["split"]==s for r in simulation),"positive":sum(r["split"]==s and r["target_12m"]==1 for r in simulation)} for s in ("train","validation","test")}
+    report={"created_at":now(),"rows":len(registry),"seed":seed,"generator":"synthetic_finance_v1","report_year":report_year,"as_of_date":as_of,
+            "financials":"ALL SYNTHETIC, not GIR BO statements","registry":"REAL MSP records; see registry_provenance.json",
+            "real_outcome_labels_known":0,"real_outcome_labels_unknown":len(registry),
+            "simulation_expected_positive_rate_assumption":positive_rate,"simulation_realized_positive":sum(r["target_12m"] for r in simulation),
+            "simulation_intercept":intercept,"simulation_splits":split_counts,"synthetic_negative_equity":sum(r["equity"]<0 for r in hybrid),
+            "synthetic_losses":sum(r["net_profit"]<0 for r in hybrid),"synthetic_zero_revenue":sum(r["revenue"]==0 for r in hybrid),
+            "registry_input_sha256":sha_file(registry_path),"warning":"NOT real financial risk/PD evidence. Synthetic 0/1 labels exist only for fictional SIM IDs.",
+            "parquet_sha256":{p.name:sha_file(p) for p in sorted(out.glob("*.parquet"))}}
+    json_write(out/"generation_report.json",report)
+    dictionary={"warning":"All monetary values are generated; not factual company accounts", "monetary_fields":{k:{"type":"decimal128(28,2)","unit":"RUB","source":"SYNTHETIC_FINANCE_V1"} for k in FINANCIAL_FIELDS},
+                "target_12m":{"hybrid":"always null; no verified real outcomes","simulation":"artificial Bernoulli outcome from documented DGP"},
+                "forbidden_features":["target_12m","label_status","label_source","event_date","observation_end_date","true_probability_synthetic","split","company_id","inn","ogrn","name"]}
+    dictionary["default_feature_whitelist"]=["total_assets","current_assets","total_liabilities","current_liabilities","equity","revenue","net_profit"]
+    dictionary["tables"]={name:[{"field":field.name,"type":str(field.type),"description":FIELD_DESCRIPTIONS.get(field.name,field.name),
+                               "unit":"RUB" if field.name in FINANCIAL_FIELDS else None} for field in table.schema]
+                          for name,table in [("hybrid_real_msps_synthetic_financials",ht),("training_simulation",st)]}
+    json_write(out/"data_dictionary.json",dictionary)
+    return report

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1380" height="900" viewBox="0 0 1380 900"><rect width="1380" height="900" fill="#ffffff"/><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 Z" fill="#6d8291"/></marker></defs>
+<text x="40" y="55" font-family="DejaVu Sans,sans-serif" font-size="31" font-weight="bold" fill="#182b3b">Целевой банковский контур</text>
+<text x="40" y="92" font-family="DejaVu Sans,sans-serif" font-size="17" fill="#5a6b7b">Дальнейшее развитие после интеграционных, модельных и эксплуатационных испытаний.</text>
+<polyline points="315,225.0 400,225.0" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="670,225.0 750,225.0" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="710.0" y="217.0" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">команды</text>
+<polyline points="1020,225.0 1100,237.5" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="1060.0" y="223.25" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">оценка</text>
+<polyline points="535.0,290 535.0,370.0 535.0,370.0 535.0,450" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="535.0" y="362.0" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">outbox</text>
+<polyline points="885.0,450 885.0,382.5 1230.0,382.5 1230.0,315" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="8 6"/>
+<text x="1057.5" y="374.5" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">bundle</text>
+<polyline points="670,515.0 750,525.0" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="8 6"/>
+<text x="710.0" y="512.0" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">данные</text>
+<polyline points="182.5,450 182.5,370.0 535.0,370.0 535.0,290" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="8 6"/>
+<text x="358.75" y="362.0" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">наблюдение</text>
+<rect x="50" y="160" width="265" height="130" rx="12" fill="#fff4df" stroke="#b99b5d" stroke-width="1.8"/>
+<text x="64" y="189" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Банковский периметр</text>
+<text x="64" y="220" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">WAF / IAM / gateway</text>
+<rect x="400" y="160" width="270" height="130" rx="12" fill="#edf3fb" stroke="#527ba5" stroke-width="1.8"/>
+<text x="414" y="189" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Кабинет</text>
+<text x="414" y="220" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Реплики модульного API</text>
+<text x="414" y="242" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Общие сессии и события</text>
+<rect x="750" y="160" width="270" height="130" rx="12" fill="#eef1f3" stroke="#738898" stroke-width="1.8"/>
+<text x="764" y="189" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Банковские системы</text>
+<text x="764" y="220" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Рассмотрение /</text>
+<text x="764" y="242" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">предложение</text>
+<text x="764" y="264" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Подпись и выдача</text>
+<rect x="1100" y="160" width="260" height="155" rx="12" fill="#f0edfb" stroke="#8d79b1" stroke-width="1.8"/>
+<text x="1114" y="189" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">ML serving</text>
+<text x="1114" y="220" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Отдельные CPU/GPU pools</text>
+<text x="1114" y="242" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Версионированные модели</text>
+<rect x="400" y="450" width="270" height="130" rx="12" fill="#eaf5ef" stroke="#6e9e86" stroke-width="1.8"/>
+<text x="414" y="479" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Данные и доставка</text>
+<text x="414" y="510" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">PostgreSQL / Kafka</text>
+<text x="414" y="532" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Redis / S3</text>
+<rect x="750" y="450" width="270" height="150" rx="12" fill="#f0edfb" stroke="#8d79b1" stroke-width="1.8"/>
+<text x="764" y="479" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">ML-платформа</text>
+<text x="764" y="510" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Feast / Airflow / MLflow</text>
+<text x="764" y="532" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Evidently / Qdrant / vLLM</text>
+<rect x="50" y="450" width="265" height="130" rx="12" fill="#fff4df" stroke="#b99b5d" stroke-width="1.8"/>
+<text x="64" y="479" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Эксплуатация</text>
+<text x="64" y="510" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Prometheus / Grafana</text>
+<text x="64" y="532" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Secrets / audit / DR</text>
+<text x="40" y="820" font-family="DejaVu Sans,sans-serif" font-size="15" fill="#5a6b7b">IAM, решение, ЭП и выдача принадлежат банковским системам. Модели возвращают оценку, не финансовое действие.</text>
+<text x="40" y="848" font-family="DejaVu Sans,sans-serif" font-size="15" fill="#5a6b7b">Полный стек связан с MVP через порты и критерии подключения (схема 07); допуск bank-target проверяется отдельно.</text>
+<text x="40" y="887" font-family="DejaVu Sans,sans-serif" font-size="12" fill="#5a6b7b">HACKATHON-1.5 · 20.10.2026 · 02/07 · проектная схема, runtime не проверен</text></svg>

@@ -1,0 +1,44 @@
+{
+  "modelVersion": "catboost-manipulation-v1",
+  "scoreKind": "SYNTHETIC_MANIPULATION_PROXY",
+  "validationStatus": "DEMONSTRATION",
+  "purpose": "DEMO_RESEARCH",
+  "featureSchemaVersion": 1,
+  "featureCodeDigest": "f4769a1499c71f2788514e8685fbffc11a210af8540667f5dc21a8bef96972f9",
+  "generatorDigest": "0bb343babe29aff59b6403fc46e3c352cacb81f6ba5175698c46a56ff0c76f91",
+  "riskBundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+  "routingEnabled": true,
+  "features": [
+    "delta_totalAssetsMinor",
+    "abs_delta_totalAssetsMinor",
+    "delta_currentAssetsMinor",
+    "abs_delta_currentAssetsMinor",
+    "delta_totalLiabilitiesMinor",
+    "abs_delta_totalLiabilitiesMinor",
+    "delta_currentLiabilitiesMinor",
+    "abs_delta_currentLiabilitiesMinor",
+    "delta_equityMinor",
+    "abs_delta_equityMinor",
+    "delta_revenueMinor",
+    "abs_delta_revenueMinor",
+    "delta_netProfitMinor",
+    "abs_delta_netProfitMinor",
+    "delta_ebitMinor",
+    "abs_delta_ebitMinor"
+  ],
+  "libraries": {
+    "catboost": "1.2.8",
+    "numpy": "2.2.6",
+    "joblib": "1.6.0"
+  },
+  "artifacts": {
+    "model.joblib": "ea60259c805f7b3bb7338f6f96409bb3ad537454867120694c04be4ebf737fb6",
+    "policy.json": "ad0609ca4aa7631db1f5efc56bd631d1a92513b8668783e063f2b6894568260e",
+    "selection-lock.json": "ab981aae50484dc5a11f63ddd048823382e9a12c6104959250079f7717ce0a12",
+    "feature-schema.json": "b745248cf14e82680504aa8c3e46d221370f5d103029dab072ee86a407d8d037",
+    "evaluation.json": "08c320b8a7f39672983dcaa2e88903add2da9f1b7062120e8d87a834b527601e",
+    "model-card.md": "dca0ed32ef0995b435d8312312c432ae6cab2568d1ebe5fc3a4b3a1f76f0d41b",
+    "scenario-fixtures.json": "e45bd586c94ee2c4148494b68e2ec7f031da1b7dea04c36b75ef4d336e0ad3da"
+  },
+  "bundleDigest": "b5f6e6be603a368469de08e2424912c08d97cdba37862af049f006b7ec9628c9"
+}

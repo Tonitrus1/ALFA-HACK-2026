@@ -1,0 +1,250 @@
+{
+  "scope": "Design reference predicates only; not application testing",
+  "cases": [
+    {
+      "id": "permutation-0",
+      "rule": "permutation",
+      "value": {
+        "candidateIds": [
+          "a",
+          "b"
+        ],
+        "rankedIds": [
+          "b",
+          "a"
+        ]
+      },
+      "expectedAllowed": true
+    },
+    {
+      "id": "permutation-1",
+      "rule": "permutation",
+      "value": {
+        "candidateIds": [
+          "a",
+          "b"
+        ],
+        "rankedIds": [
+          "a",
+          "a"
+        ]
+      },
+      "expectedAllowed": false
+    },
+    {
+      "id": "permutation-2",
+      "rule": "permutation",
+      "value": {
+        "candidateIds": [
+          "a",
+          "b"
+        ],
+        "rankedIds": [
+          "a",
+          "foreign"
+        ]
+      },
+      "expectedAllowed": false
+    },
+    {
+      "id": "permutation-3",
+      "rule": "permutation",
+      "value": {
+        "candidateIds": [
+          "a",
+          "b"
+        ],
+        "rankedIds": [
+          "a"
+        ]
+      },
+      "expectedAllowed": false
+    },
+    {
+      "id": "candidate-texts-4",
+      "rule": "texts",
+      "value": {
+        "candidateIds": [
+          "a",
+          "b"
+        ],
+        "textIds": [
+          "a",
+          "b"
+        ]
+      },
+      "expectedAllowed": true
+    },
+    {
+      "id": "candidate-texts-5",
+      "rule": "texts",
+      "value": {
+        "candidateIds": [
+          "a",
+          "b"
+        ],
+        "textIds": [
+          "a",
+          "foreign"
+        ]
+      },
+      "expectedAllowed": false
+    },
+    {
+      "id": "candidate-texts-6",
+      "rule": "texts",
+      "value": {
+        "candidateIds": [
+          "a",
+          "b"
+        ],
+        "textIds": [
+          "a",
+          "a"
+        ]
+      },
+      "expectedAllowed": false
+    },
+    {
+      "id": "context-7",
+      "rule": "context",
+      "value": {
+        "request": 1,
+        "session": 1
+      },
+      "expectedAllowed": true
+    },
+    {
+      "id": "context-8",
+      "rule": "context",
+      "value": {
+        "request": 1,
+        "session": 2
+      },
+      "expectedAllowed": false
+    },
+    {
+      "id": "snapshot-digest-9",
+      "rule": "digest",
+      "value": {
+        "request": "abc",
+        "saved": "abc"
+      },
+      "expectedAllowed": true
+    },
+    {
+      "id": "snapshot-digest-10",
+      "rule": "digest",
+      "value": {
+        "request": "abc",
+        "saved": "def"
+      },
+      "expectedAllowed": false
+    },
+    {
+      "id": "financial-version-11",
+      "rule": "version",
+      "value": {
+        "confirmed": 3,
+        "saved": 3
+      },
+      "expectedAllowed": true
+    },
+    {
+      "id": "financial-version-12",
+      "rule": "version",
+      "value": {
+        "confirmed": 2,
+        "saved": 3
+      },
+      "expectedAllowed": false
+    },
+    {
+      "id": "rag-revoke-13",
+      "rule": "rag",
+      "value": {
+        "capturedEpoch": 1,
+        "authorityEpoch": 1,
+        "revoked": false
+      },
+      "expectedAllowed": true
+    },
+    {
+      "id": "rag-revoke-14",
+      "rule": "rag",
+      "value": {
+        "capturedEpoch": 1,
+        "authorityEpoch": 2,
+        "revoked": true
+      },
+      "expectedAllowed": false
+    },
+    {
+      "id": "rag-revoke-15",
+      "rule": "rag",
+      "value": {
+        "capturedEpoch": 2,
+        "authorityEpoch": 2,
+        "revoked": true
+      },
+      "expectedAllowed": false
+    },
+    {
+      "id": "exposure-16",
+      "rule": "exposure",
+      "value": {
+        "actor": "a",
+        "owner": "a",
+        "item": "p1",
+        "shown": [
+          "p1"
+        ]
+      },
+      "expectedAllowed": true
+    },
+    {
+      "id": "exposure-17",
+      "rule": "exposure",
+      "value": {
+        "actor": "a",
+        "owner": "b",
+        "item": "p1",
+        "shown": [
+          "p1"
+        ]
+      },
+      "expectedAllowed": false
+    },
+    {
+      "id": "exposure-18",
+      "rule": "exposure",
+      "value": {
+        "actor": "a",
+        "owner": "a",
+        "item": "foreign",
+        "shown": [
+          "p1"
+        ]
+      },
+      "expectedAllowed": false
+    },
+    {
+      "id": "asof-19",
+      "rule": "time",
+      "value": {
+        "availableAt": "2026-10-19",
+        "asOf": "2026-10-20"
+      },
+      "expectedAllowed": true
+    },
+    {
+      "id": "asof-20",
+      "rule": "time",
+      "value": {
+        "availableAt": "2026-10-21",
+        "asOf": "2026-10-20"
+      },
+      "expectedAllowed": false
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "checks": [
+    "public upload",
+    "real ClamAV CLEAN",
+    "exact-byte clean download",
+    "cross-company 404"
+  ],
+  "ocrExtraction": "BLOCKED_LLM_API_KEY_MISSING"
+}

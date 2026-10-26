@@ -1,0 +1,9 @@
+.venv
+.env
+.pytest_cache
+.ruff_cache
+data
+model-cache
+__pycache__
+tests
+reports

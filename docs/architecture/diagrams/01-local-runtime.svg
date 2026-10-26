@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1380" height="900" viewBox="0 0 1380 900"><rect width="1380" height="900" fill="#ffffff"/><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 Z" fill="#6d8291"/></marker></defs>
+<text x="40" y="55" font-family="DejaVu Sans,sans-serif" font-size="31" font-weight="bold" fill="#182b3b">MVP: обычный ПК, реальные ML-функции</text>
+<text x="40" y="92" font-family="DejaVu Sans,sans-serif" font-size="17" fill="#5a6b7b">6 контейнеров; полный стек через локальные адаптеры. Именованные границы - на схеме 07.</text>
+<polyline points="280,205.0 365,205.0" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="322.5" y="197.0" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">HTTP</text>
+<polyline points="635,205.0 710,205.0" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="672.5" y="197.0" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">API</text>
+<polyline points="980,205.0 1050,205.0" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="1015.0" y="197.0" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">commit</text>
+<polyline points="845.0,270 845.0,352.5 845.0,352.5 845.0,435" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="845.0" y="344.5" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">ML ports</text>
+<polyline points="710,500.0 635,500.0" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="672.5" y="492.0" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">RAG</text>
+<polyline points="845.0,270 845.0,352.5 1180.0,352.5 1180.0,435" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="1012.5" y="344.5" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">stream</text>
+<polyline points="1180.0,565 1180.0,610.0 1180.0,610.0 1180.0,655" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<text x="1180.0" y="602.0" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">scan</text>
+<polyline points="980,500.0 1050,500.0" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)" stroke-dasharray="8 6"/>
+<text x="1015.0" y="492.0" text-anchor="middle" font-family="DejaVu Sans,sans-serif" font-size="14" fill="#5a6b7b">CLEAN only</text>
+<rect x="40" y="140" width="240" height="130" rx="12" fill="#fff0ed" stroke="#d27669" stroke-width="1.8"/>
+<text x="54" y="169" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Предприниматель</text>
+<text x="54" y="200" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Клиентский web</text>
+<text x="54" y="222" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Компания и полномочия</text>
+<rect x="365" y="140" width="270" height="130" rx="12" fill="#edf3fb" stroke="#527ba5" stroke-width="1.8"/>
+<text x="379" y="169" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Web / reverse proxy</text>
+<text x="379" y="200" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">React + один origin</text>
+<text x="379" y="222" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Порт localhost:8080</text>
+<rect x="710" y="140" width="270" height="130" rx="12" fill="#edf3fb" stroke="#527ba5" stroke-width="1.8"/>
+<text x="724" y="169" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Модульный backend</text>
+<text x="724" y="200" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Java: заявки, права, файлы</text>
+<text x="724" y="222" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Симулятор решения</text>
+<rect x="1050" y="140" width="260" height="130" rx="12" fill="#eaf5ef" stroke="#6e9e86" stroke-width="1.8"/>
+<text x="1064" y="169" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">PostgreSQL</text>
+<text x="1064" y="200" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Данные, сессии, outbox</text>
+<text x="1064" y="222" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Снимки, KB, inference</text>
+<rect x="710" y="435" width="270" height="130" rx="12" fill="#f0edfb" stroke="#8d79b1" stroke-width="1.8"/>
+<text x="724" y="464" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">ML-сервис / worker</text>
+<text x="724" y="495" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Риск, E5-рекомендации</text>
+<text x="724" y="517" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">OCR и RAG-оркестрация</text>
+<rect x="365" y="435" width="270" height="130" rx="12" fill="#f0edfb" stroke="#8d79b1" stroke-width="1.8"/>
+<text x="379" y="464" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Локальная LLM</text>
+<text x="379" y="495" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Qwen 0.5B GGUF</text>
+<text x="379" y="517" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">CPU; NVIDIA optional</text>
+<rect x="1050" y="435" width="260" height="130" rx="12" fill="#eaf5ef" stroke="#6e9e86" stroke-width="1.8"/>
+<text x="1064" y="464" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Файловые volumes</text>
+<text x="1064" y="495" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Quarantine / clean</text>
+<text x="1064" y="517" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Модели read-only</text>
+<rect x="1050" y="655" width="260" height="105" rx="12" fill="#fff4df" stroke="#b99b5d" stroke-width="1.8"/>
+<text x="1064" y="684" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Проверка файлов</text>
+<text x="1064" y="715" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">AV + signature DB</text>
+<text x="1064" y="737" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Ошибка ≠ CLEAN</text>
+<text x="40" y="820" font-family="DejaVu Sans,sans-serif" font-size="15" fill="#5a6b7b">Сплошная стрелка — вызов; пунктир — асинхронное задание. Только web-порт открыт пользователю.</text>
+<text x="40" y="848" font-family="DejaVu Sans,sans-serif" font-size="15" fill="#5a6b7b">Qdrant/Redis/Feast и остальные технологии сохранены через порты. Binding выбирает локальный или настоящий адаптер.</text>
+<text x="40" y="887" font-family="DejaVu Sans,sans-serif" font-size="12" fill="#5a6b7b">HACKATHON-1.5 · 20.10.2026 · 01/07 · проектная схема, runtime не проверен</text></svg>

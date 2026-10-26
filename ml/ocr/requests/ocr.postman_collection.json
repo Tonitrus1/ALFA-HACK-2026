@@ -1,0 +1,147 @@
+{
+  "info": {
+    "name": "ALFA standalone OCR",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8001"
+    },
+    {
+      "key": "ocr_api_key",
+      "value": ""
+    },
+    {
+      "key": "job_id",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Ready",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{ocr_api_key}}"
+          }
+        ],
+        "url": "{{base_url}}/health/ready"
+      }
+    },
+    {
+      "name": "Schema",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{ocr_api_key}}"
+          }
+        ],
+        "url": "{{base_url}}/v1/schema"
+      }
+    },
+    {
+      "name": "Submit",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{ocr_api_key}}"
+          }
+        ],
+        "url": "{{base_url}}/v1/jobs",
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "files",
+              "type": "file",
+              "src": "../fixtures/generated/passport.pdf"
+            }
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 202) pm.collectionVariables.set('job_id', pm.response.json().job_id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Status",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{ocr_api_key}}"
+          }
+        ],
+        "url": "{{base_url}}/v1/jobs/{{job_id}}"
+      }
+    },
+    {
+      "name": "Job schema",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{ocr_api_key}}"
+          }
+        ],
+        "url": "{{base_url}}/v1/jobs/{{job_id}}/schema"
+      }
+    },
+    {
+      "name": "OCR",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{ocr_api_key}}"
+          }
+        ],
+        "url": "{{base_url}}/v1/jobs/{{job_id}}/ocr"
+      }
+    },
+    {
+      "name": "Result",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{ocr_api_key}}"
+          }
+        ],
+        "url": "{{base_url}}/v1/jobs/{{job_id}}/result"
+      }
+    },
+    {
+      "name": "Delete",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{ocr_api_key}}"
+          }
+        ],
+        "url": "{{base_url}}/v1/jobs/{{job_id}}"
+      }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "status": "PASS",
+  "checks": [
+    "risk_outage_manual",
+    "company_isolation"
+  ]
+}

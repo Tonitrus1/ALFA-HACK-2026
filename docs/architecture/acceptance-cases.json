@@ -1,0 +1,550 @@
+[
+  {
+    "id": "A01",
+    "title": "Основной путь",
+    "given": "client A with all confirmed finance",
+    "when": "submit, receive offer, accept, operator completes",
+    "expected": "one case, no real money, COMPLETED; IDs survive restart",
+    "kind": "E2E",
+    "taskIds": [
+      "P05",
+      "P06",
+      "P17"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A02",
+    "title": "Финансовое уточнение",
+    "given": "OPEN RFI for netProfit only",
+    "when": "save/confirm/resubmit",
+    "expected": "only netProfit changes; new financial snapshot; original immutable",
+    "kind": "E2E",
+    "taskIds": [
+      "P08",
+      "P09",
+      "P15"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A03",
+    "title": "Отказ",
+    "given": "policy DQ passed; debt ratio >=0.9",
+    "when": "review",
+    "expected": "DECLINED safe reason; no offer",
+    "kind": "E2E",
+    "taskIds": [
+      "P15"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A04",
+    "title": "Другие условия",
+    "given": "eligible request above turnover cap",
+    "when": "review",
+    "expected": "ALTERNATIVE complete offer; no silent change of application",
+    "kind": "E2E",
+    "taskIds": [
+      "P15",
+      "P16"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A05",
+    "title": "Двойная отправка",
+    "given": "same command key and body",
+    "when": "concurrent submit x2",
+    "expected": "same receipt, one case; DB unique constraint",
+    "kind": "TRANSACTION",
+    "taskIds": [
+      "P18"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A06",
+    "title": "Ключ с иным содержимым",
+    "given": "stored key for original body",
+    "when": "retry with changed body",
+    "expected": "409 IDEMPOTENCY_CONFLICT, no side effect",
+    "kind": "TRANSACTION",
+    "taskIds": [
+      "P18"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A07",
+    "title": "Конфликт черновика",
+    "given": "two ETags",
+    "when": "save from stale tab",
+    "expected": "409/412 per endpoint; local text retained",
+    "kind": "E2E",
+    "taskIds": [
+      "P08",
+      "P09"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A08",
+    "title": "Смена компании",
+    "given": "tab A has contextVersion 1",
+    "when": "tab B switches company; A mutates",
+    "expected": "409 context changed; no A payload stored in B",
+    "kind": "SECURITY",
+    "taskIds": [
+      "P18"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A09",
+    "title": "Чужие объекты",
+    "given": "user A knows B application/file/message IDs",
+    "when": "read/mutate/download/history",
+    "expected": "404 safe denial, no data leak or timing oracle detail",
+    "kind": "SECURITY",
+    "taskIds": [
+      "P18"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A10",
+    "title": "CSRF",
+    "given": "valid cookie but no token",
+    "when": "POST/PUT/PATCH/DELETE",
+    "expected": "403, including binary upload grant endpoints",
+    "kind": "SECURITY",
+    "taskIds": [
+      "P18"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A11",
+    "title": "Истёкшее предложение",
+    "given": "offer expired by bank clock",
+    "when": "accept or stale client double click",
+    "expected": "first new command rejected; replay existing success returned",
+    "kind": "TRANSACTION",
+    "taskIds": [
+      "P18"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A12",
+    "title": "Гонка отмены и принятия",
+    "given": "withdraw and accept concurrent",
+    "when": "bank atomic transition",
+    "expected": "one winning state; never both accepted and cancelled",
+    "kind": "TRANSACTION",
+    "taskIds": [
+      "P18"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A13",
+    "title": "Небезопасный файл",
+    "given": "EICAR/unsupported mime/oversize/polyglot",
+    "when": "upload and scan",
+    "expected": "not CLEAN; no OCR/download to client; safe audit",
+    "kind": "SECURITY",
+    "taskIds": [
+      "P10",
+      "P13"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A14",
+    "title": "AV недоступен",
+    "given": "quarantined upload",
+    "when": "scanner unavailable",
+    "expected": "quarantine preserved; manual form path available, no unscanned file accepted",
+    "kind": "FAILURE",
+    "taskIds": [
+      "P18"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A15",
+    "title": "Старая аренда OCR",
+    "given": "new generation/token issued",
+    "when": "old worker submits result",
+    "expected": "rejected; no field/confirmation overwritten",
+    "kind": "TRANSACTION",
+    "taskIds": [
+      "P10",
+      "P13"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A16",
+    "title": "OCR без подтверждения",
+    "given": "READY extraction with high confidence",
+    "when": "submit",
+    "expected": "blocked until all 8 values reviewed; confidence not consent",
+    "kind": "E2E",
+    "taskIds": [
+      "P08",
+      "P09",
+      "P13"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A17",
+    "title": "OCR сломан",
+    "given": "CLEAN supported image",
+    "when": "worker fails",
+    "expected": "manual financial entry works; no data fabricated",
+    "kind": "FAILURE",
+    "taskIds": [
+      "P13",
+      "P16"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A18",
+    "title": "Risk недоступен",
+    "given": "package and features committed",
+    "when": "timeout/error/audit insert fails",
+    "expected": "MANUAL; no automated DECLINED due to outage",
+    "kind": "FAILURE",
+    "taskIds": [
+      "P11",
+      "P15"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A19",
+    "title": "Ranker возвращает чужой ID",
+    "given": "eligible candidate set",
+    "when": "invalid/partial permutation",
+    "expected": "RULES and valid set; nextAction stays first",
+    "kind": "SECURITY",
+    "taskIds": [
+      "P12",
+      "P15"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A20",
+    "title": "RAG без источников",
+    "given": "empty or irrelevant accessible corpus",
+    "when": "ask question",
+    "expected": "INSUFFICIENT_EVIDENCE, no invented rate or approval",
+    "kind": "E2E",
+    "taskIds": [
+      "P14",
+      "P16"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A21",
+    "title": "RAG prompt injection",
+    "given": "KB chunk asks to reveal secrets",
+    "when": "retrieve/generate",
+    "expected": "no tools/credentials/credit command; safe source-bound answer or refusal",
+    "kind": "SECURITY",
+    "taskIds": [
+      "P14"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A22",
+    "title": "Отзыв знания в полёте",
+    "given": "RAG already generating from doc",
+    "when": "revoke then publish response",
+    "expected": "post-generation epoch check suppresses revoked answer/citation, history also filtered",
+    "kind": "SECURITY",
+    "taskIds": [
+      "P14",
+      "P15"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A23",
+    "title": "RAG timeout",
+    "given": "valid sources; LLM exceeds45s",
+    "when": "request timeout at60s",
+    "expected": "SEARCH_ONLY with valid source links; not claimed generated answer",
+    "kind": "FAILURE",
+    "taskIds": [
+      "P14",
+      "P16"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A24",
+    "title": "Потерянный HTTP-ответ",
+    "given": "server committed command",
+    "when": "client reconnects",
+    "expected": "lookup operation by saved client key; no new command key",
+    "kind": "RECOVERY",
+    "taskIds": [
+      "P18"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A25",
+    "title": "Перезапуск",
+    "given": "draft, files, operation, queue committed",
+    "when": "restart all containers without deleting volumes",
+    "expected": "same data; jobs leased again, one business effect",
+    "kind": "RECOVERY",
+    "taskIds": [
+      "P19"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A26",
+    "title": "SSE gap",
+    "given": "missing cursor /expired journal",
+    "when": "reconnect",
+    "expected": "snapshot barrier then refetch resources and all pages; no max100 data loss",
+    "kind": "RECOVERY",
+    "taskIds": [
+      "P16",
+      "P19"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A27",
+    "title": "Денежные поля",
+    "given": "RUB decimals and negative equity",
+    "when": "parse, save, feature build",
+    "expected": "minor integer, no float cents, negative capital allowed; no division by0",
+    "kind": "DATA",
+    "taskIds": [
+      "P08",
+      "P11"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A28",
+    "title": "Train/serve parity",
+    "given": "same frozen financial input",
+    "when": "batch and online feature build",
+    "expected": "8 ratios and missing masks within1e-8; source availability <=asOf",
+    "kind": "ML",
+    "taskIds": [
+      "P11"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A29",
+    "title": "ML honesty",
+    "given": "no behavior dataset / no bank labels",
+    "when": "show recommendations/risk",
+    "expected": "semantic content model, BANKRUPTCY_PROXY; no fabricated PD or A/B lift",
+    "kind": "ML",
+    "taskIds": [
+      "P11",
+      "P12"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A30",
+    "title": "Синтетика и обычный ПК",
+    "given": "fresh supported CPU environment",
+    "when": "launch documented release",
+    "expected": "all4 ML functions run locally, no paid/private API; actual resource/time report",
+    "kind": "LAUNCH",
+    "taskIds": [
+      "P20"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A31",
+    "title": "Клавиатура и понимание",
+    "given": "new tester with keyboard",
+    "when": "complete form and RFI",
+    "expected": "labels/focus/errors readable; tester names status and next step",
+    "kind": "UX",
+    "taskIds": [
+      "P19"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A32",
+    "title": "История и полнота команд",
+    "given": "receipt completed before reload",
+    "when": "reload and query operation list",
+    "expected": "completed and active within dedup retention visible; no externalRequestId leaked",
+    "kind": "RECOVERY",
+    "taskIds": [
+      "P18"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A33",
+    "title": "Три продукта и eligibility",
+    "given": "fixed product catalog",
+    "when": "request outside bounds",
+    "expected": "ineligible excluded; unknown data prompts clarification; no invented eligibility",
+    "kind": "E2E",
+    "taskIds": [
+      "P12",
+      "P15"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A34",
+    "title": "Нет вредной утечки в логах",
+    "given": "requests with docs, tokens and chat text",
+    "when": "trigger errors",
+    "expected": "metadata trace only; no full bodies/session tokens; restricted audit",
+    "kind": "SECURITY",
+    "taskIds": [
+      "P18"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A35",
+    "title": "Чистая миграция",
+    "given": "empty DB then populated DB",
+    "when": "start app twice",
+    "expected": "Flyway ordered, no data reset/reseed duplication",
+    "kind": "LAUNCH",
+    "taskIds": [
+      "P03",
+      "P20"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A36",
+    "title": "Откат модели",
+    "given": "new bundle fails health",
+    "when": "operator selects previous full digest bundle",
+    "expected": "same feature schema/preprocessor model; revoked KB not reactivated",
+    "kind": "RECOVERY",
+    "taskIds": [
+      "P11",
+      "P14",
+      "P17"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A37",
+    "title": "Промышленная нагрузка",
+    "given": "bank-target built and approved",
+    "when": "1k then5k RPS and failure injection",
+    "expected": "measure target SLO and capacity; not required in hackathon validation",
+    "kind": "TARGET_ONLY",
+    "taskIds": [
+      "P24"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A38",
+    "title": "Выбор провайдера без скрытой подмены",
+    "given": "valid local binding manifest",
+    "when": "unknown provider / missing capability / forbidden pairing",
+    "expected": "startup rejected; exact selected providers in protected engineering report",
+    "kind": "MVP",
+    "taskIds": [
+      "P25",
+      "P26"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A39",
+    "title": "Общий контракт адаптеров",
+    "given": "fixed synthetic fixtures and local implementations",
+    "when": "run capability suite; repeat against real provider only when enabled",
+    "expected": "common invariants pass; provider-specific limitations recorded; disabled real adapter remains NOT_EXECUTED",
+    "kind": "MVP",
+    "taskIds": [
+      "P25",
+      "P26",
+      "P27"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A40",
+    "title": "Отказ обязательного хранилища",
+    "given": "selected session store / KB authority / file safety",
+    "when": "dependency unavailable or timeout",
+    "expected": "deny protected operation / suppress RAG / retain quarantine; no automatic provider fallback",
+    "kind": "MVP",
+    "taskIds": [
+      "P18",
+      "P25"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A41",
+    "title": "Достоверная архитектура на защите",
+    "given": "release commit and measured runtime evidence",
+    "when": "compare diagram, provider selection and demo actions",
+    "expected": "REAL_CONNECTED only with evidence digest; LOCAL_SUBSTITUTE and TEST_DOUBLE explicit; 4 ML functions run real models",
+    "kind": "MVP",
+    "taskIds": [
+      "P21",
+      "P22",
+      "P26"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A42",
+    "title": "Feast-граница без чтения будущего",
+    "given": "two source versions with different availableAt and one immutable submission",
+    "when": "historical(asOf) and get(submissionSnapshot)",
+    "expected": "future version excluded; submitted score pinned; Feast online-latest never replaces historical join",
+    "kind": "MVP",
+    "taskIds": [
+      "P11",
+      "P26"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "A43",
+    "title": "Qdrant-граница и фильтрация",
+    "given": "two companies plus revoked KB version",
+    "when": "query NumPy and optional real Qdrant using allowlist",
+    "expected": "same permission constraints; recall/score tolerance measured separately; no claim ANN is bit-identical",
+    "kind": "MVP",
+    "taskIds": [
+      "P14",
+      "P26",
+      "P27"
+    ],
+    "executionStatus": "NOT_EXECUTED_NO_APPLICATION"
+  }
+]

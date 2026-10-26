@@ -1,0 +1,7 @@
+{
+  "live": 200,
+  "ready": 200,
+  "swagger": 200,
+  "openapi": 200,
+  "historical_schema_matches_result_hash": true
+}

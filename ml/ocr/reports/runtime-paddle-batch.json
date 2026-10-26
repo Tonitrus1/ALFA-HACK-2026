@@ -1,0 +1,106 @@
+{
+  "synthetic_only": true,
+  "real_ocr": true,
+  "real_llm": true,
+  "checks": {
+    "ready": true,
+    "reject_11_files": true,
+    "reject_51_pages": true,
+    "reject_invalid": true,
+    "auth_required": true
+  },
+  "base": {
+    "job_id": "f4be42d7-7647-4692-8154-37992e465470",
+    "status": "succeeded",
+    "error_code": null,
+    "schema_and_sources_valid": true,
+    "provenance": {
+      "prompt_sha256": "1d61e39d1841cff756771295df5306aed919c61d7a9b8792197473448df37061",
+      "schema_sha256": "9cf63c599a550f2d568b63c581c4c9d1a4de6824f3bf9a0600c0cc1d3364aa0e",
+      "ocr_engine": "paddle",
+      "ocr_version": "3.3.0",
+      "llm": {
+        "model": "qwen3-30b-a3b",
+        "calls": 2,
+        "validation_repairs": 1,
+        "usage": {
+          "prompt_tokens": 15569,
+          "completion_tokens": 6921,
+          "total_tokens": 22490
+        },
+        "merge": "conservative lexical equality; differing candidates become conflicts"
+      },
+      "seconds": 64.898
+    },
+    "extraction_checks": {
+      "person.full_name": true,
+      "person.birth_date": true,
+      "person.inn": true,
+      "person.snils": true,
+      "person.passport_series": true,
+      "person.passport_number": true,
+      "organization.inn": false,
+      "financial.net_profit": true,
+      "financial.ebit": true,
+      "financial.equity": true,
+      "financial.total_assets": true,
+      "financial.current_assets": true,
+      "financial.current_liabilities": true,
+      "financial.total_debt": true,
+      "financial.revenue": true,
+      "missing_kpp": true,
+      "missing_ogrn": true,
+      "financial_period": true,
+      "financial_currency": true,
+      "extension_demo_code": false,
+      "document_classification": true
+    }
+  },
+  "conflict": {
+    "job_id": "ae029904-2a49-4025-ab70-9fcc390e9ffc",
+    "status": "succeeded",
+    "error_code": null,
+    "schema_and_sources_valid": true,
+    "provenance": {
+      "prompt_sha256": "1d61e39d1841cff756771295df5306aed919c61d7a9b8792197473448df37061",
+      "schema_sha256": "9cf63c599a550f2d568b63c581c4c9d1a4de6824f3bf9a0600c0cc1d3364aa0e",
+      "ocr_engine": "paddle",
+      "ocr_version": "3.3.0",
+      "llm": {
+        "model": "qwen3-30b-a3b",
+        "calls": 2,
+        "validation_repairs": 1,
+        "usage": {
+          "prompt_tokens": 16886,
+          "completion_tokens": 7609,
+          "total_tokens": 24495
+        },
+        "merge": "conservative lexical equality; differing candidates become conflicts"
+      },
+      "seconds": 61.215
+    },
+    "extraction_checks": {
+      "person.full_name": true,
+      "person.birth_date": true,
+      "person.inn": true,
+      "person.snils": true,
+      "person.passport_series": true,
+      "person.passport_number": true,
+      "organization.inn": true,
+      "financial.net_profit": true,
+      "financial.ebit": true,
+      "financial.equity": true,
+      "financial.total_assets": true,
+      "financial.current_assets": false,
+      "financial.current_liabilities": false,
+      "financial.total_debt": true,
+      "missing_kpp": true,
+      "missing_ogrn": true,
+      "financial_period": true,
+      "financial_currency": true,
+      "extension_demo_code": false,
+      "document_classification": true,
+      "revenue_conflict": false
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "eventId": "event-MLUpdateRequested",
+  "eventType": "MLUpdateRequested",
+  "schemaVersion": 1,
+  "aggregateId": "updateRequestId-demo",
+  "aggregateVersion": 1,
+  "occurredAt": "2026-10-20T10:00:00Z",
+  "correlationId": "corr-demo",
+  "payload": {
+    "updateRequestId": "updateRequestId-demo",
+    "family": "RISK",
+    "triggerPolicyVersion": "triggerPolicyVersion-demo"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "defaultRanker": "e5",
+  "gates": {
+    "relativeNDCG6": false,
+    "positiveClusterCI": false,
+    "semanticScenarios": false,
+    "humanReview": false
+  },
+  "isSynthetic": true,
+  "learnedBundle": "/releases/feed-v2/catboost",
+  "e5Bundle": "/releases/feed-v2/e5",
+  "humanReviewPending": true
+}

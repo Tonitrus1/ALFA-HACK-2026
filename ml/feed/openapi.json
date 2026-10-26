@@ -1,0 +1,643 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Feed Ranking API v2",
+    "version": "1.0.1"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "feedHealth",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "403": {
+            "description": "Missing or invalid internal service token",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MLError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid FEED ranking request",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MLError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Feed model is unavailable",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "maximum": 3600.0,
+                  "minimum": 1.0
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MLError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "ServiceIdentity": []
+          }
+        ]
+      }
+    },
+    "/internal/v2/rankings": {
+      "post": {
+        "summary": "Rank",
+        "operationId": "rankEligibleCandidates",
+        "security": [
+          {
+            "ServiceIdentity": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RankingRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RankingResult"
+                }
+              }
+            },
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Missing or invalid internal service token",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MLError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid FEED ranking request",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MLError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Catalog, candidate or idempotency conflict",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MLError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Model unavailable; backend must use RULES",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "const": "no-store"
+                }
+              },
+              "Retry-After": {
+                "schema": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 3600
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MLError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Business": {
+        "type": "string",
+        "enum": [
+          "RETAIL",
+          "SERVICES",
+          "MANUFACTURING",
+          "WHOLESALE",
+          "HOSPITALITY",
+          "OTHER"
+        ],
+        "title": "Business"
+      },
+      "CandidateText": {
+        "properties": {
+          "itemId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Itemid"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Text"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "itemId",
+          "text"
+        ],
+        "title": "CandidateText"
+      },
+      "Depth": {
+        "type": "string",
+        "enum": [
+          "BASICS",
+          "EXPLAINED",
+          "PRACTICAL"
+        ],
+        "title": "Depth"
+      },
+      "Explanation": {
+        "properties": {
+          "reasonCategory": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Reasoncategory"
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Message"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "reasonCategory",
+          "message"
+        ],
+        "title": "Explanation"
+      },
+      "Help": {
+        "type": "string",
+        "enum": [
+          "AMOUNT",
+          "OPTIONS",
+          "COST",
+          "APPLICATION"
+        ],
+        "title": "Help"
+      },
+      "MLError": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Message"
+          },
+          "correlationId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Correlationid"
+          },
+          "fallbackAction": {
+            "type": "string",
+            "enum": [
+              "MANUAL_REVIEW",
+              "RULES",
+              "MANUAL_INPUT",
+              "SEARCH_ONLY",
+              "RETRY_LATER",
+              "NONE"
+            ],
+            "title": "Fallbackaction",
+            "default": "NONE"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "message",
+          "correlationId"
+        ],
+        "title": "MLError"
+      },
+      "Profile": {
+        "properties": {
+          "task": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Task"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "help": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Help"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "depth": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Depth"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "businessCategory": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Business"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "applicationStage": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Stage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Profile"
+      },
+      "RankingRequest": {
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Requestid"
+          },
+          "scope": {
+            "type": "string",
+            "const": "FEED",
+            "title": "Scope"
+          },
+          "exposureId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Exposureid"
+          },
+          "candidateIds": {
+            "items": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "uniqueItems": true,
+            "title": "Candidateids"
+          },
+          "candidateSetDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Candidatesetdigest"
+          },
+          "catalogVersion": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "minimum": 1.0,
+            "title": "Catalogversion"
+          },
+          "catalogDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Catalogdigest"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/Profile"
+          },
+          "topicReactions": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ReactionCounts"
+            },
+            "propertyNames": {
+              "$ref": "#/components/schemas/Topic"
+            },
+            "type": "object",
+            "title": "Topicreactions"
+          },
+          "candidateTexts": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/CandidateText"
+                },
+                "type": "array",
+                "maxItems": 100,
+                "minItems": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Candidatetexts"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requestId",
+          "scope",
+          "exposureId",
+          "candidateIds",
+          "candidateSetDigest",
+          "catalogVersion",
+          "catalogDigest",
+          "profile"
+        ],
+        "title": "RankingRequest"
+      },
+      "RankingResult": {
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Requestid"
+          },
+          "scope": {
+            "type": "string",
+            "const": "FEED",
+            "title": "Scope"
+          },
+          "rankedIds": {
+            "items": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "uniqueItems": true,
+            "title": "Rankedids"
+          },
+          "candidateSetDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Candidatesetdigest"
+          },
+          "exposureId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Exposureid"
+          },
+          "releaseId": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Releaseid"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "MODEL",
+              "RULES"
+            ],
+            "title": "Mode"
+          },
+          "reasonCategory": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Reasoncategory"
+          },
+          "catalogDigest": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Catalogdigest"
+          },
+          "explanations": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Explanation"
+            },
+            "type": "object",
+            "title": "Explanations"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "requestId",
+          "scope",
+          "rankedIds",
+          "candidateSetDigest",
+          "exposureId",
+          "releaseId",
+          "mode",
+          "reasonCategory",
+          "catalogDigest",
+          "explanations"
+        ],
+        "title": "RankingResult"
+      },
+      "ReactionCounts": {
+        "properties": {
+          "helpful": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "minimum": 0.0,
+            "title": "Helpful",
+            "default": 0
+          },
+          "notInterested": {
+            "type": "integer",
+            "maximum": 9007199254740991.0,
+            "minimum": 0.0,
+            "title": "Notinterested",
+            "default": 0
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ReactionCounts"
+      },
+      "Stage": {
+        "type": "string",
+        "enum": [
+          "DRAFT",
+          "SUBMITTED",
+          "NEEDS_INFORMATION",
+          "REVIEW",
+          "DECISION"
+        ],
+        "title": "Stage"
+      },
+      "Task": {
+        "type": "string",
+        "enum": [
+          "PURCHASE",
+          "CASH_GAP",
+          "EQUIPMENT",
+          "EXPANSION",
+          "EXPLORING"
+        ],
+        "title": "Task"
+      },
+      "Topic": {
+        "type": "string",
+        "enum": [
+          "CASH_GAP",
+          "WORKING_CAPITAL",
+          "SEASONALITY",
+          "EQUIPMENT",
+          "APPLICATION",
+          "FINANCING_COST"
+        ],
+        "title": "Topic"
+      }
+    },
+    "securitySchemes": {
+      "ServiceIdentity": {
+        "type": "apiKey",
+        "description": "Internal FEED service token; never expose to the browser.",
+        "in": "header",
+        "name": "X-Service-Token"
+      }
+    }
+  }
+}

@@ -1,0 +1,646 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "documents": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "document_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "document_type": {
+            "enum": [
+              "passport",
+              "inn",
+              "snils",
+              "bank_statement",
+              "financial",
+              "other"
+            ]
+          }
+        },
+        "required": [
+          "document_id",
+          "document_type"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "person": {
+      "type": "object",
+      "properties": {
+        "full_name": {
+          "$ref": "#/$defs/field"
+        },
+        "birth_date": {
+          "$ref": "#/$defs/date"
+        },
+        "inn": {
+          "$ref": "#/$defs/inn12"
+        },
+        "snils": {
+          "$ref": "#/$defs/snils"
+        },
+        "passport_series": {
+          "$ref": "#/$defs/series"
+        },
+        "passport_number": {
+          "$ref": "#/$defs/number"
+        }
+      },
+      "required": [
+        "full_name",
+        "birth_date",
+        "inn",
+        "snils",
+        "passport_series",
+        "passport_number"
+      ],
+      "additionalProperties": false
+    },
+    "organization": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/field"
+        },
+        "inn": {
+          "$ref": "#/$defs/inn10"
+        },
+        "kpp": {
+          "$ref": "#/$defs/kpp"
+        },
+        "ogrn": {
+          "$ref": "#/$defs/ogrn"
+        }
+      },
+      "required": [
+        "name",
+        "inn",
+        "kpp",
+        "ogrn"
+      ],
+      "additionalProperties": false
+    },
+    "financial": {
+      "type": "object",
+      "properties": {
+        "revenue": {
+          "$ref": "#/$defs/decimal"
+        },
+        "net_profit": {
+          "$ref": "#/$defs/decimal"
+        },
+        "ebit": {
+          "$ref": "#/$defs/decimal"
+        },
+        "equity": {
+          "$ref": "#/$defs/decimal"
+        },
+        "total_assets": {
+          "$ref": "#/$defs/decimal"
+        },
+        "current_assets": {
+          "$ref": "#/$defs/decimal"
+        },
+        "current_liabilities": {
+          "$ref": "#/$defs/decimal"
+        },
+        "total_debt": {
+          "$ref": "#/$defs/decimal"
+        },
+        "period": {
+          "$ref": "#/$defs/period"
+        },
+        "currency": {
+          "$ref": "#/$defs/currency"
+        }
+      },
+      "required": [
+        "revenue",
+        "net_profit",
+        "ebit",
+        "equity",
+        "total_assets",
+        "current_assets",
+        "current_liabilities",
+        "total_debt",
+        "period",
+        "currency"
+      ],
+      "additionalProperties": false
+    },
+    "extensions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "minLength": 1
+          },
+          "field": {
+            "$ref": "#/$defs/field"
+          }
+        },
+        "required": [
+          "key",
+          "field"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "documents",
+    "person",
+    "organization",
+    "financial",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:alfa:ocr:extraction:1.0",
+  "title": "Credit document extraction (unconfirmed)",
+  "$defs": {
+    "source": {
+      "type": "object",
+      "properties": {
+        "document_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "block_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "document_id",
+        "page",
+        "block_id",
+        "quote"
+      ],
+      "additionalProperties": false
+    },
+    "candidate": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "value",
+        "sources"
+      ],
+      "additionalProperties": false
+    },
+    "field": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "missing",
+            "extracted",
+            "conflict"
+          ]
+        },
+        "value": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "confidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source"
+          }
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/candidate"
+          }
+        }
+      },
+      "required": [
+        "status",
+        "value",
+        "confidence",
+        "sources",
+        "candidates"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "missing"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              },
+              "confidence": {
+                "type": "null"
+              },
+              "sources": {
+                "maxItems": 0
+              },
+              "candidates": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "extracted"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "string",
+                "minLength": 1
+              },
+              "confidence": {
+                "type": "number"
+              },
+              "sources": {
+                "minItems": 1
+              },
+              "candidates": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "conflict"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              },
+              "confidence": {
+                "type": "null"
+              },
+              "sources": {
+                "maxItems": 0
+              },
+              "candidates": {
+                "minItems": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "date": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/field"
+        },
+        {
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "format": "date"
+            },
+            "candidates": {
+              "items": {
+                "properties": {
+                  "value": {
+                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                    "format": "date"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "decimal": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/field"
+        },
+        {
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^-?\\d+(\\.\\d{1,2})?$"
+            },
+            "candidates": {
+              "items": {
+                "properties": {
+                  "value": {
+                    "pattern": "^-?\\d+(\\.\\d{1,2})?$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "inn12": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/field"
+        },
+        {
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^\\d{12}$"
+            },
+            "candidates": {
+              "items": {
+                "properties": {
+                  "value": {
+                    "pattern": "^\\d{12}$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "inn10": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/field"
+        },
+        {
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^\\d{10}$"
+            },
+            "candidates": {
+              "items": {
+                "properties": {
+                  "value": {
+                    "pattern": "^\\d{10}$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "snils": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/field"
+        },
+        {
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^\\d{11}$"
+            },
+            "candidates": {
+              "items": {
+                "properties": {
+                  "value": {
+                    "pattern": "^\\d{11}$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "series": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/field"
+        },
+        {
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^\\d{4}$"
+            },
+            "candidates": {
+              "items": {
+                "properties": {
+                  "value": {
+                    "pattern": "^\\d{4}$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "number": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/field"
+        },
+        {
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^\\d{6}$"
+            },
+            "candidates": {
+              "items": {
+                "properties": {
+                  "value": {
+                    "pattern": "^\\d{6}$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "kpp": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/field"
+        },
+        {
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^\\d{9}$"
+            },
+            "candidates": {
+              "items": {
+                "properties": {
+                  "value": {
+                    "pattern": "^\\d{9}$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ogrn": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/field"
+        },
+        {
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^\\d{13}$"
+            },
+            "candidates": {
+              "items": {
+                "properties": {
+                  "value": {
+                    "pattern": "^\\d{13}$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "currency": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/field"
+        },
+        {
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[A-Z]{3}$"
+            },
+            "candidates": {
+              "items": {
+                "properties": {
+                  "value": {
+                    "pattern": "^[A-Z]{3}$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "period": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/field"
+        },
+        {
+          "properties": {
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^([0-9]{4}|[0-9]{4}-[0-9]{2}-[0-9]{2}/[0-9]{4}-[0-9]{2}-[0-9]{2})$"
+            },
+            "candidates": {
+              "items": {
+                "properties": {
+                  "value": {
+                    "pattern": "^([0-9]{4}|[0-9]{4}-[0-9]{2}-[0-9]{2}/[0-9]{4}-[0-9]{2}-[0-9]{2})$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

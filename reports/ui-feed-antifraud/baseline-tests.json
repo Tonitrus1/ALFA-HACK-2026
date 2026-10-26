@@ -1,0 +1,10 @@
+{
+  "sourceCommit": "5b937b5b3e6761545a6f368ec134d2817d7b1ad7",
+  "backend": {
+    "tests": 127,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 4
+  },
+  "note": "LC_ALL=C required for embedded PostgreSQL; run before backend source changes."
+}

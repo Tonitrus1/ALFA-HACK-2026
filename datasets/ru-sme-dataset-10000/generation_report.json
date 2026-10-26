@@ -1,0 +1,40 @@
+{
+  "created_at": "2026-10-20T20:37:56.862545+00:00",
+  "rows": 10000,
+  "seed": 20261021,
+  "generator": "synthetic_finance_v1",
+  "report_year": 2025,
+  "as_of_date": "2026-10-21",
+  "financials": "ALL SYNTHETIC, not GIR BO statements",
+  "registry": "REAL MSP records; see registry_provenance.json",
+  "real_outcome_labels_known": 0,
+  "real_outcome_labels_unknown": 10000,
+  "simulation_expected_positive_rate_assumption": 0.05,
+  "simulation_realized_positive": 512,
+  "simulation_intercept": -2.5747647590132132,
+  "simulation_splits": {
+    "train": {
+      "rows": 7016,
+      "positive": 352
+    },
+    "validation": {
+      "rows": 1494,
+      "positive": 80
+    },
+    "test": {
+      "rows": 1490,
+      "positive": 80
+    }
+  },
+  "synthetic_negative_equity": 985,
+  "synthetic_losses": 3228,
+  "synthetic_zero_revenue": 137,
+  "registry_input_sha256": "4e796c70c7819d814518f2ae8cdf6fc52de85a6bf64d1719c5f30ee82b9b96cb",
+  "warning": "NOT real financial risk/PD evidence. Synthetic 0/1 labels exist only for fictional SIM IDs.",
+  "parquet_sha256": {
+    "hybrid_real_msps_synthetic_financials.parquet": "0ddffee117fe3f2b5b4d839dd72b3bb2b93ba07d3b935a17722b073a15440a43",
+    "registry_companies_real.parquet": "4e796c70c7819d814518f2ae8cdf6fc52de85a6bf64d1719c5f30ee82b9b96cb",
+    "simulation_truth_DO_NOT_USE_AS_FEATURES.parquet": "b2fceeb2e964688136fb6bb93405be86ea309f62869f061878f8d63ba5e17d95",
+    "training_simulation.parquet": "fe7723cfd18f8a90cc8c2b84c1b6cb471a4314773e920d8a1b6ce3520c726eea"
+  }
+}

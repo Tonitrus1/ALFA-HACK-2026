@@ -1,0 +1,63 @@
+{
+  "status": "PASS_WITH_EXPLICIT_LLM_BLOCKER",
+  "runUrl": "https://github.com/Tonitrus1/ALFA-HACK-2026/actions/runs/40142680963",
+  "testedCodeCommit": "b2e6f528f62c5b615b198f0a1e4736897437114b",
+  "platform": "Linux amd64",
+  "jobs": {
+    "tests": "success",
+    "compose": "success"
+  },
+  "browser": {
+    "startTime": "2026-10-24T23:31:20.420Z",
+    "duration": 32092.899999999998,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "checks": [
+    "clean image build and automatic first model preparation",
+    "real backend/PostgreSQL/Risk/E5 integration",
+    "38 Risk/bridge tests with actual HTTP Risk (1 opt-in skipped)",
+    "upload -> actual ClamAV -> exact-byte clean download",
+    "cross-company isolation",
+    "real E5/BM25 search-only through authenticated backend",
+    "cited source and transcript",
+    "real Tesseract CPU",
+    "restart retains decisions, cursor pages, exposures, feedback idempotency",
+    "container down/up retains data",
+    "Feed outage -> RULES",
+    "Risk outage -> MANUAL",
+    "Feed v2 E5 runtime",
+    "Feed v2 CatBoost runtime",
+    "synthetic dual-model decisions"
+  ],
+  "unitChecks": {
+    "backend": {
+      "tests": 133,
+      "skipped": 4,
+      "failures": 0
+    },
+    "frontendPassed": 46,
+    "assistantPassed": 69,
+    "assistantSkipped": 1,
+    "ocrPassed": 36
+  },
+  "limitations": [
+    "LLM_API_KEY absent by user decision: generated assistant answers and OCR -> LLM extraction NOT_VERIFIED",
+    "Feed CatBoost quality promotion gates false on this 500-user synthetic run; default remains E5",
+    "ARM64 and Paddle override not tested",
+    "live external search engines/provider availability not proven by readiness"
+  ],
+  "runtimeTrees": {
+    "backend": "684a63fa8ad922a51dfbee06ed2c478baeed04fb",
+    "frontend": "ab168d08da1076177f2fed050a22a0ab1f4aa730",
+    "ml": "6d11969fdcb24645fdcc88cf2ef69d7b04576e17",
+    "deploy": "c324823183741931e84b8b583cd97225064d6a1a",
+    "scripts": "d099db0d6bb83c343ebd048b52a92742d4efb924",
+    "compose.yaml": "0bf1e0bbf30d51eb378678300e90a9cb0a6962e3",
+    ".dockerignore": "e79b338d204278140bf3bb15acfee2a039c0c2b2",
+    ".env.example": "46e4671f77e28a51a35089c50de4695c2582e49a",
+    ".github/workflows": "1df1e84338024a662a1cda8d3c03c4baa1e2e994"
+  }
+}

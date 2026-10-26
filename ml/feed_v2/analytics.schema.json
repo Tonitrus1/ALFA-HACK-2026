@@ -1,0 +1,271 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://alfa-hack.example/contracts/feed-analytics-v1.schema.json",
+  "title": "Feed analytics export v1",
+  "description": "Export records; subject/company are opaque backend identifiers. No financial features or free-text user data.",
+  "$defs": {
+    "RequestSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "subjectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "companyId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "exposureId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "sessionId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "split": {
+          "enum": [
+            "train",
+            "validation",
+            "test",
+            "live"
+          ]
+        },
+        "isSynthetic": {
+          "type": "boolean"
+        },
+        "requestJson": {
+          "type": "string",
+          "minLength": 2,
+          "description": "Serialized existing FEED RankingRequest; validate it with the runtime schema."
+        },
+        "requestedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "policy": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "releaseId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "experimentId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "variant": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "randomizationUnit": {
+          "enum": [
+            "context",
+            "user",
+            "company"
+          ]
+        }
+      },
+      "required": [
+        "subjectId",
+        "companyId",
+        "exposureId",
+        "sessionId",
+        "split",
+        "isSynthetic",
+        "requestJson",
+        "requestedAt",
+        "policy",
+        "releaseId",
+        "experimentId",
+        "variant",
+        "randomizationUnit"
+      ]
+    },
+    "IssuedItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "subjectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "companyId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "exposureId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "sessionId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "split": {
+          "enum": [
+            "train",
+            "validation",
+            "test",
+            "live"
+          ]
+        },
+        "isSynthetic": {
+          "type": "boolean"
+        },
+        "itemId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "position": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 6
+        },
+        "cardVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "issuedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "subjectId",
+        "companyId",
+        "exposureId",
+        "sessionId",
+        "split",
+        "isSynthetic",
+        "itemId",
+        "position",
+        "cardVersion",
+        "issuedAt"
+      ]
+    },
+    "AcceptedEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {"properties": {"action": {"const": "VIEW"}}, "required": ["action"]},
+          "then": {"properties": {"visibleFraction": {"minimum": 0.5}, "visibleMs": {"minimum": 1000}}},
+          "else": {"properties": {"visibleFraction": {"const": 0}, "visibleMs": {"const": 0}}}
+        }
+      ],
+      "properties": {
+        "subjectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "companyId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "exposureId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "sessionId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "split": {
+          "enum": [
+            "train",
+            "validation",
+            "test",
+            "live"
+          ]
+        },
+        "isSynthetic": {
+          "type": "boolean"
+        },
+        "clientEventId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "itemId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "action": {
+          "enum": [
+            "VIEW",
+            "CLICK",
+            "HELPFUL",
+            "NOT_INTERESTED"
+          ]
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "acceptedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "acceptedOrder": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "visibleFraction": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "visibleMs": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "subjectId",
+        "companyId",
+        "exposureId",
+        "sessionId",
+        "split",
+        "isSynthetic",
+        "clientEventId",
+        "itemId",
+        "action",
+        "occurredAt",
+        "acceptedAt",
+        "acceptedOrder",
+        "visibleFraction",
+        "visibleMs"
+      ]
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/RequestSnapshot"
+    },
+    {
+      "$ref": "#/$defs/IssuedItem"
+    },
+    {
+      "$ref": "#/$defs/AcceptedEvent"
+    }
+  ]
+}

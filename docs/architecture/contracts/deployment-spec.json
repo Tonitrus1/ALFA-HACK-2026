@@ -1,0 +1,121 @@
+{
+  "status": "DESIGN_NOT_COMPOSE",
+  "mainCommandRequiredAtImplementation": "docker compose -f deploy/compose.yaml up --build -d",
+  "services": [
+    {
+      "name": "web",
+      "purpose": "reverse proxy + built React",
+      "ports": [
+        "127.0.0.1:8080"
+      ],
+      "depends": [
+        "backend"
+      ],
+      "profile": "local-mvp"
+    },
+    {
+      "name": "backend",
+      "purpose": "Java modules + simulator + dispatcher + file streaming",
+      "ports": [],
+      "depends": [
+        "postgres"
+      ],
+      "profile": "local-mvp"
+    },
+    {
+      "name": "postgres",
+      "purpose": "owners separated schemas/roles",
+      "ports": [],
+      "depends": [],
+      "volumes": [
+        "pgdata"
+      ],
+      "profile": "local-mvp"
+    },
+    {
+      "name": "ml",
+      "purpose": "FastAPI risk/feature/ranking/RAG + OCR worker process",
+      "ports": [],
+      "depends": [
+        "postgres"
+      ],
+      "volumes": [
+        "model-bundle:ro",
+        "clean:ro"
+      ],
+      "profile": "local-mvp",
+      "softDependencies": [
+        "llm"
+      ]
+    },
+    {
+      "name": "llm",
+      "purpose": "llama-server GGUF CPU",
+      "ports": [],
+      "depends": [],
+      "volumes": [
+        "model-bundle:ro"
+      ],
+      "profile": "local-mvp"
+    },
+    {
+      "name": "scanner",
+      "purpose": "AV daemon only; backend owns quarantine transition",
+      "ports": [],
+      "depends": [],
+      "volumes": [
+        "quarantine:ro",
+        "av-signatures:ro"
+      ],
+      "profile": "local-mvp"
+    }
+  ],
+  "localVolumes": [
+    "pgdata",
+    "quarantine",
+    "clean",
+    "model-bundle",
+    "av-signatures"
+  ],
+  "health": [
+    "postgres ready",
+    "backend migrations and DB ready; optional model degradation separately surfaced",
+    "scanner engine+signature DB ready before CLEAN",
+    "ml model manifests+warmup",
+    "llm loaded GGUF; GPU profile separately measured"
+  ],
+  "limits": "runtime-policy.json",
+  "gpuOverride": "replace llama-server CPU image by compatible CUDA image, same bundle; no required CUDA for normal launch",
+  "network": "only web exposed; internal service role tokens; no runtime outbound API/downloads",
+  "bindingExamples": "contracts/examples/profiles/",
+  "technologyCatalog": "contracts/technology-adapters.json",
+  "bindingSelection": "Composition root validates schema and capability/provider pairing; no auto fallback or runtime switching.",
+  "optionalIntegrationServices": [
+    {
+      "name": "redis",
+      "technology": "Redis",
+      "forCapability": "cache",
+      "ports": [],
+      "requiredInLocalMvp": false,
+      "versionGate": "P02/P27 pin SDK/server/OCI digests, licenses, resources and adapter contract tests before enabling"
+    },
+    {
+      "name": "qdrant",
+      "technology": "Qdrant",
+      "forCapability": "vectors",
+      "ports": [],
+      "requiredInLocalMvp": false,
+      "versionGate": "P02/P27 pin SDK/server/OCI digests, licenses, resources and adapter contract tests before enabling"
+    },
+    {
+      "name": "mlflow",
+      "technology": "MLflow",
+      "forCapability": "registry",
+      "ports": [],
+      "requiredInLocalMvp": false,
+      "versionGate": "P02/P27 pin SDK/server/OCI digests, licenses, resources and adapter contract tests before enabling"
+    }
+  ],
+  "optionalProfile": "local-integrations example enables Redis cache, Qdrant and MLflow; session store remains JDBC. Individual integrations may be selected in a validated variant. No ready Compose or SDK adapter supplied.",
+  "bankTargetBindings": "contracts/examples/profiles/bank-target.json"
+}

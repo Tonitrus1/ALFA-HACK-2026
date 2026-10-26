@@ -1,0 +1,518 @@
+{
+  "status": "DESIGN_NOT_DDL",
+  "entities": [
+    {
+      "name": "Session",
+      "owner": "access",
+      "fields": [
+        "sessionId",
+        "actorRef",
+        "companyId",
+        "contextVersion",
+        "expiresAt"
+      ],
+      "constraints": [
+        "contextVersion positive; rotate on login/company switch; role recheck"
+      ]
+    },
+    {
+      "name": "Application",
+      "owner": "applications",
+      "fields": [
+        "applicationId",
+        "companyId",
+        "productId",
+        "productVersion",
+        "version",
+        "status",
+        "terms"
+      ],
+      "constraints": [
+        "unique(companyId,applicationId); optimistic version; no patch after submit"
+      ]
+    },
+    {
+      "name": "SubmissionSnapshot",
+      "owner": "applications",
+      "fields": [
+        "snapshotId",
+        "applicationId",
+        "version",
+        "packageDigest",
+        "createdAt"
+      ],
+      "constraints": [
+        "immutable; unique application submission version"
+      ]
+    },
+    {
+      "name": "FinancialStatement",
+      "owner": "applications",
+      "fields": [
+        "applicationId/requestId",
+        "statementVersion",
+        "containerVersion",
+        "period",
+        "values",
+        "confirmed"
+      ],
+      "constraints": [
+        "eight field names; input change invalidates confirmation"
+      ]
+    },
+    {
+      "name": "FinancialSnapshot",
+      "owner": "applications",
+      "fields": [
+        "financialSnapshotId",
+        "statementVersion",
+        "statementDigest",
+        "values",
+        "provenance"
+      ],
+      "constraints": [
+        "immutable; company/application bound; exact objectVersion sources"
+      ]
+    },
+    {
+      "name": "InformationRequest",
+      "owner": "journey",
+      "fields": [
+        "requestId",
+        "caseId",
+        "requestVersion",
+        "state",
+        "items"
+      ],
+      "constraints": [
+        "one OPEN per case in MVP; addressed item allowlist"
+      ]
+    },
+    {
+      "name": "InformationDraft",
+      "owner": "applications",
+      "fields": [
+        "requestId",
+        "draftVersion",
+        "financialStatementVersion",
+        "documentReferences"
+      ],
+      "constraints": [
+        "CAS with requestVersion; unchanged unrequested financial fields"
+      ]
+    },
+    {
+      "name": "Consent",
+      "owner": "consents",
+      "fields": [
+        "consentId",
+        "subjectRef",
+        "purpose",
+        "textVersion",
+        "actorRef",
+        "grantedAt",
+        "revokedAt"
+      ],
+      "constraints": [
+        "no implicit delegation; expiry/revocation checked before command"
+      ]
+    },
+    {
+      "name": "Document",
+      "owner": "documents",
+      "fields": [
+        "documentId",
+        "applicationId",
+        "companyId",
+        "objectVersion",
+        "sha256",
+        "state"
+      ],
+      "constraints": [
+        "only CLEAN byte versions accepted; metadata version distinct"
+      ]
+    },
+    {
+      "name": "DocumentJob",
+      "owner": "documents",
+      "fields": [
+        "jobId",
+        "generation",
+        "leaseTokenDigest",
+        "workerId",
+        "leaseExpiresAt",
+        "objectVersion",
+        "state"
+      ],
+      "constraints": [
+        "compare generation and lease identity; retry bounded"
+      ]
+    },
+    {
+      "name": "CommandOperation",
+      "owner": "journey",
+      "fields": [
+        "operationId",
+        "actorRef",
+        "companyId",
+        "commandType",
+        "clientKey",
+        "bodyDigest",
+        "state",
+        "result"
+      ],
+      "constraints": [
+        "unique(actorRef,companyId,commandType,clientKey); result retained7days"
+      ]
+    },
+    {
+      "name": "Outbox",
+      "owner": "journey",
+      "fields": [
+        "eventId",
+        "aggregateId",
+        "aggregateVersion",
+        "payload",
+        "state",
+        "nextAttemptAt"
+      ],
+      "constraints": [
+        "committed with business effect; SKIP LOCKED delivery"
+      ]
+    },
+    {
+      "name": "Inbox",
+      "owner": "integration",
+      "fields": [
+        "consumer",
+        "eventId",
+        "processedAt"
+      ],
+      "constraints": [
+        "unique(consumer,eventId), atomic with handler effect"
+      ]
+    },
+    {
+      "name": "BankCase",
+      "owner": "integration",
+      "fields": [
+        "caseId",
+        "externalRequestId",
+        "caseVersion",
+        "status",
+        "policyVersion"
+      ],
+      "constraints": [
+        "simulator owns decision; command result unique externalRequestId"
+      ]
+    },
+    {
+      "name": "Offer",
+      "owner": "integration",
+      "fields": [
+        "offerId",
+        "caseId",
+        "version",
+        "amount",
+        "termMonths",
+        "validUntil",
+        "status"
+      ],
+      "constraints": [
+        "CAS acceptance/expiry/withdraw; full terms required"
+      ]
+    },
+    {
+      "name": "WorkspaceProjection",
+      "owner": "workspace",
+      "fields": [
+        "applicationId",
+        "caseVersion",
+        "viewVersion",
+        "nextAction",
+        "updatedAt"
+      ],
+      "constraints": [
+        "full normalized stream, gap=>snapshot"
+      ]
+    },
+    {
+      "name": "StreamEvent",
+      "owner": "workspace",
+      "fields": [
+        "cursor",
+        "companyId",
+        "resourceRef",
+        "createdAt"
+      ],
+      "constraints": [
+        "persisted cursor; authorized replay and barrier"
+      ]
+    },
+    {
+      "name": "FeatureSnapshot",
+      "owner": "ml",
+      "fields": [
+        "featureSnapshotId",
+        "financialSnapshotId",
+        "snapshotDigest",
+        "features",
+        "asOf"
+      ],
+      "constraints": [
+        "immutable; source availableAt<=asOf; missing mask matches nulls"
+      ]
+    },
+    {
+      "name": "InferenceRecord",
+      "owner": "ml",
+      "fields": [
+        "requestId",
+        "bundleDigest",
+        "featureSnapshotDigest",
+        "output",
+        "createdAt"
+      ],
+      "constraints": [
+        "durable before score response; idempotent same request/body"
+      ]
+    },
+    {
+      "name": "ReleaseBundle",
+      "owner": "ml",
+      "fields": [
+        "releaseId",
+        "bundleDigest",
+        "artifactDigests",
+        "evaluationDigest",
+        "approvedBy"
+      ],
+      "constraints": [
+        "no runtime download; reviewer distinct from author"
+      ]
+    },
+    {
+      "name": "KnowledgeVersion",
+      "owner": "kb",
+      "fields": [
+        "documentId",
+        "documentVersion",
+        "audience",
+        "status",
+        "effectiveUntil",
+        "digest"
+      ],
+      "constraints": [
+        "PUBLISHED gate; revoke never undone by model rollback"
+      ]
+    },
+    {
+      "name": "KBEpoch",
+      "owner": "kb",
+      "fields": [
+        "scope",
+        "epoch"
+      ],
+      "constraints": [
+        "increment in revoke transaction; final publication check"
+      ]
+    },
+    {
+      "name": "AssistantMessage",
+      "owner": "kb",
+      "fields": [
+        "messageId",
+        "companyId",
+        "subjectRef",
+        "conversationId",
+        "sourceRefs",
+        "kbEpoch",
+        "answer"
+      ],
+      "constraints": [
+        "authorised read; revoked source hides response; retention7days demo"
+      ]
+    },
+    {
+      "name": "RecommendationExposure",
+      "owner": "workspace",
+      "fields": [
+        "exposureId",
+        "companyId",
+        "subjectRef",
+        "scope",
+        "candidateIds",
+        "bundleDigest",
+        "issuedIds (FEED)",
+        "issuedVersions (FEED)",
+        "selectionId (FEED)",
+        "catalogVersion (FEED)",
+        "catalogDigest (FEED)",
+        "source (FEED: SELECTION or SAVED)"
+      ],
+      "constraints": [
+        "permitted item IDs only; immutable assigned order",
+        "FEED feedback accepts only actually issuedIds; ranked-but-not-issued candidates confer no feedback permission",
+        "SAVED exposure permits feedback only for its issuedIds and does not mutate VIEW or issuedIds of a normal feed selection"
+      ]
+    },
+    {
+      "name": "RecommendationFeedback",
+      "owner": "workspace",
+      "fields": [
+        "clientEventId",
+        "exposureId",
+        "itemId",
+        "action",
+        "occurredAt",
+        "companyId",
+        "subjectRef",
+        "payloadDigest",
+        "acceptedSequence (FEED)"
+      ],
+      "constraints": [
+        "dedup by actor/company/clientEventId; validate event time/TTL",
+        "exact event replay has no effect; different payload under same clientEventId conflicts",
+        "FEED latest accepted HELPFUL/NOT_INTERESTED per card replaces previous reaction; client occurredAt does not override server order"
+      ]
+    },
+    {
+      "name": "FeedPreferences",
+      "owner": "workspace",
+      "fields": [
+        "companyId",
+        "subjectRef",
+        "preferencesVersion",
+        "task?",
+        "help?",
+        "depth?"
+      ],
+      "constraints": [
+        "unique(subjectRef,companyId); optional/null survey answers; replace atomically invalidates active selection"
+      ]
+    },
+    {
+      "name": "FeedSelection",
+      "owner": "workspace",
+      "fields": [
+        "selectionId",
+        "companyId",
+        "subjectRef",
+        "preferencesVersion",
+        "catalogVersion",
+        "issuedIds",
+        "cursorPages"
+      ],
+      "constraints": [
+        "opaque owner-bound cursor; atomic page reservation; stable replay minus current hidden without refill",
+        "new page reranks remaining candidates only; no VIEW on sending; foreign or stale cursor rejected"
+      ]
+    },
+    {
+      "name": "FeedCardState",
+      "owner": "workspace",
+      "fields": [
+        "companyId",
+        "subjectRef",
+        "contentId",
+        "latestReaction?",
+        "lastReactionSequence?",
+        "confirmedViewed",
+        "helpfulAcceptedSequence?"
+      ],
+      "constraints": [
+        "unique(subjectRef,companyId,contentId); persisted across visits",
+        "NOT_INTERESTED hides, HELPFUL saves and unhides; repeated action does not increment theme counts",
+        "confirmed VIEW requires client visibility >=50% continuously >=1000 ms; not proof of reading",
+        "userReaction is the latest HELPFUL/NOT_INTERESTED or null; only an effective transition to HELPFUL changes helpfulAcceptedSequence"
+      ]
+    },
+    {
+      "name": "FeedSavedState",
+      "owner": "workspace",
+      "fields": [
+        "companyId",
+        "subjectRef",
+        "savedVersion",
+        "cursorPages"
+      ],
+      "constraints": [
+        "unique(subjectRef,companyId); savedVersion starts at 0 and increments transactionally on effective saved membership/order changes",
+        "saved cards include published HELPFUL regardless of VIEW or normal selection issuedIds; order by helpfulAcceptedSequence descending, contentId ascending",
+        "opaque saved cursor binds owner, catalogVersion/catalogDigest, savedVersion and immutable page/exposure; current replay is stable",
+        "saved or catalog version changes reject old cursor with 409 FEED_SAVED_EXPIRED; repeated reaction, VIEW and CLICK do not change savedVersion"
+      ]
+    }
+  ],
+  "relations": [
+    [
+      "Application",
+      "SubmissionSnapshot",
+      "1:N"
+    ],
+    [
+      "Application",
+      "FinancialStatement",
+      "1:N versions"
+    ],
+    [
+      "SubmissionSnapshot",
+      "FinancialSnapshot",
+      "1:1"
+    ],
+    [
+      "FinancialSnapshot",
+      "FeatureSnapshot",
+      "1:N transform versions"
+    ],
+    [
+      "Application",
+      "Document",
+      "1:N"
+    ],
+    [
+      "Application",
+      "InformationRequest",
+      "1:N"
+    ],
+    [
+      "InformationRequest",
+      "InformationDraft",
+      "1:1 active"
+    ],
+    [
+      "BankCase",
+      "Offer",
+      "1:N versions"
+    ],
+    [
+      "FeatureSnapshot",
+      "InferenceRecord",
+      "1:N"
+    ],
+    [
+      "KnowledgeVersion",
+      "AssistantMessage",
+      "N:M sourceRefs"
+    ],
+    [
+      "RecommendationExposure",
+      "RecommendationFeedback",
+      "1:N"
+    ]
+  ],
+  "indexes": [
+    "Application(companyId,updatedAt,applicationId)",
+    "Outbox(state,nextAttemptAt)",
+    "DocumentJob(state,leaseExpiresAt)",
+    "CommandOperation(actorRef,companyId,createdAt)",
+    "StreamEvent(companyId,cursor)",
+    "KnowledgeVersion(status,effectiveUntil)",
+    "AssistantMessage(companyId,subjectRef,conversationId,createdAt)",
+    "FeedPreferences(subjectRef,companyId) UNIQUE",
+    "FeedCardState(subjectRef,companyId,contentId) UNIQUE",
+    "RecommendationFeedback(subjectRef,companyId,clientEventId) UNIQUE",
+    "FeedSelection(subjectRef,companyId,selectionId)",
+    "FeedSavedState(subjectRef,companyId) UNIQUE; atomic savedVersion/page/exposure"
+  ]
+}

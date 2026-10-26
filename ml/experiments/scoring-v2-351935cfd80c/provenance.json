@@ -1,0 +1,33 @@
+{
+  "mode": "offline replay of an existing evaluated holdout; no generation, training or new independent test",
+  "candidateBundleDigest": "1875fa0e05086e2f6cc9e55f13cd23ecc4548deee0a9e2571ce0f3f0574980ef",
+  "baselineBundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+  "datasetFiles": {
+    "MANIFEST.sha256": "e4402f6843cb2376a5da57fb32f13bbddb36371da26cb87870eb3f8b7ccbdea0",
+    "training_simulation.parquet": "fe7723cfd18f8a90cc8c2b84c1b6cb471a4314773e920d8a1b6ce3520c726eea",
+    "simulation_splits/train.parquet": "50004cdc80011d31e5b8bc413fdfa6c0be4cf501886a75b277fa65d3db9b1e7b",
+    "simulation_splits/validation.parquet": "11762a167804d292551862f8ecd573e1365402fef2f6b972b9ad0fcb6e5822b9",
+    "simulation_splits/test.parquet": "98beca7d325f64ef3b5f85d4bc49efc3e9d05bc490a082567b5581be67542080"
+  },
+  "financialFields": [
+    "total_assets",
+    "non_current_assets",
+    "current_assets",
+    "equity",
+    "long_term_liabilities",
+    "current_liabilities",
+    "total_liabilities",
+    "cash",
+    "receivables",
+    "inventories",
+    "other_current_assets",
+    "revenue",
+    "ebit",
+    "interest_expense",
+    "other_income",
+    "tax_expense",
+    "net_profit",
+    "operating_cash_flow"
+  ],
+  "archive": "archive/*.txt are byte-preserved historical source references only; never imported; relative imports require the original generation package. Training source changed after this experiment for output path safety."
+}

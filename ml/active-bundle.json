@@ -1,0 +1,5 @@
+{
+  "path": "ml/artifacts/baseline",
+  "bundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+  "modelVersion": "catboost-optuna-v1"
+}

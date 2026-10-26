@@ -1,0 +1,40 @@
+{
+  "profile": "local-mvp-ml",
+  "implementationScope": "risk only",
+  "baseContract": "internal.openapi.json",
+  "implemented": [
+    "GET /health",
+    "GET /internal/v2/bundle",
+    "POST /internal/v2/feature-snapshots",
+    "GET /internal/v2/feature-snapshots/{featureSnapshotId}",
+    "POST /internal/v2/risk/evaluations"
+  ],
+  "purpose": [
+    "DEMO_RESEARCH"
+  ],
+  "scoreKind": [
+    "BANKRUPTCY_PROXY"
+  ],
+  "calibrationStatus": [
+    "DEMONSTRATION"
+  ],
+  "requestRequirements": {
+    "MLFeatureSnapshotInput": [
+      "latestSourceAvailableAt"
+    ],
+    "MLRiskRequest": [
+      "bundleDigest",
+      "featureSchemaVersion=2"
+    ]
+  },
+  "runtimeOpenApi": "http://127.0.0.1:8001/openapi.json",
+  "policyReference": "local-demo-policy.json",
+  "authorities": {
+    "financialSnapshot": "backend; immutable committed statement",
+    "featureSnapshot": "ML PostgreSQL repository",
+    "inferenceRecord": "ML PostgreSQL repository",
+    "outcome": "backend policy; Python reference is integration test aid",
+    "offersAndLifecycle": "backend; not implemented in delivered ML scope"
+  },
+  "synthetic": true
+}

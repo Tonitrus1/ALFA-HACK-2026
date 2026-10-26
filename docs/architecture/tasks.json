@@ -1,0 +1,337 @@
+[
+  {
+    "id": "P01",
+    "title": "Зафиксировать контракт и распределить модули",
+    "ownerRole": "INTEGRATION",
+    "personHours": 2,
+    "dependsOn": [],
+    "deliverable": "contracts + task ownership; technology ports + provider DTO semantics",
+    "doneWhen": "60 public ops typed; all schema refs resolve",
+    "profile": "mvp"
+  },
+  {
+    "id": "P02",
+    "title": "Закрепить платформу, модели и лицензии",
+    "ownerRole": "INTEGRATION",
+    "personHours": 3,
+    "dependsOn": [
+      "P01"
+    ],
+    "deliverable": "dependency/model locks + notices",
+    "doneWhen": "exact versions/digests/licenses; CPU images boot; Java BOM smoke",
+    "profile": "mvp"
+  },
+  {
+    "id": "P03",
+    "title": "Данные, миграции, сессия и права",
+    "ownerRole": "BACKEND",
+    "personHours": 3,
+    "dependsOn": [
+      "P01"
+    ],
+    "deliverable": "PostgreSQL migrations + seed accounts",
+    "doneWhen": "A/B tenant access denied; migrations twice safe",
+    "profile": "mvp"
+  },
+  {
+    "id": "P04",
+    "title": "Основа web и контрактные заглушки",
+    "ownerRole": "FRONTEND",
+    "personHours": 3,
+    "dependsOn": [
+      "P01"
+    ],
+    "deliverable": "React routes + generated types + MSW",
+    "doneWhen": "build; 3 products; no secrets in browser",
+    "profile": "mvp"
+  },
+  {
+    "id": "P05",
+    "title": "Вертикальный срез create/save/submit/status",
+    "ownerRole": "BACKEND",
+    "personHours": 3,
+    "dependsOn": [
+      "P03"
+    ],
+    "deliverable": "persistent core API + simulator event",
+    "doneWhen": "restart keeps draft; submit receipt dedup",
+    "profile": "mvp"
+  },
+  {
+    "id": "P06",
+    "title": "Web-путь первой заявки",
+    "ownerRole": "FRONTEND",
+    "personHours": 3,
+    "dependsOn": [
+      "P04"
+    ],
+    "deliverable": "login/catalog/form/status",
+    "doneWhen": "same UI works mock and server; next action visible",
+    "profile": "mvp"
+  },
+  {
+    "id": "P07",
+    "title": "Docker, healthchecks и первый общий smoke",
+    "ownerRole": "INTEGRATION",
+    "personHours": 1,
+    "dependsOn": [
+      "P02",
+      "P05",
+      "P06"
+    ],
+    "deliverable": "CPU Compose + health order + smoke",
+    "doneWhen": "fresh start end-to-end by hour 12 for 5-role team; six mandatory containers, explicit local bindings",
+    "profile": "mvp"
+  },
+  {
+    "id": "P08",
+    "title": "Финансовая форма и неизменяемые снимки",
+    "ownerRole": "BACKEND",
+    "personHours": 5,
+    "dependsOn": [
+      "P05"
+    ],
+    "deliverable": "financial read/save/confirm + package refs",
+    "doneWhen": "all 8; CAS; modified values invalidate confirmation",
+    "profile": "mvp"
+  },
+  {
+    "id": "P09",
+    "title": "Финансовый UI и запрос уточнений",
+    "ownerRole": "FRONTEND",
+    "personHours": 5,
+    "dependsOn": [
+      "P06"
+    ],
+    "deliverable": "U08/U12 financial + RFI screens",
+    "doneWhen": "no overwriting dirty input; unrequested values unchanged",
+    "profile": "mvp"
+  },
+  {
+    "id": "P10",
+    "title": "Документы, quarantine, AV и аренда",
+    "ownerRole": "BACKEND",
+    "personHours": 6,
+    "dependsOn": [
+      "P05"
+    ],
+    "deliverable": "streamed upload + scanner + job lease",
+    "doneWhen": "infected/error not CLEAN; limit 10MiB/5 pages; stale lease rejected",
+    "profile": "mvp"
+  },
+  {
+    "id": "P11",
+    "title": "Локальная risk-модель и feature transforms",
+    "ownerRole": "ML",
+    "personHours": 10,
+    "dependsOn": [
+      "P02"
+    ],
+    "deliverable": "trained logistic baseline + manifests; SnapshotFeatureRepositoryAdapter (Feast boundary)",
+    "doneWhen": "8 ratios; grouped split; score BANKRUPTCY_PROXY; no PD claim",
+    "profile": "mvp"
+  },
+  {
+    "id": "P12",
+    "title": "Semantic recommendations на E5",
+    "ownerRole": "ML",
+    "personHours": 5,
+    "dependsOn": [
+      "P02"
+    ],
+    "deliverable": "CPU embeddings + catalog ranking",
+    "doneWhen": "PRODUCT/FEED eligible permutations; no trained click-model claim",
+    "profile": "mvp"
+  },
+  {
+    "id": "P13",
+    "title": "OCR одной синтетической формы",
+    "ownerRole": "ML",
+    "personHours": 5,
+    "dependsOn": [
+      "P02"
+    ],
+    "deliverable": "Tesseract rus+eng + fixed-layout parser",
+    "doneWhen": "8 fields with signs/units/pages; manual confirm; no silent repair",
+    "profile": "mvp"
+  },
+  {
+    "id": "P14",
+    "title": "RAG на опубликованном корпусе",
+    "ownerRole": "ML",
+    "personHours": 10,
+    "dependsOn": [
+      "P02"
+    ],
+    "deliverable": "E5 retrieval + local Qwen generation; NumpyVectorIndexAdapter + LlamaCppGenerationAdapter (Qdrant/vLLM boundaries)",
+    "doneWhen": "sources subset; no source => refusal; generation timeout => SEARCH_ONLY",
+    "profile": "mvp"
+  },
+  {
+    "id": "P15",
+    "title": "Backend-адаптеры ML, RFI и решений",
+    "ownerRole": "BACKEND",
+    "personHours": 6,
+    "dependsOn": [
+      "P08"
+    ],
+    "deliverable": "risk/ranking/RAG clients + simulator policy",
+    "doneWhen": "contract doubles usable before models; finance-only RFI; model outage=>MANUAL",
+    "profile": "mvp"
+  },
+  {
+    "id": "P16",
+    "title": "Лента, RAG-виджет, документы и предложение",
+    "ownerRole": "FRONTEND",
+    "personHours": 6,
+    "dependsOn": [
+      "P09"
+    ],
+    "deliverable": "U03/U13/U15/U16 + feedback",
+    "doneWhen": "ranking metadata; pinned next action; source links authorized",
+    "profile": "mvp"
+  },
+  {
+    "id": "P17",
+    "title": "Общая интеграция четырёх ML-функций",
+    "ownerRole": "INTEGRATION",
+    "personHours": 6,
+    "dependsOn": [
+      "P10",
+      "P11",
+      "P12",
+      "P13",
+      "P14",
+      "P15",
+      "P16",
+      "P25",
+      "P26"
+    ],
+    "deliverable": "real ML in integrated CPU profile",
+    "doneWhen": "no mock presented as model; GPU optional; health/degradation measured; all required bindings reported truthfully, no hidden double",
+    "profile": "mvp"
+  },
+  {
+    "id": "P18",
+    "title": "Security и отказные сценарии",
+    "ownerRole": "QA_DEMO",
+    "personHours": 5,
+    "dependsOn": [
+      "P17"
+    ],
+    "deliverable": "negative E2E + failure evidence",
+    "doneWhen": "cross-company, CSRF, malicious files, prompt injection, stale versions fail safely",
+    "profile": "mvp"
+  },
+  {
+    "id": "P19",
+    "title": "Восстановление, UX и ресурсы обычного ПК",
+    "ownerRole": "QA_DEMO",
+    "personHours": 4,
+    "dependsOn": [
+      "P17"
+    ],
+    "deliverable": "restart test + keyboard test + resource report",
+    "doneWhen": "draft/operation persistent; no mandatory external network; RAG measured CPU",
+    "profile": "mvp"
+  },
+  {
+    "id": "P20",
+    "title": "Независимая проверка чистого запуска",
+    "ownerRole": "QA_DEMO",
+    "personHours": 3,
+    "dependsOn": [
+      "P18",
+      "P19"
+    ],
+    "deliverable": "launch report on clean machine",
+    "doneWhen": "second person follows README without author help",
+    "profile": "mvp"
+  },
+  {
+    "id": "P21",
+    "title": "Документация, API collection и лицензии",
+    "ownerRole": "INTEGRATION",
+    "personHours": 4,
+    "dependsOn": [
+      "P07"
+    ],
+    "deliverable": "README + notices + request collection; provider manifest and jury technology evidence table",
+    "doneWhen": "all six jury criteria mapped to evidence",
+    "profile": "mvp"
+  },
+  {
+    "id": "P22",
+    "title": "Репетиция защиты и резервный показ",
+    "ownerRole": "QA_DEMO",
+    "personHours": 3,
+    "dependsOn": [
+      "P17",
+      "P21"
+    ],
+    "deliverable": "5-minute demo + local fallback + video",
+    "doneWhen": "interactive scenario replay; simulated steps explicitly labelled",
+    "profile": "mvp"
+  },
+  {
+    "id": "P23",
+    "title": "Заморозка, регрессия и версия сдачи",
+    "ownerRole": "INTEGRATION",
+    "personHours": 2,
+    "dependsOn": [
+      "P20",
+      "P22"
+    ],
+    "deliverable": "release manifest + immutable tag/hash",
+    "doneWhen": "CI green; no edits after deadline version; private access checked; archive actual selected providers/evidence, not just architecture names",
+    "profile": "mvp"
+  },
+  {
+    "id": "P24",
+    "title": "Промышленная платформа и допуск",
+    "ownerRole": "INTEGRATION",
+    "personHours": 0,
+    "dependsOn": [
+      "P23"
+    ],
+    "deliverable": "bank-target roadmap, not hackathon implementation",
+    "doneWhen": "all external gates independently closed",
+    "profile": "bank-target"
+  },
+  {
+    "id": "P25",
+    "title": "Локальные адаптеры backend и выбор провайдеров",
+    "ownerRole": "BACKEND",
+    "personHours": 4,
+    "dependsOn": [
+      "P03"
+    ],
+    "deliverable": "SessionStore/Cache/EventTransport/ObjectStore ports and composition root",
+    "doneWhen": "durable sessions/outbox/files; bounded cache; unknown binding fails; no security fallback",
+    "profile": "mvp"
+  },
+  {
+    "id": "P26",
+    "title": "ML-платформа через локальные адаптеры и общий протокол проверки",
+    "ownerRole": "INTEGRATION",
+    "personHours": 5,
+    "dependsOn": [
+      "P02"
+    ],
+    "deliverable": "manifest registry, offline job journal, quality report, metrics/evidence bindings; ML reviews interfaces",
+    "doneWhen": "P11/P14 own feature/vector/generation implementations; local common-contract tests; no synthetic metrics or canned model answers",
+    "profile": "mvp"
+  },
+  {
+    "id": "P27",
+    "title": "Дополнительное подключение Redis, Qdrant и MLflow",
+    "ownerRole": "INTEGRATION",
+    "personHours": 8,
+    "dependsOn": [
+      "P17"
+    ],
+    "deliverable": "real SDK adapters and optional service profile with locks",
+    "doneWhen": "same common tests + actual service failure tests + measured resource report; if omitted say SPECIFIED, not integrated",
+    "profile": "optional-integrations"
+  }
+]

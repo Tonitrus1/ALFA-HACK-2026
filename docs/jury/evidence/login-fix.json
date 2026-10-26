@@ -1,0 +1,42 @@
+{
+  "checkedAt": "2026-10-26T13:27:41.761312+00:00",
+  "scope": "Local Docker only; external ngrok deployment requires the owner to run update commands.",
+  "backendVerify": {
+    "tests": 141,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 4
+  },
+  "deploymentTests": {
+    "passed": 26
+  },
+  "browser": {
+    "passed": 10,
+    "durationSeconds": 57.7,
+    "scope": "Full existing integrated browser suite against rebuilt local Docker",
+    "checks": [
+      "8 incorrect passwords then immediate correct login",
+      "tenant isolation and reload",
+      "real Risk approval, offer acceptance and completion",
+      "RFI update",
+      "documents and manual finance entry",
+      "feed preferences and saved materials",
+      "assistant input/retry UI contracts"
+    ],
+    "initialFullRun": "9 passed, 1 failed because the feed test read an old card before preference refresh completed. Test now waits for the preferences panel to close after refresh; all 10 passed on rerun."
+  },
+  "gateway": {
+    "config": "nginx runtime started; Selectel nginx -t PASS",
+    "limit": "30 requests/minute per peer, burst 20",
+    "probeResponses": {
+      "401": 24,
+      "429": 11
+    },
+    "retryAfterSeconds": 2,
+    "correctLoginAfter3Seconds": "PASS"
+  },
+  "legacyDemoLock": "PASS in AccessIsolationTest",
+  "nonDemoAccountLock": "PASS retained in AccessIsolationTest",
+  "dockerUpdate": "PASS using original project, configuration and volumes",
+  "externalServerUpdated": false
+}

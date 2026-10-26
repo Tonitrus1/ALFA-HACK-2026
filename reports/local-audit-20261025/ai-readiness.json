@@ -1,0 +1,26 @@
+{
+  "assistant": {
+    "httpStatus": 503,
+    "body": {
+      "status": "not_ready",
+      "dependencies": {
+        "knowledge": true,
+        "llm_key_configured": false,
+        "searxng": true,
+        "qdrant": true
+      },
+      "startup_error": null
+    },
+    "externalInference": "BLOCKED_LLM_API_KEY_MISSING"
+  },
+  "ocr": {
+    "httpStatus": 503,
+    "body": {
+      "ready": false,
+      "ocr_ready": true,
+      "llm_configured": false,
+      "error_code": null
+    },
+    "externalInference": "BLOCKED_LLM_API_KEY_MISSING"
+  }
+}

@@ -1,0 +1,282 @@
+{
+  "synthetic": true,
+  "bundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+  "policyVersion": "synthetic-demo-policy-3",
+  "selectionSource": "train",
+  "sourceTrainIds": {
+    "low": "SIM:00002305",
+    "high": "SIM:00003345"
+  },
+  "companies": [
+    {
+      "companyId": "DEMO:S01",
+      "name": "Демо S01 · Одобрение",
+      "businessAgeMonths": 36,
+      "synthetic": true,
+      "sourceRecordId": "SIM:SOURCE:S01",
+      "sourceVersion": 1,
+      "availableAt": "2026-04-01T00:00:00Z",
+      "reference": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "currency": "RUB",
+        "reportingStandard": "DEMO",
+        "values": {
+          "totalAssetsMinor": 1746438733,
+          "currentAssetsMinor": 1633233164,
+          "totalLiabilitiesMinor": 372799090,
+          "currentLiabilitiesMinor": 158120246,
+          "equityMinor": 1373639643,
+          "revenueMinor": 4044174564,
+          "netProfitMinor": 837815739,
+          "ebitMinor": 1062220169
+        },
+        "sourceDocumentReferences": []
+      },
+      "initial": {
+        "currency": "RUB",
+        "periodEnd": "2025-12-31",
+        "periodStart": "2025-01-01",
+        "reportingStandard": "DEMO",
+        "sourceDocumentReferences": [],
+        "values": {
+          "currentAssetsMinor": 1633233164,
+          "currentLiabilitiesMinor": 158120246,
+          "ebitMinor": 1062220169,
+          "equityMinor": 1373639643,
+          "netProfitMinor": 837815739,
+          "revenueMinor": 4044174564,
+          "totalAssetsMinor": 1746438733,
+          "totalLiabilitiesMinor": 372799090
+        }
+      },
+      "amountMinor": 20000000,
+      "termMonths": 12
+    },
+    {
+      "companyId": "DEMO:S02",
+      "name": "Демо S02 · Отказ по правилу",
+      "businessAgeMonths": 36,
+      "synthetic": true,
+      "sourceRecordId": "SIM:SOURCE:S02",
+      "sourceVersion": 1,
+      "availableAt": "2026-04-01T00:00:00Z",
+      "reference": {
+        "currency": "RUB",
+        "periodEnd": "2025-12-31",
+        "periodStart": "2025-01-01",
+        "reportingStandard": "DEMO",
+        "sourceDocumentReferences": [],
+        "values": {
+          "currentAssetsMinor": 1633233164,
+          "currentLiabilitiesMinor": 158120246,
+          "ebitMinor": 1062220169,
+          "equityMinor": 87321937,
+          "netProfitMinor": 837815739,
+          "revenueMinor": 4044174564,
+          "totalAssetsMinor": 1746438733,
+          "totalLiabilitiesMinor": 1659116796
+        }
+      },
+      "initial": {
+        "currency": "RUB",
+        "periodEnd": "2025-12-31",
+        "periodStart": "2025-01-01",
+        "reportingStandard": "DEMO",
+        "sourceDocumentReferences": [],
+        "values": {
+          "currentAssetsMinor": 1633233164,
+          "currentLiabilitiesMinor": 158120246,
+          "ebitMinor": 1062220169,
+          "equityMinor": 87321937,
+          "netProfitMinor": 837815739,
+          "revenueMinor": 4044174564,
+          "totalAssetsMinor": 1746438733,
+          "totalLiabilitiesMinor": 1659116796
+        }
+      },
+      "amountMinor": 20000000,
+      "termMonths": 12
+    },
+    {
+      "companyId": "DEMO:S03",
+      "name": "Демо S03 · Уточнение выручки",
+      "businessAgeMonths": 36,
+      "synthetic": true,
+      "sourceRecordId": "SIM:SOURCE:S03",
+      "sourceVersion": 1,
+      "availableAt": "2026-04-01T00:00:00Z",
+      "reference": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "currency": "RUB",
+        "reportingStandard": "DEMO",
+        "values": {
+          "totalAssetsMinor": 1746438733,
+          "currentAssetsMinor": 1633233164,
+          "totalLiabilitiesMinor": 372799090,
+          "currentLiabilitiesMinor": 158120246,
+          "equityMinor": 1373639643,
+          "revenueMinor": 4044174564,
+          "netProfitMinor": 837815739,
+          "ebitMinor": 1062220169
+        },
+        "sourceDocumentReferences": []
+      },
+      "initial": {
+        "currency": "RUB",
+        "periodEnd": "2025-12-31",
+        "periodStart": "2025-01-01",
+        "reportingStandard": "DEMO",
+        "sourceDocumentReferences": [],
+        "values": {
+          "currentAssetsMinor": 1633233164,
+          "currentLiabilitiesMinor": 158120246,
+          "ebitMinor": 1062220169,
+          "equityMinor": 1373639643,
+          "netProfitMinor": 837815739,
+          "revenueMinor": 8088349128,
+          "totalAssetsMinor": 1746438733,
+          "totalLiabilitiesMinor": 372799090
+        }
+      },
+      "amountMinor": 20000000,
+      "termMonths": 12
+    },
+    {
+      "companyId": "DEMO:S04",
+      "name": "Демо S04 · Другие условия",
+      "businessAgeMonths": 36,
+      "synthetic": true,
+      "sourceRecordId": "SIM:SOURCE:S04",
+      "sourceVersion": 1,
+      "availableAt": "2026-04-01T00:00:00Z",
+      "reference": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "currency": "RUB",
+        "reportingStandard": "DEMO",
+        "values": {
+          "totalAssetsMinor": 1746438733,
+          "currentAssetsMinor": 1633233164,
+          "totalLiabilitiesMinor": 372799090,
+          "currentLiabilitiesMinor": 158120246,
+          "equityMinor": 1373639643,
+          "revenueMinor": 4044174564,
+          "netProfitMinor": 837815739,
+          "ebitMinor": 1062220169
+        },
+        "sourceDocumentReferences": []
+      },
+      "initial": {
+        "currency": "RUB",
+        "periodEnd": "2025-12-31",
+        "periodStart": "2025-01-01",
+        "reportingStandard": "DEMO",
+        "sourceDocumentReferences": [],
+        "values": {
+          "currentAssetsMinor": 1633233164,
+          "currentLiabilitiesMinor": 158120246,
+          "ebitMinor": 1062220169,
+          "equityMinor": 1373639643,
+          "netProfitMinor": 837815739,
+          "revenueMinor": 4044174564,
+          "totalAssetsMinor": 1746438733,
+          "totalLiabilitiesMinor": 372799090
+        }
+      },
+      "amountMinor": 500000001,
+      "termMonths": 12
+    },
+    {
+      "companyId": "DEMO:S05",
+      "name": "Демо S05 · Ручная проверка",
+      "businessAgeMonths": 36,
+      "synthetic": true,
+      "sourceRecordId": "SIM:SOURCE:S05",
+      "sourceVersion": 1,
+      "availableAt": "2026-04-01T00:00:00Z",
+      "reference": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "currency": "RUB",
+        "reportingStandard": "DEMO",
+        "values": {
+          "totalAssetsMinor": 1240042041,
+          "currentAssetsMinor": 391801248,
+          "totalLiabilitiesMinor": 1020922039,
+          "currentLiabilitiesMinor": 932884898,
+          "equityMinor": 219120002,
+          "revenueMinor": 2462949780,
+          "netProfitMinor": -480968834,
+          "ebitMinor": -355603992
+        },
+        "sourceDocumentReferences": []
+      },
+      "initial": {
+        "currency": "RUB",
+        "periodEnd": "2025-12-31",
+        "periodStart": "2025-01-01",
+        "reportingStandard": "DEMO",
+        "sourceDocumentReferences": [],
+        "values": {
+          "currentAssetsMinor": 391801248,
+          "currentLiabilitiesMinor": 932884898,
+          "ebitMinor": -355603992,
+          "equityMinor": 219120002,
+          "netProfitMinor": -480968834,
+          "revenueMinor": 2462949780,
+          "totalAssetsMinor": 1240042041,
+          "totalLiabilitiesMinor": 1020922039
+        }
+      },
+      "amountMinor": 20000000,
+      "termMonths": 12
+    },
+    {
+      "companyId": "DEMO:S06",
+      "name": "Демо S06 · Сбой ML",
+      "businessAgeMonths": 36,
+      "synthetic": true,
+      "sourceRecordId": "SIM:SOURCE:S06",
+      "sourceVersion": 1,
+      "availableAt": "2026-04-01T00:00:00Z",
+      "reference": {
+        "periodStart": "2025-01-01",
+        "periodEnd": "2025-12-31",
+        "currency": "RUB",
+        "reportingStandard": "DEMO",
+        "values": {
+          "totalAssetsMinor": 1746438733,
+          "currentAssetsMinor": 1633233164,
+          "totalLiabilitiesMinor": 372799090,
+          "currentLiabilitiesMinor": 158120246,
+          "equityMinor": 1373639643,
+          "revenueMinor": 4044174564,
+          "netProfitMinor": 837815739,
+          "ebitMinor": 1062220169
+        },
+        "sourceDocumentReferences": []
+      },
+      "initial": {
+        "currency": "RUB",
+        "periodEnd": "2025-12-31",
+        "periodStart": "2025-01-01",
+        "reportingStandard": "DEMO",
+        "sourceDocumentReferences": [],
+        "values": {
+          "currentAssetsMinor": 1633233164,
+          "currentLiabilitiesMinor": 158120246,
+          "ebitMinor": 1062220169,
+          "equityMinor": 1373639643,
+          "netProfitMinor": 837815739,
+          "revenueMinor": 4044174564,
+          "totalAssetsMinor": 1746438733,
+          "totalLiabilitiesMinor": 372799090
+        }
+      },
+      "amountMinor": 20000000,
+      "termMonths": 12
+    }
+  ]
+}

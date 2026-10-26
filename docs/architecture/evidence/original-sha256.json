@@ -1,0 +1,1512 @@
+[
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/README.md",
+    "sha256": "dfcd79dbb6330db4ca1097c1a98b9a38cc618532c60eda911bd3af66924cb02d",
+    "bytes": 6871
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/api/demo-openapi.json",
+    "sha256": "d9f7c5224126957c8f93b3f6ffd0ab822e8771d63e7ead9a6c880033795a26ed",
+    "bytes": 122299
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/api/openapi.json",
+    "sha256": "7bf8205c94dd97661683379e54d47b1ab68b615aed2fb9037476399a124525e7",
+    "bytes": 436113
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/architecture-atlas.pdf",
+    "sha256": "18e1c1ab908a0a61a81949c8a0e4b713b73f7a2a1898ea92c6b2290fa49ba2c4",
+    "bytes": 440031
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/architecture-guide.pdf",
+    "sha256": "9db995204e7fb55a7b853a629ff9574c345278e7abaaa7e9e38e1ceba19e61dd",
+    "bytes": 437742
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/credit-workspace.drawio",
+    "sha256": "6182db251935e295f0e241e35168e464c9a7243837ed9df7311513779adf8cf6",
+    "bytes": 189236
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/diagram-manifest.json",
+    "sha256": "03073ba957da10bf61abcceb7b30822a6d93cdc4f4e0b4affd2da1d983c78119",
+    "bytes": 1480
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/docs/architecture.md",
+    "sha256": "2f879783da1d042b36378e1c05ee4f509648cce1ea609f2bba902abf988a9fd6",
+    "bytes": 31029
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/docs/decisions-requirements.md",
+    "sha256": "c9f42057d192ac5fe0e5f22f2e96eebfd63a361c25f8d5337cf8fb37fc2371f5",
+    "bytes": 11155
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/docs/interfaces.md",
+    "sha256": "79ad0caee09067bdd1ade10309c47a3da3710d18927f6dd84c8abe53176928a4",
+    "bytes": 34793
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/docs/screens.md",
+    "sha256": "c36f947b301b00b62ebcc8369577568e8853e93add4e18c174b3d64e5db84345",
+    "bytes": 43269
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/docs/security-operations.md",
+    "sha256": "37add1f000fc70b5f2738d9ecc3a2516f33a2ea53f091a419d1081bb9d9afebb",
+    "bytes": 22674
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/index.html",
+    "sha256": "3b25043d853d5b35efb3b2bbf373998d84e3bbe02293afee4879af9df5e6b3e8",
+    "bytes": 5237
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/png/01-context.png",
+    "sha256": "52e24a87fe2ef8eb113c29e679b39c34e95754f9c52fb0178cee94c4b006c2ac",
+    "bytes": 219487
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/png/02-journey.png",
+    "sha256": "7d2559e43b04efb5a0f214ab2dee4f9a69d9611a7c841e13606951389cd20a05",
+    "bytes": 238527
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/png/03-services.png",
+    "sha256": "1fe9867fb6e539bdee8c7cb78c727eb0370936735152661cb67e988d0000c646",
+    "bytes": 340172
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/png/04-runtime.png",
+    "sha256": "2be9e8f692482084b195c17ca6968a546671e63d11df4b201e5bfd955861f2a6",
+    "bytes": 408678
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/png/05-states.png",
+    "sha256": "30205af8ff5a08b08d927897cb1648f5e267b564d93e16d6ce56c76f3876bd0d",
+    "bytes": 235235
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/png/06-ml-data.png",
+    "sha256": "d0cfa48deedcb7a5f9e2c062dcfc9a6ad47ad01562b4a18df45ff78b6ba6d2b6",
+    "bytes": 277879
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/png/07-deployment.png",
+    "sha256": "db1c53fdc302e4b2a7d19e2c8c9cf24f59fce4e004b32d662e31d6c26d327378",
+    "bytes": 347777
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/png/08-data-model.png",
+    "sha256": "22913f2d9c25f89c7d8314b0135b82a699d81e27d261f97722c6317a7bbfe0f0",
+    "bytes": 197767
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/preview.png",
+    "sha256": "52e24a87fe2ef8eb113c29e679b39c34e95754f9c52fb0178cee94c4b006c2ac",
+    "bytes": 219487
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/source-manifest.json",
+    "sha256": "11ec25297eef267bc00d5378cdda500480b7f81d23863552a149a087bdea9804",
+    "bytes": 746
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/sources/client-contract.json",
+    "sha256": "7bf8205c94dd97661683379e54d47b1ab68b615aed2fb9037476399a124525e7",
+    "bytes": 436113
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/sources/demo-contract.json",
+    "sha256": "d9f7c5224126957c8f93b3f6ffd0ab822e8771d63e7ead9a6c880033795a26ed",
+    "bytes": 122299
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/svg/01-context.svg",
+    "sha256": "3258860a891e731b5f27f1e2a68bc5436c44008ee9395d0ddd0344e81153ba66",
+    "bytes": 11259
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/svg/02-journey.svg",
+    "sha256": "3e3cb71458d30bc2909b825a2e56be1e6e964c45debd0b3952c465ca8e740851",
+    "bytes": 18934
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/svg/03-services.svg",
+    "sha256": "1380a6f1fa10901984e6c16e36ecf3a4dbe5af66b7320b2938c613a3b053881b",
+    "bytes": 19989
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/svg/04-runtime.svg",
+    "sha256": "35bee635398eb29ff510908665f9b82dd1e0b81ee6401f8b32aff59940b0d87c",
+    "bytes": 20773
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/svg/05-states.svg",
+    "sha256": "c8fa0325febcafa6919f9f8efafdb00aa11a87444d9a2d79bcba9fb6add784c7",
+    "bytes": 14110
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/svg/06-ml-data.svg",
+    "sha256": "6aa7b2e198f09a952e942c07cdaf3e41382078b5f3a05fc9ec8012055c2498c5",
+    "bytes": 14212
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/svg/07-deployment.svg",
+    "sha256": "d26fd58c6331c0d5515ab9db8ef7e499bc62a7da49a121c6b4871cdaa7327d6c",
+    "bytes": 16216
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/svg/08-data-model.svg",
+    "sha256": "9ef30a6919fb4489a4abad59900bae79c9fd06cfb15ec90d0fd517c50a3a609e",
+    "bytes": 11077
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/ui/U01.svg",
+    "sha256": "cc79d499c6882f5f20225b6ba3b014a31fc66b12a2d283d154d91e2217ea24df",
+    "bytes": 2549
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/ui/U02.svg",
+    "sha256": "65183b2beac6cf8be0ee668e22b357e31fa71707cc9a72b524930fcea94cbc48",
+    "bytes": 3453
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/ui/U03.svg",
+    "sha256": "e167088e669f185b59d265b76b4c155d51dc65800ba741d65760251e529d2af7",
+    "bytes": 3632
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/ui/U04.svg",
+    "sha256": "64eed1c521722bfc7bf2f72681632261e060978feaff2e8d6ce0d5433ff39ecc",
+    "bytes": 3234
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/ui/U05.svg",
+    "sha256": "737e28cd3bdde9a8c8af714bb9b39fe35dc45271875cd7e8e8b140f28f0c1cce",
+    "bytes": 3726
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/ui/U06.svg",
+    "sha256": "84c85c35883408c722ec3fb2bdbf21bdbdb3954d61540bf829e3356ad8484864",
+    "bytes": 3879
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/ui/U07.svg",
+    "sha256": "6d52f636f1c0fe2dd6c737cd27d4a327513f80521daf1f15a3d7b96becca9a36",
+    "bytes": 3763
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/ui/U08.svg",
+    "sha256": "7a0361522a6aa3db09e9b2bdf107ec90b987d2bd68a1f363e16cea599552e733",
+    "bytes": 3149
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/ui/U09.svg",
+    "sha256": "534549d21b10395541c693f8e1f058a27eb1579cd025dd225888c267318d2439",
+    "bytes": 3108
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/ui/U10.svg",
+    "sha256": "c43ca34a0e8572d8356d77c562385a5b7f092359e13f05746a76e10525bd1733",
+    "bytes": 3138
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/ui/U11.svg",
+    "sha256": "83f9c315bce77a887e5e7c285a4cdcc4450a5cd244f5c28fedb9a9427730aaeb",
+    "bytes": 3119
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/ui/U12.svg",
+    "sha256": "7a98a163c9fd97f26e9b454fb6bfec890d690c922be3447741d7eeb9ecf44007",
+    "bytes": 3156
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/ui/U13.svg",
+    "sha256": "38889b505c6576a5df0ff065ee94e1b3ff86cf1822d22559c3517f2d5fb4c6db",
+    "bytes": 3627
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/ui/U14.svg",
+    "sha256": "dcc4402e8b4e1af76113007f0aa24f5d73dcb9104437b5ca7e49b84a37f37983",
+    "bytes": 3056
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/ui/U15.svg",
+    "sha256": "dbb84f000990adab77cf4d812ed659dd7ad9e1bbff6b85e3d0e7cad3e3bb38c1",
+    "bytes": 3040
+  },
+  {
+    "path": "output/credit-workspace-architecture-v2/architecture-v2/validation-report.json",
+    "sha256": "0d6edddc3dc1c68f1169410013f462ba160b27c570197e37dbda0bd623caae23",
+    "bytes": 12690
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/README.md",
+    "sha256": "838b7828c8f7625da6fc32fefb1c1182f75d3ddbb9f99bacdb491ab9b5cffdf2",
+    "bytes": 4644
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/acceptance-cases.json",
+    "sha256": "754acbf2e1499b652da158dec9bb04315705af9abfae8e1d8994689c0549e8bd",
+    "bytes": 18882
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/api/contract-changes.md",
+    "sha256": "0efc51940e3ec23b9bef3f065125ba43d9343ef6104a6baeea3c9672727019d1",
+    "bytes": 1506
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/api/demo-openapi.json",
+    "sha256": "d9f7c5224126957c8f93b3f6ffd0ab822e8771d63e7ead9a6c880033795a26ed",
+    "bytes": 122299
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/api/interaction-catalog.json",
+    "sha256": "64611fa62d0f2f6e24eda61db096924f0e6c9b447d7f6c10d44f628b60e41063",
+    "bytes": 30916
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/api/internal-openapi.json",
+    "sha256": "6554481434255eb8b319316c01011554c15ab51e86f09ff101602f921d901907",
+    "bytes": 176724
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/api/openapi.json",
+    "sha256": "7bf8205c94dd97661683379e54d47b1ab68b615aed2fb9037476399a124525e7",
+    "bytes": 436113
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/backend-architecture-atlas.pdf",
+    "sha256": "a374c6d55a342a3bb540883dd24cf0727e2b81f009b0f2fe1415b628ce29f011",
+    "bytes": 587968
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/backend-architecture.drawio",
+    "sha256": "5dd6627c0c6210f61b5ccfac289ee51b02d69d090a38c89e6f498fe0ea34c68d",
+    "bytes": 111758
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/backend-development-guide.pdf",
+    "sha256": "b5b4b0cfbd02a3391ee0ea4c4bfee3fbbb2bf65836aeeab98bbb4c2ed21d5418",
+    "bytes": 229898
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/diagram-manifest.json",
+    "sha256": "41a4bc324cee0cdef4d9fc226265965a282e13be902ae1593d88f97702f48d38",
+    "bytes": 1855
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/docs/01-architecture.md",
+    "sha256": "aea19079750e6512a1265651bbd00fffc9c27e73108654bc6032492054f1c886",
+    "bytes": 15393
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/docs/02-modules-data.md",
+    "sha256": "5167759ec99df720365f2edc7bf061d3859d842a96a3ae3d76fa9281eb83cbed",
+    "bytes": 22505
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/docs/03-technology.md",
+    "sha256": "fbae5191dbfdd0e6297997b6c7301c87ad819804f48568af68419f63fc28ba5d",
+    "bytes": 10687
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/docs/04-interfaces.md",
+    "sha256": "a72e58f21ed2345a9e046ace4661475e712f339803416fe29897ba6cacfdbf11",
+    "bytes": 24481
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/docs/05-reliability.md",
+    "sha256": "9dfbd208a91ed520abbade7d2f60ef4912eb8ce5d19d273133356ef60941ec7b",
+    "bytes": 17707
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/docs/06-security-operations.md",
+    "sha256": "7e866996767e6ffabf2ff6fe44fff9beea7e0694f47dbb398ab776297202f414",
+    "bytes": 16397
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/docs/07-workplan.md",
+    "sha256": "e161941609aaa22c97b95194e8facb898b564736c76add487a45d27671cf4d99",
+    "bytes": 36442
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/docs/08-acceptance.md",
+    "sha256": "13beb319dfc73405cabfe95fbbf042c69ac31e52edb96aaee6bfaeb44731dd6b",
+    "bytes": 22694
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/docs/09-reference.md",
+    "sha256": "fb73acad6bdaf0bff410923579e4da991c63812405800a86c866d732b00a72a3",
+    "bytes": 15998
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/examples/ApplicationWithdrawn.json",
+    "sha256": "a61c7341bc59b97ba07947ecd7780b6effea8e64265a94e30fff32476732e35b",
+    "bytes": 489
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/examples/CaseAccepted.json",
+    "sha256": "dcc2a094291c4f7778ce5adf21ce51b80e226566acddc66bd170a8130c08ee8f",
+    "bytes": 510
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/examples/CaseStateChanged.json",
+    "sha256": "eacdd038a64dc74dcad170cc139ae1dd1f2d2b4142a9f932f27deb7a459a66cc",
+    "bytes": 458
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/examples/ConsentRevoked.json",
+    "sha256": "b8c034821f7e8b930f4b205e235c1e74dcf4a8d28aceebdb58c744614e5f9827",
+    "bytes": 515
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/examples/DecisionRecorded.json",
+    "sha256": "79cecc2ea57a6aebfb8ea97713a8a290497e7d50df528661e674669dd412a2cd",
+    "bytes": 551
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/examples/DocumentExtractionReady.json",
+    "sha256": "6e767284fde177e4ebe217c006825815c89a76e36c29ff9dcf5e0fd8f00a3c6d",
+    "bytes": 564
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/examples/DocumentProcessingRequested.json",
+    "sha256": "89518aeada85a2d4497b40b1c98822f13412791ac3158825a26fac0e6ee3cc39",
+    "bytes": 529
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/examples/DocumentScanCompleted.json",
+    "sha256": "91ff2767cd30f5fdfda05a977234fe0d525637a411ea54abd97da8381d67275f",
+    "bytes": 540
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/examples/FulfillmentCompleted.json",
+    "sha256": "21127cfdb043c03c1eb8697438180f995848e11197bb98c9bdd7816c87843ca6",
+    "bytes": 529
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/examples/InformationRequested.json",
+    "sha256": "7c19de7916fe04b28ea4af3f988c5d80f880a6f80fe9c11bc95a5d9033ff0f62",
+    "bytes": 559
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/examples/InformationResponseSubmitted.json",
+    "sha256": "8380385ef59701619fb7d017923de72ef8c3c465c0103cadc6f1d83fbd4d0387",
+    "bytes": 621
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/examples/OfferAcceptanceRequested.json",
+    "sha256": "36974891f953b78b4c0fd67242a1b25ec54843d1173629962d3b0a2a52be8b5d",
+    "bytes": 540
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/examples/OfferAccepted.json",
+    "sha256": "56ac12d82cf76cf1d2fc1431234db27ff3c5a51dd186fdb01e0df10451ee7a36",
+    "bytes": 541
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/examples/OfferExpired.json",
+    "sha256": "c0d0c6cc7d5d05c6bfd6a2285c3c4c75842105a35a8a366b3cb285d2faec319d",
+    "bytes": 484
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/examples/SubmissionRequested.json",
+    "sha256": "a4ff11f4ac1cec4e8014081eb1dc6b03537451ea650881731c4c04b0bfe5290e",
+    "bytes": 592
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/examples/WithdrawalRequested.json",
+    "sha256": "e1521bfc3fc81ce0ad785795170927a6e829a9748a070926a77d7cbb53140263",
+    "bytes": 476
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/index.html",
+    "sha256": "90e3e8a3ddaef0659e5661fe897f73977e166315403dd92cd616ba49dd901258",
+    "bytes": 6259
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/png/01-context.png",
+    "sha256": "588b0b49480255316c297afe9a886d1379e5e5957072399e0c4b757acacc9a1c",
+    "bytes": 169759
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/png/02-modules.png",
+    "sha256": "913f7e63e7c973fdd8bb4e07b14c43c6a28c54c66b71b1af2c89f49909c32a16",
+    "bytes": 145251
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/png/03-data.png",
+    "sha256": "b8ac30589a9c5961fb1d48bb609344bf7ac92dc383989d4f34b247994f88b831",
+    "bytes": 149279
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/png/04-submit.png",
+    "sha256": "31e6ec740217a58652b9a498df8a910b0ee0e24a196cb8c1e4ee35f88c599065",
+    "bytes": 132418
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/png/05-documents.png",
+    "sha256": "f99f71d13536577f60bccaae4141a99b582ff32a7b65d921c4d90184af3fda9e",
+    "bytes": 157549
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/png/06-decisions.png",
+    "sha256": "c3e623b324191d373c00eaf96fe402789238dd96dbb4af5d21d16c3e7f523d99",
+    "bytes": 177492
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/png/07-states.png",
+    "sha256": "c07477eba26fcf9ac7c78d2d87b9acb109c40dae858c37884c523b92288f5996",
+    "bytes": 155216
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/png/08-recovery.png",
+    "sha256": "d80f8f573d736575b412f92a8db3b1ad6d0ffaf93590738dbafb34a5c0184951",
+    "bytes": 151891
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/png/09-deployment.png",
+    "sha256": "fa548225cf20069c478f7c1fc36577eacc6bebca8872ca40083510a0f8d41cf4",
+    "bytes": 160816
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/png/10-roadmap.png",
+    "sha256": "e029ff1ba1f5f79a12123e0f1fcab5498e50ef3bc9f54bf43df119dce1ddeb29",
+    "bytes": 143328
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/preview.png",
+    "sha256": "eda3e58fda909848a57defa7df7e233f5520862afa4a44b197da0f0c81dde1a9",
+    "bytes": 599482
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/schemas/events-v1.schema.json",
+    "sha256": "7d0bfd30821f2488e40e38afca999b07e2d2be3f4b1d1f3c0ba2490b01942ad4",
+    "bytes": 36559
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/schemas/topics.json",
+    "sha256": "e304756423b0716de4ec4c7d33b3a57b201e32710556487fee4f28b91fb1625e",
+    "bytes": 5670
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/source-manifest.json",
+    "sha256": "bf2e0fa268d37f28393cf571cdd3266b55d4e49b44762b492bd37d7dad30af24",
+    "bytes": 8148
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/sources/build.py",
+    "sha256": "3787b3415ed2aa2a88d7d119114e79a6f140d181349736995be2550cd2b2a638",
+    "bytes": 30108
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/sources/contracts.py",
+    "sha256": "f17dd7a20040fa8fd963ff30d5efd5a3f347d89dc4eac425e7dff8d9727902a7",
+    "bytes": 23295
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/sources/diagram_engine.py",
+    "sha256": "f43ef4171bdacc7f0f203c7ecb490a3ff1fab7fc4cecd1f86bf970e8f3588418",
+    "bytes": 11091
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/sources/diagrams.py",
+    "sha256": "a66db4ac2bf8072d6f4f6117145b9120455d863566101b299b1fa8ea8b31c48e",
+    "bytes": 23541
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/sources/module-dependencies.json",
+    "sha256": "972ea70cfa458ae1f34203b147ce6c6f05b7d2d6b75d2bf3d54b985fdf3a034c",
+    "bytes": 683
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/sources/requirements-render.txt",
+    "sha256": "4dfafdd1da73683e0ab0d7805f49627147f42a6b6f7ee9f8f6f0b1b2fd258d0f",
+    "bytes": 82
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/sources/review-workplan.json",
+    "sha256": "628ec7e21fc6de766f5c5f4861d5469618854cfe11135d774a0bf6f03fc8c8ce",
+    "bytes": 11320
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/sources/workplan.py",
+    "sha256": "8472ecf0053abc71c43a5b7326ebf9a6c25646ec5be1656a8c6a8305fb3601a8",
+    "bytes": 42750
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/svg/01-context.svg",
+    "sha256": "d5764474008a07ca4aaeacdebd991ed6ba10161eeed0e4b089c822b385826c22",
+    "bytes": 9847
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/svg/02-modules.svg",
+    "sha256": "323caf31a0fbbde575841cfc2f2a835216d6908c7e0b1be767d01f6bbf3d83b6",
+    "bytes": 8344
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/svg/03-data.svg",
+    "sha256": "8cfa7a936fa0f41cf5805c967bb779a95f98f2a51be720fd1e3c56fdae21e620",
+    "bytes": 8236
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/svg/04-submit.svg",
+    "sha256": "846e421e9e0f344b04f381f1818fef84de4a0254288959f09b539b5a67c19874",
+    "bytes": 6048
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/svg/05-documents.svg",
+    "sha256": "b88dab2d671ebebe65cdb141e3ac82b322ecec04b9c2dbd4ac8174388573c770",
+    "bytes": 6800
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/svg/06-decisions.svg",
+    "sha256": "92f19da99e85a0d3aa5210d68256cf046a5b5c6115163e8f1f4cbaea4c26e05f",
+    "bytes": 10390
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/svg/07-states.svg",
+    "sha256": "0bba0761a33e591d13523cdb0580c2a61126360f486fc3eb66ddc4683fe2fe03",
+    "bytes": 7198
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/svg/08-recovery.svg",
+    "sha256": "d6ff4b001f63b96029a3ff6caa8facf6957550fed240f55fc02ef243443006a9",
+    "bytes": 7668
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/svg/09-deployment.svg",
+    "sha256": "793e72ba3f7c51767c8c6a13ff47fef7537429adbc758015f337a60aa8792e0b",
+    "bytes": 8422
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/svg/10-roadmap.svg",
+    "sha256": "c843f4d5c887544d4294fa99fd35839c2f7c9b7e3f98cc7c968cc174e1f7efb8",
+    "bytes": 7814
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/tasks.json",
+    "sha256": "a3c089d1ee21c048ecb2c9b8e2f692e7eabed8bd830140f295ec114f97dc2e13",
+    "bytes": 34131
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/traceability.json",
+    "sha256": "00159cbdd84931776795db1f726ce949aff870404f04c1944a9bc48b0fd48d30",
+    "bytes": 4259
+  },
+  {
+    "path": "output/credit-workspace-backend-architecture/validation-report.json",
+    "sha256": "1f72edfc65e46cba2f40e67571d78d3cfd41717f2dc3d3daaab2056def9642e3",
+    "bytes": 20144
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/README.md",
+    "sha256": "54fead3c2fafd3d4fba3566128b288f5a478c6d8307bfd06b446b7dc56110115",
+    "bytes": 3458
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/acceptance-cases.json",
+    "sha256": "770303a580ed72e4c362d9e5eacbae89b68a2600eea809581330548f129bf4d6",
+    "bytes": 14862
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/api/backend-task-map.json",
+    "sha256": "ddeef6e04ae5ff4c2ad3cc525c4ba230a0e0dd47cf511cbef74e559867e2a85c",
+    "bytes": 3521
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/api/baseline-openapi.json",
+    "sha256": "7bf8205c94dd97661683379e54d47b1ab68b615aed2fb9037476399a124525e7",
+    "bytes": 436113
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/api/baseline-operation-catalog.json",
+    "sha256": "35ddb426cf261bb8b6133e41292e4f03c5af5478a3967e54a223658a3af8a238",
+    "bytes": 16461
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/api/changes.json",
+    "sha256": "9af2dadbb8a00b926645b859d64ce921e763f1be28dba602fce3460ce4c5743f",
+    "bytes": 2039
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/api/demo-openapi.json",
+    "sha256": "d9f7c5224126957c8f93b3f6ffd0ab822e8771d63e7ead9a6c880033795a26ed",
+    "bytes": 122299
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/api/proposal-examples.json",
+    "sha256": "31e5b1b3eee660218fc397a0e1c7363665cf8712df00dbaf76c0fe5d9c281eff",
+    "bytes": 3244
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/api/proposed-additions.openapi.json",
+    "sha256": "56801a1629e691b976521f7a09a288c606c31513cbc1a24f73eeb36737258b30",
+    "bytes": 482129
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/diagram-manifest.json",
+    "sha256": "9493e032f26d478e41cb5fdf6caa07126ba3de907a8f82133e13fbb7ac200e69",
+    "bytes": 2272
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/docs/01-architecture.md",
+    "sha256": "3d662efeb6711c6a514f06abc50ad6bc36934eaa5e7e6c50929332716819a597",
+    "bytes": 10131
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/docs/02-technology.md",
+    "sha256": "9432a1705673d1c7da1ca04201622ca522226cc5097e553bdc3e00c170092d2f",
+    "bytes": 8361
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/docs/03-state-and-flows.md",
+    "sha256": "fe29d26c448263b2589899bc2b1c905e7b7ae0a3efdd54a4ab1ea49f3f348ed9",
+    "bytes": 24641
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/docs/04-screens.md",
+    "sha256": "9e676017ae97e95ecef25537639c7355a3ddcb718925316e0190f55506450a48",
+    "bytes": 31401
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/docs/05-interfaces.md",
+    "sha256": "21e0d05af9a0f5ea275eb3e3b3d3fffc3f679d14d0baca601c2b8ae0692d5725",
+    "bytes": 26783
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/docs/06-demonstration.md",
+    "sha256": "cafa2b0a084eafb2991cd41698805e99ed3c849598fab5b8100064f4c0cc0fb2",
+    "bytes": 14593
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/docs/07-quality.md",
+    "sha256": "56046973a5b54ac69947d3db1b31c3af6e18c8ce117980f86ef4beacc6a71b5d",
+    "bytes": 9709
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/docs/08-workplan.md",
+    "sha256": "02f5f9754992b7510b270a124f62a1fc971ab07e21002068b24c4f2aad59c5d5",
+    "bytes": 37863
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/docs/09-acceptance.md",
+    "sha256": "4bf278f519f2ed38f684d98c77162380195c2c3369589b18a72721a4c13b297b",
+    "bytes": 15059
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/docs/10-reference.md",
+    "sha256": "6201c27c5a38c7ebbf44416052f9bcde13ec01ac4e6859a89d4c5a1693a8b6bd",
+    "bytes": 9994
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/docs/interaction-index.md",
+    "sha256": "122491afb2956a069c85339f08efabe4044edfe180c057c887e506fc8a68f5bb",
+    "bytes": 2812
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/frontend-architecture-atlas.pdf",
+    "sha256": "14928b0a1034b94f0cabd592d1a6c80de5c8a0b37e73c6cb3950c4b7563d6817",
+    "bytes": 695843
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/frontend-architecture.drawio",
+    "sha256": "3763a1195823dfd5ae5a32c91ce1d7184943e9d7136433d1ad24ba4481cde946",
+    "bytes": 116655
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/frontend-development-guide.pdf",
+    "sha256": "b1e0d2497203de2a369317ffa1dc1ddb9e6ebe46d42ca75aee27d732c920a8e1",
+    "bytes": 234603
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/interaction-matrix.json",
+    "sha256": "9e015966e3f3fdc50811db0bf5b2bd9addc76f67871321b1204cd076c2f0d48c",
+    "bytes": 25663
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/png/01-context.png",
+    "sha256": "67363d2432e3fee19888555b6884968b0100a40219368b8e720f37ab3dbcdde2",
+    "bytes": 145839
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/png/02-journey.png",
+    "sha256": "f79e5ae9f2c033aec9c621565d2ffde1724c43fa368e19d10420e08d1f04f3d1",
+    "bytes": 142712
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/png/03-modules.png",
+    "sha256": "5c26d6f7281628b7fb580fe54f7a36ad8cf8b5af1768c97e83d029255d2c4fca",
+    "bytes": 158408
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/png/04-state.png",
+    "sha256": "ced19d24bd2bc9ecd3ce11b3cdace6fa586b8e5d6615687f0f06e3f0c1a8c750",
+    "bytes": 147817
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/png/05-save.png",
+    "sha256": "d5e8547cc38755fad373f513d1c02a534a9a470a8f662d1f1cf72e45f13c2c60",
+    "bytes": 153758
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/png/06-submit.png",
+    "sha256": "55c409669e3d239019e06a8cf9abecbd22e6df8a379b0f3a279c72c91ff2894c",
+    "bytes": 153376
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/png/07-documents.png",
+    "sha256": "a9c593e42c315ecd0274149722f0bc60f931d1839fc50fbe81a4ef2f02c7e2f4",
+    "bytes": 137844
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/png/08-updates.png",
+    "sha256": "d33db8ce05b8a4ac943df107ad4a1a03c3e378807653b2cfeb79f3b071e28def",
+    "bytes": 144825
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/png/09-followups.png",
+    "sha256": "220c9699746f3aaf1ca3a617829835ae1cff3025ceee50e8e2dc410b32b18cbb",
+    "bytes": 159861
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/png/10-control.png",
+    "sha256": "d18def6b13048b4f8293cc01e134db757db6bec6bfd63cbf569d9dd0b4ac0e2c",
+    "bytes": 148189
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/png/11-modes.png",
+    "sha256": "e140bb022ffd35d5fb56d62f4be5832882012e6ab280f51ac389a32d6b79cb2a",
+    "bytes": 140460
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/png/12-roadmap.png",
+    "sha256": "a10b7e9387ec66dbdba270025059a7f84a4be02c5039158e775d6323da00c9d3",
+    "bytes": 157319
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/preview.png",
+    "sha256": "89f7d8d3c69e4a2b48a0cd6a2b87bbaa407c360e394ff4f7e445cfcf1efd2bcc",
+    "bytes": 496866
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/source-manifest.json",
+    "sha256": "489815ce5419126271a28ee61d55f518fa9a711a17756dd1676856bcfe41ff71",
+    "bytes": 18397
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/sources/build.py",
+    "sha256": "766b198e2f118494d6c8bd1f1e9b3126ae31604b4f432e8977f8ced6915b90e9",
+    "bytes": 18028
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/sources/check_pdf_layout.py",
+    "sha256": "47b6fd285442f819a15d435f4432f54563ee338e64d590329ae92db71bb64463",
+    "bytes": 1414
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/sources/contract-examples.json",
+    "sha256": "31e5b1b3eee660218fc397a0e1c7363665cf8712df00dbaf76c0fe5d9c281eff",
+    "bytes": 3244
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/sources/contracts.py",
+    "sha256": "2bfb6bbb29a75389b917bf2dd8be8241c82171ab70d08b04a9ca728e0cf5e0a1",
+    "bytes": 2500
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/sources/diagram_engine.py",
+    "sha256": "33d0d545c91aa1a50d8b12d0f8064ba568d97d090df491ae179dd931a3e53b99",
+    "bytes": 10498
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/sources/diagrams.py",
+    "sha256": "30684445b275ee614383450759b3a51745bdf04eae2f15fec7b7ab7d01e1205a",
+    "bytes": 25381
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/sources/renderer.py",
+    "sha256": "ddf6ab35a298ce12a810eaff93387ef7cb209a65e299fa840dba4c22d8518733",
+    "bytes": 7332
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/sources/requirements-render.txt",
+    "sha256": "e48d3a5389ef11b7580b5ca6a18b2d169f76aee5e12fb32fdb6650481d394b5a",
+    "bytes": 82
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/sources/review-workplan.json",
+    "sha256": "5b3f6d5471bddc947e87b490e82d4b61c34844c02d7d355b02dae409612f0193",
+    "bytes": 6061
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/sources/screens.py",
+    "sha256": "a2bc17a6abe297933ffcfc9a22cd257186f09fa5d75c3a712adad766c4bc2193",
+    "bytes": 26893
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/sources/workplan.py",
+    "sha256": "9ba21686128de73ad0648e698909fe0fc7b4bb9160d192b3193b99ffeb2ffc7f",
+    "bytes": 33876
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/svg/01-context.svg",
+    "sha256": "7ab4c85ecfffb4f866b464a77bfb98febd669420220f6aaec7c47520d22bdf18",
+    "bytes": 7643
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/svg/02-journey.svg",
+    "sha256": "5928b258aa44db43e2f57971dd18d55227354be379b076d801fdbf22f7b57f11",
+    "bytes": 10721
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/svg/03-modules.svg",
+    "sha256": "eb3cd374b705ba6b85d610f7081793020a3c522310574649fe2271e4e61d3c95",
+    "bytes": 7436
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/svg/04-state.svg",
+    "sha256": "23a9e8c4c9b35b4b4d177db412961c5c627ad4ec1b6c4d75eb270b830674fc83",
+    "bytes": 6703
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/svg/05-save.svg",
+    "sha256": "32df14913f2e3ad01a3a4f1517b1b0e4c9af21f7406edce92c2b3c9e546aa49a",
+    "bytes": 7594
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/svg/06-submit.svg",
+    "sha256": "827e9eef364310a230457cce04a08b3761184704867cd951970e2db4f75a4288",
+    "bytes": 7660
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/svg/07-documents.svg",
+    "sha256": "a2d3e3e8df81296b01ba76a92891a72d41c79d89456c253c351cd4f05290aef6",
+    "bytes": 6771
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/svg/08-updates.svg",
+    "sha256": "d397a34da4450ac6433565b6394c6b82911cd4422bd6984b52ff3c460aa3f0f5",
+    "bytes": 7545
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/svg/09-followups.svg",
+    "sha256": "29d389b8aa9b677e4fb63d69ecdfb96c3951b956e69a08246db6fbc057e4d45e",
+    "bytes": 8472
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/svg/10-control.svg",
+    "sha256": "f66cb9713740bd4c95ecc9468880fd516df764b30a304420658d387aa4ff742e",
+    "bytes": 7458
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/svg/11-modes.svg",
+    "sha256": "075fc073fc562d1e76ced194ba8b9573683e88c65191d6fbd708ff4ef43588fb",
+    "bytes": 6236
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/svg/12-roadmap.svg",
+    "sha256": "be19a2d8cf5a2c376053564986e8bc0494633c6f6dc79b0199dcbfee3c02648f",
+    "bytes": 7850
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/tasks.json",
+    "sha256": "0f47721ec489dc62f7bb5a240e9a8f5dd9fe4d706141720dd268921f3b3c4c13",
+    "bytes": 41643
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/traceability.json",
+    "sha256": "772e5c2127041ecd9d8d59df4f125c42c754b4f66b25e9a1de5475b0c5accc53",
+    "bytes": 4346
+  },
+  {
+    "path": "output/credit-workspace-frontend-architecture/validation-report.json",
+    "sha256": "839a98324f41f3a3c291efdc46308fa87a724ae3870013390e4cc627985fdedc",
+    "bytes": 107266
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/README.md",
+    "sha256": "3d550135fb24cb026a3aaf1dd0bcaf627885c3cca4e424743cb9524d94110216",
+    "bytes": 5364
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/acceptance-cases.json",
+    "sha256": "133dce4fafbcfbebb3e84d520208a8db057c9fb96e54deeff5ecfb71690dd1b2",
+    "bytes": 29030
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/api/baseline-integration.patch.json",
+    "sha256": "07f7dd836f9a0dc1b6b8d3985df403da554e22f28468997e34967525f4af4f6e",
+    "bytes": 105150
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/api/integration-preview-metadata.json",
+    "sha256": "6f4a8fe9ba26c436b4b56583e15ef21f38185cd66e1ccd06fe2d913db7da1f46",
+    "bytes": 736
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/api/integration-preview.openapi.json",
+    "sha256": "a637a34112e6dc858742b864c2e1e6c5f8555676983edfec84efa41f647928c6",
+    "bytes": 537979
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/api/internal.openapi.json",
+    "sha256": "e87648b560a147a55f193477f5eb730639ee145526203a3d9347b6d6dbc6f3c4",
+    "bytes": 131963
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/api/public-extensions.openapi.json",
+    "sha256": "7041bcf2871889ffa335bde57759eeb4cc136ed66f4f662d9f2f4048533ee798",
+    "bytes": 99178
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/checksums.json",
+    "sha256": "7f8fdb43061bd0850690b8ccdd2ca7ae4b4c381cc242e55bf7237b8cb843948b",
+    "bytes": 8564
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/contract-fixtures.json",
+    "sha256": "90c2a99dac438aac8e01df6d8156a491109cf0b0189d0f24205fc5ab7630a12d",
+    "bytes": 35400
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/diagram-manifest.json",
+    "sha256": "700e6a8483d8ee39e7d974222c5cb5e898e286374c8eb2098b9169fa1740b32e",
+    "bytes": 1619
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/docs/01-review.md",
+    "sha256": "e334924cc35bc75327a83359e266b62765bb31119af4d6c4c4f068166bda1313",
+    "bytes": 8991
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/docs/02-architecture.md",
+    "sha256": "4555097fe816c2b5cc6e595eb221cbb9f6e829163df24b2cf7dc9df7f9db2b41",
+    "bytes": 9097
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/docs/03-data-risk.md",
+    "sha256": "278350534c243d786c8d3af46bc1fc915b91f707e7dda918217bd4d761815f63",
+    "bytes": 13440
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/docs/04-recsys-ocr.md",
+    "sha256": "613dea6f9b806cbf31c761b9a66a560b2661ca5a86e1a57dc97516d10f63ced1",
+    "bytes": 9611
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/docs/05-rag.md",
+    "sha256": "df32f1d9f9918617be5e7d3a9a859932b46260908d2c49a4a20c0d02d8068080",
+    "bytes": 14861
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/docs/06-lifecycle.md",
+    "sha256": "45b786d85dae36dd8e48e5068a4da2769be3b467c52654539e073199fca74dc6",
+    "bytes": 12784
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/docs/07-operations.md",
+    "sha256": "ec4ad8dcd9d6ac0dbe2b1097184c0bc982b0c03a59afdb587af0e02114e50bdf",
+    "bytes": 15593
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/docs/08-interfaces.md",
+    "sha256": "ba4aa16aafa7840f9235219523cc7719278fff87f27e64c055372666fafe4864",
+    "bytes": 13731
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/docs/09-workplan.md",
+    "sha256": "3957f70e9c9def8c3a3a25cb1a81eb53cd3849c65afefb050b62243d1244e1fd",
+    "bytes": 11574
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/docs/10-acceptance.md",
+    "sha256": "e56023892c22fed450de9b4a85046efc3a637d036f099b5086b42ec5b6b1ed7d",
+    "bytes": 15082
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/docs/11-reference.md",
+    "sha256": "996e1d8e5a57091b4b352719e4d35d693ef374acea3e702f19dc291becd6a8a9",
+    "bytes": 8787
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/README.json",
+    "sha256": "68e8a5882ab29d06b1063ea448176f4e334b98974310bc008c0695fac92376c5",
+    "bytes": 483
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/approval.json",
+    "sha256": "51265f0e41eb02dafd0fd5f7a92c67240bc4dadf175c111d3e11045547bb8fa4",
+    "bytes": 380
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/assistant-answer.json",
+    "sha256": "fdd299f4daab9f7a98749e7c2156a2894177528e7675345c9d3409c0227a18ff",
+    "bytes": 662
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/dataset-manifest.json",
+    "sha256": "c9df99ec3c6a20c9d3b90cbe689c987e4af164ca6ab427a8e4ab5c1502ea7261",
+    "bytes": 928
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/event-KBDocumentPublished.json",
+    "sha256": "32b9f0b59e4362913c9f232f20926102f8030b71ed3bf014877f6939f5364e6a",
+    "bytes": 439
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/event-KBDocumentRevoked.json",
+    "sha256": "fa0ba82de0485cb78e50e92eefd3e9b70f2bf4bb020ee0ac4fd324676ce05fbc",
+    "bytes": 404
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/event-MLReleaseActivated.json",
+    "sha256": "11c4af4e6813c1d144dc785db3b835cefac38c936e2fe650e16ce0e538827105",
+    "bytes": 425
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/event-MLReleaseApprovalRecorded.json",
+    "sha256": "757b5a35421fe0c4f24d67b5402ae95e54e38d444765b0dcc1955a41be4c5894",
+    "bytes": 455
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/event-MLReleaseValidated.json",
+    "sha256": "946b692aa831a8b80dc2fda7fffcbc1589c98d37ae8fcc8077bb7fb84446ebb4",
+    "bytes": 512
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/event-MLRollbackCompleted.json",
+    "sha256": "0667cadc2433ac9f6d5a8430d72e1d48a0b91696fbff498807bd516157845c7c",
+    "bytes": 404
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/event-MLUpdateRequested.json",
+    "sha256": "dc99e3fed23b799aa2a13a75d2f0ec44a323a0612338a81042e1c347eef8b302",
+    "bytes": 384
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/event-RecommendationExposureRecorded.json",
+    "sha256": "722ea9568968a7b6aebfeae2c6f7db9424ed3aee69ea1d68e924e90470227812",
+    "bytes": 469
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/event-RecommendationFeedbackRecorded.json",
+    "sha256": "50d8a4ba54a42a5c010ac753934863b1c982f8bbeaa46112c3fbdd688be136ae",
+    "bytes": 410
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/experiment-manifest.json",
+    "sha256": "62c9d65248b18821d3c617590e8d59bdf65984c0e9d6b7afdf59802c129e2187",
+    "bytes": 1075
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/feature-snapshot.json",
+    "sha256": "f9e6cb6d5cf0b44024e7513e59057da40b0fc6cfef2b1ab0625d5c0b8a7d8cb3",
+    "bytes": 606
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/financial-confirmation.json",
+    "sha256": "0ae822046c49fd6aad165e7b6278abeb0ed169355224ca14c01e193b647ca128",
+    "bytes": 283
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/financial-input.json",
+    "sha256": "8e25515b755fec8054ca310d62dd8b75ccb1deb22e554e1bf478add21f01dfd1",
+    "bytes": 437
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/rag-release-manifest.json",
+    "sha256": "4af89c654920220cc3a808a3384b4c9158e68e4a56c716774e5a29eb5f3776aa",
+    "bytes": 2326
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/ranking-request.json",
+    "sha256": "a5af3d1809236a89e0f752ac8764eac4353bfb4223fd2b128adeac8fa930d693",
+    "bytes": 378
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/ranking-result.json",
+    "sha256": "7a444d04f1e582f657d42897f39708b70ab03436d4848ff8e03ca57de2851d03",
+    "bytes": 357
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/release-manifest.json",
+    "sha256": "a4d21ef039ddccd4369f05d206cc8020413b664e9331a2d1448301eb87e68384",
+    "bytes": 1185
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/risk-request.json",
+    "sha256": "971a981ae34f0165a306978cbf42277fdd4a3bd6f3d41ce47d0e4a4e4852b7a6",
+    "bytes": 223
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/examples/risk-result.json",
+    "sha256": "74c5ac3477987e8c3acccc7ac15ae1cf8147bbcaa9632f5c5d7a80d6d105e0f8",
+    "bytes": 494
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/external-gates.json",
+    "sha256": "87e2514651753461d84f714e34a16af77ff215463e90efbcbe9bcac8bfef771f",
+    "bytes": 2988
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/findings.json",
+    "sha256": "01fb6942e2cd82b456cd72d140324ee8c29a90173f80395af5e9f551894690b8",
+    "bytes": 20566
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/fixture-validation.json",
+    "sha256": "2cd17d1967b9f17bd5709fda60fe513222cbf7e32455ca602e472f44f58f5b74",
+    "bytes": 5538
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/integration-matrix.json",
+    "sha256": "91a4eb7283c33f80f068b30f43d0647fe59ee6d23abd80cb91196f2420904a29",
+    "bytes": 3421
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/ml-architecture-atlas.pdf",
+    "sha256": "5c6db591e51fa23db777c7fde656af5ac412263cec1d39b2884528c554827816",
+    "bytes": 437472
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/ml-architecture.drawio",
+    "sha256": "bb656e9c0c937e023e08b9bda8f348815d07761719145c299e91e8adf377863c",
+    "bytes": 106891
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/ml-system-guide.pdf",
+    "sha256": "4cb9fdce7a413e5a6a5ffb30579f33b9966b3cafe0d2c7e2c0676b5c9d1da2d6",
+    "bytes": 203627
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/observability/dashboard-specs.json",
+    "sha256": "565f17d4d913b662743f0c18341da46e8b7327d0d32fac4f04666b54a255da7d",
+    "bytes": 3710
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/observability/metrics-catalog.json",
+    "sha256": "0f6a03e9d5d959d2b1846cec2e1306260a4d2bbf949e9f9307f37be447dcd0d9",
+    "bytes": 4025
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/pdf-geometry-review.json",
+    "sha256": "8039d120a5114d1b0f613bd2f19b8b6a7762e3e5773049c1ce09161e7ee3183c",
+    "bytes": 14208
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/policies/release-policy.json",
+    "sha256": "66b5d0957e624b6c2d2344e5ec9f1df7baf38029903ec7487b85091a66b429c5",
+    "bytes": 3027
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/schemas/dataset-manifest.schema.json",
+    "sha256": "c4ddde0ec2e2d15b5d134541b0488913a6297cd294431a04ec7c4e4217e98660",
+    "bytes": 47998
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/schemas/events-v1.schema.json",
+    "sha256": "5c4bbb9b88533c57c38d4c4f37ec9722e003ce67ef7fafe5cf0e77e9765be614",
+    "bytes": 17803
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/schemas/experiment-manifest.schema.json",
+    "sha256": "8d6075fd4f125a71170d67a17ca2c6e576a0c435c738ed4de4d8d936a6803b6a",
+    "bytes": 48001
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/schemas/feature-snapshot.schema.json",
+    "sha256": "cbf6ee647cc851c21f11954a0d5c67248398e63c14ae03d7553bcd2c34eb4e48",
+    "bytes": 47998
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/schemas/release-manifest.schema.json",
+    "sha256": "1e73722a7aca27a0837cbd62cd678510ec035edb0119b4bd33e575f0b84aa092",
+    "bytes": 47998
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/schemas/topics.json",
+    "sha256": "56999480b0fba8433ed96607be803d68f4fb23ee3a35a5efb4c277d51f179483",
+    "bytes": 596
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/semantic-fixtures.json",
+    "sha256": "6d83590584e19d87e96701c48ee17bf1628b4c862a0052d9538ff285f02bd78c",
+    "bytes": 3384
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/source-manifest.json",
+    "sha256": "ed1fcabb56f82f1ec0e244d8bace93a6f3a16dfcb9325151907fb5bf20d51379",
+    "bytes": 5938
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/sources/baseline-sha256.json",
+    "sha256": "d96fe3d0642d374f2a9db7da27c6cca9f2dfa88a5a5f2f82b34345bdfaa790bf",
+    "bytes": 29063
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/sources/build.py",
+    "sha256": "fc9e409ad9a50a24be71875b4971979edf6aa8af0fa6e7c13fadc03a2b3f0b99",
+    "bytes": 14206
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/sources/diagram_engine.py",
+    "sha256": "9c24da7831c0122215175ffdfbbfa4347b071bddba7c6a958bf0ee870b2cfef8",
+    "bytes": 11163
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/sources/diagrams.py",
+    "sha256": "ebc0f0542f13f9656b12ef8c3a6a0715f2a2d33b6acd6cf4d5ed5eba57ebb11b",
+    "bytes": 21353
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/sources/extensions.py",
+    "sha256": "77847c1b56d32288886d38a42abbee47cb9af83c261c7e7cdc0e650679355752",
+    "bytes": 9777
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/sources/package.py",
+    "sha256": "5b8b5cf85eb895189a2d6916ad73e808cb593674d3583584b589747d806a927e",
+    "bytes": 1614
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/sources/registers.py",
+    "sha256": "f2435cbfe73843ccb7cfce183b0e2f43f6a0ab1fdfc89e437c8569134097f00f",
+    "bytes": 38183
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/sources/render_qa.py",
+    "sha256": "f5d2f96203ad89d93aff30b78b87894616a6aa973b0c0c67a3077b585944197e",
+    "bytes": 3244
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/sources/requirements-render.txt",
+    "sha256": "4dfafdd1da73683e0ab0d7805f49627147f42a6b6f7ee9f8f6f0b1b2fd258d0f",
+    "bytes": 82
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/sources/scenes.json",
+    "sha256": "54a29a68a2d1ebdef2b396a9a4f5c449a3910287af7c12141a0d3d863d5d3d6d",
+    "bytes": 66093
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/sources/specification.py",
+    "sha256": "d2b319279648e8c44d807cb413a155c564cf9e94ce2b27075a8773dad7ed6269",
+    "bytes": 35165
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/sources/validate.py",
+    "sha256": "77e500db4dde93ef593ca98c61f2c92c0e847a28d37e95a321b1715e5cb93475",
+    "bytes": 16275
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/svg/01-context.svg",
+    "sha256": "c45c5a12bfeda458e25b2b1111fa3a7265d9b0453df486992341bdc43b89a560",
+    "bytes": 13463
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/svg/02-data.svg",
+    "sha256": "608d4e9f47e2c97583af3d6cdfee8e26b0ef71d953d7a34192ed63b1329e208f",
+    "bytes": 12662
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/svg/03-risk.svg",
+    "sha256": "71680c32e75b157f7d35f8b0037afa6f17d1c2071a74d22606310b761b3d4277",
+    "bytes": 12570
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/svg/04-recsys-ocr.svg",
+    "sha256": "fedf5234049d48222a92d3fc8556e4e8cb749d9ff226229e096ab8d9977904d2",
+    "bytes": 12634
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/svg/05-rag.svg",
+    "sha256": "df7d11e16dfa84f264809e3de8b40c4c6f9f26ecbdd72ac6e773c8ff743085ad",
+    "bytes": 12741
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/svg/06-release.svg",
+    "sha256": "db56d0898f968b132002436646321bcdbe03bd430c91705ef852b57e0951c156",
+    "bytes": 12537
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/svg/07-deployment.svg",
+    "sha256": "c73a88d4f3c5fe72ba62ca2eca6df741559ebfe80c58aeea63b4428b5c72240a",
+    "bytes": 12644
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/tasks.json",
+    "sha256": "fd5df10d692312ffaf1059780f49e8f16861cccb04526aabcca0b3b9bb1c936d",
+    "bytes": 12331
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/traceability.json",
+    "sha256": "60218c555ee88f924f1e4374e99dfb80c1471c759e09ee8dc95d231c8403e41d",
+    "bytes": 4606
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/traceability.md",
+    "sha256": "6f9b4889c0ede9529f71e326b62b00d486e5494b8a6e567fb6e972ec27c69ddc",
+    "bytes": 2279
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/validation-report.json",
+    "sha256": "3c5b67853b9274993724d37bc014406bcc3cf8d5e6484c5ba0b5bc07ae8253f9",
+    "bytes": 126921
+  },
+  {
+    "path": "output/credit-workspace-ml-architecture/visual-review.json",
+    "sha256": "1c811ed465f8e0f5c4bd21f5ff696652bf43c9b8b2d0ccdc93a1fbd2503ca587",
+    "bytes": 1353
+  },
+  {
+    "path": "output/architecture-review/README.md",
+    "sha256": "42f7a3311e2d477579ca4c867ca83c2beaa6846d16da6af412c1ca355c5a358c",
+    "bytes": 1958
+  },
+  {
+    "path": "output/architecture-review/architecture-review.md",
+    "sha256": "cbe9fad7789c75e77c10a48bc6b6036db372ba178a317805fe2e64d826cdd1ec",
+    "bytes": 42917
+  },
+  {
+    "path": "output/architecture-review/architecture-review.pdf",
+    "sha256": "a06047e96a578264727ecb92a505a4c64836813dfdd2262bc851e00c9a7b6b08",
+    "bytes": 103266
+  },
+  {
+    "path": "output/architecture-review/contract-fixtures.json",
+    "sha256": "458ef995b2a4f3c427c3ae16fb039ebbe9fd8671e04198a8799370b2a356aec5",
+    "bytes": 16617
+  },
+  {
+    "path": "output/architecture-review/external-dependencies.json",
+    "sha256": "d20c481c7f61addb043dca24c576f898b48079a846591cc197e133c94e76907c",
+    "bytes": 4182
+  },
+  {
+    "path": "output/architecture-review/file-inventory.json",
+    "sha256": "b2e95ec6c038cd59e29271f9c48b71c47a3bcfe3268a2dc8b6fe4d4713c80b37",
+    "bytes": 47953
+  },
+  {
+    "path": "output/architecture-review/final-deliverables-sha256.json",
+    "sha256": "31c3ea8288fbfe1490841ca83b3c477827878eb84db6a6bbc1454a59ca7cc849",
+    "bytes": 612
+  },
+  {
+    "path": "output/architecture-review/findings.json",
+    "sha256": "9bb0eaaf5bb100433b0d85798ad268f8737c968cf01f392d7771bf04c55fdadd",
+    "bytes": 30710
+  },
+  {
+    "path": "output/architecture-review/original-sha256.json",
+    "sha256": "c8813cad2165433d7a9455d746ab51d8f862e67a19867ed9d8040cab408d0414",
+    "bytes": 31359
+  },
+  {
+    "path": "output/architecture-review/pdf-geometry-review.json",
+    "sha256": "1eb350d8872416a7914f3ab9690635ad45c102543a7d27dc2db38e5a4903cec0",
+    "bytes": 1726
+  },
+  {
+    "path": "output/architecture-review/technical-evidence.json",
+    "sha256": "408ad94d85fa6da5fb3fe57ee76161267a9ad4dae48f3e858e6f1a2a0ac7c04b",
+    "bytes": 612
+  },
+  {
+    "path": "output/architecture-review/traceability-matrix.json",
+    "sha256": "05c36db9e71693ed64883c74aec23b67e6412cab388990ccbea2a2eef2996c35",
+    "bytes": 35760
+  },
+  {
+    "path": "output/architecture-review/traceability-matrix.md",
+    "sha256": "8f2c629efd416abfc304cfa285d8e4d75c7c817b6d3f9456e5ee2729e9deaa45",
+    "bytes": 7789
+  },
+  {
+    "path": "output/architecture-review/validation-report.json",
+    "sha256": "7095387f505186414f186247323ce0e5bd5adf3477b1029659bd110f06297ef6",
+    "bytes": 53628
+  },
+  {
+    "path": "output/architecture-review/visual-review.json",
+    "sha256": "2fd57c074acf07264514f2061199a04fa467611cc8e90579c849245648b04791",
+    "bytes": 4193
+  },
+  {
+    "path": "tools/atlas_revision.py",
+    "sha256": "05882c92099d0501e6878a287d26616cea29cfcbace721be911cace361bff856",
+    "bytes": 41387
+  },
+  {
+    "path": "tools/build_architecture.py",
+    "sha256": "eb16518dbe61c6fef27a18196cbbc14c10c7b45d9a78a622281895f00f3a81cf",
+    "bytes": 12375
+  },
+  {
+    "path": "tools/build_package.py",
+    "sha256": "c01eca722bf887fad74d47b13719bb3d3491e62965ddc6200bc209f4e1ec6e1a",
+    "bytes": 34485
+  },
+  {
+    "path": "tools/build_review_report.py",
+    "sha256": "3306fb203df320f340aa7b30e44fe4a7f72c06c37e7497f413e58be4c0d44e54",
+    "bytes": 19942
+  },
+  {
+    "path": "tools/patch_review_generators.py",
+    "sha256": "718ed44cb903df2558bfc499bc017d471c66ec8bc96662ab75279c597af84fa0",
+    "bytes": 21724
+  },
+  {
+    "path": "tools/rebuild_architecture_review.py",
+    "sha256": "a6e9d47bc8e5e0c2f5d72a59cef289a626e76a3911ddc6816c9d9a685498a233",
+    "bytes": 1789
+  },
+  {
+    "path": "tools/review_contracts.py",
+    "sha256": "6cd1dbbc63a11279dbca0be1814057e3f06820ed2794ed24df41c80f262a9905",
+    "bytes": 22441
+  },
+  {
+    "path": "tools/review_documentation.py",
+    "sha256": "715a328fd99b1906092fe551ceac734c34b0367696c190e83da15d64dc02121c",
+    "bytes": 32407
+  },
+  {
+    "path": "tools/review_findings.py",
+    "sha256": "e201b6f7a51467f60f014ae47ec7deca89326d973e6b28645bb393618d1340fc",
+    "bytes": 23942
+  },
+  {
+    "path": "tools/review_pdf_qa.py",
+    "sha256": "2ebd80e64db69f5a28fca74febc39b282391fe390b3ef0190f674c5db79917fa",
+    "bytes": 2981
+  },
+  {
+    "path": "tools/review_workplans.py",
+    "sha256": "33064142ebf4d8adc0bcc49b40b25255e2e3e123e999a5897050334309370358",
+    "bytes": 20448
+  },
+  {
+    "path": "tools/seal_architecture_review.py",
+    "sha256": "d1079a704a0677e12c5a61fcea8aec8478db4d4fc762ed9038dc917f7c0ebb14",
+    "bytes": 4274
+  },
+  {
+    "path": "tools/validate_architecture_review.py",
+    "sha256": "66b505cd18c6f44086e29ff2db20ebe21624f390a51580901892622b2492adcb",
+    "bytes": 15945
+  },
+  {
+    "path": "tools/wireframes.py",
+    "sha256": "40c7881772d66fc229a7508e700be06fd3dee796c51ffc90202061b8083f8073",
+    "bytes": 11946
+  }
+]

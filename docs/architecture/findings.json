@@ -1,0 +1,401 @@
+[
+  {
+    "id": "H01",
+    "severity": "P1",
+    "title": "ML-расширение не применено к базовым пакетам",
+    "category": "несогласованность",
+    "evidence": {
+      "path": "output/credit-workspace-ml-architecture/api/integration-preview-metadata.json",
+      "line": 2,
+      "fragment": "REVIEW_ONLY_NOT_APPLIED",
+      "sha256": "6f4a8fe9ba26c436b4b56583e15ef21f38185cd66e1ccd06fe2d913db7da1f46"
+    },
+    "failureScenario": "Frontend и backend начинают разработку по 49 операциям, ML ожидает 60 и новую финансовую форму.",
+    "correction": "Принят единый публичный OpenAPI 1.4.0-design, 60 операций; все четыре пакета получают точные генерируемые копии.",
+    "verification": [
+      "public-count",
+      "copies-identical",
+      "public-openapi"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H02",
+    "severity": "P1",
+    "title": "Финансовый снимок не входит в банковский пакет",
+    "category": "несогласованность",
+    "evidence": {
+      "path": "output/credit-workspace-backend-architecture/api/internal-openapi.json",
+      "line": 6041,
+      "fragment": "\"SubmissionPackage\"",
+      "sha256": "6554481434255eb8b319316c01011554c15ab51e86f09ff101602f921d901907"
+    },
+    "failureScenario": "Новый submit подтверждает финансовую версию, но банковский адаптер получает пакет без ссылки на неё.",
+    "correction": "SubmissionPackage и AmendmentPackage требуют financialStatementVersion и серверный financialSnapshotId.",
+    "verification": [
+      "financial-package-fields",
+      "immutable-financial-reference"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H03",
+    "severity": "P1",
+    "title": "Две несовместимые активные границы скоринга",
+    "category": "несогласованность",
+    "evidence": {
+      "path": "output/credit-workspace-backend-architecture/api/internal-openapi.json",
+      "line": 799,
+      "fragment": "/internal/v1/risk/evaluations",
+      "sha256": "6554481434255eb8b319316c01011554c15ab51e86f09ff101602f921d901907"
+    },
+    "failureScenario": "Адаптер отправляет старые бизнес-поля вместо восьми коэффициентов из неизменяемого снимка.",
+    "correction": "В согласованной версии активны risk v2 и rankings v2; старые пути исключены из нового контракта, миграция перечислена.",
+    "verification": [
+      "no-legacy-risk",
+      "internal-openapi"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H04",
+    "severity": "P1",
+    "title": "Для RAG не описан внутренний HTTP-контракт",
+    "category": "несогласованность",
+    "evidence": {
+      "path": "output/credit-workspace-ml-architecture/api/public-extensions.openapi.json",
+      "line": 1667,
+      "fragment": "/api/v1/assistant/messages",
+      "sha256": "7041bcf2871889ffa335bde57759eeb4cc136ed66f4f662d9f2f4048533ee798"
+    },
+    "failureScenario": "Публичный помощник есть, но backend и ML не могут независимо реализовать вызов с авторизованным контекстом.",
+    "correction": "Добавлен POST /internal/v2/assistant/answers с серверным company/subject, kbEpoch, allowlist источников и единым ответом.",
+    "verification": [
+      "rag-internal-route",
+      "rag-context-fixtures"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H05",
+    "severity": "P1",
+    "title": "Модель не имеет контрактного чтения feature snapshot",
+    "category": "несогласованность",
+    "evidence": {
+      "path": "output/credit-workspace-ml-architecture/api/internal.openapi.json",
+      "line": 3850,
+      "fragment": "\"featureSnapshotId\"",
+      "sha256": "e87648b560a147a55f193477f5eb730639ee145526203a3d9347b6d6dbc6f3c4"
+    },
+    "failureScenario": "Risk API принимает ID снимка, но способ получить именно этот snapshot не описан; возникает чтение чужих таблиц или текущего черновика.",
+    "correction": "Добавлен GET /internal/v2/feature-snapshots/{featureSnapshotId}; авторизованный сервис получает неизменяемый снимок и проверяет digest.",
+    "verification": [
+      "snapshot-read-route",
+      "snapshot-digest-fixtures"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H06",
+    "severity": "P1",
+    "title": "Вход ранжирования не содержит текстов кандидатов",
+    "category": "несогласованность",
+    "evidence": {
+      "path": "output/credit-workspace-ml-architecture/api/internal.openapi.json",
+      "line": 4210,
+      "fragment": "\"candidateIds\"",
+      "sha256": "e87648b560a147a55f193477f5eb730639ee145526203a3d9347b6d6dbc6f3c4"
+    },
+    "failureScenario": "Семантический ranker получает IDs и не может вычислить близость без неописанного доступа к каталогу.",
+    "correction": "Добавлены contextText и candidateTexts; backend проверяет точное совпадение IDs, возвращённая перестановка не расширяет eligibility.",
+    "verification": [
+      "ranking-text-inputs",
+      "ranking-permutation-fixtures"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H07",
+    "severity": "P2",
+    "title": "Exposure metadata необязательна в ответах",
+    "category": "несогласованность",
+    "evidence": {
+      "path": "output/credit-workspace-ml-architecture/api/integration-preview.openapi.json",
+      "line": 16651,
+      "fragment": "\"rankingMetadata\"",
+      "sha256": "a637a34112e6dc858742b864c2e1e6c5f8555676983edfec84efa41f647928c6"
+    },
+    "failureScenario": "UI получает рекомендации без exposureId и не может связать реальные показы с обратной связью.",
+    "correction": "rankingMetadata обязательна в RecommendationList и Feed для MODEL и RULES; display itemId равен productId/cardId.",
+    "verification": [
+      "ranking-metadata-required",
+      "exposure-fixtures"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H08",
+    "severity": "P1",
+    "title": "Схема допускает неподдержанные стандарты отчётности",
+    "category": "несогласованность",
+    "evidence": {
+      "path": "output/credit-workspace-ml-architecture/api/public-extensions.openapi.json",
+      "line": 3336,
+      "fragment": "\"RSBU\"",
+      "sha256": "7041bcf2871889ffa335bde57759eeb4cc136ed66f4f662d9f2f4048533ee798"
+    },
+    "failureScenario": "MVP принимает RSBU/IFRS, хотя mapping восьми полей описан только для собственной синтетической формы.",
+    "correction": "В MVP разрешён только DEMO Financial v1; расширение стандартов требует новой версии mapping.",
+    "verification": [
+      "finance-standard-fixtures"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H09",
+    "severity": "P1",
+    "title": "Отсутствует обязательная финансовая версия для выбранного MVP",
+    "category": "несогласованность",
+    "evidence": {
+      "path": "output/credit-workspace-ml-architecture/api/integration-preview-metadata.json",
+      "line": 9,
+      "fragment": "optional in global schema",
+      "sha256": "6f4a8fe9ba26c436b4b56583e15ef21f38185cd66e1ccd06fe2d913db7da1f46"
+    },
+    "failureScenario": "Три новых продукта могут быть отправлены без подтверждённых финансов, если реализация читает только OpenAPI.",
+    "correction": "Все три synthetic-продукта имеют единые финансовые требования; financialStatementVersion обязателен в submit и RFI response.",
+    "verification": [
+      "submit-financial-required",
+      "rfi-financial-required"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H10",
+    "severity": "P1",
+    "title": "MVP требует Linux/NVIDIA и распределённые ML-хранилища",
+    "category": "несогласованность",
+    "evidence": {
+      "path": "output/credit-workspace-ml-architecture/docs/07-operations.md",
+      "line": 5,
+      "fragment": "MVP-NVIDIA",
+      "sha256": "ec4ad8dcd9d6ac0dbe2b1097184c0bc982b0c03a59afdb587af0e02114e50bdf"
+    },
+    "failureScenario": "Жюри не может проверить прототип на обычном ПК; инфраструктура поглощает время вместо сквозного сценария.",
+    "correction": "CPU Compose с локальными адаптерами для полного технологического стека; Qdrant/Redis/Feast/Airflow и другие компоненты закреплены через порты и selectable providers. Реальные сервисы подключаются отдельным профилем; NVIDIA optional. HACKATHON-1.5 отменяет трактовку target-only.",
+    "verification": [
+      "cpu-profile",
+      "target-separation"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H11",
+    "severity": "P1",
+    "title": "Модели генерации и embeddings не выбраны",
+    "category": "несогласованность",
+    "evidence": {
+      "path": "output/credit-workspace-ml-architecture/README.md",
+      "line": 35,
+      "fragment": "пока не выбраны",
+      "sha256": "3d550135fb24cb026a3aaf1dd0bcaf627885c3cca4e424743cb9524d94110216"
+    },
+    "failureScenario": "Нельзя оценить ресурсы, лицензии и обеспечить независимый локальный RAG.",
+    "correction": "Выбран CPU baseline Qwen2.5-0.5B-Instruct-GGUF Q4_K_M + multilingual-e5-small; hashes/OCI digest фиксирует P02 до реализации.",
+    "verification": [
+      "model-selection",
+      "supply-chain-gate"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H12",
+    "severity": "P2",
+    "title": "Неподтверждённый ranking deadline 150 мс",
+    "category": "несогласованность",
+    "evidence": {
+      "path": "output/credit-workspace-ml-architecture/docs/07-operations.md",
+      "line": 16,
+      "fragment": "150 мс",
+      "sha256": "ec4ad8dcd9d6ac0dbe2b1097184c0bc982b0c03a59afdb587af0e02114e50bdf"
+    },
+    "failureScenario": "Холодный CPU embedding вызывает постоянный fallback, и работающий ML остаётся невидимым.",
+    "correction": "Разделены target SLO и MVP budgets: ranking 2 с с прогревом/кешем неизменяемых candidates; risk 3 с; RAG 60 с.",
+    "verification": [
+      "budget-consistency"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H13",
+    "severity": "P1",
+    "title": "Базовый UI ориентирован на один продукт и не включает ML-путь",
+    "category": "несогласованность",
+    "evidence": {
+      "path": "output/credit-workspace-frontend-architecture/README.md",
+      "line": 15,
+      "fragment": "один продукт",
+      "sha256": "54fead3c2fafd3d4fba3566128b288f5a478c6d8307bfd06b446b7dc56110115"
+    },
+    "failureScenario": "Нет согласованных экранов восьми финансовых полей, их подтверждения и RAG, frontend-задачи не покрывают ML API.",
+    "correction": "Добавлены финансовый блок в U08/U12, RAG-виджет и история U16; три продукта, единые типы и матрица операций.",
+    "verification": [
+      "screen-route-coverage",
+      "operation-task-coverage"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H14",
+    "severity": "P2",
+    "title": "Реестры не учитывают время и численность команды",
+    "category": "несогласованность",
+    "evidence": {
+      "path": "output/credit-workspace-ml-architecture/docs/09-workplan.md",
+      "line": 3,
+      "fragment": "не численность команды",
+      "sha256": "3957f70e9c9def8c3a3a25cb1a81eb53cd3849c65afefb050b62243d1244e1fd"
+    },
+    "failureScenario": "Тридцать ML-задач и десятки web/backend-задач принимаются за выполнимый граф на 48 часов.",
+    "correction": "27 задач: 25 MVP, 1 optional-integrations, 1 bank-target; часы обязательного и дополнительного объёма считаются отдельно; первые 12 часов - вертикальный срез.",
+    "verification": [
+      "task-dag",
+      "task-hours",
+      "critical-path"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H15",
+    "severity": "P2",
+    "title": "Полный canary требует недоступного объёма трафика",
+    "category": "несогласованность",
+    "evidence": {
+      "path": "output/credit-workspace-ml-architecture/policies/release-policy.json",
+      "line": 34,
+      "fragment": "\"minCandidateRequests\": 1000",
+      "sha256": "66b5d0957e624b6c2d2344e5ec9f1df7baf38029903ec7487b85091a66b429c5"
+    },
+    "failureScenario": "Хакатонный релиз не может завершить canary, либо команда выдаёт синтетику за реальную статистику.",
+    "correction": "В MVP ручное утверждение digest и offline smoke, без статистического canary; промышленные пороги сохранены только в bank-target.",
+    "verification": [
+      "release-profiles"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H16",
+    "severity": "P1",
+    "title": "Прежний общий валидатор не включает ML-пакет",
+    "category": "несогласованность",
+    "evidence": {
+      "path": "tools/validate_architecture_review.py",
+      "line": 157,
+      "fragment": "for package in [B,F]",
+      "sha256": "66b505cd18c6f44086e29ff2db20ebe21624f390a51580901892622b2492adcb"
+    },
+    "failureScenario": "Зелёный прежний отчёт не выявляет расхождения новых схем и маршрутов ML.",
+    "correction": "Новый общий валидатор проверяет четыре пакета, единые контракты, новые отрицательные примеры и граф задач.",
+    "verification": [
+      "all-four-packages",
+      "negative-fixtures"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H17",
+    "severity": "P2",
+    "title": "Повторная сборка требует соседний исторический пакет",
+    "category": "воспроизводимость",
+    "evidence": {
+      "path": "output/credit-workspace-backend-architecture/README.md",
+      "line": 34,
+      "fragment": "соседний исходный",
+      "sha256": "838b7828c8f7625da6fc32fefb1c1182f75d3ddbb9f99bacdb491ab9b5cffdf2"
+    },
+    "failureScenario": "Извлечённый отдельно пакет не воспроизводится без исходной структуры и контрольных сумм upstream.",
+    "correction": "Новая поставка самодостаточна; builder читает только вложенные docs/contracts/diagram sources. Исторические материалы остаются архивом.",
+    "verification": [
+      "self-contained",
+      "deterministic-build"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H18",
+    "severity": "P2",
+    "title": "Не определён единый регламент Git и фиксации сдачи",
+    "category": "пробел поставки",
+    "evidence": {
+      "path": "output/credit-workspace-backend-architecture/docs/03-technology.md",
+      "line": 38,
+      "fragment": "commit",
+      "sha256": "fbae5191dbfdd0e6297997b6c7301c87ad819804f48568af68419f63fc28ba5d"
+    },
+    "failureScenario": "Описание образов с commit не определяет PR, ветки, владельцев shared-файлов и заморозку версии.",
+    "correction": "Отдельный git-and-jury-guide с trunk workflow, владельцами, checkpoint, release tag, доступом жюри и checklist.",
+    "verification": [
+      "git-handbook",
+      "jury-traceability"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H19",
+    "severity": "P2",
+    "title": "Результаты статических проверок требуют новой области доказательств",
+    "category": "граница доказательств",
+    "evidence": {
+      "path": "output/credit-workspace-ml-architecture/validation-report.json",
+      "line": 4,
+      "fragment": "Static architecture package",
+      "sha256": "3c5b67853b9274993724d37bc014406bcc3cf8d5e6484c5ba0b5bc07ae8253f9"
+    },
+    "failureScenario": "Проверки одного ML-пакета ошибочно используются как доказательство готовности общей системы.",
+    "correction": "Два статуса: статические проверки поставки выполнены; все испытания приложения запланированы и не выполнены.",
+    "verification": [
+      "evidence-boundary",
+      "runtime-not-executed"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  },
+  {
+    "id": "H20",
+    "severity": "P1",
+    "title": "Три сохранённых примера прежнего аудита не соответствуют ожидаемой валидности",
+    "category": "дефект доказательств",
+    "evidence": {
+      "path": "tools/validate_architecture_review.py",
+      "line": 35,
+      "fragment": "FIXTURES.append(dict(name=title,schema=name,expectedValid=valid,value=value))",
+      "sha256": "66b505cd18c6f44086e29ff2db20ebe21624f390a51580901892622b2492adcb"
+    },
+    "failureScenario": "Объект value сохраняется по ссылке, затем меняется. Экспорт содержит положительные примеры с неправильным snapshot/package и отрицательный upload с уже добавленной версией; прежний PASS не подтверждает выданные fixtures.",
+    "correction": "В текущем валидаторе сохраняется deepcopy, три fixture восстановлены с явным журналом миграции; после записи каждый fixture перечитывается с диска и проверяется повторно.",
+    "verification": [
+      "serialized-fixtures-revalidated",
+      "fixture-migration-log"
+    ],
+    "status": "corrected-in-specification",
+    "runtimeStatus": "NOT_EXECUTED_NO_APPLICATION"
+  }
+]

@@ -1,0 +1,98 @@
+{
+  "checkedAt": "2026-10-20",
+  "retrieval": "agent-reach command unavailable and Jina DNS unavailable; fallback built-in web browser, primary sources only",
+  "sources": [
+    {
+      "id": "S01",
+      "title": "Spring Boot requirements",
+      "url": "https://docs.spring.io/spring-boot/system-requirements.html",
+      "observation": "Boot4.1.1 supports Java21; Maven>=3.6.3; this is not an application build"
+    },
+    {
+      "id": "S02",
+      "title": "Spring Modulith compatibility",
+      "url": "https://docs.spring.io/spring-modulith/reference/appendix.html",
+      "observation": "table does not confirm 2.1/4.1; optional target dependency only"
+    },
+    {
+      "id": "S03",
+      "title": "PostgreSQL support",
+      "url": "https://www.postgresql.org/support/versioning/",
+      "observation": "17 branch supported; page lists17.11; patch/digest verified at image freeze"
+    },
+    {
+      "id": "S04",
+      "title": "React versions",
+      "url": "https://react.dev/versions",
+      "observation": "19.3.0 documented; exact frontend lock generated at implementation"
+    },
+    {
+      "id": "S05",
+      "title": "Node releases",
+      "url": "https://nodejs.org/en/about/previous-releases",
+      "observation": "Node24 is LTS; exact patch pinned at P02"
+    },
+    {
+      "id": "S06",
+      "title": "Qwen model card",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct",
+      "observation": "Apache2.0; Russian listed; no in-domain quality guarantee"
+    },
+    {
+      "id": "S07",
+      "title": "Official Qwen GGUF",
+      "url": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF",
+      "observation": "Q4_K_M supported by official model repository"
+    },
+    {
+      "id": "S08",
+      "title": "E5 model card",
+      "url": "https://huggingface.co/intfloat/multilingual-e5-small/raw/main/README.md",
+      "observation": "MIT; multilingual; query/passage prefixes and normalization required"
+    },
+    {
+      "id": "S09",
+      "title": "llama.cpp Docker",
+      "url": "https://github.com/ggml-org/llama.cpp/blob/master/docs/docker.md",
+      "observation": "CPU server image plus optional CUDA; pin immutable digest, never latest"
+    },
+    {
+      "id": "S10",
+      "title": "Tesseract models",
+      "url": "https://tesseract-ocr.github.io/tessdoc/Data-Files.html",
+      "observation": "tessdata_fast rus+eng for bounded synthetic form"
+    },
+    {
+      "id": "S11",
+      "title": "UCI dataset365",
+      "url": "https://archive.ics.uci.edu/dataset/365/polish+companies+bankruptcy+data",
+      "observation": "CCBY4.0; 5year5910 samples/410 positive; bankruptcy within1year, not bank PD"
+    },
+    {
+      "id": "S12",
+      "title": "Docker profiles",
+      "url": "https://docs.docker.com/compose/how-tos/profiles/",
+      "observation": "profiles opt in extra services; readiness still needs healthchecks"
+    },
+    {
+      "id": "S13",
+      "title": "FastAPI releases",
+      "url": "https://fastapi.tiangolo.com/release-notes/",
+      "observation": "pin selected Python3.12 compatible release with Pydantic2 at P02"
+    },
+    {
+      "id": "S14",
+      "title": "Logistic regression",
+      "url": "https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression",
+      "observation": "baseline algorithm, not validation of bank risk quality"
+    }
+  ],
+  "notExecuted": [
+    "Java compilation",
+    "package installation for application",
+    "model download",
+    "model training",
+    "Docker startup",
+    "CPU/GPU benchmark"
+  ]
+}

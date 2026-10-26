@@ -1,0 +1,13 @@
+{
+  "modelHash": "0917c74937bf94b32753e26e862084e7e4a28076eadc2c5d77689dd1e496cf6c",
+  "policyHash": "8ba31698beb7d9a7b0ba1db7ccdd322a98be0240be45e42de7fb04a8a272f2bd",
+  "featureCodeDigest": "2d59d6b8fd40976b0ca11dbf195f77546e6b5112b85cdc2af8c969326e1723eb",
+  "protocolHash": "ea6e1758634c6a81a8db1e53d0bb32aff14b8a25ad4a1797b857b9a74ca393aa",
+  "selectedFamily": "logistic",
+  "config": {
+    "family": "logistic",
+    "C": 0.1,
+    "balanced": false
+  },
+  "independentEvaluation": "completed; primary superiority not established"
+}

@@ -1,0 +1,17 @@
+{
+  "version": "synthetic-demo-policy-4",
+  "T_manual": 0.09265521435647191,
+  "selectionSplit": "train_oof",
+  "manualQuantile": 0.95,
+  "eligibleRows": 5699,
+  "eligibleEvents": 142,
+  "manualRows": 284,
+  "manualEvents": 43,
+  "actualCoverage": 0.049833304088436566,
+  "comparison": ">=",
+  "synthetic": true,
+  "capacityTarget": 0.05,
+  "eligibility": "equity>=0; liabilities/assets<0.9; revenue>0; application checks unavailable",
+  "capacityGuarantee": "development cohort only; future static threshold cannot guarantee 5%",
+  "tiePolicy": "exclude whole boundary tie when necessary"
+}

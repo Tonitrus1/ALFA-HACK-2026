@@ -1,0 +1,374 @@
+{
+  "requestId": "intro",
+  "scope": "FEED",
+  "rankedIds": [
+    "application-01",
+    "application-02",
+    "cash-01",
+    "cash-02",
+    "cost-01",
+    "cost-02",
+    "application-07",
+    "application-10",
+    "cash-07",
+    "cash-10",
+    "cost-07",
+    "cost-10",
+    "equipment-01",
+    "equipment-02",
+    "season-01",
+    "season-02",
+    "working-01",
+    "working-02",
+    "equipment-07",
+    "equipment-10",
+    "season-07",
+    "season-10",
+    "working-07",
+    "working-10",
+    "application-03",
+    "application-04",
+    "cash-03",
+    "cash-04",
+    "cost-03",
+    "cost-04",
+    "application-05",
+    "application-06",
+    "cash-05",
+    "cash-06",
+    "cost-05",
+    "cost-06",
+    "application-08",
+    "application-09",
+    "cash-08",
+    "cash-09",
+    "cost-08",
+    "cost-09",
+    "application-11",
+    "application-12",
+    "cash-11",
+    "cash-12",
+    "cost-11",
+    "cost-12",
+    "equipment-03",
+    "equipment-04",
+    "season-03",
+    "season-04",
+    "working-03",
+    "working-04",
+    "equipment-05",
+    "equipment-06",
+    "season-05",
+    "season-06",
+    "working-05",
+    "working-06",
+    "equipment-08",
+    "equipment-09",
+    "season-08",
+    "season-09",
+    "working-08",
+    "working-09",
+    "equipment-11",
+    "equipment-12",
+    "season-11",
+    "season-12",
+    "working-11",
+    "working-12"
+  ],
+  "candidateSetDigest": "f3d549480290935a00ab87066365f4b5e6a44375ccf667e8c1bd24447e3f778c",
+  "exposureId": "ex-intro",
+  "releaseId": "feed-rules-v1",
+  "mode": "RULES",
+  "reasonCategory": "DETERMINISTIC_RULES",
+  "catalogDigest": "367c65a3dc17aab5061e0f06257940517447bc35b3487e56c4c089263bbce6d3",
+  "explanations": {
+    "application-01": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "application-02": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cash-01": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cash-02": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cost-01": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cost-02": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "application-07": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "application-10": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cash-07": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cash-10": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cost-07": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cost-10": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "equipment-01": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "equipment-02": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "season-01": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "season-02": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "working-01": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "working-02": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "equipment-07": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "equipment-10": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "season-07": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "season-10": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "working-07": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "working-10": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "application-03": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "application-04": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cash-03": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cash-04": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cost-03": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cost-04": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "application-05": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "application-06": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cash-05": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cash-06": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cost-05": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cost-06": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "application-08": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "application-09": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cash-08": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cash-09": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cost-08": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cost-09": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "application-11": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "application-12": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cash-11": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cash-12": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cost-11": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "cost-12": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "equipment-03": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "equipment-04": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "season-03": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "season-04": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "working-03": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "working-04": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "equipment-05": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "equipment-06": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "season-05": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "season-06": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "working-05": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "working-06": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "equipment-08": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "equipment-09": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "season-08": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "season-09": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "working-08": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "working-09": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "equipment-11": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "equipment-12": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "season-11": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "season-12": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "working-11": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    },
+    "working-12": {
+      "reasonCategory": "INTRODUCTION",
+      "message": "Вводная подборка о финансировании бизнеса."
+    }
+  }
+}

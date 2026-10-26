@@ -1,0 +1,20 @@
+erDiagram
+  ACTOR ||--o{ MEMBERSHIP : имеет
+  COMPANY ||--o{ MEMBERSHIP : включает
+  ACTOR ||--o{ SESSION : открывает
+  ACTOR ||--|| CREDENTIAL : входит
+  COMPANY ||--o{ APPLICATION : подаёт
+  PRODUCT ||--o{ APPLICATION : выбирается
+  APPLICATION ||--o| FINANCIAL_STATEMENT : содержит
+  APPLICATION ||--o{ FINANCIAL_SNAPSHOT : фиксирует
+  APPLICATION ||--o{ SUBMISSION_SNAPSHOT : подаёт
+  APPLICATION ||--o{ DOCUMENT : прикладывает
+  DOCUMENT ||--o{ DOCUMENT_JOB : обрабатывается
+  DOCUMENT ||--o{ EXTRACTION : распознаётся
+  APPLICATION ||--o| BANK_CASE : рассматривается
+  BANK_CASE ||--o{ INFORMATION_REQUEST : уточняет
+  BANK_CASE ||--o{ DECISION : получает
+  DECISION ||--o{ OFFER : предлагает
+  APPLICATION ||--o{ COMMAND_OPERATION : изменяется
+  COMPANY ||--o{ FEED_PAGE : читает
+  COMPANY ||--o{ CONVERSATION : общается

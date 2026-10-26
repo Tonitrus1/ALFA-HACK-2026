@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1380" height="900" viewBox="0 0 1380 900"><rect width="1380" height="900" fill="#ffffff"/><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 Z" fill="#6d8291"/></marker></defs>
+<text x="40" y="55" font-family="DejaVu Sans,sans-serif" font-size="31" font-weight="bold" fill="#182b3b">Полный стек: границы и локальные адаптеры</text>
+<text x="40" y="92" font-family="DejaVu Sans,sans-serif" font-size="17" fill="#5a6b7b">Названия технологий сохраняются в архитектуре MVP. Реальные сервисы выбираются после интеграционной проверки.</text>
+<polyline points="420,197.5 500,197.5" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="880,197.5 960,197.5" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="420,327.5 500,327.5" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="880,327.5 960,327.5" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="420,457.5 500,457.5" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="880,457.5 960,457.5" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="420,587.5 500,587.5" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="880,587.5 960,587.5" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="420,727.5 500,727.5" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<polyline points="880,727.5 960,727.5" fill="none" stroke="#6d8291" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="40" y="140" width="380" height="115" rx="12" fill="#eaf5ef" stroke="#6e9e86" stroke-width="1.8"/>
+<text x="54" y="169" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Qdrant</text>
+<text x="54" y="200" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Векторный индекс</text>
+<rect x="500" y="140" width="380" height="115" rx="12" fill="#edf3fb" stroke="#527ba5" stroke-width="1.8"/>
+<text x="514" y="169" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">VectorIndexPort</text>
+<text x="514" y="200" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Allowlist / corpus / versions</text>
+<rect x="960" y="140" width="380" height="115" rx="12" fill="#f0edfb" stroke="#8d79b1" stroke-width="1.8"/>
+<text x="974" y="169" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">NumPy cosine search</text>
+<text x="974" y="200" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Настоящий поиск на CPU</text>
+<rect x="40" y="270" width="380" height="115" rx="12" fill="#eaf5ef" stroke="#6e9e86" stroke-width="1.8"/>
+<text x="54" y="299" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Redis</text>
+<text x="54" y="330" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Сессии и восстанавливаемый кеш</text>
+<rect x="500" y="270" width="380" height="115" rx="12" fill="#edf3fb" stroke="#527ba5" stroke-width="1.8"/>
+<text x="514" y="299" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">SessionStorePort / CachePort</text>
+<text x="514" y="330" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">TTL / authEpoch / revoke</text>
+<rect x="960" y="270" width="380" height="115" rx="12" fill="#f0edfb" stroke="#8d79b1" stroke-width="1.8"/>
+<text x="974" y="299" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">JDBC + локальный TTL-кеш</text>
+<text x="974" y="330" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Сессии сохраняются в PostgreSQL</text>
+<rect x="40" y="400" width="380" height="115" rx="12" fill="#eaf5ef" stroke="#6e9e86" stroke-width="1.8"/>
+<text x="54" y="429" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Feast</text>
+<text x="54" y="460" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Хранение и получение признаков</text>
+<rect x="500" y="400" width="380" height="115" rx="12" fill="#edf3fb" stroke="#527ba5" stroke-width="1.8"/>
+<text x="514" y="429" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">FeatureRepositoryPort</text>
+<text x="514" y="460" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">HistoricalFeatureReader</text>
+<rect x="960" y="400" width="380" height="115" rx="12" fill="#f0edfb" stroke="#8d79b1" stroke-width="1.8"/>
+<text x="974" y="429" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Immutable feature snapshots</text>
+<text x="974" y="460" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Общий transform + asOf / availableAt</text>
+<rect x="40" y="530" width="380" height="115" rx="12" fill="#eaf5ef" stroke="#6e9e86" stroke-width="1.8"/>
+<text x="54" y="559" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">MLflow / Airflow / Evidently / vLLM</text>
+<text x="54" y="590" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Registry / jobs / quality / generation</text>
+<rect x="500" y="530" width="380" height="115" rx="12" fill="#edf3fb" stroke="#527ba5" stroke-width="1.8"/>
+<text x="514" y="559" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">ML-порты</text>
+<text x="514" y="590" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Manifest / BatchJob / Quality / Text</text>
+<rect x="960" y="530" width="380" height="115" rx="12" fill="#f0edfb" stroke="#8d79b1" stroke-width="1.8"/>
+<text x="974" y="559" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Manifests / jobs / DQ reports</text>
+<text x="974" y="590" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">CPU llama.cpp + Qwen</text>
+<rect x="40" y="660" width="380" height="135" rx="12" fill="#eaf5ef" stroke="#6e9e86" stroke-width="1.8"/>
+<text x="54" y="689" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Kafka / S3 / Prometheus / Grafana</text>
+<text x="54" y="713" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">/ Kubernetes</text>
+<text x="54" y="744" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Доставка / файлы / эксплуатация</text>
+<rect x="500" y="660" width="380" height="135" rx="12" fill="#edf3fb" stroke="#527ba5" stroke-width="1.8"/>
+<text x="514" y="689" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Backend и эксплуатация</text>
+<text x="514" y="720" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Event / Object / metrics / deployment</text>
+<rect x="960" y="660" width="380" height="135" rx="12" fill="#f0edfb" stroke="#8d79b1" stroke-width="1.8"/>
+<text x="974" y="689" font-family="DejaVu Sans,sans-serif" font-size="18" font-weight="bold" fill="#182b3b">Outbox / files / OpenMetrics</text>
+<text x="974" y="720" font-family="DejaVu Sans,sans-serif" font-size="16" fill="#5a6b7b">Read-only report / Docker Compose</text>
+<text x="40" y="820" font-family="DejaVu Sans,sans-serif" font-size="15" fill="#5a6b7b">Все адаптеры здесь спроектированы, приложение не реализовано. Каркас SDK не означает работающую интеграцию.</text>
+<text x="40" y="848" font-family="DejaVu Sans,sans-serif" font-size="15" fill="#5a6b7b">Дополнительный профиль: Redis cache + Qdrant + MLflow. Остальные привязки локальные; bank-target переводит полный стек.</text>
+<text x="40" y="887" font-family="DejaVu Sans,sans-serif" font-size="12" fill="#5a6b7b">HACKATHON-1.5 · 20.10.2026 · 07/07 · проектная схема, runtime не проверен</text></svg>

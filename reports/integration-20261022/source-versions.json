@@ -1,0 +1,13 @@
+{
+  "main": "f3621df6696ab58239872ad3bd1a20aba9e57469",
+  "backend/p03-data-session": "b917220b9f1a7c1e2504ab88e18dc5a34ceb7e76",
+  "backend/p05-vertical-slice": "e5f7ab631311b6c9c7dd2ccee33ca8e2e340d773",
+  "backend/p08-financial-form": "7de3554f4c2f5d4736dff6f3afa587dc59a8e831",
+  "backend/p10-documents": "0676e3faf884375ee0e4d65a2e62c61abd5bf56d",
+  "backend/p15-ml-rfi-decisions": "4f229b08b23a3f61d20a04212d28ede328b30ab9",
+  "backend/p25-local-adapters": "d77481544bb4d109481afdfd76c71325b9e24331",
+  "integration/ml-audit-20261021": "af86831c49ef34bda454a543c8f6a698c66f481d",
+  "ml/local-scoring-runtime": "802f9983248af629811e6e8327b82d70ddd37e3e",
+  "ml/feed-recommendations": "87af049efa16f3f976fae0fdea36d978031996c8",
+  "selectedBase": "af86831c49ef34bda454a543c8f6a698c66f481d"
+}

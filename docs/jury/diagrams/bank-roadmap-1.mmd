@@ -1,0 +1,16 @@
+flowchart TB
+  U[Клиентский веб-кабинет] --> E[WAF / ingress / TLS]
+  OP[Рабочее место сотрудника] --> E
+  E --> IAM[Корпоративный IAM · SSO / MFA / роли]
+  IAM --> B[Кредитный backend · продуктовые правила]
+  B --> P[(HA PostgreSQL · резервирование / PITR)]
+  B --> S3[(S3-compatible · версии / retention)]
+  B --> BUS[Брокер событий · доставка / DLQ]
+  BUS --> AD[Адаптеры банковских систем]
+  AD --> EXT[БКИ / KYC / AML / АБС / ЭП]
+  B --> ML[Контур ML / OCR / RAG]
+  ML --> REG[Реестр моделей · approval / rollback]
+  ML --> FS[Версионированные признаки / lineage]
+  ML --> KB[Управляемые знания / ACL / аудит]
+  B --> OBS[Метрики / трассировки / аудит / SIEM]
+  ML --> OBS

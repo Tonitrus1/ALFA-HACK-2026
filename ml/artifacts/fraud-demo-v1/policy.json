@@ -1,0 +1,10 @@
+{
+  "version": "synthetic-dual-policy-4",
+  "T_fraud": 0.8942151833349473,
+  "comparison": ">=",
+  "maximumValidationFpr": 0.05,
+  "selectionSplit": "validation",
+  "thresholdMethod": "max recall with one-sided 95% Wilson FPR upper bound <=5%",
+  "riskBundleDigest": "56b30e55f012515557beba0f80d51fe27cf5cffeb9fb511965a72ba03266ab2e",
+  "T_manual": 0.03504223273828764
+}

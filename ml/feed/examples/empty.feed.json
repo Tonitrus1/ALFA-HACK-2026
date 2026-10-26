@@ -1,0 +1,13 @@
+{
+  "cards": [],
+  "rankingMode": "RULES",
+  "hasMore": false,
+  "rankingMetadata": {
+    "exposureId": "ex-empty",
+    "releaseId": "feed-rules-v1",
+    "mode": "RULES",
+    "candidateSetDigest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "catalogVersion": 1,
+    "catalogDigest": "20a2e621ecfaa6172ac6d222967ed86cbc097b7bd372699dea9b674aa98bce2f"
+  }
+}

@@ -1,0 +1,114 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+!.env.template
+!.env.*.example
+!.env.*.template
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+service-account*.json
+.aws/
+.ssh/
+
+# Editor and operating system files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Dependencies, caches and generated application output
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+.gradle/
+.next/
+.nuxt/
+.turbo/
+coverage/
+htmlcov/
+dist/
+build/
+target/
+*.log
+/tmp/
+/temp/
+
+# Local data, uploaded documents, database dumps and model artifacts
+/data/
+datasets/
+weights/
+checkpoints/
+model-cache/
+mlruns/
+wandb/
+uploads/
+dumps/
+*.dump
+*.sqlite
+*.sqlite3
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.onnx
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.joblib
+*.gguf
+*.ggml
+
+# Prepared local MVP runtimes, DB, bundles and generated seed
+.local/
+ml/artifacts/*
+ml/generated/*
+
+# Approved dataset and trained baseline; all other local data stays ignored
+!/datasets/
+/datasets/*
+!/datasets/ru-sme-dataset-10000/
+!/datasets/ru-sme-dataset-10000/**
+!/ml/artifacts/baseline/
+/ml/artifacts/baseline/*
+!/ml/artifacts/baseline/model.joblib
+!/ml/artifacts/baseline/manifest.json
+!/ml/artifacts/baseline/policy.json
+!/ml/artifacts/baseline/selection-lock.json
+!/ml/artifacts/baseline/evaluation.json
+!/ml/artifacts/baseline/model-card.md
+!/ml/artifacts/baseline/SHA256SUMS
+!/ml/generated/companies.json
+
+!/ml/artifacts/baseline/optuna-study.json
+!/ml/artifacts/baseline/feature-schema.json
+
+# Approved evaluated candidate, for reproducible review; baseline remains active.
+!/ml/artifacts/scoring-v2-351935cfd80c/
+!/ml/artifacts/scoring-v2-351935cfd80c/**
+
+# E5 local environment and downloaded bundle (reproduced with pinned revision + SHA256)
+.venv-feed/
+
+# Frontend generated output and local browser evidence
+node_modules/
+frontend/dist/
+frontend/*.tsbuildinfo
+frontend/test-results/
+frontend/playwright-report/
+
+# Explicitly selected research fraud artifact; original checksums retained.
+!/ml/artifacts/fraud-demo-v1/
+!/ml/artifacts/fraud-demo-v1/**

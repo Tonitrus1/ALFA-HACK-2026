@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:credit:adapter-bindings:1",
+  "title": "Startup provider selection; design examples, not runtime verification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "profile",
+    "status",
+    "automaticProviderFallback",
+    "bindings"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "profile": {
+      "enum": [
+        "local-mvp",
+        "local-integrations",
+        "bank-target"
+      ]
+    },
+    "status": {
+      "const": "SPECIFICATION_ONLY"
+    },
+    "automaticProviderFallback": {
+      "const": false
+    },
+    "bindings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sessions",
+        "cache",
+        "vectors",
+        "features",
+        "registry",
+        "jobs",
+        "quality",
+        "generation",
+        "events",
+        "objects",
+        "metrics",
+        "dashboards",
+        "orchestration"
+      ],
+      "properties": {
+        "sessions": {
+          "enum": [
+            "JdbcSessionAdapter",
+            "RedisSessionAdapter"
+          ]
+        },
+        "cache": {
+          "enum": [
+            "BoundedLocalCacheAdapter",
+            "RedisCacheAdapter"
+          ]
+        },
+        "vectors": {
+          "enum": [
+            "NumpyVectorIndexAdapter",
+            "QdrantVectorIndexAdapter"
+          ]
+        },
+        "features": {
+          "enum": [
+            "SnapshotFeatureRepositoryAdapter",
+            "FeastFeatureRepositoryAdapter"
+          ]
+        },
+        "registry": {
+          "enum": [
+            "ManifestModelRegistryAdapter",
+            "MlflowModelRegistryAdapter"
+          ]
+        },
+        "jobs": {
+          "enum": [
+            "LocalBatchJobRunnerAdapter",
+            "AirflowBatchJobRunnerAdapter"
+          ]
+        },
+        "quality": {
+          "enum": [
+            "LocalQualityReportAdapter",
+            "EvidentlyQualityReportAdapter"
+          ]
+        },
+        "generation": {
+          "enum": [
+            "LlamaCppGenerationAdapter",
+            "VllmGenerationAdapter"
+          ]
+        },
+        "events": {
+          "enum": [
+            "PostgresOutboxTransportAdapter",
+            "KafkaEventTransportAdapter"
+          ]
+        },
+        "objects": {
+          "enum": [
+            "VersionedFilesystemObjectAdapter",
+            "S3ObjectStoreAdapter"
+          ]
+        },
+        "metrics": {
+          "enum": [
+            "OpenMetricsExporter",
+            "PrometheusScrapeBinding"
+          ]
+        },
+        "dashboards": {
+          "enum": [
+            "LocalEvidenceReport",
+            "GrafanaDashboardBinding"
+          ]
+        },
+        "orchestration": {
+          "enum": [
+            "DockerComposeDeployment",
+            "KubernetesDeployment"
+          ]
+        }
+      }
+    }
+  }
+}

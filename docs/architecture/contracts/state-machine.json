@@ -1,0 +1,219 @@
+{
+  "version": "1.4",
+  "states": [
+    "DRAFT",
+    "SUBMITTED",
+    "REVIEW",
+    "MANUAL",
+    "NEEDS_INFO",
+    "APPROVED",
+    "ALTERNATIVE",
+    "DECLINED",
+    "ACCEPTED",
+    "COMPLETED",
+    "CANCELLED",
+    "EXPIRED"
+  ],
+  "terminal": [
+    "DECLINED",
+    "COMPLETED",
+    "CANCELLED",
+    "EXPIRED"
+  ],
+  "transitions": [
+    {
+      "source": "DRAFT",
+      "target": "SUBMITTED",
+      "actor": "CLIENT",
+      "guard": "role=SUBMIT; saved version; 8 confirmed financial values; documents CLEAN; consents; requirements version",
+      "effect": "atomic immutable package + operation + outbox",
+      "clientLabel": "Передаём заявку"
+    },
+    {
+      "source": "SUBMITTED",
+      "target": "REVIEW",
+      "actor": "BANK_SIMULATOR",
+      "guard": "dedup externalRequestId; case created",
+      "effect": "persist caseId and monotonic caseVersion",
+      "clientLabel": "На рассмотрении"
+    },
+    {
+      "source": "REVIEW",
+      "target": "NEEDS_INFO",
+      "actor": "BANK_SIMULATOR",
+      "guard": "nonempty addressed RFI; OPEN one request at a time",
+      "effect": "persist requestVersion; initialize response draft from submitted values",
+      "clientLabel": "Нужно дополнить сведения"
+    },
+    {
+      "source": "MANUAL",
+      "target": "NEEDS_INFO",
+      "actor": "BANK_SIMULATOR",
+      "guard": "nonempty addressed RFI; OPEN one request at a time",
+      "effect": "persist requestVersion; initialize response draft from submitted values",
+      "clientLabel": "Нужно дополнить сведения"
+    },
+    {
+      "source": "NEEDS_INFO",
+      "target": "REVIEW",
+      "actor": "CLIENT_VIA_BANK",
+      "guard": "OPEN RFI; saved draft/request/requirements/financial versions; allowed fields only",
+      "effect": "immutable amendment snapshot; close RFI when bank accepts",
+      "clientLabel": "Дополнение передано"
+    },
+    {
+      "source": "REVIEW",
+      "target": "MANUAL",
+      "actor": "BANK_SIMULATOR",
+      "guard": "missing/failed risk inference or configured manual case",
+      "effect": "queue manual review, no automatic decline",
+      "clientLabel": "Проверяем дополнительно"
+    },
+    {
+      "source": "REVIEW",
+      "target": "APPROVED",
+      "actor": "BANK_SIMULATOR",
+      "guard": "versioned policy; complete current offer with expiry",
+      "effect": "record decision/offer; nextAction=REVIEW_OFFER",
+      "clientLabel": "Есть предложение"
+    },
+    {
+      "source": "MANUAL",
+      "target": "APPROVED",
+      "actor": "BANK_SIMULATOR",
+      "guard": "versioned policy; complete current offer with expiry",
+      "effect": "record decision/offer; nextAction=REVIEW_OFFER",
+      "clientLabel": "Есть предложение"
+    },
+    {
+      "source": "REVIEW",
+      "target": "ALTERNATIVE",
+      "actor": "BANK_SIMULATOR",
+      "guard": "versioned policy; complete alternate offer with expiry",
+      "effect": "record alternate amount/term and explanation",
+      "clientLabel": "Предложены другие условия"
+    },
+    {
+      "source": "MANUAL",
+      "target": "ALTERNATIVE",
+      "actor": "BANK_SIMULATOR",
+      "guard": "versioned policy; complete alternate offer with expiry",
+      "effect": "record alternate amount/term and explanation",
+      "clientLabel": "Предложены другие условия"
+    },
+    {
+      "source": "REVIEW",
+      "target": "DECLINED",
+      "actor": "BANK_SIMULATOR",
+      "guard": "versioned policy; safe reason category",
+      "effect": "record terminal decision; no offer acceptance",
+      "clientLabel": "По заявке принято отрицательное решение"
+    },
+    {
+      "source": "MANUAL",
+      "target": "DECLINED",
+      "actor": "BANK_SIMULATOR",
+      "guard": "versioned policy; safe reason category",
+      "effect": "record terminal decision; no offer acceptance",
+      "clientLabel": "По заявке принято отрицательное решение"
+    },
+    {
+      "source": "APPROVED",
+      "target": "ACCEPTED",
+      "actor": "CLIENT_VIA_BANK",
+      "guard": "role=ACCEPT; exact offerVersion; bank clock before validUntil; offer AVAILABLE",
+      "effect": "bank-owned CAS acceptance; command receipt",
+      "clientLabel": "Условия приняты"
+    },
+    {
+      "source": "ALTERNATIVE",
+      "target": "ACCEPTED",
+      "actor": "CLIENT_VIA_BANK",
+      "guard": "role=ACCEPT; exact offerVersion; bank clock before validUntil; offer AVAILABLE",
+      "effect": "bank-owned CAS acceptance; command receipt",
+      "clientLabel": "Условия приняты"
+    },
+    {
+      "source": "APPROVED",
+      "target": "EXPIRED",
+      "actor": "BANK_SIMULATOR",
+      "guard": "now>=validUntil; acceptance not committed",
+      "effect": "CAS expire offer; disable acceptance",
+      "clientLabel": "Срок предложения истёк"
+    },
+    {
+      "source": "ALTERNATIVE",
+      "target": "EXPIRED",
+      "actor": "BANK_SIMULATOR",
+      "guard": "now>=validUntil; acceptance not committed",
+      "effect": "CAS expire offer; disable acceptance",
+      "clientLabel": "Срок предложения истёк"
+    },
+    {
+      "source": "ACCEPTED",
+      "target": "COMPLETED",
+      "actor": "DEMO_OPERATOR",
+      "guard": "operator session; confirmation event; no real transfer",
+      "effect": "record simulated fulfillment once",
+      "clientLabel": "Демонстрационное оформление завершено"
+    },
+    {
+      "source": "DRAFT",
+      "target": "CANCELLED",
+      "actor": "CLIENT",
+      "guard": "own draft; WITHDRAW capability; exact Application version; no bank case exists",
+      "effect": "local CAS cancellation, invalidate upload grants; no bank command",
+      "clientLabel": "Заявка отозвана"
+    },
+    {
+      "source": "SUBMITTED",
+      "target": "CANCELLED",
+      "actor": "CLIENT_VIA_BANK",
+      "guard": "capability=WITHDRAW; not accepted/completed; bank CAS wins race",
+      "effect": "record cancellation; stop jobs; invalidate unused grants",
+      "clientLabel": "Заявка отозвана"
+    },
+    {
+      "source": "REVIEW",
+      "target": "CANCELLED",
+      "actor": "CLIENT_VIA_BANK",
+      "guard": "capability=WITHDRAW; not accepted/completed; bank CAS wins race",
+      "effect": "record cancellation; stop jobs; invalidate unused grants",
+      "clientLabel": "Заявка отозвана"
+    },
+    {
+      "source": "MANUAL",
+      "target": "CANCELLED",
+      "actor": "CLIENT_VIA_BANK",
+      "guard": "capability=WITHDRAW; not accepted/completed; bank CAS wins race",
+      "effect": "record cancellation; stop jobs; invalidate unused grants",
+      "clientLabel": "Заявка отозвана"
+    },
+    {
+      "source": "NEEDS_INFO",
+      "target": "CANCELLED",
+      "actor": "CLIENT_VIA_BANK",
+      "guard": "capability=WITHDRAW; not accepted/completed; bank CAS wins race",
+      "effect": "record cancellation; stop jobs; invalidate unused grants",
+      "clientLabel": "Заявка отозвана"
+    },
+    {
+      "source": "APPROVED",
+      "target": "CANCELLED",
+      "actor": "CLIENT_VIA_BANK",
+      "guard": "capability=WITHDRAW; not accepted/completed; bank CAS wins race",
+      "effect": "record cancellation; stop jobs; invalidate unused grants",
+      "clientLabel": "Заявка отозвана"
+    },
+    {
+      "source": "ALTERNATIVE",
+      "target": "CANCELLED",
+      "actor": "CLIENT_VIA_BANK",
+      "guard": "capability=WITHDRAW; not accepted/completed; bank CAS wins race",
+      "effect": "record cancellation; stop jobs; invalidate unused grants",
+      "clientLabel": "Заявка отозвана"
+    }
+  ],
+  "duplicateCommand": "Return original result before current-state guards; same key/different body=409",
+  "withdrawalRace": "Winner is bank atomic transition; no UI optimistic success."
+}
