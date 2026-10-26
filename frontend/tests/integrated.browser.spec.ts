@@ -35,7 +35,21 @@ test('password login rejects incorrect credentials and opens only the account co
  await expect(page.getByRole('heading',{name:/Добрый день/})).toBeVisible();
  const foreign=await page.request.get('/api/v1/companies/company-b');expect(foreign.status()).toBe(404);
  await page.reload();await expect(page.getByRole('heading',{name:/Добрый день/})).toBeVisible();
- await expect(page.getByText('Здесь появится ваша первая заявка',{exact:true})).toBeVisible();
+ // The acceptance smoke may already have created a persisted application.
+ // Verify the authenticated tenant after reload instead of assuming an empty DB.
+ const session=await (await page.request.get('/api/v1/session')).json();
+ expect(session.companyId).toBe('company-a');
+ const companies=await (await page.request.get('/api/v1/companies')).json();
+ expect(companies.items.map((company:{companyId:string})=>company.companyId)).toEqual(['company-a']);
+ const applications=await (await page.request.get('/api/v1/applications?companyId=company-a',{
+   headers:{'X-Company-Context':String(session.contextVersion)},
+ })).json();
+ expect(applications.items.every((application:{companyId:string})=>application.companyId==='company-a')).toBe(true);
+ if(applications.items.length===0){
+   await expect(page.getByText('Здесь появится ваша первая заявка',{exact:true})).toBeVisible();
+ }else{
+   await expect(page.locator(`a[href^="/applications/${applications.items[0].applicationId}/"]`).first()).toBeVisible();
+ }
 });
 test('existing UI → real backend → real Risk → offer acceptance and completion',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));await login(page);const id=await create(page);

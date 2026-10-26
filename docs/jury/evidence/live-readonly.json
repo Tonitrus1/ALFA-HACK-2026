@@ -1,33 +1,72 @@
 {
-  "checkedAt": "2026-10-26T10:48:58.572100+00:00",
+  "checkedAt": "2026-10-26T11:28:18.823976+00:00",
   "baseUrl": "https://president-diameter-endearing.ngrok-free.dev",
-  "scope": "Live login and read-only API calls. No application, document or offer was changed.",
+  "scope": "Login and read-only API/schema checks; no application, offer, document or preference was changed. Feed GET may record normal page exposure.",
   "checks": [
     {
       "login": "company-a",
+      "checks": [
+        {
+          "path": "/api/v1/session",
+          "schema": "Session",
+          "status": "PASS",
+          "schemaErrorPaths": []
+        },
+        {
+          "path": "/api/v1/companies",
+          "schema": "CompanyList",
+          "status": "PASS",
+          "schemaErrorPaths": [],
+          "items": 1
+        },
+        {
+          "path": "/api/v1/companies/company-a",
+          "schema": "Company",
+          "status": "PASS",
+          "schemaErrorPaths": []
+        },
+        {
+          "path": "/api/v1/products?companyId=company-a",
+          "schema": "ProductList",
+          "status": "PASS",
+          "schemaErrorPaths": [],
+          "items": 3
+        },
+        {
+          "path": "/api/v1/applications?companyId=company-a",
+          "schema": "ApplicationList",
+          "status": "PASS",
+          "schemaErrorPaths": [],
+          "items": 1
+        },
+        {
+          "path": "/api/v1/feed/preferences?companyId=company-a",
+          "schema": "FeedPreferences",
+          "status": "PASS",
+          "schemaErrorPaths": []
+        },
+        {
+          "path": "/api/v1/feed?companyId=company-a",
+          "schema": "Feed",
+          "status": "PASS",
+          "schemaErrorPaths": [],
+          "cards": 6,
+          "rankingMode": "RULES",
+          "rankingMetadata": {
+            "releaseId": "feed-rules-v1",
+            "catalogVersion": 1
+          }
+        },
+        {
+          "path": "/api/v1/feed/saved?companyId=company-a",
+          "schema": "SavedFeed",
+          "status": "PASS",
+          "schemaErrorPaths": [],
+          "cards": 0
+        }
+      ],
       "authentication": "PASS",
       "companyId": "company-a",
-      "contextVersion": 1,
-      "/api/v1/session": {
-        "status": "PASS",
-        "items": 0
-      },
-      "/api/v1/companies": {
-        "status": "PASS",
-        "items": 1
-      },
-      "/api/v1/products?companyId=company-a": {
-        "status": "PASS",
-        "items": 3
-      },
-      "/api/v1/applications?companyId=company-a": {
-        "status": "PASS",
-        "items": 1
-      },
-      "/api/v1/feed?companyId=company-a": {
-        "status": "PASS",
-        "items": 0
-      },
       "foreignCompany": {
         "status": "PASS",
         "httpStatus": 404
@@ -35,33 +74,73 @@
     },
     {
       "login": "company-b",
+      "checks": [
+        {
+          "path": "/api/v1/session",
+          "schema": "Session",
+          "status": "PASS",
+          "schemaErrorPaths": []
+        },
+        {
+          "path": "/api/v1/companies",
+          "schema": "CompanyList",
+          "status": "PASS",
+          "schemaErrorPaths": [],
+          "items": 1
+        },
+        {
+          "path": "/api/v1/companies/company-b",
+          "schema": "Company",
+          "status": "PASS",
+          "schemaErrorPaths": []
+        },
+        {
+          "path": "/api/v1/products?companyId=company-b",
+          "schema": "ProductList",
+          "status": "PASS",
+          "schemaErrorPaths": [],
+          "items": 3
+        },
+        {
+          "path": "/api/v1/applications?companyId=company-b",
+          "schema": "ApplicationList",
+          "status": "PASS",
+          "schemaErrorPaths": [],
+          "items": 0
+        },
+        {
+          "path": "/api/v1/feed/preferences?companyId=company-b",
+          "schema": "FeedPreferences",
+          "status": "PASS",
+          "schemaErrorPaths": []
+        },
+        {
+          "path": "/api/v1/feed?companyId=company-b",
+          "schema": "Feed",
+          "status": "PASS",
+          "schemaErrorPaths": [],
+          "cards": 6,
+          "rankingMode": "RULES",
+          "rankingMetadata": {
+            "releaseId": "feed-rules-v1",
+            "catalogVersion": 1
+          }
+        },
+        {
+          "path": "/api/v1/feed/saved?companyId=company-b",
+          "schema": "SavedFeed",
+          "status": "PASS",
+          "schemaErrorPaths": [],
+          "cards": 0
+        }
+      ],
       "authentication": "PASS",
       "companyId": "company-b",
-      "contextVersion": 1,
-      "/api/v1/session": {
-        "status": "PASS",
-        "items": 0
-      },
-      "/api/v1/companies": {
-        "status": "PASS",
-        "items": 1
-      },
-      "/api/v1/products?companyId=company-b": {
-        "status": "PASS",
-        "items": 3
-      },
-      "/api/v1/applications?companyId=company-b": {
-        "status": "PASS",
-        "items": 0
-      },
-      "/api/v1/feed?companyId=company-b": {
-        "status": "PASS",
-        "items": 0
-      },
       "foreignCompany": {
         "status": "PASS",
         "httpStatus": 404
       }
     }
-  ]
+  ],
+  "status": "PASS"
 }

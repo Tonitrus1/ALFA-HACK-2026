@@ -29,7 +29,7 @@ export async function build(presentation) {
     sh.text.typeface='Arial';return sh;
   }
   function connect(s,a,b,from='right',to='left') {
-    return s.shapes.connect(a,b,{kind:'elbow',fromSide:from,toSide:to,line:{fill:'#777777',width:2},head:{type:'arrow',width:'med',length:'med'}});
+    return s.shapes.connect(a,b,{kind:'elbow',fromSide:from,toSide:to,line:{fill:'#777777',width:2},tail:{type:'arrow',width:'med',length:'med'}});
   }
   function notes(s,copy,source) {s.speakerNotes.text=copy+'\n\nИсточники: '+source;}
 
@@ -66,12 +66,12 @@ export async function build(presentation) {
   notes(s,'1:15–1:45. Пользователь выбирает потребность и продукт, вводит сведения и финансы, может добавить документы. После подачи система рассматривает заявку. При запросе уточнения клиент дополняет исходное дело. Принятие предложения и демооформление завершают путь без реальной выдачи.','docs/jury/architecture.md; docs/jury/demo.md');
 
   s=slide('Работающий кабинет');
-  image(s,'workspace.png',64,168,820,461);
+  image(s,'workspace-detail.png',64,168,820,461);
   text(s,'Статус заявки',926,194,290,48,30,RED,true);
   text(s,'Сохранённый черновик\nи следующий шаг',926,250,290,96,26);
   text(s,'Персональная лента',926,385,290,92,30,RED,true);
   text(s,'Материалы по интересам\nи контексту бизнеса',926,484,290,110,26);
-  notes(s,'1:45–2:10. Это реальный экран опубликованного сервиса, не макет. Покажем сохранённую заявку и следующий шаг. Ниже располагается персональная подборка материалов. При обновлении страницы данные читаются с backend.','docs/jury/assets/workspace.png, реальный серверный UI 26.10.2026; docs/jury/evidence/live-readonly.json');
+  notes(s,'1:45–2:10. Это реальный экран опубликованного сервиса, не макет. Покажем сохранённую заявку и следующий шаг. Ниже располагается персональная подборка материалов. При обновлении страницы данные читаются с backend.','docs/jury/assets/workspace-detail.png, реальный серверный UI 26.10.2026; docs/jury/evidence/live-readonly.json');
 
   s=slide('Оценка риска и кредитное решение');
   const a=node(s,'Подтверждённые\nфинансы',64,190,286,100),b=node(s,'CatBoost Risk\nBANKRUPTCY_PROXY',496,190,286,100),c=node(s,'Java\nDemoPolicyV1',928,190,286,100,true);
@@ -97,8 +97,9 @@ export async function build(presentation) {
   text(s,'Интересы и контекст компании\nОткрытие статей и сохранение\nRULES при недоступности модели',64,266,525,190,29);
   text(s,'Ассистент RAG',694,184,510,52,34,RED,true);
   text(s,'E5 и BM25, индекс Qdrant\nКонтекст компании от backend\nОтветы с разрешёнными источниками',694,266,520,190,28);
-  text(s,'Открытые веса Qwen2.5 3B доступны в локальном профиле без платного API',64,542,1140,90,30);
-  notes(s,'3:20–4:00. Лента ранжирует авторские материалы по типизированному профилю и контексту. Ассистент получает права и продукты от backend, использует знания и источники. Он не принимает кредитных решений и не меняет заявку. SEARCH_ONLY отличается от полноценной генерации. Локальная Qwen работает по Research License, а её коммерческое использование требует отдельного решения.','docs/jury/architecture.md; ml/feed/model-card.md; reports/local-qwen3b/validation.json; THIRD_PARTY_NOTICES.md');
+  text(s,'Локальный профиль: Qwen2.5 3B без платного API',64,524,1140,56,30);
+  text(s,'На серверном демо подтверждён поиск. Генерация сейчас недоступна',64,596,1140,50,23,MUTED);
+  notes(s,'3:20–4:00. Лента ранжирует авторские материалы по типизированному профилю и контексту. Ассистент получает права и продукты от backend и использует разрешённые источники. Он не принимает кредитных решений и не меняет заявку. При свежей онлайн-проверке сервер вернул SEARCH_ONLY с источниками: поиск работает, генерация недоступна. Это не выдаётся за полноценный LLM-ответ. Ранее реальная генерация локальной Qwen проверялась отдельно. Research License требует отдельного решения для коммерческого внедрения.','docs/jury/architecture.md; docs/jury/evidence/live-assistant.json; reports/local-qwen3b/validation.json; THIRD_PARTY_NOTICES.md');
 
   s=slide('Фактическая архитектура MVP');
   const ui=node(s,'React / Nginx',64,180,250,70),be=node(s,'Spring Boot',487,180,284,70,true),db=node(s,'PostgreSQL',960,180,254,70);
