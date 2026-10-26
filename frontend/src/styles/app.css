@@ -958,6 +958,9 @@ hr {
 }
 .feed-card-art {
   display: flex;
+  width: 100%;
+  padding: 0;
+  border: 0;
   align-items: center;
   justify-content: center;
   align-self: start;
@@ -1365,11 +1368,7 @@ hr {
   border-radius: 11px;
 }
 .financial-field .field {
-  margin-bottom: 10px;
-}
-.financial-field .ant-checkbox-wrapper {
-  font-size: 11px;
-  color: #858b97;
+  margin-bottom: 0;
 }
 .money-input {
   position: relative;

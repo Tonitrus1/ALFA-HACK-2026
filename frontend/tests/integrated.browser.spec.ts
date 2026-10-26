@@ -19,7 +19,7 @@ async function create(page:Page,preliminary?:string){
  await page.getByRole('checkbox',{name:/Подтверждаю корректность/}).check();
  await page.getByRole('button',{name:/К финансовым данным/}).click();
  for(const [key,value] of Object.entries(finance))await page.locator('#'+key).fill(value);
- for(const box of await page.getByRole('checkbox',{name:/Подтвердить:/}).all())await box.check();
+ await expect(page.getByRole('checkbox',{name:/Подтвердить:/})).toHaveCount(0);
  await page.getByRole('button',{name:/Проверить заявку/}).click();
  await page.getByRole('checkbox',{name:/Я проверил сведения/}).check();await page.getByRole('button',{name:/Отправить на рассмотрение/}).click();await expect(page).toHaveURL(new RegExp(`/applications/${id}/status`));return id;
 }
@@ -91,7 +91,9 @@ test('business autosave and manual finances work after a document was uploaded',
  expect(stored.terms.business).toMatchObject({activityDescription:'Продажи',businessAgeMonths:36,annualRevenue:{amountMinor:500000000}});
  const financial=await page.request.get(`/api/v1/applications/${app}/financial-statement`,{headers});expect(financial.status()).toBe(404);
  for(const [key,value] of Object.entries(finance))await page.locator('#'+key).fill(value);
- for(const box of await page.getByRole('checkbox',{name:/Подтвердить:/}).all())await box.check();
+ await expect(page.getByRole('checkbox')).toHaveCount(0);
+ await expect(page.getByText('Значение проверено',{exact:true})).toHaveCount(0);
+ await expect(page.getByText(/^(Допустимо отрицательное значение|Неотрицательная сумма)$/)).toHaveCount(0);
  await page.getByRole('button',{name:/Проверить заявку/}).click();
  await expect(page).toHaveURL(new RegExp(`/applications/${app}/review$`));
  const saved=await (await page.request.get(`/api/v1/applications/${app}/financial-statement`,{headers})).json();
@@ -139,7 +141,7 @@ test('financial warnings explain the problem without internal field names',async
  await page.goto('/needs');await page.getByRole('button',{name:'Продолжить',exact:true}).click();await page.locator('#amount').fill('500000');await page.getByRole('button',{name:'Подобрать варианты'}).click();await page.getByRole('link',{name:'Подробнее'}).first().click();await page.getByRole('button',{name:/Перейти к заявке/}).click();
  await page.locator('#activity').fill('Продажи');await page.locator('#businessAgeMonths').fill('36');await page.getByRole('button',{name:/К документам/}).click();await page.getByRole('checkbox',{name:/Подтверждаю корректность/}).check();await page.getByRole('button',{name:/К финансовым данным/}).click();
  for(const [key,value] of Object.entries({...finance,totalAssets:'0'}))await page.locator('#'+key).fill(value);
- for(const box of await page.getByRole('checkbox',{name:/Подтвердить:/}).all())await box.check();
+ await expect(page.getByRole('checkbox',{name:/Подтвердить:/})).toHaveCount(0);
  await page.getByRole('button',{name:/Проверить заявку/}).click();
  const warning=page.getByRole('alert').filter({hasText:'Сумма активов должна быть больше нуля'}).first();
  await expect(warning).toBeVisible();
@@ -153,6 +155,33 @@ test('RFI correction follows server-requested field and re-evaluates the same ap
 test('feed preferences, stable feedback retry and saved materials use public operations',async({page})=>{
  await login(page);await page.getByText('Настроить подборку',{exact:true}).click();await page.getByLabel('task',{exact:true}).selectOption('EQUIPMENT');await page.getByRole('button',{name:'Сохранить предпочтения'}).click();await expect(page.getByTestId('feed-card').first()).toBeVisible();
  const card=page.getByTestId('feed-card').first(), title=await card.locator('h3').innerText();await card.getByRole('button',{name:/^(Полезно|✓ В полезном)$/}).click();await expect(card.getByRole('button',{name:'✓ В полезном'})).toBeVisible();await page.getByRole('button',{name:'Полезные материалы'}).click();await expect(page.getByTestId('feed-card').filter({hasText:title})).toBeVisible();
+});
+test('feed illustrations open the full material with mouse and keyboard in both tabs',async({page})=>{
+ await login(page);
+ const clicks:string[]=[];
+ page.on('request',request=>{if(request.url().endsWith('/api/v1/recommendation-feedback')&&request.postDataJSON()?.action==='CLICK')clicks.push(request.postDataJSON().itemId);});
+ const card=page.getByTestId('feed-card').first();await expect(card).toBeVisible();
+ const title=await card.locator('h3').innerText(),id=(await card.getAttribute('data-content-id'))!;
+ const illustration=card.getByRole('button',{name:'Читать: '+title,exact:true});
+ await illustration.click();
+ const reader=page.getByRole('dialog');
+ await expect(reader.getByRole('heading',{name:title,exact:true})).toBeVisible();
+ await expect(reader.locator('.feed-reader-text')).toHaveText(await card.locator('.feed-card-excerpt').innerText(),{useInnerText:true});
+ await reader.getByRole('button',{name:'Close',exact:true}).click();await expect(reader).toBeHidden();
+ await illustration.focus();await illustration.press('Enter');await expect(reader).toBeVisible();
+ await reader.getByRole('button',{name:'Close',exact:true}).click();await expect(reader).toBeHidden();
+ await card.getByRole('button',{name:'Читать',exact:true}).click();await expect(reader).toBeVisible();
+ await reader.getByRole('button',{name:/^(Полезно|✓ В полезном)$/}).click();
+ await reader.getByRole('button',{name:'Close',exact:true}).click();await expect(reader).toBeHidden();
+ await page.getByRole('button',{name:'Полезные материалы',exact:true}).click();
+ const saved=page.getByTestId('feed-card').filter({has:page.getByRole('heading',{name:title,exact:true})});
+ await expect(saved).toBeVisible();
+ await page.setViewportSize({width:390,height:844});
+ const savedIllustration=saved.getByRole('button',{name:'Читать: '+title,exact:true});
+ await savedIllustration.click();await expect(reader.getByRole('heading',{name:title,exact:true})).toBeVisible();
+ await reader.getByRole('button',{name:'Close',exact:true}).click();await expect(reader).toBeHidden();
+ await savedIllustration.focus();await savedIllustration.press('Space');await expect(reader).toBeVisible();
+ expect(clicks).toEqual([id,id,id,id,id]);
 });
 test('VIEW requires continuous visibility; lost feedback response reuses event and command key',async({page})=>{
  await login(page);
